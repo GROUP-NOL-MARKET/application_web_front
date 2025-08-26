@@ -1,0 +1,70 @@
+.cart_content {
+  border: solid white 1px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 10px rgb(190, 190, 190);
+  width: 100%;
+  padding: 5px;
+}
+.total_product_content {
+  border: solid white 1px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 10px rgb(190, 190, 190);
+  width: 100%;
+  height: 400px;
+  padding: 5px;
+}
+.cart {
+  background-color: rgb(243, 243, 255);
+}
+.cart_empty,
+.table_title,
+.price,
+.name,
+.type,
+.disponibilité,
+.marque,
+.product_quantity,
+.totalPriceProduct,
+.prix_TTC,
+.title_prix_total {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.title_prix_total {
+  font-size: x-large;
+}
+.title_menu_cart {
+  font-size: medium;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+}
+
+.image_product {
+  height: 150px;
+}
+.type,
+.disponibilité {
+  font-size: small;
+  font-weight: normal;
+}
+.achat_button,
+.coupon_code_button {
+  border-radius: 20px !important;
+  font-family: "Roboto", sans-serif !important;
+  font-weight: bold !important;
+}
+ 
+.button_ajout.btn, .button_ajout.btn:hover{
+    background-color: #FA7F1B;
+    border: solid #FA7F1B 1px;
+}
+.paiement_button.btn, .paiement_button.btn:hover{
+    background-color: #FA7F1B;
+    border: solid #FA7F1B 1px;
+    border-radius: 20px;
+    font-family: "Roboto", sans-serif;
+}

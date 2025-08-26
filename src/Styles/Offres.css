@@ -1,0 +1,15 @@
+.title_offre {
+  font-family: "Open sans", sans serif;
+  font-weight: bold;
+  font-size: 1rem;
+  font-optical-sizing: normal;
+}
+.text {
+  font-family: "Roboto", sans serif;
+  font-size: 0.8rem;
+}
+.icon{
+  color: #fa7f1b;
+}
+
+
