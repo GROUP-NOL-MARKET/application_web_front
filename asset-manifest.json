@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/application_web_front/static/css/main.aecfec57.css",
+    "main.js": "/application_web_front/static/js/main.65c9fa1e.js",
+    "static/js/453.54292a4b.chunk.js": "/application_web_front/static/js/453.54292a4b.chunk.js",
+    "static/media/background_register.jpg": "/application_web_front/static/media/background_register.dad043f1ff863d2ec086.jpg",
+    "static/media/carousel_3.jpg": "/application_web_front/static/media/carousel_3.0015a1efda27b9d7fa49.jpg",
+    "static/media/carousel_2.jpg": "/application_web_front/static/media/carousel_2.4cb3aa641fcda2f6db7d.jpg",
+    "static/media/carousel_1.jpg": "/application_web_front/static/media/carousel_1.576d24654dcc4e54a70a.jpg",
+    "static/media/Rectangle.png": "/application_web_front/static/media/Rectangle.84c21114e6d4efd2a833.png",
+    "static/media/connexion_img.png": "/application_web_front/static/media/connexion_img.a2849a3a5f4833397e08.png",
+    "static/media/best_product_2.png": "/application_web_front/static/media/best_product_2.cbb382ca97e889130298.png",
+    "static/media/img_register.png": "/application_web_front/static/media/img_register.3b4bf1001dcca28ce3b7.png",
+    "static/media/img_entreprise.jpg": "/application_web_front/static/media/img_entreprise.b49508434ef9161e4e8b.jpg",
+    "static/media/Logo_entreprise-removebg-preview.png": "/application_web_front/static/media/Logo_entreprise-removebg-preview.c3c9bd0536c19ee9a647.png",
+    "static/media/bet_product_3.png": "/application_web_front/static/media/bet_product_3.deb17a8bd286eb39d9cc.png",
+    "static/media/best_product_4.png": "/application_web_front/static/media/best_product_4.8686cd66bf35b8a7a77c.png",
+    "static/media/best_product_1.png": "/application_web_front/static/media/best_product_1.a8d6c131cffe4781f427.png",
+    "static/media/img_profil.webp": "/application_web_front/static/media/img_profil.b44259e2b5cde3b84c59.webp",
+    "index.html": "/application_web_front/index.html",
+    "main.aecfec57.css.map": "/application_web_front/static/css/main.aecfec57.css.map",
+    "main.65c9fa1e.js.map": "/application_web_front/static/js/main.65c9fa1e.js.map",
+    "453.54292a4b.chunk.js.map": "/application_web_front/static/js/453.54292a4b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aecfec57.css",
+    "static/js/main.65c9fa1e.js"
+  ]
+}
