@@ -94,7 +94,9 @@ const Navbar2 = () => {
                   ></FontAwesomeIcon>
                 </div>
                 <div className="connexion-text col-8 p-0 d-none d-lg-block">
-                  <p className="mb-1 text-black-50 mon_compte w-100">Mon compte</p>
+                  <p className="mb-1 text-black-50 mon_compte w-100">
+                    Mon compte
+                  </p>
                   <h6 className="mt-1 register w-100">
                     <Link to="/register" className="text-black ">
                       Inscription
@@ -114,22 +116,29 @@ const Navbar2 = () => {
 
           {/* Le panier au niveau du second navbar  */}
 
-          <div className="panier offset-sm-1 col-sm-2 col-md-3 col-lg-2 m-md-4 d-md-flex align-items-center">
+          <div className="panier offset-sm-1 col-sm-2 col-md-3 col-lg-2 mt-sm-1 mt-md-0 m-md-4 d-md-flex align-items-center">
             <div className="row w-100">
               <div className="col-4 position-relative">
-                <Link to="/Cart" style={{ color: "black" }}>
+                <Link
+                  to="/Cart"
+                  style={{ color: "black", position: "relative" }}
+                >
                   <FontAwesomeIcon
                     icon={faCartShopping}
                     className="panier"
-                  ></FontAwesomeIcon>
+                  />
+                  {/* Badge compteur */}
+                  <span
+                    className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger"
+                    style={{ fontSize: "0.9rem", minWidth: "30px" }}
+                  >
+                    {products.length}
+                  </span>
                 </Link>
-                <span className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger panier_length" style={{fontSize:"1rem"}} >
-                  {products.length}
-                </span>
               </div>
-              <div className=" m-2 col-6 p-0 d-sm-flex flex-column align-items-center justify-content-center">
-                <p className="mb-1 text-black-50 mon_compte ">Panier</p>
 
+              <div className="m-2 col-6 p-0 d-sm-flex flex-column align-items-center justify-content-center">
+                <p className="mb-1 text-black-50 mon_compte">Panier</p>
                 <h6 style={{ fontSize: "x-small", fontWeight: "bold" }}>
                   0 FCFA
                 </h6>

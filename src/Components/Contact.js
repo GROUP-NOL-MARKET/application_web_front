@@ -10,7 +10,7 @@ import { Form, FormGroup, FormControl, FormLabel, Button } from "react-bootstrap
 
 const Contact = () => {
   return (
-    <div className="Contact" style={{backgroundColor: "#F5F5FF"}}>
+    <div className="Contact" style={{backgroundColor: "#F2F2F2"}}>
       <div className="container">
         <div className="row">
           <div className="col-md-7 mt-5 mb-5">

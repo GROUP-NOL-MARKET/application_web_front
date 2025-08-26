@@ -15,6 +15,7 @@ import Contact from "./Components/Contact";
 import About from "./Components/About";
 import Cart from "./Components/Cart";
 import Paiement from "./Components/Paiement";
+import Faq from "./Components/Faq";
 
 function App() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -43,6 +44,7 @@ function App() {
         <Route path="/About" element={<About/>}/>
         <Route path="/Cart" element={<Cart/>}/>
         <Route path="/Paiement" element={<Paiement/>}/>
+        <Route path="/aide&Faq" element={<Faq/>}/>
       </Routes>
       <Footer/>
     </div>

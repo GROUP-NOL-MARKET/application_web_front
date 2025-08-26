@@ -23,7 +23,7 @@ const Footer = () => {
               <li>Politique de confidentialité</li>
               <li>Conditions d'utilisation</li>
               <li>Mentions légales</li>
-              <li>FAQ</li>
+              <li><a href="/aide&Faq">FAQ</a></li>
             </ul>
           </div>
           <div className="col-md-2 col-sm-6">
