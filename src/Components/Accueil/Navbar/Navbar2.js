@@ -27,7 +27,7 @@ const Navbar2 = () => {
         }}
       >
         <div className="container m-md-1 w-100">
-          <div className="offset-md-1 col-sm-2 navbar-brand">
+          <div className="offset-md-1 col-2 navbar-brand">
             <a href="/">
               <img
                 alt="logo"
@@ -37,7 +37,7 @@ const Navbar2 = () => {
               />
             </a>
           </div>
-          <div className="col-sm-6 col-md-4 col-lg-4 offset-lg-1 d-flex align-items-center">
+          <div className="col-6 col-md-4 col-lg-4 offset-lg-1 d-flex align-items-center">
             <div className="row g-0 rounded-5 border border-black overflow-hidden w-100">
               {/* Menu déroulant */}
               <div className="col-5">
@@ -116,7 +116,7 @@ const Navbar2 = () => {
 
           {/* Le panier au niveau du second navbar  */}
 
-          <div className="panier offset-sm-1 col-sm-2 col-md-3 col-lg-2 mt-sm-1 mt-md-0 m-md-4 d-md-flex align-items-center">
+          <div className="panier offset-1 col-2 col-md-3 col-lg-2 mt-1 mt-md-0 m-md-4 d-md-flex align-items-center">
             <div className="row w-100">
               <div className="col-4 position-relative">
                 <Link
@@ -137,7 +137,7 @@ const Navbar2 = () => {
                 </Link>
               </div>
 
-              <div className="m-2 col-6 p-0 d-sm-flex flex-column align-items-center justify-content-center">
+              <div className="m-2 col-6 p-0 d-flex flex-column align-items-center justify-content-center">
                 <p className="mb-1 text-black-50 mon_compte">Panier</p>
                 <h6 style={{ fontSize: "x-small", fontWeight: "bold" }}>
                   0 FCFA

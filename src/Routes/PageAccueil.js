@@ -20,7 +20,7 @@ const PageAccueil = () => {
       const textWidth = textRef.current.offsetWidth;
       const containerWidth = containerRef.current.offsetWidth;
 
-      const speed = 50; // px par seconde 
+      const speed = 50; // px par seconde
       const timeToExit = (containerWidth + textWidth) / speed; // sortie à gauche
       const pauseTime = 0; // secondes d'arrêt au centre
 
@@ -30,8 +30,17 @@ const PageAccueil = () => {
   }, []);
   return (
     <AuthProvider>
-
       <div>
+        <div id="js-preloader" class="js-preloader">
+          <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
         <Navbar />
         <div className="page_accueil">
           <div className="marquee-container text-uppercase" ref={containerRef}>
