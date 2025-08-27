@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/application_web_front/static/css/main.aecfec57.css",
-    "main.js": "/application_web_front/static/js/main.342f330f.js",
+    "main.css": "/application_web_front/static/css/main.c2b2bca5.css",
+    "main.js": "/application_web_front/static/js/main.cc1dd66a.js",
     "static/js/453.54292a4b.chunk.js": "/application_web_front/static/js/453.54292a4b.chunk.js",
     "static/media/background_register.jpg": "/application_web_front/static/media/background_register.dad043f1ff863d2ec086.jpg",
     "static/media/carousel_3.jpg": "/application_web_front/static/media/carousel_3.0015a1efda27b9d7fa49.jpg",
@@ -18,12 +18,12 @@
     "static/media/best_product_1.png": "/application_web_front/static/media/best_product_1.a8d6c131cffe4781f427.png",
     "static/media/img_profil.webp": "/application_web_front/static/media/img_profil.b44259e2b5cde3b84c59.webp",
     "index.html": "/application_web_front/index.html",
-    "main.aecfec57.css.map": "/application_web_front/static/css/main.aecfec57.css.map",
-    "main.342f330f.js.map": "/application_web_front/static/js/main.342f330f.js.map",
+    "main.c2b2bca5.css.map": "/application_web_front/static/css/main.c2b2bca5.css.map",
+    "main.cc1dd66a.js.map": "/application_web_front/static/js/main.cc1dd66a.js.map",
     "453.54292a4b.chunk.js.map": "/application_web_front/static/js/453.54292a4b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.aecfec57.css",
-    "static/js/main.342f330f.js"
+    "static/css/main.c2b2bca5.css",
+    "static/js/main.cc1dd66a.js"
   ]
 }
