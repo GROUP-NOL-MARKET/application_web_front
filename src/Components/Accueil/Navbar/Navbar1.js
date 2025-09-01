@@ -40,23 +40,23 @@ const Navbar1 = () => {
 
         {!isLoggedIn ? (
           <div className="container-fluid">
-            <div className=" tel col-sm-12 col-md-12 col-lg-5 mx-3  d-none d-sm-block navbar-brand">
+            <div className=" tel col-12 col-md-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-6 d-none d-sm-block">
                   <div className="row p-0 d-flex align-items-center">
                     <FontAwesomeIcon
                       icon={faPhone}
                       size="2x"
-                      className="col-sm-1 m-0"
+                      className="col-1 m-0"
                     />
-                    <h6 className="col-sm-8 px-0 fw-semibold flex-lg-wrap">
+                    <h6 className="col-sm-8 col-xs-8 px-0 fw-semibold flex-lg-wrap">
                       Appelez-nous au:(+229) 01 65 00 29 29
                     </h6>
                   </div>
                 </div>
 
                 <button
-                  className="navbar-toggler d-lg-none offset-4 col-1"
+                  className="navbar-toggler d-lg-none offset-sm-3 offset-9 col-2"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#navbarCollapse"
@@ -67,7 +67,7 @@ const Navbar1 = () => {
                   ></span>
                 </button>
                 <div
-                  className="collapse navbar-collapse d-md-none"
+                  className="collapse navbar-collapse d-lg-none"
                   id="navbarCollapse"
                 >
                   <button
@@ -80,12 +80,16 @@ const Navbar1 = () => {
                   </button>
                   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="col-md-1">Accueil</li>
-                    <li className="col-md-1">A propos</li>
+                    <li className="col-md-1">
+                      <a href="/About">A propos</a>
+                    </li>
                     <li className="col-md-1">Services</li>
-                    <li className="col-md-1">Contact</li>
+                    <li className="col-md-1">
+                      <a href="/Contact">Contact</a>
+                    </li>
                     <li className="col-md-1">Achat</li>
                     <li className="col-md-1">Produits</li>
-                    <li className="col-md-1">Blog</li>
+                    <li className="col-md-1"><a href="aide&Faq">Faq & aide</a></li>
                   </ul>
                 </div>
               </div>

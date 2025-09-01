@@ -68,3 +68,23 @@
     border-radius: 20px;
     font-family: "Roboto", sans-serif;
 }
+@media (max-width: 575.98px) {
+  /* Styles pour les écrans XS */
+ .quantity{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 576px) {
+ .quantity{
+    display: flex;
+    flex-direction: row;
+  }
+}
+@media (min-width: 768px) {
+  .quantity{
+    display: flex;
+    flex-direction: row;
+  }
+}

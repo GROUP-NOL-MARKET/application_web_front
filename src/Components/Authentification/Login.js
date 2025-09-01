@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import {
   faFacebook,
@@ -61,14 +62,10 @@ const Login = () => {
     }
 
     try {
-      const endpoint = "/login"
-      const userInput = [
-        email,
-        password,
-      ]
+      const endpoint = "/login";
+      const userInput = [email, password];
       const response = await axios.post(endpoint, userInput);
-      if(response){
-        
+      if (response) {
       }
     } catch {
     } finally {
@@ -80,7 +77,7 @@ const Login = () => {
     <div className="connexion_form">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 col-12">
             <div className="formulaire_connexion m-5 p-2">
               <div className="en-tête d-flex flex-column align-items-center">
                 <h1 className="Title_register" style={{ color: "#FA7F1B" }}>
@@ -104,7 +101,7 @@ const Login = () => {
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
-                    isInvalid={errors?.email?true:false}
+                    isInvalid={errors?.email ? true : false}
                   />
                   <FormControl.Feedback type="invalid">
                     {errors?.email && errors.email}
@@ -119,16 +116,26 @@ const Login = () => {
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
-                    isInvalid={errors?.password?true:false}
+                    isInvalid={errors?.password ? true : false}
                   />
                   <FormControl.Feedback type="invalid">
                     {errors?.password && errors.password}
                   </FormControl.Feedback>
                 </FormGroup>
-                <Button className="button_login w-100 mt-3 mb-3" type="submit" disabled={loading}>
+                <Button
+                  className="button_login w-100 mt-3 mb-3"
+                  type="submit"
+                  disabled={loading}
+                >
                   Se connecter
                 </Button>
               </form>
+              <p className="link_connexion_register d-flex justify-content-center mt-2">
+                N'avez-vous pas de compte!{" "}
+                <span style={{ fontWeight: "bold", color: "blue" }}>
+                  <Link to="/register"> Inscrivez-vous!!</Link>
+                </span>
+              </p>
               <div className="container">
                 <div className="row h-auto d-flex align-items-center">
                   <hr

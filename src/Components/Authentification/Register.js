@@ -28,7 +28,6 @@ const Register = () => {
   const [success, setSuccess] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({});
-  const [error, setError] = useState("");
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:8000/auth/${provider}/redirect`;
@@ -37,11 +36,9 @@ const Register = () => {
   const NameRegex = /^[A-Za-z]+$/;
   const PhoneRegex = /^\d{9,15}$/;
   const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const PasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
+  const PasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError();
     setLoading(true);
     setSuccess(false);
 
@@ -89,8 +86,8 @@ const Register = () => {
 
     if (!PasswordRegex.test(password)) {
       newErrors.password =
-        "Le mot de passe doit contenir au moins 8 caractères, 1 lettre et un chiffre";
-    } else if (!password.trim()) {
+        "Le mot de passe doit contenir au moins 8 caractères, 1 lettre, un chiffre et un caractère spécial";
+    } else if (!password) {
       newErrors.password = "Veuillez remplir ce champ";
     } else {
       delete newErrors.setPassword;
@@ -112,30 +109,29 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const endPoint = "register/";
+      const endPoint = "http://localhost:8000/api/register";
       const userInput = {
-        email,
-        password,
+        email: email,
+        password: password,
+        password_confirmation: confirm_password,
         firstName: firstName,
         lastName: lastName,
         phone: phone,
       };
-      const response = await axios.post(endPoint, userInput);
-      if (response.status === 201) {
+      const response = await axios.post(endPoint, userInput, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      if (response.status === 200 || response.status === 201) {
         let msg = response.data.data.message;
-        success(msg);
-        navigate("/verificationEmail", { state: userInput });
+        toast.success(msg);
+        navigate("/Login");
       }
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        const errorObject = err.response.data.data;
-        const errorMessages = extractError(errorObject);
-        errorMessages.forEach((message) => {
-          error(message);
-        });
-      } else {
-        error("Something Went Wrong");
-      }
+    } catch (error) {
+      const payload = error.response?.data;
+      // si tu as appliqué le format standard ci-dessus
+      const errors = payload?.errors ?? payload;
+      console.log("Erreurs validation:", errors);
     } finally {
       setLoading(false);
     }

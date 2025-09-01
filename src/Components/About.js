@@ -21,7 +21,7 @@ const About = () => {
                 <div className="col-lg-6">
                   <div className="section-heading">
                     <h2>
-                      Grow your website with our <em>SEO Tools</em> &amp;{" "}
+                      Consomme localement<em>SEO Tools</em> &amp;{" "}
                       <span>Project</span> Management
                     </h2>
                     <p>

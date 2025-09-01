@@ -80,4 +80,27 @@
 .img_register {
   margin-left: 8%;
 }
+@media (max-width: 575.98px) {
+  /* Styles pour les écrans XS */
+  .link_connexion_register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
 
+@media (min-width: 576px) {
+  .link_connexion_register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media (min-width: 768px) {
+  .link_connexion_register {
+    display: flex;
+    flex-direction: row;
+  }
+}

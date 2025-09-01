@@ -81,13 +81,36 @@
 #navbarCollapse ul li:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+@media (max-width: 575.98px) {
+  /* Styles pour les écrans XS */
+  .logo {
+    width: 50%;
+  }
+  .icon_user{
+    width: 1rem;
+  }
+
+  .panier_parent{
+    display: flex;
+    flex-direction: row;
+  }
+  .panier_length {
+    font-size: 0.9rem;
+  }
+  .panier {
+    font-size: 2.5rem;
+  }
+  .mon_compte {
+    font-size: 1rem;
+  }
+}
 
 @media (min-width: 576px) {
   .logo {
     width: 100%;
   }
   .panier_length {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   .panier {
     font-size: 2rem;
@@ -107,7 +130,7 @@
     font-size: 3rem;
   }
   .panier_length {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
   .mon_compte {
     font-size: 1rem;
@@ -136,5 +159,8 @@
   .partie_mon_compte {
     display: flex;
     flex-direction: row;
+  }
+  .connexion{
+    margin-left: 5%;
   }
 }

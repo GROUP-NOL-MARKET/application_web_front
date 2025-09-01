@@ -9,8 +9,9 @@ h3{
     font-weight: bold;
     font-size: larger;
 }
-li{
+.a_footer{
     font-family: "Roboto", sans-serif;
+    color: white;
     font-weight: normal;
     font-size: normal;
     font-optical-sizing: auto;

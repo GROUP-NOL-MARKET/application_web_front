@@ -57,17 +57,17 @@ const Content = () => {
     },
   ];
   return (
-    <div className="container mt-5">
+    <div className="container mt-1 mt-md-5">
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 title mt-sm-5 mt-md-0">Magasin de produits par catégorie</h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 mt-sm-5 mt-md-0">
+        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">Catégories de produits<span className="d-none d-sm-inline">par catégorie</span> </h1>
+        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-5 mt-md-0">
           <div className="voir_tout">
             <Link
               to="/products"
-              className="offset-3 row d-flex align-content-end"
+              className="row d-flex align-content-end"
               style={{ textDecoration: "none", color: "#FA7F1B" }}
             >
-              <div className="col-8 text-end">Voir tout</div>
+              <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
               <div className="col-1">
                 <FontAwesomeIcon icon={faArrowAltCircleRight} />
               </div>
@@ -103,7 +103,24 @@ const Content = () => {
         loop={true}
         slidesPerView={3}
         spaceBetween={15}
-        className="Liste_produits d-md-none"
+        className="Liste_produits d-md-none d-none d-sm-block "
+      >
+        {product_category.map((product) => (
+          <SwiperSlide key={product.id} className="product_slide" onClick={handleNavigation}>
+            <img src={product.img} alt={product.name} className="img_product" />
+            <div className="product_title">{product.name}</div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+       {/* Le swiper pour les tout petits écrans  */}
+        <Swiper
+        modules={[Navigation]}
+        navigation
+        loop={true}
+        slidesPerView={2}
+        spaceBetween={15}
+        className="Liste_produits d-sm-none"
       >
         {product_category.map((product) => (
           <SwiperSlide key={product.id} className="product_slide" onClick={handleNavigation}>

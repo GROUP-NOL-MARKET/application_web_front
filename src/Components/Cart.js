@@ -66,89 +66,96 @@ const Cart = () => {
             </ul>
           </Button>
         </div>
-        <div className="row">
-          <div className="cart_content col-md-8 d-flex flex-column mt-4 mb-4">
-            <div className="row">
-              <div className="col-md-6 table_title">Produits</div>
-              <div className="col-md-2 table_title">Prix</div>
-              <div className="col-md-2 table_title">Quantité</div>
-              <div className="col-md-2 table_title">Prix total</div>
-            </div>
-
-            {/* Contenu du tableau qui sera soit un vide ou des éléments */}
-
-            <div className="d-flex w-100 h-100 justify-content-center align-items-center m-2">
-              {products.length === 0 && (
-                <div>
-                  <p className="cart_empty">Votre panier est vide.</p>
+        <div className="container">
+          <div className="row">
+            <div className="cart_content col-md-8 col-12 d-flex flex-column mt-4 mb-4">
+              <div className="row">
+                <div className="col-6 table_title">Produits</div>
+                <div className="col-2 table_title">Prix</div>
+                <div className="col-4 col-md-2 table_title d-flex justify-content-center">Quantité</div>
+                <div className="col-4 col-md-2 table_title d-none d-md-inline">
+                  Prix total
                 </div>
-              )}
-            </div>
-            {products.length > 0 && (
-              <div className="Produits">
-                {products.map((product) => (
-                  <div>
-                    <hr
-                      style={{ color: "#FA7F1B", height: "0px" }}
-                      className="m-0"
-                    />
-                    <div key={product.id} className="row mt-3">
-                      <div className="col-md-6">
-                        <div className="row">
-                          <div className="col-md-6 d-flex align-items-center image_product">
-                            <img
-                              alt={product.name}
-                              src={product.image}
-                              className="w-100 h-auto"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <div className="marque text-black-50">
-                              {product.marque}
-                            </div>
-                            <div className="name">{product.name}</div>
-                            <div className="type mt-4">
-                              Type : {product.type}
-                            </div>
-                            <div className="disponibilité">
-                              Disponibilité : {product.disponibilité}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-2 d-flex align-items-center">
-                        <p className="price"> {product.price} FCFA</p>
-                      </div>
-                      <div className="col-md-2 row d-flex align-items-center">
-                        <Button
-                          onClick={() => updateProductQuantity(product.id, -1)}
-                          className="col-md-4 button_ajout"
-                        >
-                          -
-                        </Button>
-                        <div className="product_quantity col-md-4">
-                          {product.quantity}
-                        </div>
-                        <Button
-                          onClick={() => updateProductQuantity(product.id, 1)}
-                          className="col-md-4 button_ajout"
-                        >
-                          +
-                        </Button>
-                      </div>
-                      {/* Prix total d'un produit */}
+              </div>
 
-                      <div className="col-md-2 d-flex align-items-center mx-auto">
-                        <p className="totalPriceProduct ">{totalPrice} FCFA</p>
+              {/* Contenu du tableau qui sera soit un vide ou des éléments */}
+
+              <div className="d-flex w-100 h-100 justify-content-center align-items-center m-2">
+                {products.length === 0 && (
+                  <div>
+                    <p className="cart_empty">Votre panier est vide.</p>
+                  </div>
+                )}
+              </div>
+              {products.length > 0 && (
+                <div className="Produits">
+                  {products.map((product) => (
+                    <div>
+                      <hr
+                        style={{ color: "#FA7F1B", height: "0px" }}
+                        className="m-0"
+                      />
+                      <div key={product.id} className="row mt-3">
+                        <div className="col-6">
+                          <div className="row">
+                            <div className="col-6 d-flex align-items-center image_product">
+                              <img
+                                alt={product.name}
+                                src={product.image}
+                                className="w-100 h-auto"
+                              />
+                            </div>
+                            <div className="col-6">
+                              <div className="marque text-black-50">
+                                {product.marque}
+                              </div>
+                              <div className="name">{product.name}</div>
+                              <div className="type mt-4">
+                                Type : {product.type}
+                              </div>
+                              <div className="disponibilité d-none d-md-block">
+                                Disponibilité : {product.disponibilité}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-3 d-flex align-items-center">
+                          <p className="price"> {product.price} FCFA</p>
+                        </div>
+                        <div className="col-md-2 col-3 d-flex align-items-center quantity">
+                          <Button
+                            onClick={() =>
+                              updateProductQuantity(product.id, -1)
+                            }
+                            className="col-3 button_ajout d-flex justify-content-center"
+                          >
+                            -
+                          </Button>
+                          <div className="product_quantity col-4 d-flex justify-content-center">
+                            {product.quantity}
+                          </div>
+                          <Button
+                            onClick={() => updateProductQuantity(product.id, 1)}
+                            className="col-3 button_ajout d-flex justify-content-center"
+                          >
+                            +
+                          </Button>
+                        </div>
+                        {/* Prix total d'un produit */}
+
+                        <div className="col-2 d-flex align-items-center mx-auto d-none d-md-block">
+                          <p className="totalPriceProduct d-flex align-items-center">
+                            {totalPrice} FCFA
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {/* Prix total du panier  */}
-            {/* <div className="col-md-4">
+              {/* Prix total du panier  */}
+              {/* <div className="col-md-4">
               {products.length > 0 && (
                 <p id="cart-total-price">
                   Montant total :{" "}
@@ -158,56 +165,62 @@ const Cart = () => {
                 </p>
               )}
             </div> */}
-          </div>
-          {/* La deuxième partie montrant le prix total des produits */}
-          <div className="offset-1 col-md-3 mt-3 mb-4 total_product_content">
-            {/* Pour un code promo existant */}
-
-            <div className="coupon_code w-100">
-              <Form className="w-100">
-                <FormLabel className="title_prix_total">
-                  Code de points bonus
-                </FormLabel>
-                <p className="subtitle_coupon_code"></p>
-                <FormControl placeholder="XXX-XXX" />
-                <Button className="coupon_code_button mt-3 w-100">
-                  Appliquer
-                </Button>
-              </Form>
             </div>
+            {/* La deuxième partie montrant le prix total des produits */}
+            <div className="offset-md-1 col-md-3 col-12 mt-3 mb-4 total_product_content">
+              {/* Pour un code promo existant */}
 
-            {/* Pour la somme totale des produits  */}
-
-            <div className="Cart_total w-100 mt-4">
-              <div className="w-100">
-                <FormLabel className="title_prix_total">Prix total</FormLabel>
-                <div className="row">
-                  <div className="col-md-7 title_menu_cart">Total HT</div>
-                  <div className="col-md-5">{totalPrice} fcfa</div>
-                </div>
-                <div className="row">
-                  <div className="col-md-7 title_menu_cart">Rabais</div>
-                  <div className="col-md-5">0%</div>
-                </div>
-                <div className="row">
-                  <div className="col-md-7 title_menu_cart">Remise</div>
-                  <div className="col-md-5">Free</div>
-                </div>
-                <div className="row ">
-                  <div className="col-md-7 prix_TTC">Prix total TTC</div>
-                  <div className="col-md-5 ">{totalPrice} fcfa</div>
-                </div>
-                {totalPrice > 1 ? (
-                  <Button className="achat_button mt-3 w-100" href="/Paiement">Acheter</Button>
-                ) : (
-                  <Button
-                    className="achat_button mt-3 w-100"
-                    disabled
-                    onClick={handleResponse}
-                  >
-                    Acheter
+              <div className="coupon_code w-100">
+                <Form className="w-100">
+                  <FormLabel className="title_prix_total">
+                    Code de points bonus
+                  </FormLabel>
+                  <p className="subtitle_coupon_code"></p>
+                  <FormControl placeholder="XXX-XXX" />
+                  <Button className="coupon_code_button mt-3 w-100">
+                    Appliquer
                   </Button>
-                )}
+                </Form>
+              </div>
+
+              {/* Pour la somme totale des produits  */}
+
+              <div className="Cart_total w-100 mt-4">
+                <div className="w-100">
+                  <FormLabel className="title_prix_total">Prix total</FormLabel>
+                  <div className="row">
+                    <div className="col-7 title_menu_cart">Total HT</div>
+                    <div className="col-5">{totalPrice} fcfa</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-7 title_menu_cart">Rabais</div>
+                    <div className="col-5">0%</div>
+                  </div>
+                  <div className="row">
+                    <div className="col-7 title_menu_cart">Remise</div>
+                    <div className="col-5">Free</div>
+                  </div>
+                  <div className="row ">
+                    <div className="col-7 prix_TTC">Prix total TTC</div>
+                    <div className="col-5 ">{totalPrice} fcfa</div>
+                  </div>
+                  {totalPrice > 1 ? (
+                    <Button
+                      className="achat_button mt-3 w-100"
+                      href="/Paiement"
+                    >
+                      Acheter
+                    </Button>
+                  ) : (
+                    <Button
+                      className="achat_button mt-3 w-100"
+                      disabled
+                      onClick={handleResponse}
+                    >
+                      Acheter
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

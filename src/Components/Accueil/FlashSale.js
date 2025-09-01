@@ -127,22 +127,24 @@ const FlashSale = ({ duration }) => {
       <div className="container mt-4">
         <div className="enTête row ">
           <h2
-            className="col-md-3 col-lg-2 col-sm-3 title_flash_sale mt-2"
+            className="col-lg-2 col-3 title_flash_sale mt-2"
             style={{ color: "#0066BD" }}
           >
-            Vente Flash
+            Vente <span className="d-none d-sm-inline">Flash</span> 
           </h2>
-          <div className="col-lg-7 col-md-5 col-sm-5 promo_temps ">
+          <div className="col-lg-7 col-md-5 col-sm-5 col-6 promo_temps ">
             <div className="row">{getFormattedTime(time)}</div>
           </div>
-          <div className="col-md-3 col-lg-2 offset-sm-1 col-sm-3 mt-2">
+          <div className="col-md-3 col-lg-2 offset-1 col-sm-3 col-1 mt-2">
             <div className="voir_tout">
               <Link
                 to="/Promotion"
                 style={{ textDecoration: "none", color: "#FA7F1B" }}
                 className="row offset-lg-4 d-flex align-content-end"
               >
-                <div className="offset-sm-1 offset-md-2 offset-lg-0 col-8 col-lg-9">Voir tout</div>
+                <div className="offset-1 offset-md-2 offset-lg-0 col-8 col-lg-9 d-none d-sm-block">
+                  Voir tout
+                </div>
                 <div className="col-1">
                   <FontAwesomeIcon icon={faArrowAltCircleRight} />
                 </div>
@@ -201,12 +203,60 @@ const FlashSale = ({ duration }) => {
 
         {/* Produit flash pour les petits écrans  */}
 
-        <div className="product_flash_sale d-md-none">
+        <div className="product_flash_sale d-none d-sm-block d-md-none">
           <Swiper
             modules={[Navigation]}
             navigation
             loop={true}
             slidesPerView={3}
+            spaceBetween={15}
+            className="Liste_produits"
+          >
+            {product_flash_sale.map((product) => (
+              <SwiperSlide key={product.id} className="product_slide">
+                <img
+                  src={product.img}
+                  alt={product.name}
+                  className="img_product"
+                  onClick={handleNavigation}
+                />
+                <div className="discount_badge">
+                  {product.initial_price - product.new_price}%
+                </div>
+                <div className="product_title">{product.name}</div>
+                <div className="price_flash_sale">
+                  <span className="p-2 new_price">
+                    {product.new_price} FCFA
+                  </span>
+                  <span className="initial_price">
+                    <s>{product.initial_price} FCFA</s>
+                  </span>
+                </div>
+                <div className="progress w-100" style={{ height: "20px" }}>
+                  <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-valuenow={product.pourcentage_vendu}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style={{ width: `${product.pourcentage_vendu}%` }}
+                  >
+                    {product.pourcentage_vendu}% vendu
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Pour les écrans xs  */}
+
+        <div className="product_flash_sale  d-sm-none">
+          <Swiper
+            modules={[Navigation]}
+            navigation
+            loop={true}
+            slidesPerView={2}
             spaceBetween={15}
             className="Liste_produits"
           >
