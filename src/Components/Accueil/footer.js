@@ -52,7 +52,7 @@ const Footer = () => {
                 </a>
               </div>
               <div>
-                <a href="/aide&Faq" className="a_footer">
+                <a href="application_web_front/aide&Faq" className="a_footer">
                   FAQ
                 </a>
               </div>

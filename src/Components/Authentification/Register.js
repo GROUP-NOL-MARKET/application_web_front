@@ -125,7 +125,7 @@ const Register = () => {
       if (response.status === 200 || response.status === 201) {
         let msg = response.data.data.message;
         toast.success(msg);
-        navigate("/Login");
+        navigate("application_web_front/login");
       }
     } catch (error) {
       const payload = error.response?.data;
@@ -346,7 +346,7 @@ const Register = () => {
                 <p className="link_connexion_register d-flex justify-content-center mt-2">
                   Avez-vous déjà un compte ?{" "}
                   <span style={{ fontWeight: "bold", color: "blue" }}>
-                    <Link to="/login"> Connectez-vous!!</Link>
+                    <Link to="application_web_front/login"> Connectez-vous!!</Link>
                   </span>
                 </p>
                 <div className="container">

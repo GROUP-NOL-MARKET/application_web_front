@@ -81,11 +81,11 @@ const Navbar1 = () => {
                   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="col-md-1">Accueil</li>
                     <li className="col-md-1">
-                      <a href="/About">A propos</a>
+                      <a href="application_web_front/About">A propos</a>
                     </li>
                     <li className="col-md-1">Services</li>
                     <li className="col-md-1">
-                      <a href="/Contact">Contact</a>
+                      <a href="application_web_front/Contact">Contact</a>
                     </li>
                     <li className="col-md-1">Achat</li>
                     <li className="col-md-1">Produits</li>
@@ -100,7 +100,7 @@ const Navbar1 = () => {
             <div className="offset-3 col-12 text-wrap  d-flex align-items-center d-grid gap-4 nav-link">
               <h6 className="  fw-semibold nav-item d-none d-lg-block">
                 <Link
-                  to="/Contact"
+                  to="application_web_front/Contact"
                   className="nav-link"
                   style={{ color: active === "Contact" ? "orange" : "black" }}
                   onClick={() => setActive("Contact")}
@@ -110,7 +110,7 @@ const Navbar1 = () => {
               </h6>
               <h6 className=" fw-semibold nav-item d-none d-lg-block">
                 <Link
-                  to="/About"
+                  to="application_web_front/About"
                   className="nav-link"
                   style={{ color: active === "About" ? "orange" : "black" }}
                   onClick={() => setActive("About")}
@@ -120,8 +120,7 @@ const Navbar1 = () => {
               </h6>
               <div className=" m-0 p-1 fw-semibold nav-item d-none d-lg-block">
                 <Button
-                  to="/Contact"
-                  href="/products"
+                  href="application_web_front/products"
                   style={{
                     fontFamily: "Roboto, sans-serif",
                     backgroundColor: "#0066BD",

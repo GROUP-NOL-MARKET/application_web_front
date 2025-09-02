@@ -133,7 +133,7 @@ const Login = () => {
               <p className="link_connexion_register d-flex justify-content-center mt-2">
                 N'avez-vous pas de compte!{" "}
                 <span style={{ fontWeight: "bold", color: "blue" }}>
-                  <Link to="/register"> Inscrivez-vous!!</Link>
+                  <Link to="application_web_front/register"> Inscrivez-vous!!</Link>
                 </span>
               </p>
               <div className="container">

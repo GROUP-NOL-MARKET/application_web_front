@@ -28,7 +28,7 @@ const Navbar2 = () => {
       >
         <div className="container m-md-1 w-100">
           <div className="offset-md-1 col-12 col-sm-2 navbar-brand logo_div">
-            <a href="/">
+            <a href="/application_web_front">
               <img
                 alt="logo"
                 src={Logo}
@@ -97,10 +97,10 @@ const Navbar2 = () => {
                     Mon compte
                   </p>
                   <h6 className="mt-1 register w-100">
-                    <Link to="/register" className="text-black ">
+                    <Link to="application_web_front/register" className="text-black ">
                       Inscription
                     </Link>
-                    <Link to="/login" className="text-black">
+                    <Link to="application_web_front/login" className="text-black">
                       /Connexion
                     </Link>
                   </h6>
