@@ -12,7 +12,7 @@ export const DUMMY_PRODUCTS = [
     image: best_product_1,
     notation: 2.5,
     marque: "Toto",
-    type:"Banane"
+    type: "Banane",
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ export const DUMMY_PRODUCTS = [
     image: best_product_2,
     notation: 4,
     marque: "Toto",
-    type:"Banane"
+    type: "Banane",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ export const DUMMY_PRODUCTS = [
     image: best_product_3,
     notation: 3.5,
     marque: "Toto",
-    type:"Banane"
+    type: "Banane",
   },
   {
     id: 4,
@@ -42,6 +42,32 @@ export const DUMMY_PRODUCTS = [
     image: best_product_4,
     notation: 4,
     marque: "Toto",
-    type:"Banane"
+    type: "Banane",
+  },
+];
+export const category_product = [
+  {
+    category: "Produits Locaux",
+    image: "",
+  },
+  {
+    category: "Produits Frais",
+    image: "",
+  },
+  {
+    category: "Epicerie",
+    image: "",
+  },
+  {
+    category: "Divers",
+    image: "",
+  },
+  {
+    category: "Droguerie",
+    image: "",
+  },
+  {
+    category: "Boissons",
+    image: "",
   },
 ];

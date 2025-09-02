@@ -1,7 +1,5 @@
 import { useContext } from "react";
-import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faCircleUser, faUser } from "@fortawesome/free-solid-svg-icons";
 // import { Link } from "react-router-dom";
@@ -37,47 +35,7 @@ const Navbar2 = () => {
               />
             </a>
           </div>
-          <div className="col-12 col-md-4 col-sm-6 col-lg-4 offset-lg-1 d-flex align-items-center">
-            <div className="row g-0 rounded-5 border border-black overflow-hidden w-100">
-              {/* Menu déroulant */}
-              <div className="col-5">
-                <select className="form-select h-100 rounded-0 border-end select_1">
-                  <option>Catégories</option>
-                  <option>Droguerie</option>
-                  <option>Animalerie</option>
-                  <option>Epicerie</option>
-                </select>
-              </div>
-
-              {/* Champ de recherche */}
-              <div className="col-5">
-                <InputBase
-                  placeholder="Tapez ici..."
-                  inputProps={{ "aria-label": "search" }}
-                  className="w-100 px-3 h-100"
-                  sx={{ height: "100%" }}
-                />
-              </div>
-
-              {/* Bouton de recherche */}
-              <div className="col-2">
-                <IconButton
-                  type="button"
-                  className="w-100 h-100"
-                  sx={{
-                    backgroundColor: "#0066BD",
-                    color: "white",
-                    borderRadius: 0,
-                    ":hover": {
-                      backgroundColor: "#0066BD",
-                    },
-                  }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              </div>
-            </div>
-          </div>
+          
           {!isLoggedIn ? (
             // Quand l'utilsateur n'est pas connecté : la partie mon compte
 
