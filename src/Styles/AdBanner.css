@@ -1,0 +1,36 @@
+.ad-button {
+  display: flex;
+  justify-content:left;
+  padding: 10px;
+  background-color:  #ff9f50;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  width: 100%;
+  
+  box-shadow: rgb(0, 0, 0) 2px 5px 5px;
+}
+
+.ad-button:hover {
+  background-color: #e65c00;
+}
+.ad-title,
+.ad-subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+  color: white;
+}
+.ad-title {
+  font-size: 35px;
+}
+.ad-banner {
+  background-color: #FA7F1B;
+}
+.text_command{
+    font-family: "Poppins", sans-serif;
+    font-size: large;
+    font-weight: 600;
+}

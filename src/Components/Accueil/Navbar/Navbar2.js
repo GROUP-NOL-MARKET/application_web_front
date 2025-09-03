@@ -3,7 +3,12 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faCircleUser, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCartShopping,
+  faCircleUser,
+  faCircleQuestion,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 // import { Link } from "react-router-dom";
 import "../../../Styles/Navbar.css";
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.png";
@@ -20,14 +25,14 @@ const Navbar2 = () => {
   return (
     <AuthProvider>
       <div
-        className="navbar navbar-expand-lg overflow-hidden shadow-md"
+        className="navbar navbar-expand-lg overflow-hidden shadow-md navbar2"
         style={{
           backgroundColor: "#CFCFCF",
           backgroundColorOpacity: "0.4",
         }}
       >
-        <div className="container m-md-1 w-100">
-          <div className="offset-md-1 col-12 col-sm-2 navbar-brand logo_div">
+        <div className="container">
+          <div className=" col-12 col-sm-2 navbar-brand logo_div">
             <a href="/application_web_front">
               <img
                 alt="logo"
@@ -37,7 +42,8 @@ const Navbar2 = () => {
               />
             </a>
           </div>
-          <div className="col-12 col-md-4 col-sm-6 col-lg-4 offset-lg-1 d-flex align-items-center">
+
+          <div className="col-12 col-md-4 d-flex align-items-center">
             <div className="row g-0 rounded-5 border border-black overflow-hidden w-100">
               {/* Menu déroulant */}
               <div className="col-5">
@@ -78,17 +84,16 @@ const Navbar2 = () => {
               </div>
             </div>
           </div>
+
           {!isLoggedIn ? (
             // Quand l'utilsateur n'est pas connecté : la partie mon compte
 
-            <div
-              className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block"
-            >
+            <div className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center justify-content-center d-sm-none d-lg-block">
               <div className="w-100 row">
-                <div className="user-icon col-sm-3 col-3 ">
+                <div className="user-icon col-sm-3 col-3 d-flex align-items-center">
                   <FontAwesomeIcon
-                    icon={faUser}
-                    size="3x"
+                    icon={faUserCircle}
+                    size="2x"
                     className="w-100 icon_user"
                   ></FontAwesomeIcon>
                 </div>
@@ -97,10 +102,16 @@ const Navbar2 = () => {
                     Mon compte
                   </p>
                   <h6 className="mt-1 register w-100">
-                    <Link to="application_web_front/register" className="text-black ">
+                    <Link
+                      to="application_web_front/register"
+                      className="text-black "
+                    >
                       Inscription
                     </Link>
-                    <Link to="application_web_front/login" className="text-black">
+                    <Link
+                      to="application_web_front/login"
+                      className="text-black"
+                    >
                       /Connexion
                     </Link>
                   </h6>
@@ -110,15 +121,12 @@ const Navbar2 = () => {
           ) : (
             // Quand l'utilisateur est connecté : la partie mon compte
 
-            
-            <div
-              className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block"
-            >
+            <div className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block">
               <div className="w-100 row">
-                <div className="user-icon col-sm-3 col-3 ">
+                <div className="user-icon col-sm-3 col-3 d-flex align-items-center">
                   <FontAwesomeIcon
                     icon={faCircleUser}
-                    size="3x"
+                    size="2x"
                     className="w-100 icon_user"
                   ></FontAwesomeIcon>
                 </div>
@@ -137,37 +145,34 @@ const Navbar2 = () => {
                 </div>
               </div>
             </div>
-
-
           )}
 
           {/* Le panier au niveau du second navbar  */}
 
-          <div className="panier_parent offset-sm-1 col-sm-2 col-2 col-md-3 col-lg-2 mt-sm-1 mt-3  mt-md-0 mt-lg-2 m-md-4 d-md-flex align-items-center">
+          <div className="panier_parent col-sm-2 col-2 col-md-3 col-lg-2 mt-sm-1 mt-3 m-md-4 d-flex align-items-center justify-content-center">
             <div className="row w-100">
-              <div className="col-sm-4 panier col-xs-4 position-relative">
-                <Link
-                  to="/Cart"
-                  style={{ color: "black" }}
-                >
+              <div className="panier col-4 d-flex position-relative align-items-center">
+                <Link to="/Cart" style={{ color: "black" }}>
                   <FontAwesomeIcon icon={faCartShopping} className="panier" />
                   {/* Badge compteur */}
                   <span
-                    className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger panier_length"
-                    style={{fontSize:"10px", minWidth:"20px"}}
+                    className="position-absolute bottom-50 end-0 translate-middle badge rounded-pill bg-danger panier_length"
+                    style={{ fontSize: "10px", minWidth: "20px" }}
                   >
                     {products.length}
                   </span>
                 </Link>
               </div>
 
-              <div className="m-2 col-sm-6 d-none d-sm-block p-0 d-flex flex-column align-items-center justify-content-center">
-                <p className="mb-1 text-black-50 mon_compte">Panier</p>
-                <h6 style={{ fontSize: "x-small", fontWeight: "bold" }}>
-                  0 FCFA
-                </h6>
+              <div className="m-2 col-6 d-none d-sm-block p-0 d-flex flex-column align-items-center justify-content-center">
+                <p className="mb-1 text-black mon_compte">Panier</p>
               </div>
             </div>
+          </div>
+          <div className="col-md-1">
+            <a className="lien_aide" href="/Faq&Aide" style={{textDecoration:"none"}}>
+              <FontAwesomeIcon icon={faCircleQuestion} className="aide" size="2x" />
+            </a>
           </div>
         </div>
       </div>

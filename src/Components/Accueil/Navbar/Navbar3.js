@@ -9,7 +9,7 @@ const Navbar3 = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
 
-  // Menu pour le comportement dropdown 
+  // Menu pour le comportement dropdown
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -17,7 +17,7 @@ const Navbar3 = () => {
 
   const dropdownRef = useRef(null);
 
-  // Pour l'effet en dehors du dropdown 
+  // Pour l'effet en dehors du dropdown
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,27 +36,16 @@ const Navbar3 = () => {
       <div>
         <div className="navigation_produit d-none d-md-block  overflow-hidden">
           {!isLoggedIn ? (
+            // Quand l'utilisateur est connecté : la partie menu
 
-            // Quand l'utilisateur est connecté : la partie menu 
-
-            <div className="container h-100">
-              <div className="h-100 row d-flex align-items-center category-menu">
-                <div
-                  className=" col-md-4 col-lg-3 g-0  dropdown d-flex align-items-center"
-                  ref={dropdownRef}
-                  style={{
-                    backgroundColor: "#FA7F1B",
-                    minHeight: "100%",
-                    overflowY: "auto",
-                  }}
-                >
-
-                   {/* Le content du dropdown  */}
+            <div className="container">
+              <div className="d-flex align-items-center category-menu">
+                <div>
+                  {/* Le content du dropdown  */}
 
                   <div
                     className="col-md-2 dropdown_button_navbar3"
                     style={{
-                      
                       cursor: "pointer",
                       position: "relative",
                     }}
@@ -69,17 +58,15 @@ const Navbar3 = () => {
                     ></FontAwesomeIcon>
                   </div>
 
-                    {/* Text toutes les catégories  */}
+                  {/* Text toutes les catégories  */}
 
                   <div
-                    className="dropdown-toggle text-white col-md-8 nav-link"
+                    className="dropdown-toggle text-white nav-link"
                     style={{ cursor: "pointer" }}
                     onClick={toggleDropdown}
                   >
                     Toutes les catégories
-
                     {/* Liste des catégories  */}
-
                     <ul
                       className={`dropdown-menu ${isOpen ? "show" : ""}`}
                       style={{ position: "absolute", zIndex: "99" }}
@@ -105,49 +92,64 @@ const Navbar3 = () => {
 
                 {/* Les autres liens de navigations du navbar3 */}
 
-                <div className="col-md-8 d-grid gap-5 d-flex align-items-center">
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link d-none d-lg-block"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Accueil
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link "
-                    style={{ textDecoration: "none" }}
-                  >
-                    A propos
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Services
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Achats
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link justify-content-center"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Produits
-                  </Link>
-                  <Link
-                    to={"/"}
-                    className="text-white nav-link d-none d-lg-block"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Blog
-                  </Link>
+                <div className="d-grid gap-5 d-flex flex-column align-items-center">
+                  <ul>
+                    <li>
+                      {" "}
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link d-none d-lg-block"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Accueil
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link "
+                        style={{ textDecoration: "none" }}
+                      >
+                        A propos
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Services
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Achats
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link justify-content-center"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Produits
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/"}
+                        className="text-white nav-link d-none d-lg-block"
+                        style={{ textDecoration: "none" }}
+                      >
+                        Blog
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

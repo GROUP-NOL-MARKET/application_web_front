@@ -15,8 +15,10 @@
   z-index: 99;
 }
 .navigation_produit {
-  background-color: rgb(78, 77, 77);
-  height: 50px;
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  width: 100%;
+  box-shadow: 1px 1px 1px 1px black;
 }
 .mon_compte {
   font-family: "Open Sans", sans-serif;
@@ -86,9 +88,6 @@
   .logo {
     width: 50%;
   }
-  .icon_user{
-    width: 1rem;
-  }
 
   .panier_parent{
     display: flex;
@@ -141,8 +140,11 @@
   }
 }
 @media (min-width: 992px) {
+  .navbar2{
+    height: 80px
+  }
   .logo {
-    width: 50%;
+    width: 100%;
   }
   .dropdown_button_navbar3 {
     margin-left: 15%;
@@ -151,7 +153,7 @@
     font-size: 0.5rem;
   }
   .panier {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   .mon_compte {
     font-size: 1rem;

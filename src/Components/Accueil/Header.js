@@ -1,32 +1,55 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {Link} from "react-router-dom";
+import AdBanner from "./../AdBanner";
+import Navbar3 from "./Navbar/Navbar3";
 import carousel_1 from "../assets/Images/carousel_1.jpg";
 import carousel_2 from "../assets/Images/carousel_2.jpg";
 import carousel_3 from "../assets/Images/carousel_3.jpg";
 import "../../Styles/Header.css";
-import ReactPlayer from "react-player";
+import { category_product } from "../Product_Data";
+import { banners } from "../Product_Data";
+import img_pub from "../assets/Images/img_pub.png";
+// import ReactPlayer from "react-player";
 
-import { Rating } from "@mui/material";
-import { Button } from "react-bootstrap";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PanierContext } from "../../Store/Panier_context";
-import { DUMMY_PRODUCTS } from "../Product_Data";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+// import { Rating } from "@mui/material";
+// import { Button } from "react-bootstrap";
+// import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { PanierContext } from "../../Store/Panier_context";
+// import { DUMMY_PRODUCTS } from "../Product_Data";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
 const Header = () => {
-  const { addProductToCart } = useContext(PanierContext);
+  // const { addProductToCart } = useContext(PanierContext);
 
   return (
-    <div>
+    <div className="mb-3">
+      <div className="w-full col-12 banner overflow-hidden rounded-2xl shadow-sm">
+        <AdBanner
+          imageUrl={img_pub}
+          title="Promo exclusive !"
+          subtitle="-30% sur toute la collection été"
+          ctaText1="J'en profite"
+          ctaText2="-30%"
+          ctaLink="https://tonsite.com/promo-ete"
+          pub_num="0160557866"
+        />
+      </div>
       <div className="container">
-        <div className="row">
+        <div className="row mt-3">
+          {/* La liste de navigation  */}
+          <div className="col-2">
+            <Navbar3 />
+          </div>
+
           {/* Carousel  */}
 
-          <div className="img_principal col-md-8 col-lg-9 mb-2">
-            <div className="">
+          <div className="img_principal col-8 mb-2">
+            <div className="hauteur_carousel">
               <div
                 id="carouselExampleCaptions"
                 className="carousel slide"
@@ -85,8 +108,7 @@ const Header = () => {
                     <div className="carousel-caption d-none d-md-block">
                       <h5>Titre de l'image_3</h5>
                       <p>
-                        Some representative placeholder content for the third
-                        slide.
+                        Espace d'explication du contenu du troisième carousel
                       </p>
                     </div>
                   </div>
@@ -129,144 +151,19 @@ const Header = () => {
               />
             </div> */}
           </div>
-
-          {/* Les meilleurs produits  */}
-
-          <div className="Produits_phares col-md-4 col-lg-3 mt-sm-2 mt-md-0 g-0 d-none d-md-block">
-            <div className=" d-flex justify-content-center w-100 titre_principal">
-              <h5 className="text-uppercase titre_principal_text" size="lg">
-                Meilleurs Produits
-              </h5>
-            </div>
-
-            {/* Partie produits phares pour les grands écrans */}
-
-            <div className="Description_produits m-2 ">
-              {DUMMY_PRODUCTS.map((product) => (
-                <div key={product.id} className="product-item mt-0 mt-md-4">
-                  <div className="row">
-                    <div className="col-5 d-flex justify-content-center align-items-center">
-                      <img
-                        alt={product.name}
-                        src={product.image}
-                        className="product_img"
-                      />
-                    </div>
-                    <div className="col-7 d-flex justify-content-center flex-column border-start">
-                      <div className="best_product_name">{product.name}</div>
-                      <Rating
-                        name="size-medium"
-                        value={product.notation}
-                        readOnly
-                      />
-                      <div className="row">
-                        <span
-                          className="best_product_price col-8"
-                          style={{ fontSize: "small" }}
-                        >
-                          {product.price} FCFA
-                        </span>
-                        <div
-                          className="col-4"
-                          onClick={() => addProductToCart(product.id)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <FontAwesomeIcon icon={faCartShopping} />
-                        </div>
-                      </div>
-                    </div>
+          <div className="col-2">
+            <div className="m-2">
+              {category_product.map((category_p) => (
+                <Link to={category_p.link}>
+                <div className="border border-1 m-2 category_content">
+                  <div className="d-flex flex-column h-100">
+                    <img alt={category_p.category} src={category_p.image} className="category_img h-50"/>
+                    <h6 className="catgory_name">{category_p.category}</h6>
+                    <p className="text_category">{category_p.text}</p>
                   </div>
-                  <hr
-                    style={{ color: "#FA7F1B", height: "0.2rem" }}
-                    className="m-0"
-                  />
                 </div>
+                </Link>
               ))}
-            </div>
-            <div className="m-4">
-              <Button
-                className="me-2"
-                href="/products"
-                style={{ backgroundColor: "#0066BD" }}
-              >
-                Voir tous les produits
-              </Button>
-            </div>
-          </div>
-
-          {/* LEs produits listés avec map sur le tableau  pour les petits écrans*/}
-          <div className="container">
-            <div className="Produits_phares col-md-3 col-12 mt-2  mt-md-0 g-0 d-md-none overflow-hidden">
-              <div className=" d-flex justify-content-center titre_principal">
-                <h5 className="text-uppercase titre_principal_text" size="lg">
-                  Meilleurs Produits
-                </h5>
-              </div>
-              <div className="Description_produits_mobile m-2">
-                <Swiper
-                  modules={[Navigation]}
-                  navigation
-                  loop={true}
-                  slidesPerView={1}
-                  spaceBetween={15}
-                  className="Liste_produits  h-100" // visible que sur mobile
-                >
-                  {DUMMY_PRODUCTS.map((product) => (
-                    <SwiperSlide
-                      key={product.id}
-                      className="product-item mt-4 "
-                    >
-                      <div className="row h-100">
-                        <div className="col-5 h-100 d-flex justify-content-center align-items-center">
-                          <img
-                            alt={product.name}
-                            src={product.image}
-                            className="product_img_mobile"
-                          />
-                        </div>
-                        <div className="col-7 d-flex justify-content-center flex-column border-start">
-                          <div className="best_product_name">
-                            {product.name}
-                          </div>
-                          <Rating
-                            name="size-medium"
-                            value={product.notation}
-                            readOnly
-                          />
-                          <div className="row">
-                            <span
-                              className="best_product_price col-8"
-                              style={{ fontSize: "small" }}
-                            >
-                              {product.price} FCFA
-                            </span>
-                            <div
-                              className="col-4"
-                              onClick={() => addProductToCart(product.id)}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <FontAwesomeIcon icon={faCartShopping} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr
-                        style={{ color: "#FA7F1B", height: "0.2rem" }}
-                        className="m-0"
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </div>
-              <div className="m-4">
-                <Button
-                  className="me-2"
-                  href="/products"
-                  style={{ backgroundColor: "#0066BD" }}
-                >
-                  Voir tous les produits
-                </Button>
-              </div>
             </div>
           </div>
         </div>

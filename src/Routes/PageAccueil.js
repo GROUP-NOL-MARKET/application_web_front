@@ -8,7 +8,6 @@ import FlashSale from "../Components/Accueil/FlashSale";
 // import Page from "../Components/Accueil/Page";
 import APropos from "../Components/Accueil/APropos";
 import Avis from "../Components/Accueil/Avis";
-import Navbar from "../Components/Accueil/Navbar/Navbar";
 
 const PageAccueil = () => {
   const textRef = useRef(null);
@@ -41,9 +40,8 @@ const PageAccueil = () => {
             </div>
           </div>
         </div>
-        <Navbar />
         <div className="page_accueil">
-          <div className="marquee-container text-uppercase" ref={containerRef}>
+          {/* <div className="marquee-container text-uppercase" ref={containerRef}>
             <div
               className="marquee-text"
               ref={textRef}
@@ -56,7 +54,7 @@ const PageAccueil = () => {
               la livraison rapide. Rejoignez-nous dès aujourd'hui et faites
               l'expérience d'un marché en ligne unique !
             </div>
-          </div>
+          </div> */}
           <Header />
           <Offres />
           <Content />
