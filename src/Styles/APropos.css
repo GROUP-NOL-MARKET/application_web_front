@@ -12,3 +12,20 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
+.entreprise_nom{
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+.welcome_text{
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+.text_a_propos{
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    text-align: justify;
+    hyphens: auto;
+    
+}

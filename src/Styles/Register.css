@@ -6,7 +6,7 @@
     url("../Components/assets/Images/background_register.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
+  overflow: hidden;
 }
 
 .Title_register {

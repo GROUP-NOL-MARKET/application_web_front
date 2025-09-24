@@ -6,20 +6,35 @@
   border-top: 0px;
   border-bottom: 0px;
 }
+.navbar2{
+  position: relative !important;
+}
 
 .dropdown-menu {
-  display: none;
+  position: absolute !important;
+  z-index: 9999 !important;
 }
-.dropdown-menu.show {
-  display: block;
-  z-index: 99;
-}
+
 .navigation_produit {
-  background-color: rgb(255, 255, 255);
-  height: auto;
+  background-color: rgb(42, 47, 112);
   width: 100%;
-  box-shadow: 1px 1px 1px 1px black;
 }
+.category-menu {
+  height: 80vh;           /* ou calc(100vh - 64px) si tu as un header fixe de 64px */
+  overflow: hidden;         /* évite les doubles scrollbars */
+  min-height: 0;            /* IMPORTANT en flex column */
+}
+
+/* La zone intérieure qui scrolle */
+.menu-scroll {
+  flex: 1 1 auto;           /* occupe l’espace disponible */
+  min-height: 0;            /* CRUCIAL pour que overflow fonctionne en flex */
+  overflow-y: auto;         /* active le scroll vertical */
+  padding-bottom: 5px;     /* petit confort pour le bas */
+}
+.menu-scroll::-webkit-scrollbar { width: 6px; }
+.menu-scroll::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+
 .mon_compte {
   font-family: "Open Sans", sans-serif;
 }
@@ -89,7 +104,7 @@
     width: 50%;
   }
 
-  .panier_parent{
+  .panier_parent {
     display: flex;
     flex-direction: row;
   }
@@ -122,14 +137,8 @@
   .logo {
     width: 100%;
   }
-  .dropdown_button_navbar3 {
-    margin-left: 5%;
-  }
   .panier {
     font-size: 3rem;
-  }
-  .panier_length {
-    font-size: 0.8rem;
   }
   .mon_compte {
     font-size: 1rem;
@@ -140,20 +149,14 @@
   }
 }
 @media (min-width: 992px) {
-  .navbar2{
-    height: 80px
+  .navbar2 {
+    height: 80px;
   }
   .logo {
     width: 100%;
   }
-  .dropdown_button_navbar3 {
-    margin-left: 15%;
-  }
-  .panier_length {
-    font-size: 0.5rem;
-  }
   .panier {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .mon_compte {
     font-size: 1rem;
@@ -162,7 +165,21 @@
     display: flex;
     flex-direction: row;
   }
-  .connexion{
+  .connexion {
     margin-left: 5%;
   }
+}
+
+
+.category_product_name{
+  font-family: "Roboto", sans-serif !important;
+  font-size:"25px" !important;
+  font-weight: "bold" !important;
+  text-underline-offset: 2px !important;
+}
+details{
+  text-underline-offset: 2px !important;
+}
+.lien_aide{
+  color: black !important;
 }

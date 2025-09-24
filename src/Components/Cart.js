@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
@@ -46,11 +47,7 @@ const Cart = () => {
     <div className="cart">
       <div className="container">
         <div className="category_button ">
-          <Button
-            onClick={handledropdown}
-            ref={dropdownRef}
-            className=" mt-4 mb-2"
-          >
+          <Button ref={dropdownRef} className=" mt-4 mb-2">
             <FontAwesomeIcon icon={faBars} />
             Categories
             <FontAwesomeIcon icon={faChevronDown} />
@@ -72,7 +69,9 @@ const Cart = () => {
               <div className="row">
                 <div className="col-6 table_title">Produits</div>
                 <div className="col-2 table_title">Prix</div>
-                <div className="col-4 col-md-2 table_title d-flex justify-content-center">Quantité</div>
+                <div className="col-4 col-md-2 table_title d-flex justify-content-center">
+                  Quantité
+                </div>
                 <div className="col-4 col-md-2 table_title d-none d-md-inline">
                   Prix total
                 </div>
@@ -205,11 +204,8 @@ const Cart = () => {
                     <div className="col-5 ">{totalPrice} fcfa</div>
                   </div>
                   {totalPrice > 1 ? (
-                    <Button
-                      className="achat_button mt-3 w-100"
-                      href="/Paiement"
-                    >
-                      Acheter
+                    <Button className="achat_button mt-3 w-100">
+                      <Link to="/application_web_front/Paiement" className="text-decoration-none">Acheter</Link>
                     </Button>
                   ) : (
                     <Button

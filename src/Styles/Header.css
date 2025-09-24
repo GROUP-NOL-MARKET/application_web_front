@@ -16,11 +16,10 @@
 }
 
 @media (max-width: 575.98px) {
-  .Description_produits_mobile{
+  .Description_produits_mobile {
     height: 120px;
   }
 }
-
 
 @media (min-width: 576px) {
   .Description_produits_mobile {
@@ -46,24 +45,42 @@
 .best_product_name {
   font-weight: bold;
 }
-.banner{
+.banner {
   height: 65px;
 }
-.category_name{
+.category_name {
   font-family: "Roboto", sans-serif;
+  font-size: 15px;
 }
-.category_img:hover{
-  scale: 1.2;
+.category_img {
+  height: 90px;
+  width: auto;
 }
-.category_content{
-  height: 100px;
+.category_img:hover {
+  transform: scale(1.03);
 }
-
-.text_category{
+.category_content {
+  height: 110px;
+}
+.title_category_product {
+  font-family: "Roboto", sans-serif;
+  font-size: medium;
+  font-weight: bold;
+}
+.text_category {
   font-size: x-small;
 }
-/* Effet d’apparition */
+/* Effet d’apparition
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
+} */
+.hauteur_carousel {
+  height: 400px;
+  overflow: hidden;
+}
+
+.hauteur_carousel img {
+  height: 100%;
+  object-fit: cover; /* garde le ratio et remplit l’espace */
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 import { Button } from "react-bootstrap";
 import img_entreprise from "../assets/Images/img_entreprise.jpg";
 import "../../Styles/APropos.css";
@@ -34,7 +35,8 @@ const APropos = () => {
                 meilleur de nos producteurs et fournisseurs, au juste prix, avec
                 un service rapide et fiable.....
               </p>
-              <Button>En savoir plus</Button>
+              <Link to="/application_web_front/About">
+              <Button>En savoir plus</Button></Link>
             </div>
           </div>
         </div>

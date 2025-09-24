@@ -3,11 +3,18 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import API from "../../Authentification/api";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import Panier from "../../assets/Images/icone/panier.png";
+import utilisateur from "../../assets/Images/icone/utilisateur.png";
+import question from "../../assets/Images/icone/question.png";
 import {
   faCartShopping,
   faCircleUser,
   faCircleQuestion,
-  faUserCircle,
+  faUser,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 // import { Link } from "react-router-dom";
 import "../../../Styles/Navbar.css";
@@ -19,13 +26,28 @@ import { PanierContext } from "../../../Store/Panier_context";
 const Navbar2 = () => {
   const { products } = useContext(PanierContext);
 
+  const totalPrice = products.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0
+  );
+
   const { isLoggedIn } = useContext(AuthContext);
-  // #CFCFCF
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      await API.post("/logout");
+      localStorage.removeItem("token");
+      toast.success("Déconnexion réussie");
+      navigate("/application_web_front/login");
+    } catch (err) {
+      console.error("Erreur logout", err.response?.data);
+    }
+  };
 
   return (
     <AuthProvider>
       <div
-        className="navbar navbar-expand-lg overflow-hidden shadow-md navbar2"
+        className="navbar navbar-expand-lg shadow-md navbar2"
         style={{
           backgroundColor: "#CFCFCF",
           backgroundColorOpacity: "0.4",
@@ -88,60 +110,102 @@ const Navbar2 = () => {
           {!isLoggedIn ? (
             // Quand l'utilsateur n'est pas connecté : la partie mon compte
 
-            <div className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center justify-content-center d-sm-none d-lg-block">
+            <div className="connexion col-md-2 col-lg-2 col-10 mt-sm-2 mt-4 d-flex align-items-center justify-content-center d-sm-none d-lg-block">
               <div className="w-100 row">
-                <div className="user-icon col-sm-3 col-3 d-flex align-items-center">
-                  <FontAwesomeIcon
-                    icon={faUserCircle}
-                    size="2x"
-                    className="w-100 icon_user"
-                  ></FontAwesomeIcon>
+                <div className="user-icon col-4 d-flex align-items-center">
+                  <img className="img-fluid icon_user" alt="" src={utilisateur} />
                 </div>
-                <div className="connexion-text col-md-8 col-8 p-0 d-sm-none d-lg-block">
+                <div className="connexion-text col-7 p-0 d-sm-none d-lg-block">
                   <p className="mb-sm-1 mb-1 text-black-50 mon_compte w-100">
                     Mon compte
                   </p>
-                  <h6 className="mt-1 register w-100">
-                    <Link
-                      to="application_web_front/register"
-                      className="text-black "
+
+                  <div className="dropdown mt-1 register w-100">
+                    <div
+                      className="dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
-                      Inscription
-                    </Link>
-                    <Link
-                      to="application_web_front/login"
-                      className="text-black"
+                      Connexion
+                    </div>
+                    <ul
+                      className="dropdown-menu"
+                      style={{ zIndex: "2000 !important" }}
                     >
-                      /Connexion
-                    </Link>
-                  </h6>
+                      <li>
+                        <a
+                          className="dropdown-item"
+                          href="/application_web_front/register"
+                        >
+                          Inscription
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          className="dropdown-item"
+                          href="/application_web_front/login"
+                        >
+                          Connexion
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           ) : (
             // Quand l'utilisateur est connecté : la partie mon compte
 
-            <div className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block">
+            <div className="connexion col-md-2 col-lg-2 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block">
               <div className="w-100 row">
                 <div className="user-icon col-sm-3 col-3 d-flex align-items-center">
-                  <FontAwesomeIcon
-                    icon={faCircleUser}
-                    size="2x"
-                    className="w-100 icon_user"
-                  ></FontAwesomeIcon>
+                  <img src={utilisateur} alt="" className="icon_user img-fluid"/>
                 </div>
                 <div className="connexion-text col-md-8 col-8 p-0 d-sm-none d-lg-block">
                   <p className="mb-sm-1 mb-1 text-black-50 mon_compte w-100">
                     Mon compte
                   </p>
-                  <h6 className="mt-1 register w-100">
-                    <Link to="/register" className="text-black ">
-                      Inscription
-                    </Link>
-                    <Link to="/login" className="text-black">
-                      /Connexion
-                    </Link>
-                  </h6>
+                  <div className="dropdown mt-1 register w-100">
+                    <div
+                      className="dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Connexion
+                    </div>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <a
+                          className="dropdown-item"
+                          href="/application_web_front/login"
+                        >
+                          Mon compte
+                        </a>
+                      </li>
+                      <li>
+                        <h
+                          className="dropdown-item"
+                          onClick={logout}
+                          style={{ color: "red", cursor: "pointer" }}
+                        >
+                          <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                          Déconnexion
+                        </h>
+                        <ToastContainer
+                          position="top-right"
+                          autoClose={3000}
+                          hideProgressBar={false}
+                          newestOnTop
+                          closeOnClick
+                          pauseOnHover
+                          draggable
+                          theme="colored"
+                        />
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -149,30 +213,44 @@ const Navbar2 = () => {
 
           {/* Le panier au niveau du second navbar  */}
 
-          <div className="panier_parent col-sm-2 col-2 col-md-3 col-lg-2 mt-sm-1 mt-3 m-md-4 d-flex align-items-center justify-content-center">
+          <div className="panier_parent col-sm-2 col-2 col-md-3 col-lg-2 mt-sm-1 mt-3 d-flex align-items-center justify-content-center">
             <div className="row w-100">
               <div className="panier col-4 d-flex position-relative align-items-center">
-                <Link to="/Cart" style={{ color: "black" }}>
-                  <FontAwesomeIcon icon={faCartShopping} className="panier" />
+                <Link
+                  to="application_web_front/Cart"
+                  style={{ color: "black" }}
+                >
+                  <img className="img-fluid" src={Panier} alt="" />
                   {/* Badge compteur */}
                   <span
                     className="position-absolute bottom-50 end-0 translate-middle badge rounded-pill bg-danger panier_length"
-                    style={{ fontSize: "10px", minWidth: "20px" }}
+                    style={{ fontSize: "12px", minWidth: "20px" }}
                   >
                     {products.length}
                   </span>
                 </Link>
               </div>
 
-              <div className="m-2 col-6 d-none d-sm-block p-0 d-flex flex-column align-items-center justify-content-center">
-                <p className="mb-1 text-black mon_compte">Panier</p>
+              <div className="offset-1 col-6 d-none d-sm-block p-0 mt-3">
+                <p className="mb-1 text-black petit_title fw-bold">Panier</p>
+                <p className="cart_price" style={{ fontSize: "0.9rem" }}>
+                  {totalPrice} FCFA
+                </p>
               </div>
             </div>
           </div>
-          <div className="col-md-1">
-            <a className="lien_aide" href="/Faq&Aide" style={{textDecoration:"none"}}>
-              <FontAwesomeIcon icon={faCircleQuestion} className="aide" size="2x" />
-            </a>
+          <div className="col-md-1 mt-2">
+            <div className="row">
+              <Link
+                className="lien_aide col-6"
+                to="/application_web_front/aide&Faq"
+              >
+                <img className="img-fluid aide" src={question} alt="" />
+              </Link>
+              <div className=" col-6 d-none d-sm-block p-0 mt-1">
+                <p className="mb-1 text-black mon_compte">Aide</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

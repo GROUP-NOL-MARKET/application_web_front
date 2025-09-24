@@ -1,7 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {Link} from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import API from "./api";
+import Lottie from "lottie-react";
+import Animation from "../animation/anime.json";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.png";
 import {
   faFacebook,
   faInstagram,
@@ -15,14 +20,14 @@ import {
   FormControl,
 } from "react-bootstrap";
 import "../../Styles/Login.css";
-import connexion_img from "../assets/Images/connexion_img.png";
 
 const Login = () => {
+  const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState("");
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhoset:8000/auth/${provider}/redirect`;
@@ -36,50 +41,77 @@ const Login = () => {
     const newErrors = {};
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-    if (!emailRegex.test(email)) {
-      newErrors.email = "Email invalide";
-    } else if (!email.trim()) {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    
+    if (!email.trim()) {
       newErrors.email = "Veuillez remplir ce champ";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Email invalide";
     } else {
-      delete newErrors.setEmail;
+      delete newErrors.email;
     }
 
-    if (!passwordRegex.test(password)) {
-      newErrors.password = "Mot de passe incorrect";
-    } else if (!password) {
+    if (!password) {
       newErrors.password = "Veuillez entrer votre mot de passe";
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password =
+        "Mot de passe incorrect (min 8 caractères, au moins 1 lettre et 1 chiffre)";
     } else {
-      delete newErrors.setPassword;
+      delete newErrors.password;
     }
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
       setLoading(false);
       return;
     }
-
     try {
-      const endpoint = "/login";
-      const userInput = [email, password];
-      const response = await axios.post(endpoint, userInput);
-      if (response) {
+      const userInput = {
+        email: email,
+        password: password,
+        // firstName: firstName,
+        // lastName: lastName,
+        // phone: phone,
+      };
+      const res = await API.post("/login", userInput);
+      setSuccess(res.data.message);
+      localStorage.setItem("token", res.data.token); // Sauvegarde token JWT
+      toast.success(res.data.message);
+      navigate("/application_web_front/");
+    } catch (err) {
+      if (err.response?.status === 422) {
+        setErrors(err.response.data); // erreurs validation Laravel
+      } else {
+        setSuccess("Identifiants invalides ou erreur serveur");
       }
-    } catch {
     } finally {
       setLoading(false);
     }
+
+    // try {
+    //   const endpoint = "/login";
+    //   const userInput = [email, password];
+    //   const response = await axios.post(endpoint, userInput);
+    //   if (response) {
+    //   }
+    // } catch {
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
-    <div className="connexion_form">
+    <div className="connexion_form ">
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-6 col-12">
-            <div className="formulaire_connexion m-5 p-2">
+          <div className="offset-md-3 col-md-6 col-12">
+            <div className="formulaire_connexion mt-5 mb-5 p-3">
               <div className="en-tête d-flex flex-column align-items-center">
+                <img
+                  src={img_entreprise}
+                  alt="Entreprise Logo"
+                  style={{ height: "100px" }}
+                />
                 <h1 className="Title_register" style={{ color: "#FA7F1B" }}>
                   <span style={{ color: "#0066BD" }}>CONN</span>EXION
                 </h1>
@@ -88,7 +120,7 @@ const Login = () => {
                   Connectez-vous pour accéder à toutes les fonctionnalités
                 </h6>
               </div>
-              <form
+              <Form
                 className="formulaire_connexion_content"
                 method="post"
                 onSubmit={handleSubmit}
@@ -125,15 +157,40 @@ const Login = () => {
                 <Button
                   className="button_login w-100 mt-3 mb-3"
                   type="submit"
-                  disabled={loading}
+                  style={{
+                    position: "relative",
+                    width: "150px",
+                    height: "50px",
+                  }}
                 >
-                  Se connecter
+                  {isLoading ? (
+                    <Lottie
+                      animationData={Animation}
+                      loop={true}
+                      style={{ width: 80, height: 80, margin: "auto" }}
+                    />
+                  ) : (
+                    "S'inscrire"
+                  )}
                 </Button>
-              </form>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  pauseOnHover
+                  draggable
+                  theme="colored"
+                />
+              </Form>
               <p className="link_connexion_register d-flex justify-content-center mt-2">
                 N'avez-vous pas de compte!{" "}
                 <span style={{ fontWeight: "bold", color: "blue" }}>
-                  <Link to="application_web_front/register"> Inscrivez-vous!!</Link>
+                  <Link to="application_web_front/register">
+                    {" "}
+                    Inscrivez-vous!!
+                  </Link>
                 </span>
               </p>
               <div className="container">
@@ -178,16 +235,6 @@ const Login = () => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-6 position-relative d-flex d-none d-md-block">
-            <div className="d-flex align-items-center">
-              <img
-                src={connexion_img}
-                alt="connexion_img"
-                className="connexion_img"
-              />
-            </div>
-            <div></div>
           </div>
         </div>
       </div>

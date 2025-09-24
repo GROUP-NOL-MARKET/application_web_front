@@ -1,10 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import "../../../Styles/Navbar.css";
-import { AuthContext, AuthProvider } from "../../AuthContext";
+import telephone from "../../assets/Images/icone/appel-telephonique.png";
+
 
 const Navbar1 = () => {
   const [active, setActive] = useState("");
@@ -31,25 +30,20 @@ const Navbar1 = () => {
     };
   }, []);
 
-  const { isLoggedIn } = useContext(AuthContext);
 
   return (
-    <AuthProvider>
+
       <div className="bg-light shadow-sm d-flex align-items-center navbar navbar-expand-lg overflow-hidden">
         {/* Quand l'utilisateur n'est pas connecté  le premier navbar*/}
-
-        {!isLoggedIn ? (
           <div className="container-fluid">
-            <div className=" tel col-12 col-md-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
+            <div className=" tel col-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
               <div className="row">
                 <div className="col-6 d-none d-sm-block">
                   <div className="row p-0 d-flex align-items-center">
-                    <FontAwesomeIcon
-                      icon={faPhone}
-                      size="2x"
-                      className="col-1 m-0"
-                    />
-                    <h6 className="col-sm-8 col-xs-8 px-0 fw-semibold flex-lg-wrap">
+                    <div className="col-2 m-0">
+                    <img src={telephone} alt="" className="img-fluid"/>
+                    </div>
+                    <h6 className="col-8 px-0 fw-semibold flex-lg-wrap">
                       Appelez-nous au:(+229) 01 65 00 29 29
                     </h6>
                   </div>
@@ -79,7 +73,7 @@ const Navbar1 = () => {
                     ✖
                   </button>
                   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="col-md-1">Accueil</li>
+                    <li className="col-md-1"><a href="/application_web_front/">Accueil</a></li>
                     <li className="col-md-1">
                       <a href="application_web_front/About">A propos</a>
                     </li>
@@ -88,7 +82,7 @@ const Navbar1 = () => {
                       <a href="application_web_front/Contact">Contact</a>
                     </li>
                     <li className="col-md-1">Achat</li>
-                    <li className="col-md-1">Produits</li>
+                    <li className="col-md-1"><a href="/application_web_front/products">Produits</a></li>
                     <li className="col-md-1"><a href="aide&Faq">Faq & aide</a></li>
                   </ul>
                 </div>
@@ -97,10 +91,10 @@ const Navbar1 = () => {
 
             {/* Les parties contact, a propos et achat immédiat  */}
 
-            <div className="offset-3 col-12 text-wrap  d-flex align-items-center d-grid gap-4 nav-link">
-              <h6 className="  fw-semibold nav-item d-none d-lg-block">
+            <div className="offset-3 col d-flex align-items-center">
+              <h6 className="fw-semibold nav-item d-none d-lg-block me-4">
                 <Link
-                  to="application_web_front/Contact"
+                  to="/application_web_front/Contact"
                   className="nav-link"
                   style={{ color: active === "Contact" ? "orange" : "black" }}
                   onClick={() => setActive("Contact")}
@@ -108,9 +102,9 @@ const Navbar1 = () => {
                   Contactez-nous
                 </Link>
               </h6>
-              <h6 className=" fw-semibold nav-item d-none d-lg-block">
+              <h6 className=" fw-semibold nav-item d-none d-lg-block me-2">
                 <Link
-                  to="application_web_front/About"
+                  to="/application_web_front/About"
                   className="nav-link"
                   style={{ color: active === "About" ? "orange" : "black" }}
                   onClick={() => setActive("About")}
@@ -120,7 +114,7 @@ const Navbar1 = () => {
               </h6>
               <div className=" m-0 p-1 fw-semibold nav-item d-none d-lg-block">
                 <Button
-                  href="application_web_front/products"
+                  href="/application_web_front/products"
                   style={{
                     fontFamily: "Roboto, sans-serif",
                     backgroundColor: "#0066BD",
@@ -131,11 +125,9 @@ const Navbar1 = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div></div>
-        )}
+
       </div>
-    </AuthProvider>
+
   );
 };
 

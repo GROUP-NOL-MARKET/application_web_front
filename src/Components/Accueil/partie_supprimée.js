@@ -203,3 +203,35 @@ export default function Banner() {
     </div>
   );
 }
+
+// const textRef = useRef(null);
+//   const containerRef = useRef(null);
+//   const [animationDuration, setAnimationDuration] = useState(0);
+
+//   useEffect(() => {
+//     if (textRef.current && containerRef.current) {
+//       const textWidth = textRef.current.offsetWidth;
+//       const containerWidth = containerRef.current.offsetWidth;
+
+//       const speed = 50; // px par seconde
+//       const timeToExit = (containerWidth + textWidth) / speed; // sortie à gauche
+//       const pauseTime = 0; // secondes d'arrêt au centre
+
+//       // durée totale de l’animation
+//       setAnimationDuration(pauseTime + timeToExit);
+//     }
+//   }, []);
+//<div className="marquee-container text-uppercase" ref={containerRef}>
+          //   <div
+          //     className="marquee-text"
+          //     ref={textRef}
+          //     style={{ animationDuration: `${animationDuration}s` }}
+          //   >
+          //     Bienvenue sur Nol Market, votre destination pour des produits
+          //     locaux de qualité ! Découvrez notre large gamme de produits frais
+          //     et artisanaux, soigneusement sélectionnés pour vous offrir le
+          //     meilleur de notre terroir. Profitez de nos offres exclusives et de
+          //     la livraison rapide. Rejoignez-nous dès aujourd'hui et faites
+          //     l'expérience d'un marché en ligne unique !
+          //   </div>
+          // </div> 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
 import carousel_1 from "../assets/Images/carousel_1.jpg";
@@ -48,101 +48,104 @@ const Header = () => {
 
           {/* Carousel  */}
 
-          <div className="img_principal col-8 mb-2">
-            <div className="hauteur_carousel">
-              <div
-                id="carouselExampleCaptions"
-                className="carousel slide"
-                data-bs-ride="carousel"
-              >
-                <ol className="carousel-indicators">
-                  <button
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide-to="0"
-                    className="active"
-                  ></button>
-                  <button
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide-to="1"
-                  ></button>
-                  <button
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide-to="2"
-                  ></button>
-                </ol>
-                <div className="carousel-inner">
-                  <div className="carousel-item active">
-                    <img
-                      src={carousel_1}
-                      className="d-block w-100"
-                      alt="carousel_1"
-                    />
-                    <div className="carousel-caption d-none d-md-block">
-                      <h5>Titre de l'image_1</h5>
-                      <p>
-                        Some representative placeholder content for the first
-                        slide.
-                      </p>
+          <div className="img_principal col-10 mb-2">
+            <div className="row">
+              <div className="col-9">
+                <div className="hauteur_carousel">
+                  <div
+                    id="carouselExampleCaptions"
+                    className="carousel slide"
+                    data-bs-ride="carousel"
+                  >
+                    <ol className="carousel-indicators">
+                      <button
+                        data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide-to="0"
+                        className="active"
+                      ></button>
+                      <button
+                        data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide-to="1"
+                      ></button>
+                      <button
+                        data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide-to="2"
+                      ></button>
+                    </ol>
+                    <div className="carousel-inner">
+                      <div className="carousel-item active">
+                        <img
+                          src={carousel_1}
+                          className="d-block w-100"
+                          alt="carousel_1"
+                        />
+                        <div className="carousel-caption d-none d-md-block">
+                          <h5>Titre de l'image_1</h5>
+                          <p>
+                            Some representative placeholder content for the
+                            first slide.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="carousel-item">
+                        <img
+                          src={carousel_2}
+                          className="d-block w-100"
+                          alt="carousel_2"
+                        />
+                        <div className="carousel-caption d-none d-md-block">
+                          <h5>Titre de l'image_2</h5>
+                          <p>
+                            Some representative placeholder content for the
+                            second slide.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="carousel-item">
+                        <img
+                          src={carousel_3}
+                          className="d-block w-100"
+                          alt="carousel_3"
+                        />
+                        <div className="carousel-caption d-none d-md-block">
+                          <h5>Titre de l'image_3</h5>
+                          <p>
+                            Espace d'explication du contenu du troisième
+                            carousel
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="carousel-item">
-                    <img
-                      src={carousel_2}
-                      className="d-block w-100"
-                      alt="carousel_2"
-                    />
-                    <div className="carousel-caption d-none d-md-block">
-                      <h5>Titre de l'image_2</h5>
-                      <p>
-                        Some representative placeholder content for the second
-                        slide.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="carousel-item">
-                    <img
-                      src={carousel_3}
-                      className="d-block w-100"
-                      alt="carousel_3"
-                    />
-                    <div className="carousel-caption d-none d-md-block">
-                      <h5>Titre de l'image_3</h5>
-                      <p>
-                        Espace d'explication du contenu du troisième carousel
-                      </p>
-                    </div>
+
+                    {/* Les boutons du carousel  */}
+
+                    <button
+                      className="carousel-control-prev"
+                      type="button"
+                      data-bs-target="#carouselExampleCaptions"
+                      data-bs-slide="prev"
+                    >
+                      <span
+                        className="carousel-control-prev-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span className="visually-hidden">Précédent</span>
+                    </button>
+                    <button
+                      className="carousel-control-next"
+                      type="button"
+                      data-bs-target="#carouselExampleCaptions"
+                      data-bs-slide="next"
+                    >
+                      <span
+                        className="carousel-control-next-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span className="visually-hidden">Prochain</span>
+                    </button>
                   </div>
                 </div>
-
-                {/* Les boutons du carousel  */}
-
-                <button
-                  className="carousel-control-prev"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="prev"
-                >
-                  <span
-                    className="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span className="sr-only">Précédent</span>
-                </button>
-                <button
-                  className="carousel-control-next"
-                  type="button"
-                  data-bs-target="#carouselExampleCaptions"
-                  data-bs-slide="next"
-                >
-                  <span
-                    className="carousel-control-next-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span className="sr-only">Prochain</span>
-                </button>
-              </div>
-            </div>
-            {/* <div className="d-none d-md-block  col-8">
+                {/* <div className="d-none d-md-block  col-8">
               <ReactPlayer
                 url="https://youtu.be/Q93KvEnZZvM?list=RDQ93KvEnZZvM"
                 controls
@@ -150,20 +153,59 @@ const Header = () => {
                 height="250px"
               />
             </div> */}
-          </div>
-          <div className="col-2">
-            <div className="m-2">
-              {category_product.map((category_p) => (
-                <Link to={category_p.link}>
-                <div className="border border-1 m-2 category_content">
-                  <div className="d-flex flex-column h-100">
-                    <img alt={category_p.category} src={category_p.image} className="category_img h-50"/>
-                    <h6 className="catgory_name">{category_p.category}</h6>
-                    <p className="text_category">{category_p.text}</p>
-                  </div>
+              </div>
+              <div className="col-3">
+                <p className="text-uppercase font-bold title_category_product  d-flex justify-content-center">
+                  Catégories de produits
+                </p>
+                <div className="m-2">
+                  {category_product.slice(0, 3).map((category_p) => (
+                    <Link
+                      to={category_p.link}
+                      className="text-decoration-none text-black"
+                    >
+                      <div className="border border-1 mt-2 category_content shadow-sm">
+                        <div className="d-flex flex-column">
+                          <img
+                            alt={category_p.category}
+                            src={category_p.image}
+                            className="category_img"
+                          />
+                          <h3 className="category_name text-uppercase">
+                            {category_p.category}
+                          </h3>
+                          {/* <p className="text_category">{category_p.text}</p> */}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-                </Link>
-              ))}
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <div className="row">
+                {category_product.slice(3, 9).map((category_p) => (
+                  <Link
+                    to={category_p.link}
+                    className="text-decoration-none text-black col-2"
+                  >
+                    <div className="border border-1 category_content shadow-sm">
+                      <div className="d-flex flex-column">
+                        <img
+                          alt={category_p.category}
+                          src={category_p.image}
+                          className="category_img"
+                        />
+                        <h3 className="category_name text-uppercase">
+                          {category_p.category}
+                        </h3>
+                        {/* <p className="text_category">{category_p.text}</p> */}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

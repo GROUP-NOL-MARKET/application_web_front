@@ -1,19 +1,17 @@
-import { createContext, useReducer } from "react";
-import {DUMMY_PRODUCTS} from "../Components/Product_Data";
-
+import { createContext, useReducer, useEffect } from "react";
+import { DUMMY_PRODUCTS } from "../Components/Product_Data";
 
 //items: les différents éléments présents dans le panier
 export const PanierContext = createContext({
   products: [],
   addProductToCart: () => {},
   updateProductQuantity: () => {},
+  clearCart: () => {},
 });
 
 const cartReducer = (state, action) => {
   if (action.type === "AJOUTER_DANS_PANIER") {
     const updateShoppingCartProducts = [...state.products];
-
-    //Vérifier si l'élément en question existe
 
     const existingElementIndex = updateShoppingCartProducts.findIndex(
       (cartProducts) => cartProducts.id === action.payload.productId
@@ -22,13 +20,10 @@ const cartReducer = (state, action) => {
     const existingElement = updateShoppingCartProducts[existingElementIndex];
 
     if (existingElement) {
-      //Au cas ou l'élément est déja présent dans le panier
-
       const updatedProductData = {
         ...existingElement,
         quantity: existingElement.quantity + 1,
       };
-
       updateShoppingCartProducts[existingElementIndex] = updatedProductData;
     } else {
       const product = DUMMY_PRODUCTS.find(
@@ -57,11 +52,11 @@ const cartReducer = (state, action) => {
   if (action.type === "ACTUALISER_QUANTITE_PRODUIT") {
     const updateShoppingCartProducts = [...state.products];
 
-    //Vérifier si l'élément en question existe
-
     const existingElementIndex = updateShoppingCartProducts.findIndex(
       (cartProduct) => cartProduct.id === action.payload.productId
     );
+
+    if (existingElementIndex === -1) return state; // sécurité
 
     const updatedData = {
       ...updateShoppingCartProducts[existingElementIndex],
@@ -71,8 +66,6 @@ const cartReducer = (state, action) => {
     updatedData.quantity += newQuantity;
 
     if (updatedData.quantity <= 0) {
-      //Retirer l'élément du panier
-
       updateShoppingCartProducts.splice(existingElementIndex, 1);
     } else {
       updateShoppingCartProducts[existingElementIndex] = updatedData;
@@ -83,38 +76,49 @@ const cartReducer = (state, action) => {
     };
   }
 
+  if (action.type === "VIDER_PANIER") {
+    return { products: [] };
+  }
+
   return state;
 };
 
 export const PanierContextProvider = ({ children }) => {
-  const [cartState, cartDispatch] = useReducer(cartReducer, {
-    products: [],
-  });
+  const storedCart = localStorage.getItem("panier");
+  const initialState = storedCart ? JSON.parse(storedCart) : { products: [] };
 
-  //Fonction d'ajout dans le panier
+  const [cartState, cartDispatch] = useReducer(cartReducer, initialState);
+
+  useEffect(() => {
+    localStorage.setItem("panier", JSON.stringify(cartState));
+  }, [cartState]);
 
   const handleAddProductToCart = (productId) => {
     cartDispatch({
       type: "AJOUTER_DANS_PANIER",
-      payload: { productId: productId },
+      payload: { productId },
     });
   };
 
   const handleUpdateProductQuantity = (productId, quantity) => {
     cartDispatch({
       type: "ACTUALISER_QUANTITE_PRODUIT",
-      payload: {
-        productId,
-        quantity,
-      },
+      payload: { productId, quantity },
     });
+  };
+
+  const handleClearCart = () => {
+    cartDispatch({ type: "VIDER_PANIER" });
+    localStorage.removeItem("panier"); // en plus on vide le storage
   };
 
   const initialValue = {
     products: cartState.products,
     addProductToCart: handleAddProductToCart,
     updateProductQuantity: handleUpdateProductQuantity,
+    clearCart: handleClearCart,
   };
+
   return (
     <PanierContext.Provider value={initialValue}>
       {children}
