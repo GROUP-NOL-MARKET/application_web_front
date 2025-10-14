@@ -3,10 +3,10 @@ import Entete from "./dataset/Entete";
 import SellPeriod from "./dataset/SellPeriod";
 import { ThemeContext } from "./ThemeContext";
 import { DataSeller } from "./dataset/DataSeller";
-import img_PL_dashboard from "../assets/Images/img_PL_dashboard.png";
-import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.png";
-import img_epicerie_dashboard from "../assets/Images/img_epicerie_dashboard.png";
-import img_boissons_dashboard from "../assets/Images/img_boissons_dashboard.png";
+import img_PL_dashboard from "../assets/Images/img_PL_dashboard.webp";
+import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
+import img_epicerie_dashboard from "../assets/Images/img_epicerie_dashboard.webp";
+import img_boissons_dashboard from "../assets/Images/img_boissons_dashboard.webp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -32,7 +32,7 @@ const BestProduct = () => {
 
       <div className="row mt-2">
         <div className="col">
-          <SellPeriod text="Période de ventes"/>
+          <SellPeriod text="Période de ventes" />
         </div>
 
         <div className="offset-5 col mt-3">

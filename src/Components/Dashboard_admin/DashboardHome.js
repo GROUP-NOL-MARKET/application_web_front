@@ -2,9 +2,17 @@ import React from "react";
 import StatCard from "./StatCard";
 import TrafficChart from "./TrafficChart";
 import UsersTable from "./UsersTable";
+import axios from "axios";
 
 
 const DashboardHome = () => {
+
+  // axios.get("http://localhost:8000/api/admin/me", {
+  //   headers: {
+  //     Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+  //   },
+  // });
+
   // données d'exemple — remplacez par vos appels API
   const [stats, setStats] = React.useState({ users: 124, ventes: 76, revenus: '3 450 FCFA' });
   const [users, setUsers] = React.useState([
@@ -14,7 +22,7 @@ const DashboardHome = () => {
   ]);
 
   const chartData = {
-    labels: ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+    labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
     datasets: [
       {
         label: 'Visites',

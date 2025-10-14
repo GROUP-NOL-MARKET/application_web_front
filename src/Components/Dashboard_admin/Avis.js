@@ -10,9 +10,9 @@ import {
 import { ThemeContext } from "./ThemeContext";
 import { avis } from "../Product_Data";
 import FooterDashboard from "./dataset/FooterDashboard";
-import avis_dashboard_1 from "../assets/Images/avis_dashboard_1.png";
-import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.png";
-import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.png";
+import avis_dashboard_1 from "../assets/Images/avis_dashboard_1.webp";
+import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.webp";
+import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.webp";
 
 const Avis = () => {
   const { theme } = useContext(ThemeContext);

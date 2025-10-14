@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "./ThemeContext";
-import img_entreprise_dashboard from "../assets/Images/img_entreprise_dashboard.png";
-import img_finance from "../assets/Images/img_finance.png";
+import axios from "axios";
+import { toast } from "react-toastify";
+import img_entreprise_dashboard from "../assets/Images/img_entreprise_dashboard.webp";
+import img_finance from "../assets/Images/img_finance.webp";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { dataset, valueFormatter } from "./dataset/weather";
 import "../../Styles/AdminDashbord/appDashboard.css";
@@ -18,10 +20,11 @@ import {
   faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
-import wallet from "../assets/Images/wallet.png";
-import silverCoin from "../assets/Images/silver_coin.png";
-import carteCredit from "../assets/Images/carte_credit.png";
+import wallet from "../assets/Images/wallet.webp";
+import silverCoin from "../assets/Images/silver_coin.webp";
+import carteCredit from "../assets/Images/carte_credit.webp";
 import Entete from "./dataset/Entete";
+import Preloader from "../Preloader";
 
 const chartSetting = {
   yAxis: [
@@ -35,6 +38,31 @@ const chartSetting = {
 
 const AnalyseVente = () => {
   const { theme } = useContext(ThemeContext);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("adminToken");
+        const res = await axios.get("http://localhost:8000/api/admin/stats", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setStats(res.data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Erreur lors du chargement des statistiques");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading) return <Preloader />;
 
 
   return (
@@ -79,7 +107,7 @@ const AnalyseVente = () => {
                           Revenus
                         </span>
                         <p className="petit_titre my-2">
-                          888 FCFA
+                          {stats?.revenus} FCFA
                           <FontAwesomeIcon
                             icon={faArrowUpRightFromSquare}
                             className="px-2"
@@ -99,7 +127,7 @@ const AnalyseVente = () => {
                           Pertes
                         </span>
                         <p className="petit_titre my-2">
-                          888 FCFA
+                          {stats?.pertes} FCFA
                           <FontAwesomeIcon
                             icon={faArrowDown}
                             style={{ color: "red", paddingLeft: "4px" }}
@@ -122,7 +150,7 @@ const AnalyseVente = () => {
                           Commandes
                         </span>
                         <p className="petit_titre my-2">
-                          888
+                          {stats?.commandes}
                           <FontAwesomeIcon
                             icon={faHandshake}
                             style={{ color: "blue" }}
@@ -153,7 +181,7 @@ const AnalyseVente = () => {
                 <div className="col-6 d-flex align-items-center justify-content-center">
                   <div className="row">
                     <h5 className="taux_moyen">Revenu total</h5>
-                    <h6 className="taux_moyen">800 000 FCFA</h6>
+                    <h6 className="taux_moyen">{stats?.revenus} FCFA</h6>
                   </div>
                 </div>
               </div>
@@ -175,15 +203,13 @@ const AnalyseVente = () => {
                   Statistiques Vente 2025
                 </h2>
                 <BarChart
-                  dataset={dataset}
+                  dataset={stats?.ventes_mensuelles.map((v) => ({
+                    month: `Mois ${v.mois}`,
+                    total: v.total,
+                  }))}
                   xAxis={[{ dataKey: "month" }]}
-                  series={[
-                    { dataKey: "london", label: "London", valueFormatter },
-                    { dataKey: "paris", label: "Paris", valueFormatter },
-                    { dataKey: "newYork", label: "New York", valueFormatter },
-                    { dataKey: "seoul", label: "Seoul", valueFormatter },
-                  ]}
-                  {...chartSetting}
+                  series={[{ dataKey: "total", label: "Ventes (FCFA)" }]}
+                  height={300}
                 />
               </div>
             </div>
@@ -206,7 +232,7 @@ const AnalyseVente = () => {
                       Revenus
                     </span>
                     <span className="col-3 d-flex justify-content-center">
-                      888 FCFA
+                      {stats?.revenus} FCFA
                     </span>
                     <span
                       className="col-1 d-flex justify-content-center"
@@ -235,7 +261,7 @@ const AnalyseVente = () => {
                       Perte
                     </span>
                     <span className="col-3 d-flex justify-content-center">
-                      888 FCFA
+                      {stats?.pertes} FCFA
                     </span>
                     <span
                       className="col-1 d-flex justify-content-center"
@@ -265,7 +291,7 @@ const AnalyseVente = () => {
                       Commandes
                     </span>
                     <span className="col-3 d-flex justify-content-center">
-                      888
+                      {stats?.commandes}
                     </span>
                     <span
                       className="col-1 d-flex justify-content-center"

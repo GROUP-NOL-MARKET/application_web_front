@@ -11,10 +11,8 @@ import revenu from "../assets/Images/icone/revenu.png";
 import profil from "../assets/Images/icone/vendeur.png";
 import analyse from "../assets/Images/icone/analytique.png";
 import accueil from "../assets/Images/icone/accueil.png";
-import tableau from "../assets/Images/icone/livraison-de-la-commande.png";
 import img_profil from "../assets/Images/img_profil.webp";
 import add_product from "../assets/Images/icone/ajouter-un-produit.png";
-import category from "../assets/Images/icone/categorisation.png";
 import meilleur_produit from "../assets/Images/icone/meilleur.png";
 import product_management from "../assets/Images/icone/traits.png";
 import produits from "../assets/Images/icone/produit.png";
@@ -46,10 +44,9 @@ const Sidebar = () => {
   const { theme } = useContext(ThemeContext);
   return (
     <aside
-      className={`${
-        theme === "dark" ? "sidebar-dark" : "sidebar-light"
-      } d-flex flex-column p-3 shadow-sm border border-1 border-right`}
-      style={{ width: 275, minHeight: "100vh" }}
+      className={`${theme === "dark" ? "sidebar-dark" : "sidebar-light"
+        } d-flex flex-column p-3 shadow-sm border border-1 border-right`}
+      style={{ minWidth: "275px", maxWidth: "275px", minHeight: "100vh" }}
     >
       <a
         href="/admin"
@@ -70,11 +67,11 @@ const Sidebar = () => {
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item mb-3">
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingOne">
+          <div className="accordion accordion-flush" id="accordionFlushExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="flush-headingOne">
                 <div
-                  class="accordion-button collapsed"
+                  className="accordion-button collapsed"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseOne"
                   aria-expanded="false"
@@ -92,11 +89,11 @@ const Sidebar = () => {
               </h2>
               <div
                 id="flush-collapseOne"
-                class="accordion-collapse collapse"
+                className="accordion-collapse collapse"
                 aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div class="accordion-body">
+                <div className="accordion-body">
                   <NavLink
                     to="/admin/analyticSell"
                     end
@@ -350,10 +347,6 @@ const Sidebar = () => {
           </NavLink>
         </li>
       </ul>
-      {/* 
-      <div className="mt-auto small">
-        © {new Date().getFullYear()} Votre entreprise
-      </div> */}
     </aside>
   );
 };

@@ -1,17 +1,16 @@
-
+import { Link } from "react-router-dom";
 import "../../../Styles/Navbar.css";
 import { sous_category_product } from "../../Product_Data";
 
 const Navbar3 = () => {
   return (
     <div>
-      <div className="navigation_produit border border-1 shadow-sm">
-
+      <div className="navigation_produit border border-1 shadow-sm p-3">
         <div className="d-flex flex-column category-menu p-1">
           <div className="dropdown">
             {/* Le content du dropdown  */}
             <div
-              className="dropdown-toggle text-white mt-3"
+              className="dropdown-toggle text-white"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
@@ -25,7 +24,7 @@ const Navbar3 = () => {
 
           {/* Les autres liens de navigations du navbar3 */}
 
-          <div className="menu-scroll d-flex flex-column align-items-center">
+          <div className="menu-scroll d-flex flex-column ">
             <ul className="d-flex flex-column list-unstyled">
               {sous_category_product.map((item) => (
                 <div key={item.category}>
@@ -37,10 +36,16 @@ const Navbar3 = () => {
                     >
                       {item.category}
                     </summary>
-                    {item.sous_category.map((index) => (
-                      <a href=" " className="text-white">
-                        {index}
-                      </a>
+                    {item.sous_category.map((index, i) => (
+                      <li key={i}>
+
+                        <Link
+                          to=" "
+                          className="text-white text-decoration-none nav-link nav-header-3"
+                        >
+                          {index}
+                        </Link>
+                      </li>
                     ))}
                   </details>
                 </div>

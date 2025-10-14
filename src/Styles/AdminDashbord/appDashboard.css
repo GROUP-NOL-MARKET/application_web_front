@@ -41,3 +41,6 @@ main.dark {
   font-family:"Roboto", sans-serif;
   font-optical-sizing: normal;
 }
+.sidebar_user{
+  min-height: 400px;
+}

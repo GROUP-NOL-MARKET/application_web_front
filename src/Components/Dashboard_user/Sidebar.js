@@ -1,19 +1,144 @@
-import React from 'react'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "../../Styles/UserDashboard/Gestion.css";
+import cheklist from "../assets/Images/icone/checklist.png";
+import user from "../assets/Images/icone/user.png";
+import comment from "../assets/Images/icone/comment.png";
+import avi from "../assets/Images/icone/etoiles-de-notation.png";
+import bon from "../assets/Images/icone/coupon.png";
+import favorie from "../assets/Images/icone/favorie.png";
+import vu from "../assets/Images/icone/eye.png";
+import compte from "../assets/Images/icone/utilisateur.png";
+import adresse from "../assets/Images/icone/location.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
+
   return (
-    <div>
-      <div>
-        Menu achat
-      </div>
-      <div>
-        Menu configurations
-      </div>
-      <div>
-        Menu 
+    <div className="container">
+      <div className="border border-1 shadow-sm p-3 w-100">
+        <ul className="list-unstyled w-100" style={{ lineHeight: "3.0" }}>
+          <li className="petit_titre w-100">
+            <NavLink
+              to="/user"
+              className={({ isActive }) =>
+                "nav-link text-truncate w-100 " + (isActive ? "active-link" : "text-dark")
+              }
+              end
+
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={user} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Mon profil</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/Commandes"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"> <img className="w-75" src={cheklist} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">  Mes commandes</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/messages"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={comment} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Boîte de réception</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/avis"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"> <img className="w-75" src={avi} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Mes avis</h4> </div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+              to="/user/bons"
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Bons d'achat</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/favoris"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={favorie} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Favoris</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/products_vus"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={vu} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Vus récemment</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/gestion"
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+
+            >
+              <div className="row"><div className="col-3"><img className="w-75" src={compte} alt="" /></div><h4 className="col petit_titre d-flex align-items-center"> Gestion du compte</h4></div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              className={({ isActive }) =>
+                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+              }
+              to="/user/adresses"
+            >
+              <div className="row">
+                <div className="col-3"><img className="w-75" src={adresse} alt="" /></div>
+
+                <h4 className="col petit_titre d-flex align-items-center"> Mon adresse</h4>
+              </div>
+            </NavLink>
+          </li>
+          <li className="petit_titre">
+            <NavLink
+              to="/user/logout"
+              className={({ isActive }) =>
+                "nav-link text-truncate" + (isActive ? "active-link" : "text-dark")
+              }
+            >
+              <FontAwesomeIcon icon={faRightFromBracket} style={{ color: "red" }} />
+              <span className="petit_titre" style={{ color: "red" }}>
+                Déconnexion
+              </span>
+            </NavLink>
+          </li>
+        </ul>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

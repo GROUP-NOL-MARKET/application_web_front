@@ -1,7 +1,6 @@
 import Header from "../Components/Accueil/Header";
 import { AuthProvider } from "../Components/AuthContext";
 import "../Styles/PageAccueil.css";
-import Content from "../Components/Accueil/Content";
 import Offres from "../Components/Accueil/Offres";
 import FlashSale from "../Components/Accueil/FlashSale";
 // import Page from "../Components/Accueil/Page";
@@ -16,7 +15,7 @@ import Boissons from "../Components/Accueil/Boissons";
 import Divers from "../Components/Accueil/Divers";
 
 const PageAccueil = () => {
-  
+
   return (
     <AuthProvider>
       <div>
@@ -30,11 +29,10 @@ const PageAccueil = () => {
             </div>
           </div>
         </div> */}
-        <div className="page_accueil">
-          
+        <div className="page_accueil min-vh-100">
+
           <Header />
           <Offres />
-          <Content />
           <ProduitsLocaux />
           <Electromenager />
           <ProduitsFrais />

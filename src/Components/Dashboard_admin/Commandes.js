@@ -5,10 +5,10 @@ import Entete from "./dataset/Entete";
 import SellPeriod from "./dataset/SellPeriod";
 import Dropdown from "./dataset/Dropdown";
 import { ThemeContext } from "./ThemeContext";
-import orders_completed from "../assets/Images/orders_completed.png";
-import orders_confirmed from "../assets/Images/orders_confirmed.png";
-import orders_deleted from "../assets/Images/orders_deleted.png";
-import orders_found from "../assets/Images/orders_found.png";
+import orders_completed from "../assets/Images/orders_completed.webp";
+import orders_confirmed from "../assets/Images/orders_confirmed.webp";
+import orders_deleted from "../assets/Images/orders_deleted.webp";
+import orders_found from "../assets/Images/orders_found.webp";
 
 const Commandes = () => {
   const { theme } = useContext(ThemeContext);
@@ -22,7 +22,10 @@ const Commandes = () => {
       {/* Premier content  */}
       <div className="container-fluid">
         <div className="row mt-3">
-          <SellPeriod className="col-6" />
+          <div className="col-4" >
+            <SellPeriod />
+          </div>
+
           <div className="offset-3 col">
             <h5 className="texte_brut">Commandes vues : 5/100</h5>
             <div className="row">

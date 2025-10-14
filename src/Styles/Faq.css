@@ -14,3 +14,9 @@
 .reponse {
   font-family: "Roboto", sans-serif;
 }
+.Questions{
+  background: url('../Components/assets/Images/bg_FAQ.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

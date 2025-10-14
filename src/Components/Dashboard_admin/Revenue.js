@@ -11,13 +11,13 @@ import {
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import PieColor from "./dataset/PieColor";
-import wallet from "../assets/Images/wallet.png";
-import silverCoin from "../assets/Images/silver_coin.png";
-import carteCredit from "../assets/Images/carte_credit.png";
-import img_revenu_period_1 from "../assets/Images/img_revenu_period_1.png";
-import img_revenu_period_2 from "../assets/Images/img_revenu_period_2.png";
-import img_revenu_period_3 from "../assets/Images/img_revenu_period_3.png";
-import img_revenu_period_4 from "../assets/Images/img_revenu_period_4.png";
+import wallet from "../assets/Images/wallet.webp";
+import silverCoin from "../assets/Images/silver_coin.webp";
+import carteCredit from "../assets/Images/carte_credit.webp";
+import img_revenu_period_1 from "../assets/Images/img_revenu_period_1.webp";
+import img_revenu_period_2 from "../assets/Images/img_revenu_period_2.webp";
+import img_revenu_period_3 from "../assets/Images/img_revenu_period_3.webp";
+import img_revenu_period_4 from "../assets/Images/img_revenu_period_4.webp";
 import SellPeriod from "./dataset/SellPeriod";
 
 const Revenue = () => {
@@ -32,7 +32,7 @@ const Revenue = () => {
 
         <div className="row mt-2">
           <div className="col">
-            <SellPeriod text="Période de vente"/>
+            <SellPeriod text="Période de vente" />
           </div>
 
           <div className="offset-2 col-6 d-flex flex-column d-flex justify-content-end">

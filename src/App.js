@@ -1,13 +1,13 @@
 import "./App.css";
 import Preloader from "./Components/Preloader";
-import { useContext, useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { AuthContext } from "./Components/AuthContext";
 import PageAccueil from "./Routes/PageAccueil";
 import Register from "./Components/Authentification/Register";
 import Login from "./Components/Authentification/Login";
 import Navbar1 from "./Components/Accueil/Navbar/Navbar1";
 import Navbar2 from "./Components/Accueil/Navbar/Navbar2";
+import { ToastContainer } from "react-toastify";
 import Footer from "./Components/Accueil/footer";
 import Contact from "./Components/Contact";
 import About from "./Components/About";
@@ -17,51 +17,76 @@ import Faq from "./Components/Faq";
 import RecupProduct from "./Components/RecupProduct";
 import Products from "./Components/Products/Products";
 import AdminDashboard from "./Routes/AdminDashboard";
+import Category from "./Components/Products/Category";
+import UserDashboard from "./Routes/UserDashboard";
+import ChangePassword from "./Components/Dashboard_user/ChangePassword";
+import AdminPrivateRoute from "./Components/Dashboard_admin/AdminPrivateRoute";
+import Connexion from "./Components/Dashboard_admin/Connexion";
+import UserPrivateRoute from "./Components/UserPrivteRoute";
 
 function App() {
-  const { isLoggedIn } = useContext(AuthContext);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
-  // On définit sur quelles pages on ne veut pas afficher Navbar1 et Navbar2
+  // Preloader au tout premier rendu (montage)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // durée initiale du splash loader
+    return () => clearTimeout(timer);
+  }, []);
+
+
+  // Pages sans navbars
   const hideNavbars =
     location.pathname.startsWith("/admin") ||
-    location.pathname === "/application_web_front/login" ||
-    location.pathname === "/application_web_front/register"  ||
-    location.pathname === "/application_web_front/recup_product";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/recup_product" ||
+    location.pathname === "/reset-password";
 
   return (
-    <div className="App">
-      {/* {isLoading && <Preloader />}  */}
-      <div>
-        {!hideNavbars && (
-          <div>
-            <Navbar1 />
-            <Navbar2 />
-          </div>
-        )}
-      </div>
+    <div className="layout d-flex flex-column min-vh-100">
+      {isLoading && <Preloader />}
 
-      <Routes>
-        {/* <ThemeProvider storageKey="theme">
-            <RouterProvider router={router} />
-        </ThemeProvider> */}
-        <Route path="application_web_front/" element={<PageAccueil />} />
-        <Route path="application_web_front/register" element={<Register/>} />
-        <Route path="application_web_front/login" element={<Login/>} />
-        <Route path="application_web_front/Contact" element={<Contact />} />
-        <Route path="application_web_front/About" element={<About />} />
-        <Route path="application_web_front/Cart" element={<Cart />} />
-        <Route path="application_web_front/Paiement" element={<Paiement />} />
-        <Route path="application_web_front/aide&Faq" element={<Faq />} />
-        <Route path="application_web_front/products" element={<Products />} />
-        <Route
-          path="application_web_front/recup_product"
-          element={<RecupProduct />}
-        />
-        <Route path="/admin/*" element={<AdminDashboard />} />
-      </Routes>
+      {!hideNavbars && (
+        <>
+          <Navbar1 />
+          <Navbar2 />
+        </>
+      )}
+      <main className="flex-grow-1">
+        <Routes>
+          <Route path="/" element={<PageAccueil />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<Connexion />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Contact" element={<Contact />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Cart" element={<Cart />} />
+          <Route path="/Paiement" element={<Paiement />} />
+          <Route path="/aide&Faq" element={<Faq />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/category" element={<Category />} />
+          <Route path="/recup_product" element={<RecupProduct />} />
+          <Route path="/admin/*" element={<AdminPrivateRoute><AdminDashboard /></AdminPrivateRoute>} />
+          <Route path="/user/*" element={<UserPrivateRoute><UserDashboard /></UserPrivateRoute>} />
+          <Route path="/reset-password" element={<ChangePassword />} />
+        </Routes>
+      </main>
+
       {!hideNavbars && <Footer />}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </div>
   );
 }

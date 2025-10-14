@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PanierContext } from "../../Store/Panier_context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faArrowAltCircleRight,
   faCartShopping,
@@ -11,8 +12,12 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import { product_flash_sale } from "../Product_Data";
+import useEmblaCarousel from "embla-carousel-react";
+import "../../Styles/Header.css";
+import "../../Styles/Content.css"
 
 const ProduitsLocaux = () => {
+  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
   const { addProductToCart } = useContext(PanierContext);
 
@@ -53,7 +58,7 @@ const ProduitsLocaux = () => {
         loop={true}
         slidesPerView={6}
         spaceBetween={15}
-        className="Liste_produits d-none d-md-block"
+        className="Liste_produits d-none d-lg-block"
       >
         {product_flash_sale.map((product) => (
           <SwiperSlide
@@ -69,7 +74,6 @@ const ProduitsLocaux = () => {
             <div className="w-100 border-top border-1">
               <div className="product_title">
                 {product.name}
-
                 <FontAwesomeIcon
                   icon={faCartShopping}
                   onClick={() => addProductToCart(product.id)}
@@ -84,49 +88,34 @@ const ProduitsLocaux = () => {
         ))}
       </Swiper>
 
-      {/* Le swiper pour les petits écrans  */}
 
-      <Swiper
-        modules={[Navigation]}
-        navigation
-        loop={true}
-        slidesPerView={3}
-        spaceBetween={15}
-        className="Liste_produits d-md-none d-none d-sm-block "
-      >
-        {product_flash_sale.map((product) => (
-          <SwiperSlide
-            key={product.id}
-            className="product_slide"
-            onClick={handleNavigation}
-          >
-            <img src={product.img} alt={product.name} className="img_product" />
-            <div className="product_title">{product.name}</div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
 
       {/* Le swiper pour les tout petits écrans  */}
+      <div className="embla d-lg-none">
+        <div className="embla__viewport" ref={emblaRef}>
+          <div className="embla__container">
+            {product_flash_sale.map((product) => (
+              <div
+                key={product.id}
+                className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1"
 
-      <Swiper
-        modules={[Navigation]}
-        navigation
-        loop={true}
-        slidesPerView={2}
-        spaceBetween={15}
-        className="Liste_produits d-sm-none"
-      >
-        {product_flash_sale.map((product) => (
-          <SwiperSlide
-            key={product.id}
-            className="product_slide"
-            onClick={handleNavigation}
-          >
-            <img src={product.img} alt={product.name} className="img_product" />
-            <div className="product_title">{product.name}</div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+              >
+                <img src={product.img} alt={product.name} className="img_product img-fluid h-75" onClick={handleNavigation} />
+                <div className="product_title text-center">{product.name}
+                  <FontAwesomeIcon
+                    icon={faCartShopping}
+                    onClick={() => addProductToCart(product.id)}
+                    style={{ cursor: "pointer" }}
+                    className="ms-2"
+
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

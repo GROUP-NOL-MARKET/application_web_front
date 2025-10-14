@@ -3,8 +3,8 @@ import { ThemeContext } from "./ThemeContext";
 import "../../Styles/AdminDashbord/appDashboard.css";
 import { DataSeller } from "./dataset/DataSeller";
 import FooterDashboard from "./dataset/FooterDashboard";
-import statistic_seller_img_1 from "../assets/Images/statistic_seller_img-1.png";
-import statistic_seller_img_2 from "../assets/Images/statistic_seller_img-2.png";
+import statistic_seller_img_1 from "../assets/Images/statistic_seller_img-1.webp";
+import statistic_seller_img_2 from "../assets/Images/statistic_seller_img-2.webp";
 import Dropdown from "./dataset/Dropdown";
 
 import Entete from "./dataset/Entete";

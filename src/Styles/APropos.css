@@ -1,31 +1,30 @@
-.a_propos_title_1{
-    font-family:"Montserras", sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #0066BD;
+.a_propos_title_1 {
+  font-family: "Montserras", sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0066bd;
 }
-.a_propos_text{
-    text-align: justify;
+.a_propos_text {
+  text-align: justify;
 }
-.a_propos_title_2{
-    font-family:"Montserras", sans-serif;
-    font-size: 1.5rem;
-    font-weight: bold;
+.a_propos_title_2 {
+  font-family: "Montserras", sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
-.entreprise_nom{
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
+.entreprise_nom {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
 }
-.welcome_text{
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-size: 1.5rem;
+.welcome_text {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
 }
-.text_a_propos{
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-size: 1.1rem;
-    text-align: justify;
-    hyphens: auto;
-    
+.text_a_propos {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-align: justify;
+  hyphens: auto;
 }

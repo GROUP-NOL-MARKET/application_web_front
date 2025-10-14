@@ -2,22 +2,23 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import API from "./api";
-import Lottie from "lottie-react";
-import Animation from "../animation/anime.json";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.png";
+import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp";
 import {
   faFacebook,
   faInstagram,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
   Button,
   FormGroup,
   FormLabel,
   FormControl,
+  Spinner,
+  InputGroup,
 } from "react-bootstrap";
 import "../../Styles/Login.css";
 
@@ -28,6 +29,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhoset:8000/auth/${provider}/redirect`;
@@ -42,7 +49,7 @@ const Login = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-    
+
     if (!email.trim()) {
       newErrors.email = "Veuillez remplir ce champ";
     } else if (!emailRegex.test(email)) {
@@ -69,35 +76,24 @@ const Login = () => {
       const userInput = {
         email: email,
         password: password,
-        // firstName: firstName,
-        // lastName: lastName,
-        // phone: phone,
       };
       const res = await API.post("/login", userInput);
       setSuccess(res.data.message);
       localStorage.setItem("token", res.data.token); // Sauvegarde token JWT
-      toast.success(res.data.message);
-      navigate("/application_web_front/");
+      toast.success("Connexion réussie");
+      navigate("/", { replace: true });
+      window.location.reload();
     } catch (err) {
-      if (err.response?.status === 422) {
-        setErrors(err.response.data); // erreurs validation Laravel
+      if (err.response?.status === 404) {
+        toast.error(err.response.data.error); // erreurs validation Laravel
+      } else if (err.response?.status === 422) {
+        toast.error(err.response.data.error);
       } else {
         setSuccess("Identifiants invalides ou erreur serveur");
       }
     } finally {
       setLoading(false);
     }
-
-    // try {
-    //   const endpoint = "/login";
-    //   const userInput = [email, password];
-    //   const response = await axios.post(endpoint, userInput);
-    //   if (response) {
-    //   }
-    // } catch {
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   return (
@@ -110,7 +106,7 @@ const Login = () => {
                 <img
                   src={img_entreprise}
                   alt="Entreprise Logo"
-                  style={{ height: "100px" }}
+                  style={{ height: "75px" }}
                 />
                 <h1 className="Title_register" style={{ color: "#FA7F1B" }}>
                   <span style={{ color: "#0066BD" }}>CONN</span>EXION
@@ -141,15 +137,22 @@ const Login = () => {
                 </FormGroup>
                 <FormGroup className="m-2">
                   <FormLabel className="label_register">Mot de passe</FormLabel>
-                  <FormControl
-                    className="input_register"
-                    type="password"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    isInvalid={errors?.password ? true : false}
-                  />
+                  <InputGroup>
+                    <FormControl
+                      className="input_register"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
+                      isInvalid={errors?.password ? true : false}
+                    />
+                    <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                      />
+                    </Button>
+                  </InputGroup>
                   <FormControl.Feedback type="invalid">
                     {errors?.password && errors.password}
                   </FormControl.Feedback>
@@ -157,37 +160,25 @@ const Login = () => {
                 <Button
                   className="button_login w-100 mt-3 mb-3"
                   type="submit"
+                  disabled={isLoading}
                   style={{
                     position: "relative",
                     width: "150px",
                     height: "50px",
+
                   }}
                 >
                   {isLoading ? (
-                    <Lottie
-                      animationData={Animation}
-                      loop={true}
-                      style={{ width: 80, height: 80, margin: "auto" }}
-                    />
+                    <Spinner size="sm" animation="border" />
                   ) : (
-                    "S'inscrire"
+                    "Se connecter"
                   )}
                 </Button>
-                <ToastContainer
-                  position="top-right"
-                  autoClose={3000}
-                  hideProgressBar={false}
-                  newestOnTop
-                  closeOnClick
-                  pauseOnHover
-                  draggable
-                  theme="colored"
-                />
               </Form>
               <p className="link_connexion_register d-flex justify-content-center mt-2">
                 N'avez-vous pas de compte!{" "}
                 <span style={{ fontWeight: "bold", color: "blue" }}>
-                  <Link to="application_web_front/register">
+                  <Link to="/register">
                     {" "}
                     Inscrivez-vous!!
                   </Link>

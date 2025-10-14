@@ -1,5 +1,5 @@
 import React from "react";
-import img_entreprise_2 from "./assets/Images/img_entreprise_2.png";
+import img_entreprise_2 from "./assets/Images/img_entreprise_2.webp";
 import Offres from "./Accueil/Offres";
 
 const About = () => {
@@ -84,9 +84,6 @@ const About = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="mb-3">
-              <Offres />
             </div>
           </div>
         </div>

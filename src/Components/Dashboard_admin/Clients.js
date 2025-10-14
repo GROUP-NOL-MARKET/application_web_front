@@ -8,9 +8,9 @@ import {
   faMars,
   faVenus,
 } from "@fortawesome/free-solid-svg-icons";
-import avis_dashboard_1 from "../assets/Images/avis_dashboard_1.png";
-import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.png";
-import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.png";
+import avis_dashboard_1 from "../assets/Images/avis_dashboard_1.webp";
+import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.webp";
+import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.webp";
 import PieAnimation from "./dataset/PieAnimation";
 
 const Clients = () => {

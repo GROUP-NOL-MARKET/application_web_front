@@ -5,11 +5,14 @@ import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { product_flash_sale } from "../Product_Data";
+import useEmblaCarousel from "embla-carousel-react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "../../Styles/FlashSale.css";
 
 const FlashSale = ({ duration }) => {
+
+  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const [time, setTime] = useState(duration);
 
   // Utilisation de use Effect et des fontions pour le décompte de temps de promotion
@@ -156,50 +159,49 @@ const FlashSale = ({ duration }) => {
 
         {/* Produit flash pour les petits écrans  */}
 
-        <div className="product_flash_sale d-block d-md-none">
-          <Swiper
-            modules={[Navigation]}
-            navigation
-            loop={true}
-            slidesPerView={4}
-            spaceBetween={15}
-            className="Liste_produits border border-1 shadow-sm"
-          >
-            {product_flash_sale.map((product) => (
-              <SwiperSlide key={product.id} className="product_slide">
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  className="img_product"
-                  onClick={handleNavigation}
-                />
-                <div className="discount_badge">
-                  {product.initial_price - product.new_price}%
-                </div>
-                <div className="product_title">{product.name}</div>
-                <div className="price_flash_sale">
-                  <span className="p-2 new_price">
-                    {product.new_price} FCFA
-                  </span>
-                  <span className="initial_price">
-                    <s>{product.initial_price} FCFA</s>
-                  </span>
-                </div>
-                <div className="progress w-100" style={{ height: "20px" }}>
-                  <div
-                    className="progress-bar progress-bar-striped progress-bar-animated"
-                    role="progressbar"
-                    aria-valuenow={product.pourcentage_vendu}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style={{ width: `${product.pourcentage_vendu}%` }}
-                  >
-                    {product.pourcentage_vendu}% vendu
+        <div className="embla d-lg-none">
+          <div className="embla__viewport" ref={emblaRef}>
+            <div className="embla__container">
+              {product_flash_sale.map((product) => (
+                <div key={product.id}
+                  className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1"
+                  onClick={handleNavigation} style={{height:"200px"}}>
+                  <img
+                    src={product.img}
+                    alt={product.name}
+                    className="img_product img-fluid h-75"
+                    onClick={handleNavigation}
+                  />
+                  <div className="discount_badge">
+                    {product.initial_price - product.new_price}%
+                  </div>
+                  <div className="product_title text-center">{product.name}</div>
+                  <div className="price_flash_sale">
+                    <span className="p-2 new_price text-center">
+                      {product.new_price} FCFA
+                    </span>
+                    <span className="initial_price text-center">
+                      <s>{product.initial_price} FCFA</s>
+                    </span>
+                  </div>
+                  <div className="progress w-100" style={{ height: "20px" }}>
+                    <div
+                      className="progress-bar progress-bar-striped progress-bar-animated"
+                      role="progressbar"
+                      aria-valuenow={product.pourcentage_vendu}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      style={{ width: `${product.pourcentage_vendu}%` }}
+                    >
+                      {product.pourcentage_vendu}% vendu
+                    </div>
                   </div>
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              ))}
+
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

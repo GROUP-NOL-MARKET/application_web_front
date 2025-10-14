@@ -3,6 +3,8 @@ import "./Notifications/Notifications.css";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import notification from "../assets/Images/icone/notification.png";
 import comment from "../assets/Images/icone/comment.png";
 import { Avatar } from "@mui/material";
@@ -12,12 +14,14 @@ import img_soleil from "../assets/Images/icone/symbole-de-temps-soleil.png";
 import img_lune from "../assets/Images/icone/croissant-de-lune.png";
 import NotificationDropdown from "./Notifications/NotificationDropdown";
 import "../../Styles/AdminDashbord/topbar.css";
+import axios from "axios";
 
 const Topbar = ({ initial = [], fetchMore, onAction }) => {
   const { theme, toggleThemeMode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState(initial);
   const ref = useRef(null);
+  const navigate = useNavigate();
 
   // fermer si clic en dehors
   useEffect(() => {
@@ -49,11 +53,27 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+
+  const logout = async () => {
+    const token = localStorage.getItem("adminToken");
+    try {
+      await axios.post("http://127.0.0.1:8000/api/admin/logout", {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      localStorage.removeItem("adminToken");
+      toast.success("Déconnexion réussie");
+      navigate("/admin/");
+    } catch (err) {
+      toast.error("Erreur lors de la déconnexion");
+    }
+  };
+
   return (
     <nav
-      className={`${
-        theme === "dark" ? "topbar-dark" : "topbar-light"
-      } navbar navbar-expand border-bottom d-flex position-fixed top-0 `}
+      className={`${theme === "dark" ? "topbar-dark" : "topbar-light"
+        } navbar navbar-expand border-bottom d-flex position-fixed top-0 `}
       style={{ zIndex: 1 }}
     >
       <div className="container-fluid">
@@ -111,7 +131,7 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
                 alt="cloche de notification"
                 className="img-fluid"
                 style={{ cursor: "pointer" }}
-                
+
               />
               {unreadCount > 0 && (
                 <span className="notif-badge">{unreadCount}</span>
@@ -124,7 +144,7 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
                 onAccept={handleAccept}
                 onDecline={handleDecline}
                 onLoadMore={handleLoadMore}
-              
+
               />
             )}
             <div className="col-2 d-flex align-items-center">
@@ -143,14 +163,14 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <a className="dropdown-item" href=" ">
-                    Profil
+                  <a className="dropdown-item" href="/admin/paramètres">
+                    Paramètres
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href=" ">
+                  <Link className="dropdown-item" onClick={logout}>
                     Déconnexion
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

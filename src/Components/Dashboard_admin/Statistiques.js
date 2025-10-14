@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import Entete from "./dataset/Entete";
 import { ThemeContext } from "./ThemeContext";
 import { markers } from "../Product_Data";
-import img_statistiques_ville from "../assets/Images/img_statistiques_ville.png";
-import img_revenu_period_4 from "../assets/Images/img_revenu_period_4.png";
+import img_statistiques_ville from "../assets/Images/img_statistiques_ville.webp";
+import img_revenu_period_4 from "../assets/Images/img_revenu_period_4.webp";
 import FooterDashboard from "./dataset/FooterDashboard";
 
 const Statistiques = () => {
   const { theme } = useContext(ThemeContext);
- 
+
   return (
     <div className="container-fluid">
       {/* En-tête  */}
@@ -70,43 +70,43 @@ const Statistiques = () => {
               </div>
               <div className="mt-3">
                 <h5 className="taux_moyen">Niveau de revenu par ville</h5>
-                {markers.map((m) => (
-                  <div>
-                    <div className="row mt-2">
-                      <h5 className="col-6 petit_titre my-0 py-0">{m.city}</h5>
-                      <h5 className="col petit_titre d-flex justify-content-end my-0 py-0">
-                        {m.value} FCFA
-                      </h5>
-                    </div>
-                    <div className="progress">
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{
-                          width: m.progress + "%",
-                          backgroundColor: m.color,
-                        }}
-                        aria-valuenow={m.progress}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        {m.progress}%
-                      </div>
+
+                <div>
+                  <div className="row mt-2">
+                    <h5 className="col-3 petit_titre my-0 py-0">Cotonou</h5>
+                    <h5 className="col petit_titre d-flex justify-content-end my-0 py-0">
+                      250 000 FCFA
+                    </h5>
+                  </div>
+                  <div className="progress">
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{
+                        width: "100%",
+                        backgroundColor: "blue",
+                      }}
+                      aria-valuenow="100"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      100%
                     </div>
                   </div>
-                ))}
+                </div>
+
               </div>
             </div>
           </div>
           <div className="col">
-                <img src={img_statistiques_ville} alt=" " className="img-fluid"/>
+            <img src={img_statistiques_ville} alt=" " className="img-fluid" />
           </div>
         </div>
       </div>
 
-        {/* Footer  */}
+      {/* Footer  */}
 
-        <FooterDashboard/>
+      <FooterDashboard />
 
 
     </div>

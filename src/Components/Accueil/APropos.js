@@ -1,14 +1,14 @@
 import React from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import { Button } from "react-bootstrap";
-import img_entreprise from "../assets/Images/img_entreprise.jpg";
+import img_entreprise from "../assets/Images/img_entreprise.webp";
 import "../../Styles/APropos.css";
 
 const APropos = () => {
   return (
     <div>
       <div className="container mt-5">
-      <h1 className="text-uppercase a_propos_title_1">A Propos de nous</h1></div>
+        <h1 className="text-uppercase a_propos_title_1">A Propos de nous</h1></div>
       <div className="" style={{ backgroundColor: "#919191" }}>
         <div className="container">
           <div className="row">
@@ -22,9 +22,9 @@ const APropos = () => {
               </div>
             </div>
             <div className="col-md-6 col-12 text-white mt-md-5 mb-3">
-              <h1 className="mt-sm-5 a_propos_title_2"><span style={{ color: "#fa7f1b" }}>GROUP N</span><span style={{color:"#0066BD"}}>OL MARKET</span></h1>
+              <h1 className="mt-sm-5 a_propos_title_2"><span style={{ color: "#fa7f1b" }}>GROUP N</span><span style={{ color: "#0066BD" }}>OL MARKET</span></h1>
               <p className="text-justify a_propos_text">
-                  Nous sommes une entreprise engagée dans la valorisation des
+                Nous sommes une entreprise engagée dans la valorisation des
                 richesses locales, en vous proposant une large sélection de
                 produits locaux frais issus directement de nos producteurs
                 partenaires, pour soutenir l’économie locale et garantir une
@@ -35,8 +35,8 @@ const APropos = () => {
                 meilleur de nos producteurs et fournisseurs, au juste prix, avec
                 un service rapide et fiable.....
               </p>
-              <Link to="/application_web_front/About">
-              <Button>En savoir plus</Button></Link>
+              <Link to="/About">
+                <Button>En savoir plus</Button></Link>
             </div>
           </div>
         </div>

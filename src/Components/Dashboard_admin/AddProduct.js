@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 import Entete from "./dataset/Entete";
 import FooterDashboard from "./dataset/FooterDashboard";
 import { ThemeContext } from "./ThemeContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
   FormGroup,
@@ -11,198 +11,226 @@ import {
   FormLabel,
   Button,
   FormSelect,
+  Spinner,
 } from "react-bootstrap";
-import bouteille_vin from "../assets/Images/bouteille_vin.png";
 
 const AddProduct = () => {
   const { theme } = useContext(ThemeContext);
+
+  const [productData, setProductData] = useState({
+    name: "",
+    reference: "",
+    price: "",
+    quantity: "",
+    family: "",
+    category: "",
+    subcategory: "",
+    description: "",
+  });
+
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setProductData({ ...productData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    setImages(e.target.files);
+  };
+
+  const handleSubmit = async (e, isDraft = false) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        toast.error("Session expirée. Veuillez vous reconnecter !");
+        return;
+      }
+
+      const formData = new FormData();
+      Object.entries(productData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      for (let i = 0; i < images.length; i++) {
+        formData.append("image", images[i]);
+      }
+      formData.append("status", isDraft ? "draft" : "published");
+
+      await axios.post("http://localhost:8000/api/admin/products", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success(
+        isDraft
+          ? "Produit enregistré comme brouillon ✅"
+          : "Produit publié avec succès 🚀"
+      );
+
+      // Réinitialiser le formulaire
+      setProductData({
+        name: "",
+        reference: "",
+        price: "",
+        quantity: "",
+        family: "",
+        category: "",
+        sous_category: " ",
+        disponibility: "",
+        description: "",
+      });
+      setImages([]);
+    } catch (error) {
+      console.error(error.data);
+      toast.error("Erreur lors de l’ajout du produit ❌");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container-fluid">
-      {/* Entete  */}
-
       <Entete title="Ajouter un produit" />
 
-      {/* Premier content  */}
-
-      <div className="container-fluid">
-        <div className="row mt-2">
-          <div className="col-8">
-            <p className="texte_brut">
-              Produits: Tous (18.000) |
-              <span style={{ color: "blue" }}> Publiés: </span>(17.000) |{" "}
-              <span style={{ color: "blue" }}> Supprimés: </span>(500) |{" "}
-              <span style={{ color: "blue" }}> Brouillons: </span>(500)
-            </p>
-          </div>
-          <div className="offset-2 col texte_brut fw-bold d-flex justify-content-end">
-            Produits vus : 1/2500
-          </div>
-        </div>
-      </div>
-
-      {/* Troisième content ou content général  */}
-
       <div
-        className="col shadow-sm border border-1 p-2"
+        className="col shadow-sm border border-1 p-3 mt-3"
         style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
       >
-        <h5 className="taux_moyen fw-bold">Paramètres de produit</h5>
-        <div className="row">
-          <div className="col-8 me-2">
-            <h6 className="petit_titre" style={{ opacity: "0.6" }}>
-              Image du produit
-            </h6>
-            <div className="container-fluid">
-              <div className="row">
-                <div
-                  className="col-5 me-2 border border-1 bg-light d-flex align-items-center justify-content-center"
-                  style={{ height: "200px" }}
-                >
-                  <img
-                    src={bouteille_vin}
-                    alt=""
-                    className="img-fluid h-100 w-auto"
-                  />
-                </div>
-                <div
-                  className="col me-2 border border-1 bg-light d-flex flex-column align-items-center justify-content-center"
-                  style={{ height: "200px" }}
-                >
-                  <FontAwesomeIcon icon={faImage} />
-                  <a href=" " style={{ textDecoration: "none" }}>
-                    Parcourir Image
-                  </a>
-                </div>
-                <div className="col-3">
-                  <ul
-                    className="list-unstyled d-flex flex-column"
-                    style={{ height: "200px" }}
-                  >
-                    <li className="border h-50 border-1 bg-light d-flex flex-column align-items-center justify-content-center">
-                      <FontAwesomeIcon icon={faImage} />
-                      <a href=" " style={{ textDecoration: "none" }}>
-                        Parcourir...
-                      </a>
-                    </li>
-                    <li className="border h-50 border-1 mt-2 bg-light d-flex flex-column align-items-center justify-content-center">
-                      <FontAwesomeIcon icon={faImage} />
-                      <a href=" " style={{ textDecoration: "none" }}>
-                        Parcourir...
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="">
-                <h5 className="petit_titre text-primary">
-                  Plus d'options de gallerie
-                </h5>
-                <p className="texte_brut text-justify">
-                  Tous les formats de fichier sont pris en charge et les
-                  fichiers sont automatiquement optimisés pour assurer un
-                  affichage rapide et une qualité optimale sur tous les écrans.
-                  Vous pouvez également modifier les options pour aller plus
-                  vite dans le choix de votre image.
-                </p>
-                <h5 className="petit_titre text-primary">
-                  Fichier joint
-                  <FontAwesomeIcon icon={faPaperclip} />{" "}
-                </h5>
-                <Form>
-                  <div className="row">
-                    <FormGroup className="col-4 me-2">
-                      <FormLabel>Attributs</FormLabel>
-                      <FormSelect aria-label="Default select label">
-                        <option>Simple</option>
-                        <option value={1}>Double</option>
-                      </FormSelect>
-                    </FormGroup>
-                    <FormGroup className="col-4 me-2">
-                      <FormLabel>L*W*H pouces</FormLabel>
-                      <FormControl />
-                    </FormGroup>
-                    <FormGroup className="col">
-                      <FormLabel>Taille</FormLabel>
-                      <FormControl />
-                    </FormGroup>
-                  </div>
-                </Form>
-              </div>
-            </div>
+        <h5 className="fw-bold">Paramètres du produit</h5>
+        <Form onSubmit={(e) => handleSubmit(e, false)}>
+          <FormGroup className="mb-3">
+            <FormLabel className="label_register">Image du produit</FormLabel>
+            <FormControl
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </FormGroup>
+          <div className="row">
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Nom du produit</FormLabel>
+              <FormControl
+                className="input_register"
+                name="name"
+                value={productData.name}
+                onChange={handleChange}
+                required
+              />
+            </FormGroup>
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Disponibilité</FormLabel>
+              <FormControl
+                className="input_register"
+                name="disponibility"
+                value={productData.disponibility}
+                onChange={handleChange}
+              />
+            </FormGroup>
           </div>
 
-          {/* Formulaire d'ajout  de produit  */}
-
-          <div className="col">
-            <form method="post">
-              <FormGroup>
-                <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                  Nom du produit
-                </FormLabel>
-                <FormControl />
-              </FormGroup>
-              <div className="row mt-2">
-                <FormGroup className="col-6 me-2">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Reférence
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-                <FormGroup className="col">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Prix
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-              </div>
-              <div className="row mt-2">
-                <FormGroup className="col-6 me-2">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Famille
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-                <FormGroup className="col">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Catégories
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-              </div>
-              <div className="row mt-2">
-                <FormGroup className="col-6 me-2">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Quantité
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-                <FormGroup className="col">
-                  <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                    Sous catégorie
-                  </FormLabel>
-                  <FormControl />
-                </FormGroup>
-              </div>
-              <FormGroup className="mt-2">
-                <FormLabel className="petit_titre" style={{ opacity: "0.7" }}>
-                  Description
-                </FormLabel>
-                <FormControl as="textarea" rows={4} />
-              </FormGroup>
-              <div className="container-fluid">
-                <div className="row mt-2">
-                  <Button className="col-6 me-2 texte_brut fw-bold btn-dark">
-                    Brouillon
-                  </Button>
-                  <Button className="col texte_brut fw-bold">Publier</Button>
-                </div>
-              </div>
-            </form>
+          <div className="row">
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Référence</FormLabel>
+              <FormControl
+                className="input_register"
+                name="reference"
+                value={productData.reference}
+                onChange={handleChange}
+              />
+            </FormGroup>
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Prix</FormLabel>
+              <FormControl
+                className="input_register"
+                name="price"
+                type="number"
+                value={productData.price}
+                onChange={handleChange}
+              />
+            </FormGroup>
           </div>
-        </div>
+
+          <div className="row">
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Quantité</FormLabel>
+              <FormControl
+                className="input_register"
+                name="quantity"
+                type="number"
+                value={productData.quantity}
+                onChange={handleChange}
+              />
+            </FormGroup>
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Famille</FormLabel>
+              <FormControl
+                className="input_register"
+                name="family"
+                value={productData.family}
+                onChange={handleChange}
+              />
+            </FormGroup>
+          </div>
+
+          <div className="row">
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Catégorie</FormLabel>
+              <FormControl
+                className="input_register"
+                name="category"
+                value={productData.category}
+                onChange={handleChange}
+              />
+            </FormGroup>
+            <FormGroup className="col-6 mb-2">
+              <FormLabel className="label_register">Sous-catégorie</FormLabel>
+              <FormControl
+                className="input_register"
+                name="sous_category"
+                value={productData.sous_category}
+                onChange={handleChange}
+              />
+            </FormGroup>
+          </div>
+
+          <FormGroup className="mb-3">
+            <FormLabel className="label_register">Description</FormLabel>
+            <FormControl
+              as="textarea"
+              rows={4}
+              name="description"
+              value={productData.description}
+              onChange={handleChange}
+            />
+          </FormGroup>
+
+          <div className="d-flex gap-2">
+            <Button
+              variant="secondary"
+              className="fw-bold"
+              disabled={loading}
+
+            >
+              Brouillon
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              className="fw-bold"
+              disabled={loading}
+              onClick={(e) => handleSubmit(e, true)}
+            >
+              {loading ? <Spinner animation="border" size="auto" /> : "Publier"}
+            </Button>
+          </div>
+        </Form>
       </div>
-
-      {/* Footer  */}
 
       <FooterDashboard />
     </div>

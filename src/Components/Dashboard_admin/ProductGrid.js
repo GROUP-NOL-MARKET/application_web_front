@@ -1,233 +1,203 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Entete from "./dataset/Entete";
-import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "./ThemeContext";
-import { DUMMY_PRODUCTS } from "../Product_Data";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
 
 const ProductGrid = () => {
   const { theme } = useContext(ThemeContext);
+  const [products, setProducts] = useState([]);
   const [dropActive, setDropActive] = useState("Nom");
+  const [category, setCategory] = useState("Electroménager");
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const token = localStorage.getItem("adminToken");
+
+  // 🔹 Charger les produits depuis l’API
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/admin/products?page=${page}&sort=${dropActive}&category=${category}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setProducts(response.data.data);
+      setTotalPages(response.data.total_pages || 1);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors du chargement des produits");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [page, dropActive, category]);
+
+  // 🔹 Supprimer un produit
+  const handleDelete = async (id) => {
+    if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/api/admin/products/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success("Produit supprimé avec succès");
+      fetchProducts();
+    } catch (error) {
+      toast.error("Erreur lors de la suppression");
+    }
+  };
+
   return (
     <div className="container-fluid">
-      {/* En-tête  */}
-
+      {/* En-tête */}
       <Entete title="Grille des produits" />
 
-      {/* Premier content  */}
+      {/* FILTRES */}
       <div className="container-fluid">
         <div className="row mt-3">
-          <div
-            className="col-3 shadow-sm border border-1 p-2"
+          {/* Catégories */}
+          <div className="shadow-sm border border-1 me-2 col-3 p-2 d-flex align-items-center"
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="row">
-              <img
-                src={img_electromenager_dashboard}
-                alt=" "
-                className="col img-fluid"
-              />
-              <p className="col-9 d-flex align-items-center">Electroménager</p>
+
+              <img src={img_electromenager_dashboard} alt=" " className="col img-fluid" />
+              <p className="col-9 text-center petit_titre fw-bold">{category}</p>
+
+
+
             </div>
           </div>
-          <div className="offset-4 col mt-3">
-            <div className="row">
-              <div
-                className="shadow-sm border border-1 me-2 col-6 d-flex align-items-center"
-                style={{
-                  backgroundColor: theme === "dark" ? "black" : "white",
-                }}
+          <div className="shadow-sm border border-1 me-2 col-4 p-2 d-flex align-items-center"
+            style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+          >
+            <div className="dropdown w-100" style={{ cursor: "pointer" }}>
+              <span
+                className="dropdown-toggle petit_titre fw-bold"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <div className="dropdown" style={{ cursor: "pointer" }}>
-                  <span
-                    className="dropdown-toggle"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Catégories de produits
-                  </span>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li className="dropdown-item">Electroménager</li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Nom")}
-                    >
-                      Produits Locaux
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Produits Frais
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Epicerie
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Droguerie
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Divers
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Boissons
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                className="shadow-sm border border-1 col p-1 d-flex align-items-center"
-                style={{
-                  backgroundColor: theme === "dark" ? "black" : "white",
-                }}
+                Catégories de produits {category && `: ${category}`}
+              </span>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li className="dropdown-item" onClick={() => setCategory("Electroménager")}>Electroménager</li>
+                <li className="dropdown-item" onClick={() => setCategory("Produits Locaux")}>Produits Locaux</li>
+                <li className="dropdown-item" onClick={() => setCategory("Produits Frais")}>Produits Frais</li>
+                <li className="dropdown-item" onClick={() => setCategory("Epicerie")}>Epicerie</li>
+                <li className="dropdown-item" onClick={() => setCategory("Droguerie")}>Droguerie</li>
+                <li className="dropdown-item" onClick={() => setCategory("Divers")}>Divers</li>
+                <li className="dropdown-item" onClick={() => setCategory("Boissons")}>Boissons</li>
+                <li className="dropdown-item" onClick={() => setCategory("Téléphonie")}>Téléphonie</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Tri */}
+          <div className="shadow-sm border border-1 col-3 p-2 d-flex align-items-center"
+            style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+          >
+            <div className="dropdown w-100" style={{ cursor: "pointer" }}>
+              <span
+                className="dropdown-toggle petit_titre fw-bold"
+                id="dropdownMenuButton2"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <div className="dropdown" style={{ cursor: "pointer" }}>
-                  <span
-                    className="dropdown-toggle"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Trier par : {dropActive}
-                  </span>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Meilleurs ventes")}
-                    >
-                      Meilleurs ventes
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Nom")}
-                    >
-                      Nom
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      onClick={() => setDropActive("Pires ventes")}
-                    >
-                      Pires ventes
-                    </li>
-                  </ul>
-                </div>
-              </div>
+                Trier par : {dropActive}
+              </span>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <li className="dropdown-item" onClick={() => setDropActive("Nom")}>Nom</li>
+                <li className="dropdown-item" onClick={() => setDropActive("Meilleurs ventes")}>Meilleurs ventes</li>
+                <li className="dropdown-item" onClick={() => setDropActive("Pires ventes")}>Pires ventes</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Deuxième content  */}
+      {/* GRID PRODUITS */}
       <div className="container-fluid">
         <div className="row mt-4">
-          {DUMMY_PRODUCTS.map((product) => (
-            <div
-              className="col-2 me-2 shadow-sm border border-1 pb-2"
-              style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
-            >
-              <div className="row">
-                <div className="col-10">
-                  <img
-                    src={product.image}
-                    alt=" "
-                    className="img-fluid"
-                    style={{ height: "120px" }}
-                  />
-                </div>
-                <div className="col-1 mt-2">
-                  <FontAwesomeIcon icon={faEllipsisVertical} />
-                </div>
-              </div>
-              <h5 className="taux_moyen fw-normal mt-2">{product.name} </h5>
-              <p className="texte_brut p-0 m-0 mt-1">
-                Prix fixe : {product.price} F
-              </p>
-              <p className="texte_brut p-0 m-0 mt-1">
-                Prix de vente : {product.sell_price} F
-              </p>
-              <p className="texte_brut p-0 m-0 mt-1" style={{ color: "green" }}>
-                Disponible :{product.disponibilité}{" "}
-              </p>
-              <p className="texte_brut p-0 m-0 mt-1" style={{ color: "blue" }}>
-                Vendu: {product.selled}{" "}
-              </p>
-              <div className="row mt-2">
-                <button
-                  className="col me-2 texte_brut"
-                  style={{
-                    borderRadius: "15px",
-                    borderColor: "blue",
-                    color: "blue",
-                  }}
-                >
-                  Modifier
-                </button>
-                <button
-                  className="col-6 texte_brut"
-                  style={{
-                    borderRadius: "15px",
-                    borderColor: "red",
-                    color: "red",
-                  }}
-                >
-                  Supprimer
-                </button>
-              </div>
+          {loading ? (
+            <div className="text-center my-5">
+              <CircularProgress />
             </div>
-          ))}
+          ) : products.length > 0 ? (
+            products.map((product) => (
+              <div
+                key={product.id}
+                className="col-2 me-2 shadow-sm border border-1 pb-2 my-1"
+                style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+              >
+                <div className="row">
+                  <div className="col-10">
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="img-fluid"
+                      style={{ minHeight: "120px" }}
+                    />
+                  </div>
+                  <div className="col-1 mt-2">
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                  </div>
+                </div>
+                <h5 className="taux_moyen fw-normal mt-2">{product.name}</h5>
+                <p className="texte_brut m-0">Prix fixe : {product.price} F</p>
+                <p className="texte_brut m-0">Prix de vente : {product.price} F</p>
+                <p className="texte_brut m-0" style={{ color: "green" }}>
+                  Disponible : {product.disponibility}
+                </p>
+                <p className="texte_brut m-0" style={{ color: "blue" }}>
+                  Vendu: {product.selled}
+                </p>
+                <div className="row mt-2">
+                  <Button
+                    className="col me-2"
+                    style={{ borderRadius: "15px", borderColor: "blue", color: "blue" }}
+                    onClick={() => toast.info("Page modification à implémenter")}
+                  >
+                    Modifier
+                  </Button>
+                  <Button
+                    className="col-6"
+                    style={{ borderRadius: "15px", borderColor: "red", color: "red" }}
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Supprimer
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center petit_titre">Aucun produit trouvé</div>
+          )}
         </div>
       </div>
 
-      {/* Pagination  */}
-
-      <nav aria-label="Page navigation example" className="mt-2">
-        <ul className="pagination">
-          <li className="page-item">
-            <a className="page-link" href=" " aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href=" ">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href=" ">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href=" ">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href=" " aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
+      {/* PAGINATION */}
+      <nav aria-label="Pagination" className="mt-3">
+        <ul className="pagination justify-content-center">
+          {[...Array(totalPages)].map((_, index) => (
+            <li key={index} className={`page-item ${page === index + 1 ? "active" : ""}`}>
+              <button className="page-link" onClick={() => setPage(index + 1)}>
+                {index + 1}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
     </div>

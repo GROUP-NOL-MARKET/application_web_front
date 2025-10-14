@@ -1,7 +1,7 @@
-import Logo_seller from "../../assets/Images/logo_seller.png";
-import Logo_seller_2 from "../../assets/Images/logo_seller_2.png";
-import Logo_seller_3 from "../../assets/Images/logo_seller_3.png";
-import Logo_seller_4 from "../../assets/Images/logo_seller_4.png";
+import Logo_seller from "../../assets/Images/logo_seller.webp";
+import Logo_seller_2 from "../../assets/Images/logo_seller_2.webp";
+import Logo_seller_3 from "../../assets/Images/logo_seller_3.webp";
+import Logo_seller_4 from "../../assets/Images/logo_seller_4.webp";
 
 export const DataSeller = [
   {

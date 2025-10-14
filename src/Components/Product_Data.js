@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import best_product_1 from "./assets/Images/best_product_1.png";
-import best_product_2 from "./assets/Images/best_product_2.png";
-import best_product_3 from "./assets/Images/bet_product_3.png";
-import best_product_4 from "./assets/Images/best_product_4.png";
+
+import best_product_1 from "./assets/Images/best_product_1.webp";
+import best_product_2 from "./assets/Images/best_product_2.webp";
+import best_product_3 from "./assets/Images/bet_product_3.webp";
+import best_product_4 from "./assets/Images/best_product_4.webp";
 import img_profil from "./assets/Images/img_profil.webp";
-import produits_locaux from "./assets/Images/produits_locaux.jpg";
-import epicerie from "./assets/Images/epicerie.jpg";
-import animalerie from "./assets/Images/animalerie.jpg";
-import divers from "./assets/Images/divers.jpg";
-import produits_frais from "./assets/Images/produits_frais.jpg";
-import electromenager from "./assets/Images/electromenager.jpg";
-import droguerie from "./assets/Images/droguerie.jpg";
-import boisson from "./assets/Images/boisson.jpg";
-import all_products from "./assets/Images/all_products.jpg";
-import axios from "axios";
-import logo_seller from "./assets/Images/logo_seller.png";
+import produits_locaux from "./assets/Images/produits_locaux.avif";
+import epicerie from "./assets/Images/epicerie.avif";
+import animalerie from "./assets/Images/img_animalerie.webp";
+import divers from "./assets/Images/divers.avif";
+import produits_frais from "./assets/Images/produits_frais.avif";
+import electromenager from "./assets/Images/electromenager.avif";
+import droguerie from "./assets/Images/droguerie.avif";
+import boisson from "./assets/Images/boisson.avif";
+import all_products from "./assets/Images/all_products.avif";
+import logo_seller from "./assets/Images/logo_seller.webp";
+// import voucher from "./assets/Images/voucher_img.webp";
 
 // const ProductData = () => {
 //   const [products, setProducts] = useState([]);
@@ -45,9 +45,9 @@ export const transactions = [
   {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "en attente",
     devise: "FCFA",
@@ -55,12 +55,12 @@ export const transactions = [
     Taxe: "2%",
     Total: 44100,
   },
-    {
+  {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "approuvé",
     devise: "FCFA",
@@ -68,12 +68,12 @@ export const transactions = [
     Taxe: "2%",
     Total: 44100,
   },
-    {
+  {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "approuvé",
     devise: "FCFA",
@@ -81,12 +81,12 @@ export const transactions = [
     Taxe: "2%",
     Total: 44100,
   },
-    {
+  {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "en attente",
     devise: "FCFA",
@@ -94,12 +94,12 @@ export const transactions = [
     Taxe: "2%",
     Total: 44100,
   },
-    {
+  {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "annulé",
     devise: "FCFA",
@@ -107,12 +107,12 @@ export const transactions = [
     Taxe: "2%",
     Total: 44100,
   },
-    {
+  {
     date: "02/10/2026",
     heure: "14:30",
-    img:logo_seller,
+    img: logo_seller,
     name: "Constance PRo",
-    method:"Mtn mobile money",
+    method: "Mtn mobile money",
     type: "Paiement",
     status: "refusé",
     devise: "FCFA",
@@ -465,6 +465,77 @@ export const product_flash_sale = [
     img: best_product_2,
   },
 ];
+
+export const messages = [
+  {
+    id: 1,
+    title: "Du nouveau pour vous sur notre plateforme, visitez",
+    sub_title: "Epicerie",
+    img: best_product_3,
+    content: "Intitulé du message",
+    date: "01/03/2026",
+    heure: "01:50"
+  },
+  {
+    id: 2,
+    title: "Votre livraison a été effectuée avec succès",
+    sub_title: "Epicerie",
+    img: best_product_3,
+    content: "Intitulé du message",
+    date: "01/03/2026",
+    heure: "01:50"
+  },
+  {
+    id: 3,
+    title: "Vous avez annulé une commande",
+    sub_title: "Epicerie",
+    img: best_product_3,
+    content: "Intitulé du message",
+    date: "01/03/2026",
+    heure: "01:50"
+  },
+  {
+    id: 4,
+    title: "Enregistrement de votre commande effectué",
+    sub_title: "Epicerie",
+    img: best_product_3,
+    content: "Intitulé du message",
+    date: "01/03/2026",
+    heure: "01:50"
+  },
+];
+
+export const reviews = [
+  {
+    id: 1,
+    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    commande_id: 2,
+    date: "01/03/2026",
+    heure: "05:17"
+  },
+  {
+    id: 2,
+    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    commande_id: 2,
+    date: "01/03/2026",
+    heure: "05:17"
+  },
+  {
+    id: 3,
+    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    commande_id: 2,
+    date: "01/03/2026",
+    heure: "05:17"
+  },
+  {
+    id: 4,
+    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    commande_id: 2,
+    date: "01/03/2026",
+    heure: "05:17"
+  },
+];
+
 
 export const sous_category_product = [
   {

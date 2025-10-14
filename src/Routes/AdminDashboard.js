@@ -32,7 +32,7 @@ const AdminDashboard = () => {
           <Topbar />
           <main className={`p-4 mt-5 ${theme}`} style={{ minHeight: "100vh" }}>
             <Routes>
-              <Route path="/" element={<DashboardHome />} />
+              <Route path="dashboard" element={<DashboardHome />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="paramètres" element={<Settings />} />
               <Route path="analyticSell" element={<AnalyseVente />} />

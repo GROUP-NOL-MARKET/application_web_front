@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../Styles/AdBanner.css";
-// import phone_inline from "./assets/Images/icone/phone_inline.png";
-import promo from "./assets/Images/promo.png";
-// Option A (avec import depuis src) :
+import telephone from "./assets/Images/icone/telephone.png";
+import promo from "./assets/Images/promo.webp";
 import promo_video from "./assets/Images/promo_video.mp4";
-// Option B (si tu préfères mettre la vidéo dans public/), commente l'import ci-dessus
-// et utilise src="/videos/promo_video.mp4" dans la balise <source>.
 
 const AdBanner = ({
   imageUrl,
@@ -39,7 +36,7 @@ const AdBanner = ({
         loop
         playsInline
         preload="metadata"
-        // source depuis src (import) :
+      // source depuis src (import) :
       >
         <source src={promo_video} type="video/mp4" />
         Ton navigateur ne supporte pas la vidéo.
@@ -104,13 +101,15 @@ const AdBanner = ({
               >
                 {ctaText1}
               </a>
-              <div className="position-absolute top-0 start-50">
+              <div className="position-absolute" style={{
+                bottom: "0px",
+                right: "28px",
+              }}>
                 <motion.div
                   initial={{ scale: 0.6 }}
                   animate={{ scale: 1.4 }}
                   transition={{
                     duration: 0.8,
-                    repeat: Infinity,
                     repeatType: "reverse",
                     ease: "easeInOut",
                   }}
@@ -136,7 +135,10 @@ const AdBanner = ({
               }}
             >
               <div className="row">
-                <h6 className="offset-3 col-9">Commandez au {pub_num}</h6>
+                <div className="col-2">
+                  <img src={telephone} alt="tel_img" className="img-fluid" />
+                </div>
+                <h6 className="offset-1 col">Commandez au {pub_num}</h6>
               </div>
             </div>
           </div>

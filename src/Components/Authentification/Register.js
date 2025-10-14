@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/Register.css";
-import { Form, FormGroup, Button } from "react-bootstrap";
+import { Form, FormGroup, Button, Spinner, InputGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Lottie from "lottie-react";
-import Animation from "../animation/anime.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API from "./api";
 import {
   faFacebook,
   faGoogle,
   faInstagram,
+
 } from "@fortawesome/free-brands-svg-icons";
-import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.png";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
+import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp";
 
 const Register = () => {
-  const [isLoading,setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,9 +26,21 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({});
 
+
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+
+  const togglePasswordVisibility1 = () => {
+    setShowPassword1(!showPassword1);
+  };
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
+  };
+
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:8000/auth/${provider}/redirect`;
   };
+
 
 
   const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,29 +66,6 @@ const Register = () => {
     } else {
     }
 
-    // if (!NameRegex.test(lastName)) {
-    //   newErrors.lastName = "Le nom de famille est invalide";
-    // } else if (!lastName.trim()) {
-    //   newErrors.lastName = "Veuillez remplir ce champ";
-    // } else {
-    //   delete newErrors.setLastName;
-    // }
-
-    // if (!NameRegex.test(firstName)) {
-    //   newErrors.firstName = "Le prénom est invalide";
-    // } else if (!firstName.trim()) {
-    //   newErrors.firstName = "Veuillez remplir ce champ";
-    // } else {
-    //   delete newErrors.setFirstName;
-    // }
-
-    // if (!PhoneRegex.test(phone)) {
-    //   newErrors.phone = "Le numéro de téléphone est invalide";
-    // } else if (!phone.trim()) {
-    //   newErrors.phone = "Veuillez remplir ce champ";
-    // } else {
-    //   delete newErrors.setPhone;
-    // }
 
     if (!PasswordRegex.test(password)) {
       newErrors.password =
@@ -105,14 +94,11 @@ const Register = () => {
         email: email,
         password: password,
         password_confirmation: confirm_password,
-        // firstName: firstName,
-        // lastName: lastName,
-        // phone: phone,
       };
       const res = await API.post("/register", userInput);
       setSuccess(res.data.message);
-      toast.success(res.data.message);
-      navigate("/application_web_front/login");
+      toast.success("Inscription réussie");
+      navigate("/login");
       localStorage.setItem("token", res.data.token); // Sauvegarde le token
     } catch (err) {
       if (err.response?.status === 422) {
@@ -124,38 +110,12 @@ const Register = () => {
       setLoading(false);
     }
 
-    // try {
-    //   setLoading(true);
-    //   const endPoint = "http://localhost:8000/api/register";
-    //   const userInput = {
-    //     email: email,
-    //     password: password,
-    //     password_confirmation: confirm_password,
-    //     // firstName: firstName,
-    //     // lastName: lastName,
-    //     // phone: phone,
-    //   };
-    //   const response = await axios.post(endPoint, userInput, {
-    //     headers: { "Content-Type": "application/json" },
-    //     withCredentials: true,
-    //   });
-    //   if (response.status === 200 || response.status === 201) {
-    //     let msg = response.data.data.message;
-    //     toast.success(msg);
-    //     navigate("application_web_front/login");
-    //   }
-    // } catch (error) {
-    //   const payload = error.response?.data;
-    //   const errors = payload?.errors ?? payload;
-    //   console.log("Erreurs validation:", errors);
-    // } finally {
-    //   setLoading(false);
-    // }
+
   };
   return (
     <div className="register_page">
       <div className="container-fluid mt-4">
-        <div className="col-md-6 col-sm-10 offset-sm-1 offset-md-3 mt-5 mb-5 d-flex align-items-center justify-content-center">
+        <div className="col-md-6 col-sm-10 offset-sm-1 offset-md-3 my-5 d-flex align-items-center justify-content-center">
           <div className="formulaire">
             <div className="en-tête d-flex flex-column align-items-center">
               <img
@@ -177,91 +137,7 @@ const Register = () => {
                 className=" mt-3 container"
                 onSubmit={handleSubmit}
               >
-                {/* Les champs des noms et prénoms pour les petits écrans */}
 
-                {/* <FormGroup className="m-2 d-md-none">
-                  <Form.Label className="label_register ">Nom</Form.Label>
-                  <Form.Control
-                    className="input_register text-uppercase"
-                    value={lastName}
-                    placeholder="group"
-                    onChange={(e) => setLastName(e.target.value)}
-                    isInvalid={errors?.lastName ? true : false}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors?.lastName && errors.lastName}
-                  </Form.Control.Feedback>
-                </FormGroup>
-                <FormGroup className="m-2 d-md-none">
-                  <Form.Label className="label_register">Prénom</Form.Label>
-                  <Form.Control
-                    className="input_register text-capitalize"
-                    placeholder="Entrez votre prénom"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    isInvalid={errors?.firstName ? true : false}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors?.firstName && errors.firstName}
-                  </Form.Control.Feedback>
-                </FormGroup> */}
-
-                {/* Le nom et le prénom: leur champ pour les grands écrans */}
-
-                {/* <div className="d-none d-md-block">
-                  <div className="row">
-                    <FormGroup
-                      className="mt-1 col-md-5"
-                      style={{ marginLeft: "2%" }}
-                    >
-                      <Form.Label className="label_register ">Nom</Form.Label>
-                      <Form.Control
-                        className="input_register text-uppercase"
-                        value={lastName}
-                        placeholder="group"
-                        onChange={(e) => setLastName(e.target.value)}
-                        isInvalid={errors?.lastName ? true : false}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors?.lastName && errors.lastName}
-                      </Form.Control.Feedback>
-                    </FormGroup>
-                    <FormGroup
-                      className="mt-1 col-md-6"
-                      style={{ marginLeft: "4%" }}
-                    >
-                      <Form.Label className="label_register">Prénom</Form.Label>
-                      <Form.Control
-                        className="input_register text-capitalize"
-                        placeholder="Entrez votre prénom"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        isInvalid={errors?.firstName ? true : false}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors?.firstName && errors.firstName}
-                      </Form.Control.Feedback>
-                    </FormGroup>
-                  </div>
-                </div> */}
-
-                {/* Le reste des champs du formulaire  */}
-
-                {/* <FormGroup className="m-2">
-                  <Form.Label className="label_register">
-                    Numéro de téléphone
-                  </Form.Label>
-                  <Form.Control
-                    className="input_register"
-                    placeholder="XX XX XX XX XX"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    isInvalid={errors?.phone ? true : false}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors?.phone && errors.phone}
-                  </Form.Control.Feedback>
-                </FormGroup> */}
                 <FormGroup className="m-2">
                   <Form.Label className="label_register">Email</Form.Label>
                   <Form.Control
@@ -277,17 +153,26 @@ const Register = () => {
                   </Form.Control.Feedback>
                 </FormGroup>
                 <FormGroup className="m-2">
+
                   <Form.Label className="label_register">
                     Mot de passe
                   </Form.Label>
-                  <Form.Control
-                    type="password"
-                    className="input_register"
-                    placeholder=""
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    isInvalid={errors?.password ? true : false}
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type={showPassword1 ? "text" : "password"}
+                      className="input_register"
+                      placeholder=""
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      isInvalid={errors?.password ? true : false}
+                    />
+                    <Button variant="outline-secondary" onClick={togglePasswordVisibility1}>
+                      <FontAwesomeIcon
+                        icon={showPassword1 ? faEyeSlash : faEye}
+                      />
+                    </Button>
+                  </InputGroup>
+
                   <Form.Control.Feedback type="invalid">
                     {errors?.password && errors.password}
                   </Form.Control.Feedback>
@@ -296,13 +181,20 @@ const Register = () => {
                   <Form.Label className="label_register">
                     Confirmer le mot de passe
                   </Form.Label>
-                  <Form.Control
-                    type="password"
-                    className="input_register"
-                    value={confirm_password}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    isInvalid={errors?.confirm_password ? true : false}
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type={showPassword2 ? "text" : "password"}
+                      className="input_register"
+                      value={confirm_password}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      isInvalid={errors?.confirm_password ? true : false}
+                    />
+                    <Button variant="outline-secondary" onClick={togglePasswordVisibility2}>
+                      <FontAwesomeIcon
+                        icon={showPassword2 ? faEyeSlash : faEye}
+                      />
+                    </Button>
+                  </InputGroup>
                   <Form.Control.Feedback type="invalid">
                     {errors?.confirm_password && errors.confirm_password}
                   </Form.Control.Feedback>
@@ -336,30 +228,16 @@ const Register = () => {
                   }}
                 >
                   {isLoading ? (
-                    <Lottie
-                      animationData={Animation}
-                      loop={true}
-                      style={{ width: 40, height: 40, margin: "auto" }}
-                    />
+                    <Spinner size="sm" animation="border" />
                   ) : (
                     "S'inscrire"
                   )}
                 </Button>
-                <ToastContainer
-                  position="top-right"
-                  autoClose={3000}
-                  hideProgressBar={false}
-                  newestOnTop
-                  closeOnClick
-                  pauseOnHover
-                  draggable
-                  theme="colored"
-                />
               </form>
               <p className="link_connexion_register d-flex justify-content-center mt-2">
                 Avez-vous déjà un compte ?{" "}
                 <span style={{ fontWeight: "bold", color: "blue" }}>
-                  <Link to="/application_web_front/login">
+                  <Link to="/login">
                     Connectez-vous!!
                   </Link>
                 </span>
