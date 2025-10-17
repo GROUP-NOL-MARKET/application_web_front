@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../Styles/Cart.css";
 import Offres from "./Accueil/Offres";
 import ValiderSuppression from "./ValiderSuppression";
+import { AuthContext } from "./AuthContext";
 
 const Cart = () => {
   const { products, updateProductQuantity } = useContext(PanierContext);
@@ -48,6 +49,10 @@ const Cart = () => {
     setIsOpen(!isOpen);
   };
   const dropdownRef = useRef(null);
+  const handleRedirect = () => {
+    navigate('/login');
+  }
+  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -107,12 +112,12 @@ const Cart = () => {
               {products.length > 0 && (
                 <div className="Produits">
                   {products.map((product) => (
-                    <div>
+                    <div key={product.id}>
                       <hr
                         style={{ color: "#FA7F1B", height: "0px" }}
                         className="m-0"
                       />
-                      <div key={product.id} className="row mt-3">
+                      <div className="row mt-3">
                         <div className="col-6">
                           <div className="row">
                             <div className="col-6 d-flex align-items-center image_product">
@@ -179,18 +184,6 @@ const Cart = () => {
                   ))}
                 </div>
               )}
-
-              {/* Prix total du panier  */}
-              {/* <div className="col-md-4">
-              {products.length > 0 && (
-                <p id="cart-total-price">
-                  Montant total :{" "}
-                  <strong>
-                    {totalPrice.toFixed(2)} Euro{totalPrice > 1 ? "s" : ""}
-                  </strong>
-                </p>
-              )}
-            </div> */}
             </div>
             {/* La deuxième partie montrant le prix total des produits */}
             <div className="offset-md-1 col-md-3 col-12 mt-3 mb-4 total_product_content border border-1">
@@ -230,21 +223,30 @@ const Cart = () => {
                     <div className="col-7 prix_TTC">Prix total TTC</div>
                     <div className="col-5 ">{totalPrice} fcfa</div>
                   </div>
-                  {totalPrice > 1 ? (
-                    <Button className="achat_button text-white mt-3 w-100" onClick={handleNavigate}>
-
-                      {loading ? (<Spinner />) : ("Acheter")}
-
-                    </Button>
-                  ) : (
+                  {totalPrice < 1 ? (
+                    // Condition 1: Panier vide (ou prix <= 1)
                     <Button
                       className="achat_button mt-3 w-100"
-
                       onClick={handleResponse}
                     >
                       Acheter
-
                     </Button>
+                  ) : (
+                    // Les deux autres conditions : Le prix est > 1
+                    (isLoggedIn) ? (
+                      // Condition 2: Panier non vide ET connecté
+                      <Button className="achat_button text-white mt-3 w-100" onClick={handleNavigate}>
+                        {loading ? (<Spinner />) : ("Acheter")}
+                      </Button>
+                    ) : (
+                      // Condition 3: Panier non vide ET déconnecté
+                      <Button
+                        className="achat_button mt-3 w-100"
+                        onClick={handleRedirect} // Redirection vers /login
+                      >
+                        Acheter
+                      </Button>
+                    )
                   )}
                 </div>
               </div>

@@ -16,7 +16,7 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 const Sidebar = () => {
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="border border-1 shadow-sm p-3 w-100">
         <ul className="list-unstyled w-100" style={{ lineHeight: "3.0" }}>
           <li className="petit_titre w-100">
@@ -28,7 +28,7 @@ const Sidebar = () => {
               end
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={user} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Mon profil</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={user} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mon profil</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -39,18 +39,18 @@ const Sidebar = () => {
               }
 
             >
-              <div className="row"><div className="col-3"> <img className="w-75" src={cheklist} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">  Mes commandes</h4></div>
+              <div className="row"><div className="col-3"> <img className="w-75" src={cheklist} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">  Mes commandes</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
             <NavLink
               to="/user/messages"
               className={({ isActive }) =>
-                "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
+                "nav-link  " + (isActive ? "active-link" : "text-dark")
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={comment} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Boîte de réception</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={comment} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Boîte de réception</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -61,7 +61,7 @@ const Sidebar = () => {
               }
 
             >
-              <div className="row"><div className="col-3"> <img className="w-75" src={avi} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Mes avis</h4> </div>
+              <div className="row"><div className="col-3"> <img className="w-75" src={avi} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mes avis</h4> </div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -72,7 +72,7 @@ const Sidebar = () => {
 
               to="/user/bons"
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Bons d'achat</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Bons d'achat</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -83,7 +83,7 @@ const Sidebar = () => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={favorie} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Favoris</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={favorie} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Favoris</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -94,7 +94,7 @@ const Sidebar = () => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={vu} alt="" /></div><h4 className="col petit_titre d-flex align-items-center">Vus récemment</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={vu} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Vus récemment</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -105,7 +105,7 @@ const Sidebar = () => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={compte} alt="" /></div><h4 className="col petit_titre d-flex align-items-center"> Gestion du compte</h4></div>
+              <div className="row"><div className="col-3"><img className="w-75" src={compte} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate"> Gestion du compte</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -118,7 +118,7 @@ const Sidebar = () => {
               <div className="row">
                 <div className="col-3"><img className="w-75" src={adresse} alt="" /></div>
 
-                <h4 className="col petit_titre d-flex align-items-center"> Mon adresse</h4>
+                <h4 className="col petit_titre d-flex align-items-center text-truncate"> Mon adresse</h4>
               </div>
             </NavLink>
           </li>

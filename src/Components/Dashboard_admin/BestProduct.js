@@ -78,111 +78,9 @@ const BestProduct = () => {
       {/* Deuxième content  */}
       <div className="container-fluid">
         <div className="row mt-4">
-          <div
-            className="col shadow-sm border border-1 p-2 me-1"
-            style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
-          >
-            <h5 className="taux_moyen">Top ventes par catégories</h5>
-            <div className="d-flex flex-column">
-              <div className="row">
-                <h4 className="petit_titre col-6">Boissons</h4>
-                <h4 className="col-6 d-flex justify-content-end petit_titre">
-                  1 000 000 FCFA
-                </h4>
-              </div>
-
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: "90%",
-                    backgroundColor: "orange",
-                  }}
-                  aria-valuenow="90"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  90%
-                </div>
-              </div>
-            </div>
-            <div className="d-flex flex-column">
-              <div className="row mt-2">
-                <h4 className="petit_titre col-6">Produits frais</h4>
-                <h4 className="petit_titre col-6 d-flex justify-content-end">
-                  980 000 FCFA
-                </h4>
-              </div>
-
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: "70%",
-                    backgroundColor: "gray",
-                  }}
-                  aria-valuenow="70"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  70%
-                </div>
-              </div>
-            </div>
-            <div className="d-flex flex-column">
-              <div className="row mt-2">
-                <h4 className="petit_titre col-6">Produits locaux</h4>
-                <h4 className="petit_titre col-6 d-flex justify-content-end">
-                  700 000 FCFA
-                </h4>
-              </div>
-
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: "60%",
-                    backgroundColor: "green",
-                  }}
-                  aria-valuenow="60"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  60%
-                </div>
-              </div>
-            </div>
-            <div className="d-flex flex-column">
-              <div className="row mt-2">
-                <h4 className="petit_titre col-6">Droguerie</h4>
-                <h4 className="petit_titre col-6 d-flex justify-content-end">
-                  600 000 FCFA
-                </h4>
-              </div>
-
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{
-                    width: "60%",
-                    backgroundColor: "blue",
-                  }}
-                  aria-valuenow="60"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  60%
-                </div>
-              </div>
-            </div>
-          </div>
-          {DataSeller.slice(0, 4).map((seller) => (
+          {DataSeller.slice(0, 5).map((seller) => (
             <div
-              className="col-2 me-1 ms-1 d-flex flex-column shadow-sm border border-1"
+              className="col-2 me-1 d-flex flex-column shadow-sm border border-1"
               style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
             >
               <div className="d-flex align-items-center justify-content-center">
@@ -242,6 +140,7 @@ const BestProduct = () => {
                     name="size-small"
                     value={best.notation}
                     size="small"
+                    readOnly
                   />
                   <h6 className="petit_titre">{best.restant} restants</h6>
                   <h6 className="petit_titre">{best.vendu} vendus</h6>
@@ -285,6 +184,7 @@ const BestProduct = () => {
                     name="size-small"
                     value={best.notation}
                     size="small"
+                    readOnly
                   />
                   <h6 className="petit_titre">{best.restant} restants</h6>
                   <h6 className="petit_titre">{best.vendu} vendus</h6>
@@ -329,6 +229,7 @@ const BestProduct = () => {
                     name="size-small"
                     value={best.notation}
                     size="small"
+                    readOnly
                   />
                   <h6 className="petit_titre">{best.restant} restants</h6>
                   <h6 className="petit_titre">{best.vendu} vendus</h6>
@@ -371,6 +272,96 @@ const BestProduct = () => {
                     name="size-small"
                     value={best.notation}
                     size="small"
+                    readOnly
+                  />
+                  <h6 className="petit_titre">{best.restant} restants</h6>
+                  <h6 className="petit_titre">{best.vendu} vendus</h6>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="row mt-4">
+          <div className="col-6">
+            <div className="row mb-2">
+              <img
+                className="img-fluid col"
+                src={img_boissons_dashboard}
+                alt=" "
+              />
+              <h4 className="taux_moyen col-10 d-flex align-items-center">
+                Droguerie
+              </h4>
+            </div>
+            <div className="row">
+              {best_product_droguerie.slice(0, 3).map((best) => (
+                <div
+                  className="col me-2 border border-1 shadow-sm"
+                  style={{
+                    backgroundColor: theme === "dark" ? "black" : "white",
+                  }}
+                >
+                  <div className="row">
+                    <img
+                      src={best.img}
+                      alt=" "
+                      className="img-fluid col ms-2 mt-2 bg-light"
+                      style={{ height: "100px" }}
+                    />
+                    <div className="col-2 mt-2 d-flex justify-content-end">
+                      <FontAwesomeIcon icon={faEllipsisVertical} />
+                    </div>
+                  </div>
+                  <h4 className="taux_moyen fw-normal">{best.nom}</h4>
+                  <Rating
+                    name="size-small"
+                    value={best.notation}
+                    size="small"
+                    readOnly
+                  />
+                  <h6 className="petit_titre">{best.restant} restants</h6>
+                  <h6 className="petit_titre">{best.vendu} vendus</h6>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="col-6">
+            <div className="row mb-2">
+              <img
+                className="img-fluid col"
+                src={img_boissons_dashboard}
+                alt=" "
+              />
+              <h4 className="taux_moyen col-10 d-flex align-items-center">
+                Produits Frais
+              </h4>
+            </div>
+            <div className="row">
+              {best_product_droguerie.slice(0, 3).map((best) => (
+                <div
+                  className="col me-2 border border-1 shadow-sm"
+                  style={{
+                    backgroundColor: theme === "dark" ? "black" : "white",
+                  }}
+                >
+                  <div className="row">
+                    <img
+                      src={best.img}
+                      alt=" "
+                      className="img-fluid col ms-2 mt-2 bg-light"
+                      style={{ height: "100px" }}
+                    />
+                    <div className="col-2 mt-2 d-flex justify-content-end">
+                      <FontAwesomeIcon icon={faEllipsisVertical} />
+                    </div>
+                  </div>
+                  <h4 className="taux_moyen fw-normal">{best.nom}</h4>
+                  <Rating
+                    name="size-small"
+                    value={best.notation}
+                    size="small"
+                    readOnly
                   />
                   <h6 className="petit_titre">{best.restant} restants</h6>
                   <h6 className="petit_titre">{best.vendu} vendus</h6>

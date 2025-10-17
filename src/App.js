@@ -14,15 +14,14 @@ import About from "./Components/About";
 import Cart from "./Components/Cart";
 import Paiement from "./Components/Paiement";
 import Faq from "./Components/Faq";
-import RecupProduct from "./Components/RecupProduct";
 import Products from "./Components/Products/Products";
 import AdminDashboard from "./Routes/AdminDashboard";
-import Category from "./Components/Products/Category";
 import UserDashboard from "./Routes/UserDashboard";
 import ChangePassword from "./Components/Dashboard_user/ChangePassword";
 import AdminPrivateRoute from "./Components/Dashboard_admin/AdminPrivateRoute";
 import Connexion from "./Components/Dashboard_admin/Connexion";
 import UserPrivateRoute from "./Components/UserPrivteRoute";
+import AllProducts from "./Components/Products/AllProducts";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,8 +66,7 @@ function App() {
           <Route path="/Paiement" element={<Paiement />} />
           <Route path="/aide&Faq" element={<Faq />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/recup_product" element={<RecupProduct />} />
+          <Route path="/all_products" element={<AllProducts />} />
           <Route path="/admin/*" element={<AdminPrivateRoute><AdminDashboard /></AdminPrivateRoute>} />
           <Route path="/user/*" element={<UserPrivateRoute><UserDashboard /></UserPrivateRoute>} />
           <Route path="/reset-password" element={<ChangePassword />} />

@@ -17,12 +17,12 @@ const cartReducer = (state, action) => {
 
     // MODIFICATION ICI : On recherche l'ID du produit
     const existingElementIndex = updateShoppingCartProducts.findIndex(
-      (cartProducts) => cartProducts.id === productIdToAdd // 👈 Utiliser productIdToAdd
+      (cartProducts) => cartProducts.id === productIdToAdd
     );
     const existingElement = updateShoppingCartProducts[existingElementIndex];
 
     if (existingElement) {
-      // 1. SI le produit EXISTE, on augmente la quantité. (C'est la logique souhaitée)
+      // 1. SI le produit EXISTE, on augmente la quantité. 
       updateShoppingCartProducts[existingElementIndex] = {
         ...existingElement,
         quantity: existingElement.quantity + 1,
@@ -89,7 +89,7 @@ export const PanierContextProvider = ({ children }) => {
 
   const handleAddProductToCart = (product) => {
     cartDispatch({ type: "AJOUTER_DANS_PANIER", payload: { product } });
-    toast.success("Produit ajouté au panier ✅");
+    toast.success("Produit ajouté au panier");
   };
 
 
@@ -107,9 +107,9 @@ export const PanierContextProvider = ({ children }) => {
       // 2. Exécute toutes les actions synchrones
       cartDispatch({ type: "VIDER_PANIER" });
       localStorage.removeItem("panier");
-      toast.error("Panier vidé ❌");
+      toast.error("Panier vidé");
 
-      // 3. Résout la Promise immédiatement pour signaler que c'est "terminé"
+      // 3. Résoudre la Promise immédiatement pour signaler que c'est "terminé"
       resolve();
     });
   };

@@ -1,6 +1,7 @@
 import React from "react";
 import "../../Styles/footer.css";
 import { Form, Button } from "react-bootstrap";
+import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp"
 
 const Footer = () => {
   return (
@@ -52,7 +53,7 @@ const Footer = () => {
                 </a>
               </div>
               <div>
-                <a href="application_web_front/aide&Faq" className="a_footer texte_brut">
+                <a href="/aide&Faq" className="a_footer texte_brut">
                   FAQ
                 </a>
               </div>
@@ -62,22 +63,22 @@ const Footer = () => {
             <h3 className="taux_moyen">A Propos</h3>
             <div className=" p-0">
               <div className=" ">
-                <a href=" " className="a_footer texte_brut">
+                <a href="/aide&Faq" className="a_footer texte_brut">
                   Livraisons et retours
                 </a>
               </div>
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/Contact" className="a_footer texte_brut">
                   Services clients
                 </a>
               </div>
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/About" className="a_footer texte_brut">
                   Histoires et valeurs
                 </a>
               </div>
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/Contact" className="a_footer texte_brut">
                   Nos boutiques
                 </a>
               </div>
@@ -94,7 +95,7 @@ const Footer = () => {
               <form method="post">
                 <div className="row">
                   <div className="col-8 me-2">
-                    <Form.Control type="email" placeholder="Votre email"  />
+                    <Form.Control type="email" placeholder="Votre email" />
                   </div>
                   <Button
                     type="submit"
@@ -108,6 +109,25 @@ const Footer = () => {
               </form>
             </div>
           </div>
+        </div>
+        <hr />
+        <div className="row mt-0">
+          <p className="col-10" style={{ fontSize: "10px" }}>
+            Copyright © 2025 par Nol Market. Tous droits réservés
+          </p>
+          <div className="col-1 d-flex align-items-center justify-content-end">
+            <span style={{ fontSize: "10px" }}>
+              Produit par:
+            </span>
+          </div>
+          <div className="col-1">
+            <img
+              src={img_entreprise}
+              alt="logo de l'entreprise"
+              className="img-fluid"
+            />
+          </div>
+
         </div>
       </div>
     </div>

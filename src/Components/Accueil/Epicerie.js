@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,14 +7,36 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
-import { product_flash_sale } from "../Product_Data";
+import epicerie from "../assets/Images/epicerie.avif";
+
 
 const Epicerie = () => {
+
+  const sousCategories = [
+    { id: 1, name: "Petit déjeuner", img: epicerie },
+    { id: 2, name: "Céréales-Corn Flakes-pain grillé", img: epicerie },
+    { id: 3, name: "Biscuits gâteaux", img: epicerie },
+    { id: 4, name: "Amuse gueules", img: epicerie },
+    { id: 5, name: "Pains et viennoiseries", img: epicerie },
+    { id: 6, name: "Bonbons-chocolat", img: epicerie },
+    { id: 7, name: "Conserves-plats cuisinés", img: epicerie },
+    { id: 8, name: "Pâtes alimentaires-riz-purée", img: epicerie },
+    { id: 9, name: "Assaisonnement-condiments", img: epicerie },
+    { id: 10, name: "Huile-vinaigre", img: epicerie },
+    { id: 11, name: "Sardine", img: epicerie },
+    { id: 12, name: "Produits du monde", img: epicerie },
+  ];
+
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
-  const handleNavigation = () => {
-    navigate("/products");
+
+  const handleNavigation = (subcategory) => {
+    navigate(`/products?sous_category=${encodeURIComponent(subcategory)}`);
   };
+  const handleNavigation2 = (category) => {
+    navigate(`/products?category=${encodeURIComponent(category)}`);
+  };
+
   return (
     <div className="container mt-1 mt-md-5">
       <div className="row">
@@ -23,16 +45,16 @@ const Epicerie = () => {
         </h1>
         <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-5 mt-md-0">
           <div className="voir_tout">
-            <Link
-              to="/products"
+            <div
+              onClick={() => handleNavigation2("Epicerie")}
               className="row d-flex align-content-end"
-              style={{ textDecoration: "none", color: "#FA7F1B" }}
+              style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
             >
               <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
               <div className="col-1">
                 <FontAwesomeIcon icon={faArrowAltCircleRight} />
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -48,15 +70,15 @@ const Epicerie = () => {
         spaceBetween={15}
         className="Liste_produits d-none d-md-block"
       >
-        {product_flash_sale.map((product) => (
+        {sousCategories.map((sub) => (
           <SwiperSlide
-            key={product.id}
+            key={sub.id}
             className="product_slide border border-1 shadow-sm"
-            onClick={handleNavigation}
+            onClick={() => handleNavigation(sub.name)}
           >
-            <img src={product.img} alt={product.name} className="img_product" />
+            <img src={sub.img} alt={sub.name} className="img_product" />
             <div className="border border-1 border-top w-100">
-              <div className="product_title">{product.name}</div>
+              <div className="product_title petit_titre">{sub.name}</div>
             </div>
           </SwiperSlide>
         ))}
@@ -67,17 +89,15 @@ const Epicerie = () => {
       <div className="embla d-lg-none">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
-            {product_flash_sale.map((product) => (
+            {sousCategories.map((sub) => (
               <div
-                key={product.id}
-                className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1"
-                onClick={handleNavigation}
+                key={sub.id}
+                className="embla__slide border border-1 rounded-3 d-flex flex-column me-1"
+                onClick={() => handleNavigation(sub.name)}
               >
-                <img src={product.img} alt={product.name} className="img-fluid h-75 img_product" />
+                <img src={sub.img} alt={sub.name} className="img_product" />
 
-                <div className="product_title text-center">{product.name}</div>
-
-
+                <div className="text-center petit_titre w-auto">{sub.name}</div>
               </div>
             ))}
           </div>

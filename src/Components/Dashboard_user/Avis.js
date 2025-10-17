@@ -1,38 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews } from "../../Store/ReviewsSlice";
 import email from "../assets/Images/icone/email.png";
-import Lottie from "lottie-react";
-import Animation from "../animation/loading_gray.json";
 import { Rating } from "@mui/material";
+import Animation from "../animation/loading_gray.json";
+import { lazy, Suspense } from "react";
+
+const Lottie = lazy(() => import("lottie-react"));
+
 
 const Avis = () => {
-    const [reviews, setReviews] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const dispatch = useDispatch();
+    const { reviews, loading, page, totalPages, cache } = useSelector(
+        (state) => state.reviews
+    );
 
+    // Charger uniquement si non déjà dans le cache Redux
     useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const res = await fetch(`http://127.0.0.1:8000/api/reviews?page=${page}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+        if (!cache[page]) dispatch(fetchReviews(page));
+    }, [page, dispatch, cache]);
 
-                const data = await res.json();
-                setReviews(data.data);
-                setTotalPages(data.last_page);
-            } catch (error) {
-                console.error("Erreur lors du chargement des avis :", error);
-            } finally {
-                setLoading(false);
+    // Navigation entre pages, évite re-render inutile
+    const handlePageChange = useCallback(
+        (newPage) => {
+            if (newPage >= 1 && newPage <= totalPages) {
+                dispatch(fetchReviews(newPage));
             }
-        };
+        },
+        [dispatch, totalPages]
+    );
 
-        fetchReviews();
-    }, [page]);
-
+    // useMemo pour formater les avis
+    const formattedReviews = useMemo(() => {
+        return reviews.map((review) => ({
+            ...review,
+            dateFormatted: new Date(review.created_at).toLocaleString(),
+        }));
+    }, [reviews]);
 
     return (
         <div>
@@ -43,27 +47,38 @@ const Avis = () => {
 
                 <div className="mt-2">
                     {loading ? (
-                        <Lottie
-                            animationData={Animation}
-                            loop={true}
-                            style={{ width: 80, height: 80, margin: "auto" }}
-                        />
-                    ) : reviews.length > 0 ? (
-                        reviews.map((review) => (
-                            <div className="border border-1 rounded-3 my-2 p-2" key={review.id}>
-                                <h5 className="taux_moyen">Commande #{review.order.id}</h5>
+                        <Suspense fallback={<div>Chargement...</div>}>
+                            <Lottie
+                                animationData={Animation}
+                                loop
+                                style={{ width: 50, height: 50, margin: "auto" }}
+                            />
+                        </Suspense>
+                    ) : formattedReviews.length > 0 ? (
+                        formattedReviews.map((review) => (
+                            <div
+                                className="border border-1 rounded-3 my-2 p-2"
+                                key={review.id}
+                            >
+                                <h5 className="taux_moyen">
+                                    Commande #{review.order?.id ?? "?"}
+                                </h5>
                                 <h6 className="texte_brut">{review.content}</h6>
-                                <p className="taux_moyen">Note : <Rating name="size-medium" defaultValue={review.rating} /></p>
-                                <p className="texte_brut">{new Date(review.created_at).toLocaleString()}</p>
+                                <p className="taux_moyen">
+                                    Note :{" "}
+                                    <Rating name="size-medium" defaultValue={review.rating} readOnly />
+                                </p>
+                                <p className="texte_brut">{review.dateFormatted}</p>
                             </div>
                         ))
                     ) : (
                         <div className="d-flex flex-column align-items-center justify-content-center my-3">
-                            <img src={email} alt="" style={{ height: "50px", width: "auto" }} />
-                            <p className="p-1 m-0 texte_brut">Aucune évaluation de commande actuelle</p>
+                            <img src={email} alt="vide" style={{ height: "50px" }} />
+                            <p className="p-1 m-0 texte_brut">
+                                Aucune évaluation de commande actuelle
+                            </p>
                             <p className="p-0 m-0 texte_brut text-center">
-                                Après la livraison de vos produits, vous pourrez les évaluer. Vos commentaires seront publiés sur la
-                                page produit pour aider tous les utilisateurs à bénéficier de la meilleure expérience d'achat.
+                                Après la livraison de vos produits, vous pourrez les évaluer.
                             </p>
                         </div>
                     )}
@@ -75,14 +90,14 @@ const Avis = () => {
                         <button
                             className="btn btn-sm btn-secondary me-2"
                             disabled={page === 1}
-                            onClick={() => setPage(page - 1)}
+                            onClick={() => handlePageChange(page - 1)}
                         >
                             ← Précédent
                         </button>
                         <button
                             className="btn btn-sm btn-primary"
                             disabled={page === totalPages}
-                            onClick={() => setPage(page + 1)}
+                            onClick={() => handlePageChange(page + 1)}
                         >
                             Suivant →
                         </button>

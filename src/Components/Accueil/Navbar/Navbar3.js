@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../../Styles/Navbar.css";
 import { sous_category_product } from "../../Product_Data";
 
 const Navbar3 = () => {
+
+  const navigate = useNavigate();
+
+  const handleNavigation = (sous_category) => {
+    navigate(`/products?sous_category=${encodeURIComponent(sous_category)}`);
+  };
+
   return (
     <div>
       <div className="navigation_produit border border-1 shadow-sm p-3">
@@ -39,12 +46,12 @@ const Navbar3 = () => {
                     {item.sous_category.map((index, i) => (
                       <li key={i}>
 
-                        <Link
-                          to=" "
+                        <div
+                          onClick={() => handleNavigation(index)}
                           className="text-white text-decoration-none nav-link nav-header-3"
                         >
                           {index}
-                        </Link>
+                        </div>
                       </li>
                     ))}
                   </details>
@@ -70,28 +77,28 @@ const Navbar3 = () => {
           <div className="mx-3">
             <ul className="d-flex flex-column list-unstyled">
               <li className="mt-2">
-                <a href="/" className="text-white category_product_name">
+                <a href="/About" className="text-white category_product_name">
                   A propos
                 </a>
               </li>
               <li className="mt-2">
-                <a href="/" className="text-white category_product_name">
+                <a href="/aide&Faq" className="text-white category_product_name">
                   Services
                 </a>
               </li>
               <li className="mt-2">
-                <a href="/" className="text-white category_product_name">
+                <a href="/Cart" className="text-white category_product_name">
                   Achats
                 </a>
               </li>
               <li className="mt-2">
-                <a href="/" className="text-white category_product_name ">
+                <a href="/all_products" className="text-white category_product_name ">
                   Produits
                 </a>
               </li>
               <li className="mt-2">
-                <a href="/" className="text-white category_product_name mt-2">
-                  Blog
+                <a href="/Contact" className="text-white category_product_name mt-2">
+                  Contact
                 </a>
               </li>
             </ul>

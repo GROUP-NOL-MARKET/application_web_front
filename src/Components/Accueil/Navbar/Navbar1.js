@@ -220,7 +220,7 @@ const Navbar1 = () => {
           <div className="m-0 p-1 fw-semibold nav-item d-none d-lg-block">
             <Button
               as={Link}
-              to="/products"
+              to="/all_products"
               type="button"
               style={{
                 fontFamily: "Roboto, sans-serif",

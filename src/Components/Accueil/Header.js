@@ -1,5 +1,6 @@
 // src/components/Header/Header.jsx
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
 import carousel_1 from "../assets/Images/carousel_1.webp";
@@ -12,6 +13,61 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 const Header = () => {
+  //  Mémorisation des catégories et des images
+  const categories = useMemo(() => category_product, []);
+  const carouselImages = useMemo(() => [carousel_1, carousel_2, carousel_3], []);
+
+  const navigate = useNavigate();
+
+  const handleNavigation2 = (category) => {
+    navigate(`/products?category=${encodeURIComponent(category)}`);
+  };
+
+
+  //  Génération du contenu du carousel
+  const carouselIndicators = useMemo(
+    () =>
+      carouselImages.map((_, index) => (
+        <button
+          key={index}
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to={index}
+          className={index === 0 ? "active" : ""}
+          aria-label={`Slide ${index + 1}`}
+        />
+      )),
+    [carouselImages]
+  );
+
+  const carouselSlides = useMemo(
+    () =>
+      carouselImages.map((img, index) => (
+        <div
+          key={index}
+          className={`carousel-item ${index === 0 ? "active" : ""}`}
+        >
+          <img
+            loading="lazy"
+            src={img}
+            className="d-block w-100"
+            alt={`carousel_${index + 1}`}
+          />
+          <div className="carousel-caption d-none d-md-block">
+            <h5>Titre de l'image {index + 1}</h5>
+            <p>
+              {index === 0
+                ? "Découvrez nos meilleures offres sur la collection été."
+                : index === 1
+                  ? "Profitez des dernières tendances à prix réduits."
+                  : "Explorez nos nouveautés et bons plans du moment."}
+            </p>
+          </div>
+        </div>
+      )),
+    [carouselImages]
+  );
+
   return (
     <header className="mb-3">
       {/* --- Bannière promo Desktop --- */}
@@ -43,39 +99,11 @@ const Header = () => {
               <div className="hauteur_carousel col-lg-9">
                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
                   {/* Indicateurs */}
-                  <div className="carousel-indicators">
-                    {[0, 1, 2].map((index) => (
-                      <button
-                        key={index}
-                        type="button"
-                        data-bs-target="#carouselExampleCaptions"
-                        data-bs-slide-to={index}
-                        className={index === 0 ? "active" : ""}
-                        aria-label={`Slide ${index + 1}`}
-                      />
-                    ))}
-                  </div>
+                  <div className="carousel-indicators">{carouselIndicators}</div>
 
                   {/* Images du carousel */}
                   <div className="carousel-inner rounded-3 overflow-hidden">
-                    {[carousel_1, carousel_2, carousel_3].map((img, index) => (
-                      <div
-                        key={index}
-                        className={`carousel-item ${index === 0 ? "active" : ""}`}
-                      >
-                        <img src={img} className="d-block w-100" alt={`carousel_${index + 1}`} />
-                        <div className="carousel-caption d-none d-md-block">
-                          <h5>Titre de l'image {index + 1}</h5>
-                          <p>
-                            {index === 0
-                              ? "Découvrez nos meilleures offres sur la collection été."
-                              : index === 1
-                                ? "Profitez des dernières tendances à prix réduits."
-                                : "Explorez nos nouveautés et bons plans du moment."}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                    {carouselSlides}
                   </div>
 
                   {/* Contrôles du carousel */}
@@ -101,57 +129,77 @@ const Header = () => {
               </div>
 
               {/* --- Catégories Desktop --- */}
-
               <div className="col-3 d-none d-lg-block">
-                <p className="text-uppercase font-bold title_category_product d-flex justify-content-center"> Catégories de produits </p>
+                <p className="text-uppercase font-bold title_category_product d-flex justify-content-center">
+                  Catégories de produits
+                </p>
                 <div className="m-2">
-                  {category_product.slice(0, 3).map((category_p) => (
-                    <Link key={category_p.category} to={category_p.link} className="text-decoration-none text-black" >
+                  {categories.slice(0, 3).map((category_p) => (
+                    <div
+                      key={category_p.category}
+                      onClick={() => handleNavigation2(category_p.category)}
+                      className="text-decoration-none text-black"
+                    >
                       <div className="border border-1 mt-2 category_content shadow-sm">
                         <div className="d-flex flex-column">
-                          <img alt={category_p.category} src={category_p.image} className="category_img rounded-2" />
-                          <h3 className="category_name text-uppercase"> {category_p.category} </h3>
+                          <img
+                            loading="lazy"
+                            alt={category_p.category}
+                            src={category_p.image}
+                            className="category_img rounded-2"
+
+                          />
+                          <h3 className="category_name text-uppercase">
+                            {category_p.category}
+                          </h3>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div className="mt-4 d-none d-lg-block">
                 <div className="row">
-                  {category_product.slice(3, 9).map((category_p) => (
-                    <Link key={category_p.category} to={category_p.link} className="text-decoration-none text-black col-2" >
+                  {categories.slice(3, 9).map((category_p) => (
+                    <div
+                      key={category_p.category}
+                      onClick={() => handleNavigation2(category_p.category)}
+                      className="text-decoration-none text-black col-2"
+                    >
                       <div className="border border-1 category_content shadow-sm">
                         <div className="d-flex flex-column">
-                          <img alt={category_p.category} src={category_p.image} className="category_img rounded-2" />
-                          <h3 className="category_name text-uppercase"> {category_p.category} </h3>
+                          <img
+                            loading="lazy"
+                            alt={category_p.category}
+                            src={category_p.image}
+                            className="category_img rounded-2"
+                          />
+                          <h3 className="category_name text-uppercase">
+                            {category_p.category}
+                          </h3>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
           </section>
 
-
-
-
-
-
           {/* --- Catégories Mobile --- */}
-          <section className="d-lg-none ">
+          <section className="d-lg-none">
             <h5 className="fw-bold mb-2">Catégories de produits</h5>
             <div className="row g-2">
-              {category_product.slice(0, 9).map((category_p) => (
+              {categories.slice(0, 9).map((category_p) => (
                 <div key={category_p.category} className="col-4 col-md-3">
-                  <Link
-                    to={category_p.link}
+                  <div
+                    onClick={() => handleNavigation2(category_p.category)}
                     className="text-decoration-none text-dark"
                   >
                     <div className="border shadow-sm rounded-3 d-flex flex-column align-items-center p-2">
                       <img
+                        loading="lazy"
                         src={category_p.image}
                         alt={category_p.category}
                         className="img-fluid rounded-2"
@@ -160,14 +208,14 @@ const Header = () => {
                         {category_p.category}
                       </small>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               ))}
             </div>
           </section>
-        </div >
+        </div>
       </div>
-    </header >
+    </header>
   );
 };
 

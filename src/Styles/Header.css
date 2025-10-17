@@ -145,9 +145,9 @@
 
 .embla__slide {
   flex: 0 0 auto; /* ✅ évite que ça se compresse */
-  min-width: 33.33%; /* ou 100%, selon combien de produits tu veux par slide */
+  width: 33%; /* ou 100%, selon combien de produits tu veux par slide */
   box-sizing: border-box;
-  height: 150px;
+  min-height: 200px;
 }
 
 .embla__prev,

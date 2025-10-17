@@ -1,45 +1,33 @@
 import { useContext, useEffect, useState } from "react";
-import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleRight, faHeart, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Preloader from "../Preloader";
-import { PanierContext } from "../../Store/Panier_context";
-import { FavoriteContext } from "../../Store/Favoris_context";
 import { AuthContext } from "../AuthContext";
+import { FavoriteContext } from "../../Store/Favoris_context";
+import { PanierContext } from "../../Store/Panier_context";
 import VusProduct from "./VusProduct";
 
-
-const Products = () => {
+const AllProducts = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const sous_category = queryParams.get("sous_category");
-    const category = queryParams.get("category");
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const navigate = useNavigate();
 
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     const [showPopUp, setshowPopUp] = useState(false);
-    const closePopUp = () => {
-        setshowPopUp(false);
-        setSelectedProduct(null);
-    }
-    const openPopUp = (product) => {
-        setSelectedProduct(product);
-        setshowPopUp(true);
-    }
 
+    const closePopUp = () => { setSelectedProduct(null); setshowPopUp(false); }
+    const openPopUp = (product) => { setSelectedProduct(product); setshowPopUp(true); }
 
-    const { addFavorite } = useContext(FavoriteContext)
-    const { addProductToCart } = useContext(PanierContext);
     const { isLoggedIn } = useContext(AuthContext);
+    const { addFavorite } = useContext(FavoriteContext);
+    const { addProductToCart } = useContext(PanierContext);
 
-    const handleNavigation = () => {
-        navigate("/all_products");
-    }
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -48,12 +36,9 @@ const Products = () => {
                 const url = new URL("http://127.0.0.1:8000/api/products");
                 url.searchParams.append("page", page);
 
-                if (sous_category) {
+                // ✅ Ajouter le filtre seulement si on a une sous-catégorie
+                if (sous_category && sous_category.trim() !== "") {
                     url.searchParams.append("sous_category", sous_category);
-                }
-
-                if (category) {
-                    url.searchParams.append("category", category);
                 }
 
                 const response = await fetch(url);
@@ -62,52 +47,41 @@ const Products = () => {
                 setProducts(result.data);
                 setTotalPages(result.total_pages);
             } catch (error) {
-                console.error("Erreur lors de la récupération des produits :", error);
+                console.error(" Erreur lors de la récupération des produits :", error);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchProducts();
-    }, [sous_category, page, category]);
+    }, [sous_category, page]);
 
     if (loading) {
-        return <div className="text-center mt-5"><Preloader /></div>;
+        return <Preloader />;
     }
 
     return (
-        <div className="container mt-lg-4 mt-1">
+        <div className="container mt-4">
+            {/* En-tête */}
             <div className="row">
-                <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-5 mt-md-0">
-                    {sous_category
-                        ? `${sous_category}`
-                        : category ? `${category}` : "Tous les produits"}
+                <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">
+                    {sous_category ? `${sous_category}` : "Tous les produits"}
                 </h1>
-                <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-5 mt-md-0">
-                    <div className="voir_tout">
-                        <div
-                            onClick={handleNavigation}
-                            className="row d-flex align-content-end"
-                            style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
-                        >
-                            <div className="col-8 text-end d-none d-sm-block">Voir tous les produits</div>
-                            <div className="col-1">
-                                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
 
+            {/* Liste des produits */}
             <div className="row mt-lg-3 mt-1">
                 {products.length > 0 ? (
                     products.map((product) => (
                         <div key={product.id} className="col-md-3 col-6 mb-4">
-                            <div className="card" >
+                            <div className="card">
                                 <img
-                                    src={product.image}
+                                    src={
+                                        product.image.startsWith("http")
+                                            ? product.image
+                                            : `http://127.0.0.1:8000/storage/${product.image}`
+                                    }
                                     className="card-img-top img_product"
                                     alt={product.name}
                                     onClick={() => openPopUp(product)}
@@ -115,6 +89,7 @@ const Products = () => {
                                 <div className="card-body">
                                     <h5 className="card-title petit_titre">{product.name}</h5>
                                     <p className="card-text petit_titre fw-bold">{product.price} FCFA</p>
+                                    <h5 className="card-text petit_titre">{product.category} </h5>
                                     {!isLoggedIn ? (
                                         <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                                             <FontAwesomeIcon
@@ -129,25 +104,27 @@ const Products = () => {
                                             <FontAwesomeIcon
                                                 icon={faCartShopping}
                                                 onClick={() => addProductToCart(product)}
-                                                style={{ cursor: "pointer" }}
+                                                style={{ cursor: "pointer", color: "#0066BD" }}
                                             />
                                             <FontAwesomeIcon
                                                 icon={faHeart}
                                                 onClick={() => addFavorite(product.id)}
                                                 style={{ cursor: "pointer", color: "#FA7F1B" }}
                                             />
-                                        </div>)}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    navigate("/all_products")
+                    <p className="text-center text-muted">
+                        Aucun produit trouvé {sous_category ? "dans cette sous-catégorie" : ""}.
+                    </p>
                 )}
             </div>
 
             {/* Pagination */}
-
             <nav aria-label="Page navigation example" className="d-flex justify-content-center my-4">
                 <ul className="pagination ">
                     <li className="page-item">
@@ -174,4 +151,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default AllProducts;

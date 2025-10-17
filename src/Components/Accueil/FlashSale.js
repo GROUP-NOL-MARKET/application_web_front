@@ -131,7 +131,7 @@ const FlashSale = ({ duration }) => {
                 <div className="discount_badge">
                   {product.initial_price - product.new_price}%
                 </div>
-                <div className="product_title">{product.name}</div>
+                <div className="product_title petit_titre">{product.name}</div>
                 <div className="price_flash_sale">
                   <span className="p-2 new_price">
                     {product.new_price} FCFA
@@ -165,17 +165,17 @@ const FlashSale = ({ duration }) => {
               {product_flash_sale.map((product) => (
                 <div key={product.id}
                   className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1"
-                  onClick={handleNavigation} style={{height:"200px"}}>
+                  onClick={handleNavigation} style={{ height: "200px" }}>
                   <img
                     src={product.img}
                     alt={product.name}
-                    className="img_product img-fluid h-75"
+                    className="img_product"
                     onClick={handleNavigation}
                   />
                   <div className="discount_badge">
                     {product.initial_price - product.new_price}%
                   </div>
-                  <div className="product_title text-center">{product.name}</div>
+                  <div className="text-center petit_titre">{product.name}</div>
                   <div className="price_flash_sale">
                     <span className="p-2 new_price text-center">
                       {product.new_price} FCFA

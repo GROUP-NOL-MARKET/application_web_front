@@ -91,67 +91,12 @@ const Paiement = () => {
         }
     };
 
-    // Simuler le paiement et enregistrer la commande
-    const handlePaiement = async () => {
-        try {
-            setLoadingPaiement(true);
-            const token = localStorage.getItem("token");
-
-            if (!token) {
-                toast.error("Session expirée. Veuillez vous reconnecter.");
-                window.location.href = "/login";
-                return;
-            }
-
-            // Crée la commande avec statut en attente
-            const commande = {
-                produits: products.map((p) => ({
-                    id: p.id,
-                    quantite: p.quantity,
-                    price: p.price,
-                })),
-                total: totalPrice,
-                statut: "en_attente",
-            };
-
-            const response = await API.post(
-                "http://127.0.0.1:8000/api/order/create",
-                commande,
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            if (response.status === 200) {
-                toast.info("Paiement en cours...");
-
-                // Simulation d'une validation après 2 secondes
-                setTimeout(async () => {
-                    try {
-                        await API.patch(
-                            `http://127.0.0.1:8000/api/order/validate/${response.data.order_id}`,
-                            { statut: "validée" },
-                            { headers: { Authorization: `Bearer ${token}` } }
-                        );
-                        toast.success("Commande validée avec succès !");
-                        clearPanier();
-                    } catch (error) {
-                        toast.error("Erreur lors de la validation du paiement.");
-                    }
-                }, 2000);
-            }
-        } catch (error) {
-            toast.error("Erreur lors du paiement. Réessayez plus tard.");
-            console.error(error.data);
-        } finally {
-            setLoadingPaiement(false);
-        }
-    };
-
     return (
         <div className="bg-light">
             <div className="container">
                 <div className="row">
                     {/* ================= FORMULAIRE D’ADRESSE ================= */}
-                    <div className="col-8 my-4 me-3 bg-white shadow-sm rounded-3 p-4 border border-1">
+                    <div className="col-12 col-lg-8 my-4 me-3 bg-white shadow-sm rounded-3 p-4 border border-1">
                         <h2 className="taux_moyen">Informations domicile client</h2>
                         <Form className="w-100" onSubmit={handleAdresseSubmit}>
                             <FormGroup>
@@ -230,7 +175,7 @@ const Paiement = () => {
                     </div>
 
                     {/* ================= PANIER ET PAIEMENT ================= */}
-                    <div className="my-4 col">
+                    <div className="my-4 col-lg col-12">
                         <div
                             className="shadow-sm rounded-3 bg-white p-2 border border-1 menu-scroll"
                             style={{ maxHeight: 300 }}

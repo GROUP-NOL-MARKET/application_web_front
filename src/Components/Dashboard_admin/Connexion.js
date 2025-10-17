@@ -38,7 +38,7 @@ const AdminLogin = () => {
     };
 
     return (
-        <div className="connexion">
+        <div className="connexion2">
             <div className="auth-wrapper">
                 <div className=" border border-1 bg-white shadow-sm form-box p-4 rounded-3">
                     <div className="en-tête d-flex flex-column align-items-center">
@@ -64,7 +64,7 @@ const AdminLogin = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </FormGroup>
-                        <FormGroup>
+                        <FormGroup className="mt-3">
                             <FormLabel className="label_register">
                                 Mot de passe
                             </FormLabel>
