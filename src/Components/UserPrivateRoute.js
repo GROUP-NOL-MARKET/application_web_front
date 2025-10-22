@@ -6,8 +6,8 @@ const UserPrivateRoute = ({ children }) => {
     return token ? children : <Navigate to="/login" />;
 };
 
-
-
 export default UserPrivateRoute;
+
+
 
 

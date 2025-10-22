@@ -26,7 +26,7 @@ export const FavoriteContextProvider = ({ children }) => {
             const data = await response.json();
             setFavorites(data);
         } catch (error) {
-            console.error("Erreur :", error);
+
         }
     };
 
@@ -49,7 +49,7 @@ export const FavoriteContextProvider = ({ children }) => {
             setFavorites((prev) => [...prev, result.favorite]);
         } catch (error) {
             toast.error("Impossible d’ajouter aux favoris");
-            console.error(error);
+
         }
     };
 
@@ -73,7 +73,7 @@ export const FavoriteContextProvider = ({ children }) => {
                 prev.filter((fav) => fav.id !== favoriteId)
             );
         } catch (error) {
-            console.error("Erreur :", error);
+            toast.error(error)
         }
     };
 

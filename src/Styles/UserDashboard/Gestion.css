@@ -10,12 +10,48 @@
   justify-content: center;
   z-index: 15;
 }
-
-.popup {
-  background-color: #fff;
-  width: 600px;
-  position: relative;
+@media (max-width: 575.98px) {
+  .popup {
+    background-color: #fff;
+    width: 400px;
+    position: relative;
+  }
+  .img_coupon {
+    height: 100px;
+  }
 }
+
+@media (min-width: 576px) {
+  .popup {
+    background-color: #fff;
+    width: 400px;
+    position: relative;
+  }
+  .img_coupon {
+    height: 100px;
+  }
+}
+@media (min-width: 768px) {
+  .popup {
+    background-color: #fff;
+    width: 600px;
+    position: relative;
+  }
+  .img_coupon {
+    height: 150px;
+  }
+}
+@media (min-width: 992px) {
+  .popup {
+    background-color: #fff;
+    width: 600px;
+    position: relative;
+  }
+  .img_coupon {
+    height: 150px;
+  }
+}
+
 .bouton-close {
   position: absolute;
   top: 0;
@@ -24,7 +60,7 @@
   font-size: 30px;
   background-color: white;
 }
-.logout{
+.logout {
   background-color: rgb(196, 10, 10) !important;
   border: none !important;
 }
@@ -36,6 +72,6 @@
   padding: 5px !important;
   text-decoration: underline;
 }
-.nav-link:hover{
- background-color: #e6e5e5 !important;
+.nav-link:hover {
+  background-color: #e6e5e5 !important;
 }

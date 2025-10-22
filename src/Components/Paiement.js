@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import FedaPayButton from "./FedapayButton";
 import {
     Button,
@@ -31,20 +31,43 @@ const Paiement = () => {
     const [loadingAdresse, setLoadingAdresse] = useState(false);
     const [adresseValidee, setAdresseValidee] = useState(false);
     const [loadingPaiement, setLoadingPaiement] = useState(false);
+    const [firstName, setFirstName] = useState("");
+
+    const [user, setUser] = useState({ firstName: "", email: "" }); //  Stocke les infos utilisateur
 
     const adresseRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,'-]{3,200}$/;
 
-    const adresseComplete = `${adresse.ville},
-    ${adresse.quartier},
-    ${adresse.rue},
-    ${adresse.numero},
-    ${adresse.localisation}`
+    const adresseComplete = `${adresse.ville}, ${adresse.quartier}, ${adresse.rue}, ${adresse.numero}, ${adresse.localisation}`;
 
-    // Enregistrer l'adresse
+    // Récupération des infos utilisateur dès le chargement
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) return;
+
+                const response = await API.get("http://127.0.0.1:8000/api/user", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (response.status === 200 && response.data) {
+                    setUser({
+                        firstName: response.data.firstName || "",
+                        email: response.data.email || "",
+                    });
+                }
+            } catch (error) {
+                console.error("Erreur récupération utilisateur :", error.message);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    //  Soumission de l’adresse
     const handleAdresseSubmit = async (e) => {
         e.preventDefault();
 
-        // Vérification de base
         if (
             !adresse.ville ||
             !adresse.quartier ||
@@ -61,30 +84,28 @@ const Paiement = () => {
             return;
         }
 
-
         try {
             setLoadingAdresse(true);
-
             const token = localStorage.getItem("token");
+
             if (!token) {
                 toast.error("Session expirée. Veuillez vous reconnecter.");
                 window.location.href = "/login";
                 return;
             }
 
-            // On envoie les infos au backend
             const response = await API.put(
                 "http://127.0.0.1:8000/api/user/update-address",
-                { addresse: adresseComplete }
-
+                { addresse: adresseComplete },
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             if (response.status === 200) {
                 toast.success("Adresse enregistrée avec succès !");
-                setAdresseValidee(true); // ✅ Active le bouton Payer
+                setAdresseValidee(true);
             }
         } catch (error) {
-            console.error(error.data);
+            console.error(error);
             toast.error("Erreur lors de l’enregistrement de l’adresse.");
         } finally {
             setLoadingAdresse(false);
@@ -96,57 +117,26 @@ const Paiement = () => {
             <div className="container">
                 <div className="row">
                     {/* ================= FORMULAIRE D’ADRESSE ================= */}
-                    <div className="col-12 col-lg-8 my-4 me-3 bg-white shadow-sm rounded-3 p-4 border border-1">
+                    <div className="col col-lg-8 my-4 me-3 bg-white shadow-sm rounded-3 p-4 border border-1">
                         <h2 className="taux_moyen">Informations domicile client</h2>
                         <Form className="w-100" onSubmit={handleAdresseSubmit}>
-                            <FormGroup>
-                                <FormLabel className="label_register">Ville</FormLabel>
-                                <FormControl
-                                    placeholder="Cotonou"
-                                    className="input_register"
-                                    value={adresse.ville}
-                                    onChange={(e) =>
-                                        setAdresse({ ...adresse, ville: e.target.value })
-                                    }
-                                    disabled={adresseValidee}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <FormLabel className="label_register">Quartier</FormLabel>
-                                <FormControl
-                                    placeholder="Fidjrossè"
-                                    className="input_register"
-                                    value={adresse.quartier}
-                                    onChange={(e) =>
-                                        setAdresse({ ...adresse, quartier: e.target.value })
-                                    }
-                                    disabled={adresseValidee}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <FormLabel className="label_register">Rue</FormLabel>
-                                <FormControl
-                                    placeholder="Rue 2536"
-                                    className="input_register"
-                                    value={adresse.rue}
-                                    onChange={(e) =>
-                                        setAdresse({ ...adresse, rue: e.target.value })
-                                    }
-                                    disabled={adresseValidee}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <FormLabel className="label_register">Numéro maison</FormLabel>
-                                <FormControl
-                                    placeholder="236"
-                                    className="input_register"
-                                    value={adresse.numero}
-                                    onChange={(e) =>
-                                        setAdresse({ ...adresse, numero: e.target.value })
-                                    }
-                                    disabled={adresseValidee}
-                                />
-                            </FormGroup>
+                            {["ville", "quartier", "rue", "numero"].map((field) => (
+                                <FormGroup key={field}>
+                                    <FormLabel className="label_register">
+                                        {field.charAt(0).toUpperCase() + field.slice(1)}
+                                    </FormLabel>
+                                    <FormControl
+                                        placeholder={`Entrez votre ${field}`}
+                                        className="input_register"
+                                        value={adresse[field]}
+                                        onChange={(e) =>
+                                            setAdresse({ ...adresse, [field]: e.target.value })
+                                        }
+                                        disabled={adresseValidee}
+                                    />
+                                </FormGroup>
+                            ))}
+
                             <FormGroup>
                                 <FormLabel className="label_register">Localisation</FormLabel>
                                 <FormControl
@@ -160,16 +150,19 @@ const Paiement = () => {
                                     disabled={adresseValidee}
                                 />
                             </FormGroup>
+
                             <Button
                                 className="mt-3 w-100 rounded-5"
                                 type="submit"
                                 disabled={loadingAdresse || adresseValidee}
                             >
-                                {loadingAdresse
-                                    ? <Spinner size="sm" animation="border" />
-                                    : adresseValidee
-                                        ? <span className="petit_titre">Adresse validée ✅</span>
-                                        : <span className="petit_titre">Enregistrer l’adresse </span>}
+                                {loadingAdresse ? (
+                                    <Spinner size="sm" animation="border" />
+                                ) : adresseValidee ? (
+                                    <span className="petit_titre">Adresse validée ✅</span>
+                                ) : (
+                                    <span className="petit_titre">Enregistrer l’adresse</span>
+                                )}
                             </Button>
                         </Form>
                     </div>
@@ -190,9 +183,7 @@ const Paiement = () => {
                                         />
                                     </div>
                                     <div className="col">
-                                        <div className="marque text-black-50">
-                                            {product.marque}
-                                        </div>
+                                        <div className="marque text-black-50">{product.marque}</div>
                                         <div className="name">{product.name}</div>
                                         <div className="type mt-2">Type : {product.type}</div>
                                         <div className="type">Quantité : {product.quantity}</div>
@@ -212,78 +203,56 @@ const Paiement = () => {
                                 </FormLabel>
                                 <h2 className="taux_moyen col">{totalPrice} FCFA</h2>
                             </div>
+
                             <div className="row">
                                 <div className="col-7 title_menu_cart">Total HT :</div>
-                                <div className="col texte_brut">{totalPrice} fcfa</div>
+                                <div className="col texte_brut">{totalPrice} FCFA</div>
                             </div>
+
                             <div className="row">
                                 <div className="col-7 title_menu_cart">Rabais :</div>
                                 <div className="col texte_brut">0%</div>
                             </div>
+
                             <div className="row">
                                 <div className="col-7 title_menu_cart">Remise :</div>
-                                <div className="col texte_brut">gratuit</div>
+                                <div className="col texte_brut">Gratuit</div>
                             </div>
-                            <div className="row ">
-                                <div className="col-7 title_menu_cart">Prix total TTC :</div>
-                                <div className="col texte_brut">{totalPrice} fcfa</div>
-                            </div>
+
                             <div className="row">
-                                <h2 className="title_menu_cart col-7"> Adresse de livraison : </h2>
-                                <p className="col">Ville, quartier, Rue...</p>
+                                <h2 className="title_menu_cart col-7">Adresse de livraison :</h2>
+                                <p className="col texte_brut">{adresseComplete ? (adresseComplete) : ("Non renseignée")}</p>
                             </div>
+
                             <div className="w-100 mt-3">
                                 <FedaPayButton
                                     disabled={!adresseValidee || loadingPaiement}
                                     amount={totalPrice}
                                     description="Paiement commande en ligne"
+                                    email={user.email}
+                                    firstName={user.firstName || "Client"}
+                                    products={products.map((p) => ({
+                                        id: p.id,
+                                        name: p.name,
+                                        quantite: p.quantity,
+                                        price: p.price,
+                                    }))}
                                     onSuccess={async (transaction) => {
-                                        toast.success(" Paiement réussi !");
-                                        setLoadingPaiement(true);
-
-                                        const token = localStorage.getItem("token");
-                                        const commande = {
-                                            produits: products.map((p) => ({
-                                                id: p.id,
-                                                quantite: p.quantity,
-                                                price: p.price,
-                                            })),
-                                            total: totalPrice,
-                                            statut: "validée",
-                                            transaction_id: transaction.id,
-                                        };
-
-                                        try {
-                                            await API.post(
-                                                "http://127.0.0.1:8000/api/order/create",
-                                                commande,
-                                                { headers: { Authorization: `Bearer ${token}` } }
-                                            );
-
-                                            toast.success(" Commande enregistrée avec succès !");
-                                            clearPanier();
-
-                                            //  Redirection après paiement
-                                            setTimeout(() => {
-                                                window.location.href = "/";
-                                            }, 2000);
-                                        } catch (error) {
-                                            toast.error("Erreur lors de la sauvegarde de la commande.");
-                                        } finally {
-                                            setLoadingPaiement(false);
-                                        }
+                                        toast.success("Paiement réussi !");
+                                        clearPanier();
+                                        setTimeout(() => {
+                                            window.location.href = "/";
+                                        }, 2000);
                                     }}
                                     onClose={() => toast.info("Paiement annulé par l’utilisateur.")}
                                 />
 
-                                {/* Petit message d’info pour guider l’utilisateur */}
                                 {!adresseValidee && (
                                     <p className="text-danger text-center mt-2 texte_brut">
                                         Veuillez d’abord enregistrer votre adresse avant de payer.
                                     </p>
                                 )}
                             </div>
-
                         </div>
                     </div>
                 </div>

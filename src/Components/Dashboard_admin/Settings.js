@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import {Link} from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import Entete from "./dataset/Entete";
 import { ThemeContext } from "./ThemeContext";
 import img_profil from "../assets/Images/img_profil.webp";
@@ -17,8 +17,14 @@ import {
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Button from "@mui/material/Button";
 import { Form, FormControl, FormLabel, FormGroup, FormSelect } from "react-bootstrap";
+import Banniere from "./Banniere";
 
 const Settings = () => {
+
+  const [showPopUp, setshowPopUp] = useState(false);
+
+  const closePopUp = () => { setshowPopUp(false); }
+  const openPopUp = (product) => { setshowPopUp(true); }
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -138,14 +144,14 @@ const Settings = () => {
               <div className="row mt-1">
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">Nom</FormLabel>
-                  <FormControl placeholder="AGBO"/>
+                  <FormControl placeholder="AGBO" />
                 </FormGroup>
                 <FormGroup className="col">
                   <FormLabel className="texte_brut">Prénom</FormLabel>
-                  <FormControl placeholder="Jean"/>
+                  <FormControl placeholder="Jean" />
                 </FormGroup>
               </div>
-               <div className="row mt-1">
+              <div className="row mt-1">
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">Pays</FormLabel>
                   <FormSelect>
@@ -163,44 +169,47 @@ const Settings = () => {
                   </FormSelect>
                 </FormGroup>
               </div>
-               <div className="row mt-1">
+              <div className="row mt-1">
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">Email</FormLabel>
-                  <FormControl placeholder="moi@gmail.com"/>
+                  <FormControl placeholder="moi@gmail.com" />
                 </FormGroup>
                 <FormGroup className="col">
                   <FormLabel className="texte_brut">Numéro de téléphone</FormLabel>
-                  <FormControl placeholder="01 ** ** ** **"/>
+                  <FormControl placeholder="01 ** ** ** **" />
                 </FormGroup>
               </div>
-               <div className="row mt-1">
+              <div className="row mt-1">
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">BP</FormLabel>
-                  <FormControl placeholder="**"/>
+                  <FormControl placeholder="**" />
                 </FormGroup>
                 <FormGroup className="col">
                   <FormLabel className="texte_brut">Nom de l'entreprise</FormLabel>
-                  <FormControl placeholder="Group Nol Market"/>
+                  <FormControl placeholder="Group Nol Market" />
                 </FormGroup>
               </div>
-                <div className="row mt-1">
+              <div className="row mt-1">
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">Mot de passe</FormLabel>
-                  <FormControl placeholder="****" type="password"/>
-                  <Link className="texte_brut" style={{textDecoration:"none"}}>Changer le mot de passe</Link>
+                  <FormControl placeholder="****" type="password" />
+                  <Link className="texte_brut" style={{ textDecoration: "none" }}>Changer le mot de passe</Link>
                 </FormGroup>
                 <FormGroup className="col">
                   <FormLabel className="texte_brut">Adresse</FormLabel>
-                  <FormControl placeholder="Fidjrossè, Houenoussou"/>
+                  <FormControl placeholder="Fidjrossè, Houenoussou" />
                 </FormGroup>
               </div>
-              <Button className="text-lowercase petit_titre rounded-5 bg-primary mt-3" style={{color:"white"}}>Changer les informations</Button>
+              <Button className="text-lowercase petit_titre rounded-5 bg-primary mt-3" style={{ color: "white" }}>Changer les informations</Button>
             </Form>
             <h5 className="taux_moyen mt-2">Outils du paneau d'administration</h5>
-            <button className="bg-info p-2 b-0 rounded-5" style={{color:'white'}}>Bannières et offres</button>
+            <button className="bg-info p-2 b-0 rounded-5" style={{ color: 'white' }} onClick={() => openPopUp()}>Bannières et offres</button>
           </div>
         </div>
       </div>
+      {showPopUp && (
+        <Banniere closePopUp={closePopUp} />
+      )}
     </div>
   );
 };

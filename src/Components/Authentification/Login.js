@@ -82,7 +82,6 @@ const Login = () => {
       localStorage.setItem("token", res.data.token); // Sauvegarde token JWT
       toast.success("Connexion réussie");
       navigate("/", { replace: true });
-      window.location.reload();
     } catch (err) {
       if (err.response?.status === 404) {
         toast.error(err.response.data.error); // erreurs validation Laravel

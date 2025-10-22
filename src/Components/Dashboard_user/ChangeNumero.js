@@ -42,6 +42,7 @@ const ChangeNumero = ({ closePopUp2 }) => {
         value = value.replace(/(\d{2})(?=\d)/g, "$1 "); // Ajoute un espace après chaque 2 chiffres
         setPhone(value);
         setErrors({}); // Réinitialise les erreurs à chaque modification
+
     };
 
     // Validation côté front

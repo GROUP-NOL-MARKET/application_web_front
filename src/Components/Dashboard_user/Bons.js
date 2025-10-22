@@ -44,7 +44,7 @@ const Bons = () => {
 
             {/* Onglets */}
             <div className="row">
-                <div className="col-1 py-2">
+                <div className="col-lg-1 col-4 py-2">
                     <button
                         className={`nav-link text-truncate ${activeTab === "actif" ? "active-tab" : "text-dark"}`}
                         onClick={() => setActiveTab("actif")}
@@ -52,7 +52,7 @@ const Bons = () => {
                         Actif
                     </button>
                 </div>
-                <div className="col-2 py-2">
+                <div className="col-lg-2 col py-2">
                     <button
                         className={`nav-link text-truncate ${activeTab === "inactif" ? "active-tab" : "text-dark"}`}
                         onClick={() => setActiveTab("inactif")}
@@ -70,7 +70,7 @@ const Bons = () => {
                         vouchersActifs.map((voucher) => (
                             <div key={voucher.id} className="border border-1 col rounded-3 mb-3 p-2">
                                 <div className="row">
-                                    <div className="col-3" style={{ height: "150px" }}>
+                                    <div className="col-lg-3 col-4 img_coupon" >
                                         <img src={coupon} alt="coupon" className="h-100 w-auto" />
                                     </div>
                                     <div className="col">

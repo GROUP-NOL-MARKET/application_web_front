@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { redirect, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight, faHeart, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import Preloader from "../Preloader";
@@ -78,19 +78,19 @@ const Products = () => {
     return (
         <div className="container mt-lg-4 mt-1">
             <div className="row">
-                <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-5 mt-md-0">
+                <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-2 mt-md-0 text-capitalize">
                     {sous_category
                         ? `${sous_category}`
                         : category ? `${category}` : "Tous les produits"}
                 </h1>
-                <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-5 mt-md-0">
+                <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-2 mt-md-0">
                     <div className="voir_tout">
                         <div
                             onClick={handleNavigation}
                             className="row d-flex align-content-end"
                             style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
                         >
-                            <div className="col-8 text-end d-none d-sm-block">Voir tous les produits</div>
+                            <div className="col-8 text-end d-none d-md-block">Voir tous les produits</div>
                             <div className="col-1">
                                 <FontAwesomeIcon icon={faArrowAltCircleRight} />
                             </div>
@@ -104,7 +104,7 @@ const Products = () => {
             <div className="row mt-lg-3 mt-1">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="col-md-3 col-6 mb-4">
+                        <div key={product.id} className="col-md-2 col-6 shadow-sm mb-4">
                             <div className="card" >
                                 <img
                                     src={product.image}

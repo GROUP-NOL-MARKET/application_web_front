@@ -19,6 +19,63 @@ import "../../../Styles/Navbar.css";
 import { Form } from "react-bootstrap";
 
 const Navbar2 = React.memo(() => {
+
+  const categories = [
+    "droguerie",
+    "animalerie",
+    "épicerie",
+    "produits Locaux",
+    "produits frais",
+    "divers",
+    "boissons",
+    "electroménager",
+  ];
+
+  const sousCategories = [
+    "Petit déjeuner",
+    "Céréales-Corn Flakes-pain grillé",
+    "Biscuits gâteaux",
+    "Amuse gueules",
+    "Pains et viennoiseries",
+    "Bonbons-chocolat",
+    "Conserves-plats cuisinés",
+    "Pâtes alimentaires-riz-purée",
+    "Assaisonnement-condiments",
+    "Huile-vinaigre",
+    "Sardine",
+    "Produits du monde",
+    " Monde de Bébé",
+    "Prêt à porter",
+    "Fournitures scolaires",
+    "Hygiène dentaire",
+    "Rasage",
+    "Produits ménagers",
+    "Soins de beauté",
+    "Mouchoirs",
+    "Désodorisant-insecticide",
+    "Hygiène féminine",
+    "Produits locaux",
+    "Fromages-Fruits frais-Légumes",
+    "yaourt",
+    "Produits congélés",
+    "Surgélés-Crêmerie fraîche",
+    "Glâces et crêmes glacées",
+    "Charcuterie volaille poisson",
+    "Produits Locaux frais",
+    "Vins",
+    "Spiriteux",
+    "Chewing Gum", "Piles-rasoirs", "Papeterie", "Ampoule",
+    "Jus de fruits",
+    "Eaux minérales",
+    "Sirop",
+    "Soft Drink",
+    "Cidre",
+    "Champagnes",
+    "Bière et panaché",
+    "Nourriture pour chiens et chats",
+    "Matériels Nasco"
+  ];
+
   const { products } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -42,32 +99,59 @@ const Navbar2 = React.memo(() => {
     [navigate]
   );
 
-  const handleSearch = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!searchTerm.trim()) {
-        toast.info("Veuillez saisir un terme de recherche.");
-        return;
-      }
+  const handleSearch = useCallback(async (e) => {
+    e.preventDefault();
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) {
+      toast.info("Veuillez saisir un terme de recherche.");
+      return;
+    }
 
-      const params = new URLSearchParams({ q: searchTerm.trim() });
-      if (selectedCategory !== "Catégories") {
-        params.append("category", selectedCategory);
-      }
+    // Recherche exacte dans les catégories
+    const exactCategory = categories.find(cat => cat.toLowerCase() === term);
+    if (exactCategory) {
+      navigate(`/products?category=${encodeURIComponent(exactCategory)}`);
+      return;
+    }
 
-      try {
-        const response = await fetch(`/api/products/search?${params.toString()}`);
-        if (!response.ok) throw new Error("Erreur lors de la récupération des produits.");
+    // Recherche approximative (catégorie qui contient le mot)
+    const similarCategory = categories.find(cat => cat.toLowerCase().includes(term));
+    if (similarCategory) {
+      navigate(`/products?category=${encodeURIComponent(similarCategory)}`);
+      return;
+    }
 
-        const data = await response.json();
-        console.log("Résultats trouvés :", data.products);
-      } catch (error) {
-        console.error("Erreur de recherche:", error);
-        toast.error("Erreur de recherche");
+    // Recherche exacte dans les sous-catégories
+    const exactSousCat = sousCategories.find(sub => sub.toLowerCase() === term);
+    if (exactSousCat) {
+      navigate(`/products?sous_category=${encodeURIComponent(exactSousCat)}`);
+      return;
+    }
+
+    // Recherche approximative dans les sous-catégories
+    const similarSousCat = sousCategories.find(sub => sub.toLowerCase().includes(term));
+    if (similarSousCat) {
+      navigate(`/products?sous_category=${encodeURIComponent(similarSousCat)}`);
+      return;
+    }
+
+    // Recherche dans les produits (via ton backend)
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/products/search?q=${encodeURIComponent(term)}`);
+      if (!response.ok) throw new Error("Erreur de recherche produits");
+
+      const data = await response.json();
+      if (data?.data?.length > 0) {
+        // Sauvegarde temporaire dans localStorage pour le transfert
+        localStorage.setItem("searchResults", JSON.stringify(data.data));
+        navigate(`/searchProduct?query=${encodeURIComponent(term)}`);
+      } else {
+        toast.info("Aucun produit trouvé pour votre recherche.");
       }
-    },
-    [searchTerm, selectedCategory]
-  );
+    } catch (error) {
+      toast.error("Erreur lors de la recherche.");
+    }
+  }, [searchTerm, navigate]);
 
   const logout = useCallback(async () => {
     try {
@@ -99,56 +183,59 @@ const Navbar2 = React.memo(() => {
 
         {/*  Barre de recherche */}
         <div className="col-12 col-md-5 d-flex align-items-center mx-2">
-          <Form onSubmit={handleSearch}>
-            <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
-              <div className="col-5">
-                <select
-                  className="form-select h-100 rounded-0 border-end select_1"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  <option>Catégories</option>
-                  {[
-                    "Droguerie",
-                    "Animalerie",
-                    "Épicerie",
-                    "Produits Locaux",
-                    "Produits frais",
-                    "Divers",
-                    "Boissons",
-                    "Electroménager",
-                  ].map((cat) => (
-                    <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="col-5">
-                <InputBase
-                  placeholder="Tapez ici..."
-                  inputProps={{ "aria-label": "search" }}
-                  className="w-100 px-3 h-100"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              <div className="col-2">
-                <IconButton
-                  type="submit"
-                  className="w-100 h-100"
-                  sx={{
-                    backgroundColor: "#0066BD",
-                    color: "white",
-                    borderRadius: 0,
-                    ":hover": { backgroundColor: "#004d94" },
-                  }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              </div>
+          <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
+            <div className="col-5">
+              <select
+                className="form-select h-100 rounded-0 border-end select_1"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option>Catégories</option>
+                {[
+                  "Droguerie",
+                  "Animalerie",
+                  "Épicerie",
+                  "Produits Locaux",
+                  "Produits frais",
+                  "Divers",
+                  "Boissons",
+                  "Electroménager",
+                ].map((cat) => (
+                  <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
+                ))}
+              </select>
             </div>
-          </Form>
+            <Form onSubmit={handleSearch} className="col">
+              <div className="row">
+                <div className="col-9">
+                  <InputBase
+                    placeholder="Tapez ici..."
+                    inputProps={{ "aria-label": "search" }}
+                    className="w-100 px-3 h-100"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-3">
+                  <IconButton
+                    type="submit"
+                    className="w-100 h-100"
+                    sx={{
+                      backgroundColor: "#0066BD",
+                      color: "white",
+                      borderRadius: 0,
+                      ":hover": { backgroundColor: "#004d94" },
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </div>
+              </div>
+
+            </Form>
+          </div>
+
         </div>
 
         {/* Section utilisateur, panier et aide */}

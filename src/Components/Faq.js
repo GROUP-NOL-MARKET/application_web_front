@@ -15,11 +15,11 @@ const Faq = () => {
         </div>
 
         <div className="row">
-          <div className="col-4 me-3 d-flex flex-column justify-content-center">
+          <div className="col-lg-4 col-12 me-3 d-flex flex-column justify-content-center">
             <h3 className="texte_brut">Support</h3>
             <h1 className="Aide">AIDE</h1>
           </div>
-          <div className="accordion col" id="helpAccordion">
+          <div className="accordion col-lg col-12" id="helpAccordion">
             <div className="accordion-item">
               <h2 className="accordion-header" id="helpHeadingOne">
                 <button
@@ -48,7 +48,7 @@ const Faq = () => {
               </div>
             </div>
             <div className="accordion-item">
-              <h2 class="accordion-header" id="helpHeadingTwo">
+              <h2 className="accordion-header" id="helpHeadingTwo">
                 <button
                   className="btn_aide accordion-button collapsed"
                   type="button"
@@ -101,8 +101,8 @@ const Faq = () => {
                 </div>
               </div>
             </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="helpHeadingFour">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="helpHeadingFour">
                 <button
                   className="btn_aide accordion-button collapsed"
                   type="button"
@@ -188,11 +188,11 @@ const Faq = () => {
         {/* FAQ  */}
 
         <div className="row mt-3">
-          <div className="col-4 me-3 d-flex flex-column justify-content-center">
+          <div className="col-lg-4 col-12 me-3 d-flex flex-column justify-content-center">
             <h3 className="texte_brut">Support</h3>
             <h1 className="FAQ">FAQ</h1>
           </div>
-          <div className="accordion col pb-3" id="faqAccordion">
+          <div className="accordion col-12 col-lg pb-3" id="faqAccordion">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button

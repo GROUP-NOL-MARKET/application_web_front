@@ -1,66 +1,71 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext, useCallback } from "react";
 import "./Notifications/Notifications.css";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import notification from "../assets/Images/icone/notification.png";
-import comment from "../assets/Images/icone/comment.png";
+import notificationIcon from "../assets/Images/icone/notification.png";
+import messageIcon from "../assets/Images/icone/comment.png";
 import { Avatar } from "@mui/material";
-import { useContext } from "react";
 import { ThemeContext } from "./ThemeContext";
-import img_soleil from "../assets/Images/icone/symbole-de-temps-soleil.png";
-import img_lune from "../assets/Images/icone/croissant-de-lune.png";
+import imgSoleil from "../assets/Images/icone/symbole-de-temps-soleil.png";
+import imgLune from "../assets/Images/icone/croissant-de-lune.png";
 import NotificationDropdown from "./Notifications/NotificationDropdown";
+import MessageDropdown from "./Messages/MessageDropdown";
 import "../../Styles/AdminDashbord/topbar.css";
 import axios from "axios";
 
-const Topbar = ({ initial = [], fetchMore, onAction }) => {
+const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => {
   const { theme, toggleThemeMode } = useContext(ThemeContext);
-  const [open, setOpen] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [openMessages, setOpenMessages] = useState(false);
   const [notifications, setNotifications] = useState(initial);
-  const ref = useRef(null);
+  const [messages, setMessages] = useState(initial);
+  const refNotifications = useRef(null);
+  const refMessages = useRef(null);
   const navigate = useNavigate();
 
-  // fermer si clic en dehors
+  // ✅ Fermer les dropdowns au clic extérieur
   useEffect(() => {
-    function onDocClick(e) {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    }
-    document.addEventListener("mousedown", onDocClick);
-    return () => document.removeEventListener("mousedown", onDocClick);
+    const handleClickOutside = (e) => {
+      if (
+        refNotifications.current &&
+        !refNotifications.current.contains(e.target)
+      ) {
+        setOpenNotifications(false);
+      }
+      if (refMessages.current && !refMessages.current.contains(e.target)) {
+        setOpenMessages(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleAccept = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, status: "accepted" } : n))
-    );
-    if (onAction) onAction("accept", id);
-  };
-
-  const handleDecline = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, status: "declined" } : n))
-    );
-    if (onAction) onAction("decline", id);
-  };
-
-  const handleLoadMore = async () => {
-    if (!fetchMore) return;
-    const more = await fetchMore(); // doit retourner un tableau
+  // ✅ Charger plus de notifications
+  const handleLoadMoreNotifications = useCallback(async () => {
+    if (!fetchMoreNotifications) return;
+    const more = await fetchMoreNotifications();
     setNotifications((prev) => [...prev, ...more]);
-  };
+  }, [fetchMoreNotifications]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  // ✅ Charger plus de messages
+  const handleLoadMoreMessages = useCallback(async () => {
+    if (!fetchMoreMessages) return;
+    const more = await fetchMoreMessages();
+    setMessages((prev) => [...prev, ...more]);
+  }, [fetchMoreMessages]);
 
+  const unreadNotifications = notifications.filter((n) => !n.read).length;
+  const unreadMessages = messages.filter((m) => !m.read).length;
+
+  // ✅ Déconnexion admin
   const logout = async () => {
     const token = localStorage.getItem("adminToken");
     try {
       await axios.post("http://127.0.0.1:8000/api/admin/logout", {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.removeItem("adminToken");
       toast.success("Déconnexion réussie");
@@ -72,13 +77,12 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
 
   return (
     <nav
-      className={`${theme === "dark" ? "topbar-dark" : "topbar-light"
-        } navbar navbar-expand border-bottom d-flex position-fixed top-0 `}
+      className={`navbar navbar-expand border-bottom d-flex position-fixed top-0 ${theme === "dark" ? "topbar-dark" : "topbar-light"}`}
       style={{ zIndex: 1 }}
     >
       <div className="container-fluid">
-        <div className="row g-0 rounded-5 overflow-hidden col-8  border border-1">
-          {/* Champ de recherche */}
+        {/* Champ de recherche */}
+        <div className="row g-0 rounded-5 overflow-hidden col-8 border border-1">
           <div className="col-10">
             <InputBase
               placeholder="Tapez ici..."
@@ -88,7 +92,6 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
             />
           </div>
 
-          {/* Bouton de recherche */}
           <div className="col-2">
             <IconButton
               type="button"
@@ -97,9 +100,7 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
                 backgroundColor: "#0066BD",
                 color: "white",
                 borderRadius: 0,
-                ":hover": {
-                  backgroundColor: "#0066BD",
-                },
+                ":hover": { backgroundColor: "#004d94" },
               }}
             >
               <SearchIcon />
@@ -107,77 +108,99 @@ const Topbar = ({ initial = [], fetchMore, onAction }) => {
           </div>
         </div>
 
+        {/* Section droite */}
         <div className="d-flex align-items-center offset-1 col-3">
-          <div className="row">
-            <div className="col-2 d-flex align-items-center">
-              <div onClick={toggleThemeMode}>
-                {theme === "light" ? (
-                  <img
-                    src={img_lune}
-                    alt="icône de lune"
-                    className="img-fluid"
-                  />
-                ) : (
-                  <img src={img_soleil} alt="" className="img-fluid" />
-                )}
-              </div>
-            </div>
-            <div
-              className="col-2 d-flex align-items-center"
-              onClick={() => setOpen((o) => !o)}
-            >
+          <div className="row w-100 align-items-center">
+
+            {/* Thème */}
+            <div className="col-2 d-flex justify-content-center" onClick={toggleThemeMode}>
               <img
-                src={notification}
-                alt="cloche de notification"
+                src={theme === "light" ? imgLune : imgSoleil}
+                alt="toggle theme"
                 className="img-fluid"
                 style={{ cursor: "pointer" }}
-
               />
-              {unreadCount > 0 && (
-                <span className="notif-badge">{unreadCount}</span>
+            </div>
+
+            {/* Notifications */}
+            <div className="col-2 d-flex justify-content-center position-relative" ref={refNotifications}>
+              <img
+                src={notificationIcon}
+                alt="notifications"
+                className="img-fluid"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpenNotifications((prev) => !prev);
+                  setOpenMessages(false);
+                }}
+              />
+              {unreadNotifications > 0 && (
+                <span className="notif-badge">{unreadNotifications}</span>
+              )}
+              {openNotifications && (
+                <NotificationDropdown
+                  notifications={notifications}
+                  onClose={() => setOpenNotifications(false)}
+                  onLoadMore={handleLoadMoreNotifications}
+                />
               )}
             </div>
-            {open && (
-              <NotificationDropdown
-                notifications={notifications}
-                onClose={() => setOpen(false)}
-                onAccept={handleAccept}
-                onDecline={handleDecline}
-                onLoadMore={handleLoadMore}
 
+            {/* Messages */}
+            <div className="col-2 d-flex justify-content-center position-relative" ref={refMessages}>
+              <img
+                src={messageIcon}
+                alt="messages"
+                className="img-fluid"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpenMessages((prev) => !prev);
+                  setOpenNotifications(false);
+                }}
               />
-            )}
-            <div className="col-2 d-flex align-items-center">
-              <img src={comment} alt="icône de message" className="img-fluid" />
+              {unreadMessages > 0 && (
+                <span className="message-badge">{unreadMessages}</span>
+              )}
+              {openMessages && (
+                <MessageDropdown
+                  messages={messages}
+                  onClose={() => setOpenMessages(false)}
+                  onLoadMore={handleLoadMoreMessages}
+                />
+              )}
             </div>
-            <div className="dropdown col-6">
+
+            {/* Avatar + Menu */}
+            <div className="dropdown col-6 d-flex justify-content-end">
               <a
-                className="d-flex align-items-center text-decoration-none dropdown-toggle "
+                className="d-flex align-items-center text-decoration-none dropdown-toggle"
                 href=" "
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <Avatar alt="avatar" className="rounded-circle" />
+                <Avatar alt="Admin avatar" className="rounded-circle" />
                 <span className="ms-2">Admin</span>
               </a>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <a className="dropdown-item" href="/admin/paramètres">
+                  <Link className="dropdown-item" to="/admin/paramètres">
                     Paramètres
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" onClick={logout}>
+                  <Link className="dropdown-item text-danger" onClick={logout}>
                     Déconnexion
                   </Link>
                 </li>
               </ul>
             </div>
+
           </div>
         </div>
       </div>
     </nav>
   );
 };
+
 export default Topbar;

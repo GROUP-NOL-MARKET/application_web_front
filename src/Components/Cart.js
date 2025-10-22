@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Button, Form, FormControl, FormLabel, Spinner } from "react-bootstrap";
 import corbeille from "./assets/Images/icone/trash.png";
 import { PanierContext } from "../Store/Panier_context";
@@ -16,6 +16,7 @@ const Cart = () => {
   const { products, updateProductQuantity } = useContext(PanierContext);
   const [showPopUp, setShowPopUp] = useState(false);
   const navigate = useNavigate()
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const openPopUp = (message) => {
     setShowPopUp(true);
@@ -42,49 +43,49 @@ const Cart = () => {
     setLoading(false)
   }
 
-  // Pour l'effet du dropdown
+  const handleNavigation = useCallback(
+    (category) => navigate(`/products?category=${encodeURIComponent(category)}`),
+    [navigate]
+  );
 
-  const [isOpen, setIsOpen] = useState(false);
-  const handledropdown = () => {
-    setIsOpen(!isOpen);
-  };
-  const dropdownRef = useRef(null);
+
   const handleRedirect = () => {
     navigate('/login');
   }
   const { isLoggedIn } = useContext(AuthContext);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className="cart">
       <div className="container">
         <div className="mb-2">
-          <Button ref={dropdownRef} className="mt-4 mb-2" onClick={() => handledropdown()} type="button">
-            <FontAwesomeIcon icon={faBars} />
-            Categories
-            <FontAwesomeIcon icon={faChevronDown} />
-            <ul
-              style={{ listStyle: "none" }}
-              className={`dropdown-menu ${isOpen ? "show" : ""}`}
-            >
-              <li>Animalerie</li>
-              <li>Droguerie</li>
-              <li>Produits locaux</li>
-              <li>Boissons</li>
-              <li>Epicerie</li>
-            </ul>
-          </Button>
+          <div className=" mb-2 bg-white rounded-3 col-5 col-lg-2 p-2" >
+            <div className="row">
+              <div className="col-1 d-flex align-items-center">
+                <FontAwesomeIcon icon={faBars} style={{ color: "black" }} />
+              </div>
+
+              <select
+                className="col-9 border-0 bg-white text-black"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option className="petit_titre"> Catégories</option>
+                {[
+                  "Droguerie",
+                  "Animalerie",
+                  "Épicerie",
+                  "Produits Locaux",
+                  "Produits frais",
+                  "Divers",
+                  "Boissons",
+                  "Electroménager",
+                ].map((cat) => (
+                  <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
         <div className="container">
           <div className="row">

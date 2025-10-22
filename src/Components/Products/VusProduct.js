@@ -1,13 +1,16 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FavoriteContext } from '../../Store/Favoris_context';
 import { PanierContext } from '../../Store/Panier_context';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
+import { AuthContext } from '../AuthContext';
 
 const VusProduct = ({ closePopUp, product }) => {
     const { addFavorite } = useContext(FavoriteContext);
     const { addProductToCart } = useContext(PanierContext);
+    const { loading, setLoading } = useState(false);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -23,8 +26,6 @@ const VusProduct = ({ closePopUp, product }) => {
                 body: JSON.stringify({ product_id: product.id }),
             })
                 .then(res => res.json())
-                .then(data => console.log("Produit vu enregistré :", data))
-                .catch(err => console.error("Erreur enregistrement produit vu :", err));
         }
     }, [product]);
 
@@ -48,22 +49,31 @@ const VusProduct = ({ closePopUp, product }) => {
                     </div>
                     <div className="col-lg col-12">
                         <h5 className='name_entreprise_dashboard'>{product.name}</h5>
-                        <h5 className='petit_titre fw-bold'>{product.price} FCFA</h5>
+                        <h5 className='petit_titre fw-bold'>{product.price || product.new_price} FCFA</h5>
                         <p className="texte_brut">{product?.description}</p>
                     </div>
                     <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <Button onClick={() => addProductToCart(product)}>
-                            <span className="petit_titre">Ajouter au panier</span>
-                            <FontAwesomeIcon
-                                icon={faCartShopping}
-                                style={{ cursor: "pointer" }}
-                                className="ms-2"
-                            />
+                        <Button onClick={() =>
+                            addProductToCart(product)
+                        } >
+                            {loading ? (<Spinner animation='border' size="sm" />) : (
+                                <span>
+                                    <span className="petit_titre">Ajouter au panier</span>
+                                    <FontAwesomeIcon
+                                        icon={faCartShopping}
+                                        style={{ cursor: "pointer" }}
+                                        className="ms-2"
+                                    />
+                                </span>
+
+                            )}
+
                         </Button>
                         <Button
                             onClick={() => addFavorite(product.id)}
                             style={{ backgroundColor: "#FA7F1B" }}
                             className='border-0'
+                            disabled={!isLoggedIn}
                         >
                             <span className="petit_titre">Ajouter aux favoris</span>
                             <FontAwesomeIcon

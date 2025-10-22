@@ -181,12 +181,12 @@ const Navbar1 = () => {
                 >
                   ✖
                 </button>
-                <ul className="navbar-nav me-auto">
+                <ul className="navbar-nav ms-2">
                   <li className="nav-item"><Link to="/" className="nav-link">Accueil</Link></li>
                   <li className="nav-item"><Link to="/About" className="nav-link">A propos</Link></li>
-                  <li className="nav-item"><span className="nav-link">Services</span></li>
+                  <li className="nav-item"><Link to="" className="nav-link">Services</Link></li>
                   <li className="nav-item"><Link to="/Contact" className="nav-link">Contact</Link></li>
-                  <li className="nav-item"><span className="nav-link">Achat</span></li>
+                  <li className="nav-item"><Link to="/cart" className="nav-link">Achat</Link></li>
                   <li className="nav-item"><Link to="/products" className="nav-link">Produits</Link></li>
                   <li className="nav-item"><Link to="/aide&Faq" className="nav-link">Faq & aide</Link></li>
                 </ul>

@@ -9,7 +9,7 @@ const AdBanner = React.memo(
   ({ imageUrl, title, subtitle, ctaText1, ctaText2, ctaLink, pub_num }) => {
     const [showTitle, setShowTitle] = useState(true);
     const [videoVisible, setVideoVisible] = useState(false);
-    const sentinelRef = useRef(null); // 👈 Élément observé pour le lazy load
+    const sentinelRef = useRef(null); //  Élément observé pour le lazy load
 
     // Alterner entre titre et sous-titre
     useEffect(() => {
@@ -35,7 +35,7 @@ const AdBanner = React.memo(
       return () => observer.disconnect();
     }, []);
 
-    // Élément mémoïsé : image promo
+    // Élément mémorisé : image promo
     const promoImage = useMemo(
       () => (
         <div className="position-absolute end-0 top-0" style={{ zIndex: 3 }}>

@@ -10,31 +10,31 @@ import { Form, FormGroup, FormControl, FormLabel, Button } from "react-bootstrap
 
 const Contact = () => {
   return (
-    <div className="Contact" style={{backgroundColor: "rgb(250, 250, 250)"}}>
+    <div className="Contact" style={{ backgroundColor: "rgb(250, 250, 250)" }}>
       <div className="container">
         <div className="row">
           <div className="col-md-7 col-12 mt-5 mb-5">
             <div className="row ">
               <div className="col-6">
-                <FontAwesomeIcon icon={faLocationDot} size="3x" style={{color:"#0066BD"}} className="m-2"/>
-                <p className="text" style={{fontSize:"medium"}}>
+                <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: "#0066BD" }} className="m-2" />
+                <p className="text" style={{ fontSize: "medium" }}>
                   Rue 2356, Cotonou Fidjrossè (Houenoussou), 9938+G4 Cotonou
                 </p>
               </div>
               <div className="col-6">
-                <FontAwesomeIcon icon={faPhone} size="3x"  className="m-2" style={{color:"#0066BD"}}/>
-                  <p className="text mb-0" style={{fontSize:"medium"}}>+229 01 65 00 28 00</p>
-                  <p className="text mt-0" style={{fontSize:"medium"}}>+229 01 65 00 29 29</p>
+                <FontAwesomeIcon icon={faPhone} size="3x" className="m-2" style={{ color: "#0066BD" }} />
+                <p className="text mb-0" style={{ fontSize: "medium" }}>+229 01 65 00 28 00</p>
+                <p className="text mt-0" style={{ fontSize: "medium" }}>+229 01 65 00 29 29</p>
               </div>
             </div>
             <div className="row">
               <div className="col-6">
-                <FontAwesomeIcon icon={faEnvelope} size="3x" className="m-2" style={{color:"#0066BD"}}/>
-                <p className="text" style={{fontSize:"medium"}}>groupnol@gmail.com</p>
+                <FontAwesomeIcon icon={faEnvelope} size="3x" className="m-2" style={{ color: "#0066BD" }} />
+                <p className="text" style={{ fontSize: "medium" }}>groupnol@gmail.com</p>
               </div>
               <div className="col-6">
-                <FontAwesomeIcon icon={faFacebook} size="3x" className="m-2" style={{color:"#0066BD"}}/>
-                <p className="text" style={{fontSize:"medium"}}>https://www.facebook.com/nolmarket</p>
+                <FontAwesomeIcon icon={faFacebook} size="3x" className="m-2" style={{ color: "#0066BD" }} />
+                <p className="text" style={{ fontSize: "medium" }}>https://www.facebook.com/nolmarket</p>
               </div>
             </div>
 
@@ -44,16 +44,16 @@ const Contact = () => {
                 width="100%"
                 height="100%"
                 style={{ border: "0" }}
-                allowfullscreen=""
+                allowFullScreen=""
                 title="carte google map"
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
           </div>
           <div className="col-md-5 col-12 mt-5 mb-5">
-            <h2 className="text-uppercase title m-2" style={{fontSize:"28px",color:"#FA7F1B"}}>Envoyez nous un message</h2>
-            <p className="text m-2" style={{fontSize:"large"}}>
+            <h2 className="text-uppercase title m-2" style={{ fontSize: "28px", color: "#FA7F1B" }}>Envoyez nous un message</h2>
+            <p className="text m-2" style={{ fontSize: "large" }}>
               Avez vous des suggestions ou quelques difficultés que nous
               pouvions résoudre, envoyez nous un message
             </p>
@@ -74,7 +74,7 @@ const Contact = () => {
                 <FormLabel className="label_register">Message</FormLabel>
                 <FormControl as={"textarea"} rows={5} />
               </FormGroup>
-              <Button className="text-white m-2 p-2" style={{background: "#0066BD", borderRadius:"10px"}}>
+              <Button className="text-white m-2 p-2" style={{ background: "#0066BD", borderRadius: "10px" }}>
                 Envoyer
               </Button>
             </Form>

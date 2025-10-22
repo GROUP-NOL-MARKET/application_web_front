@@ -10,7 +10,6 @@ import {
   FormControl,
   FormLabel,
   Button,
-  FormSelect,
   Spinner,
 } from "react-bootstrap";
 

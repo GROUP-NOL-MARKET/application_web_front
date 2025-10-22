@@ -56,7 +56,6 @@ const Divers = () => {
       <Swiper
         modules={[Navigation]}
         navigation
-        loop={sousCategories.length > 6}
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-md-block"

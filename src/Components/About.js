@@ -70,12 +70,12 @@ const About = () => {
             <div className="row mt-5">
               {/* Texte qui vient de la gauche */}
               <motion.div
-                className="col-lg-6 mt-3"
+                className="col-lg-6 mt-3 order-last order-lg-first"
                 initial={{ x: -200, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                <div className="section-heading mt-4">
+                <div className="section-heading mt-4 ">
                   <h1 className="entreprise_nom">
                     <span style={{ color: "#fa7f1b" }}>QUI SOM</span>
                     <span style={{ color: "#0066BD" }}>MES NOUS?</span>
@@ -102,12 +102,12 @@ const About = () => {
 
               {/* Image qui vient de la droite */}
               <motion.div
-                className="col-lg-6 align-self-center"
+                className="col-lg-6 align-self-center  order-first order-lg-last"
                 initial={{ x: 200, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               >
-                <div className="right-image">
+                <div className="right-image  ">
                   <img
                     src={img_entreprise_2}
                     alt="L'entreprise NOL MARKET"

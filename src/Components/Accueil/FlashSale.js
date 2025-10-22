@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { product_flash_sale } from "../Product_Data";
 import useEmblaCarousel from "embla-carousel-react";
+import VusProduct from "../Products/VusProduct";
 import "swiper/css";
 import "swiper/css/navigation";
 import "../../Styles/FlashSale.css";
@@ -14,6 +15,13 @@ const FlashSale = ({ duration }) => {
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const [time, setTime] = useState(duration);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [showPopUp, setshowPopUp] = useState(false);
+
+  const closePopUp = () => { setSelectedProduct(null); setshowPopUp(false); }
+  const openPopUp = (product) => { setSelectedProduct(product); setshowPopUp(true); }
 
   // Utilisation de use Effect et des fontions pour le décompte de temps de promotion
 
@@ -73,10 +81,6 @@ const FlashSale = ({ duration }) => {
       </div>
     );
   };
-  const navigate = useNavigate();
-  const handleNavigation = () => {
-    navigate("/Promotion");
-  };
 
   return (
     <div>
@@ -126,7 +130,7 @@ const FlashSale = ({ duration }) => {
                   src={product.img}
                   alt={product.name}
                   className="img_product border border-1 shadow-sm"
-                  onClick={handleNavigation}
+                  onClick={() => openPopUp(product)}
                 />
                 <div className="discount_badge">
                   {product.initial_price - product.new_price}%
@@ -159,18 +163,17 @@ const FlashSale = ({ duration }) => {
 
         {/* Produit flash pour les petits écrans  */}
 
-        <div className="embla d-lg-none">
+        <div className="embla d-md-none mt-2">
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {product_flash_sale.map((product) => (
                 <div key={product.id}
-                  className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1"
-                  onClick={handleNavigation} style={{ height: "200px" }}>
+                  className="embla__slide border border-1 rounded-3 d-flex flex-column alin-items-center me-1" style={{ height: "200px" }}>
                   <img
                     src={product.img}
                     alt={product.name}
                     className="img_product"
-                    onClick={handleNavigation}
+                    onClick={() => openPopUp(product)}
                   />
                   <div className="discount_badge">
                     {product.initial_price - product.new_price}%
@@ -198,12 +201,13 @@ const FlashSale = ({ duration }) => {
                   </div>
                 </div>
               ))}
-
-
             </div>
           </div>
         </div>
       </div>
+      {showPopUp && (
+        <VusProduct closePopUp={closePopUp} product={selectedProduct} />
+      )}
     </div>
   );
 };

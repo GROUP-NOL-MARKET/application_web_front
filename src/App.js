@@ -20,8 +20,10 @@ import UserDashboard from "./Routes/UserDashboard";
 import ChangePassword from "./Components/Dashboard_user/ChangePassword";
 import AdminPrivateRoute from "./Components/Dashboard_admin/AdminPrivateRoute";
 import Connexion from "./Components/Dashboard_admin/Connexion";
-import UserPrivateRoute from "./Components/UserPrivteRoute";
+import UserPrivateRoute from "./Components/UserPrivateRoute";
 import AllProducts from "./Components/Products/AllProducts";
+import Promotion from "./Components/Products/Promotion";
+import SearchProduct from "./Components/Products/SearchProduct";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +69,8 @@ function App() {
           <Route path="/aide&Faq" element={<Faq />} />
           <Route path="/products" element={<Products />} />
           <Route path="/all_products" element={<AllProducts />} />
+          <Route path="/Promotion" element={<Promotion />} />
+          <Route path="/searchProduct" element={<SearchProduct />} />
           <Route path="/admin/*" element={<AdminPrivateRoute><AdminDashboard /></AdminPrivateRoute>} />
           <Route path="/user/*" element={<UserPrivateRoute><UserDashboard /></UserPrivateRoute>} />
           <Route path="/reset-password" element={<ChangePassword />} />

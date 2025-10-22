@@ -85,9 +85,9 @@ const Messages = () => {
                         style={{ cursor: "pointer" }}
                         onClick={() => openPopUp(message)}
                     >
-                        <h3 className="petit_titre fw-bold col-3">{message.sender || "Group Nol Market"}</h3>
-                        <h4 className="text-truncate col-4 petit_titre fw-normal">{message.title}</h4>
-                        <p className="texte_brut col-2 me-1">{new Date(message.created_at).toLocaleDateString()}</p>
+                        <h3 className="petit_titre fw-bold col-lg-3 col-6">{message.sender || "Group Nol Market"}</h3>
+                        <h4 className="text-truncate col-lg-4 col-6 petit_titre fw-normal">{message.title}</h4>
+                        <p className="texte_brut col-lg-2 col-4 offset-lg-0 offset-4 me-1">{new Date(message.created_at).toLocaleDateString()}</p>
                         <p className="texte_brut col">{new Date(message.created_at).toLocaleTimeString()}</p>
                     </div>
                 </div>
@@ -111,8 +111,8 @@ const Messages = () => {
                         <div className="col-2 d-flex align-items-center">
                             <h2 className="taux_moyen m-0">Messages</h2>
                         </div>
-                        <div className="offset-5 col d-flex align-items-center justify-content-end">
-                            <div className="form-check me-3">
+                        <div className="offset-lg-5 col d-flex align-items-center justify-content-end">
+                            <div className="form-check me-2">
                                 <input
                                     className="form-check-input"
                                     type="checkbox"
@@ -120,7 +120,7 @@ const Messages = () => {
                                     checked={messages.length > 0 && selectedMessageIds.length === messages.length}
                                     onChange={handleSelectAll}
                                 />
-                                <label className="form-check-label texte_brut" htmlFor="selectAllCheckbox">
+                                <label className="form-check-label texte_brut d-none d-md-block" htmlFor="selectAllCheckbox">
                                     Tout sélectionner
                                 </label>
                             </div>

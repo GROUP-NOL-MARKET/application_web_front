@@ -103,7 +103,7 @@ const GestionCompte = () => {
                 </div>
                 <div className="container-fluid">
                     <div className="row mt-2">
-                        <div className="col-6 me-2 border border-1 shadow-sm p-2">
+                        <div className="col-lg-6 col-12 me-2 border border-1 shadow-sm p-2">
                             <div className="row">
                                 <span className="col-2 me-1"><img src={utilisateur} alt="" className='img-fluid' /></span>
                                 <div className='col d-flex align-items-center'>
@@ -119,7 +119,7 @@ const GestionCompte = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='col border border-1 shadow-sm p-2'>
+                        <div className='col-lg col-12 mt-3 mt-lg-0 border border-1 shadow-sm p-2'>
                             <div className="row">
                                 <span className="col-2 me-1"><img src={security} alt="" className='img-fluid' /></span>
                                 <div className='col d-flex align-items-center'>
