@@ -36,7 +36,7 @@ const AllProducts = () => {
                 const url = new URL("http://127.0.0.1:8000/api/products");
                 url.searchParams.append("page", page);
 
-                // ✅ Ajouter le filtre seulement si on a une sous-catégorie
+                // Ajouter le filtre seulement si on a une sous-catégorie
                 if (sous_category && sous_category.trim() !== "") {
                     url.searchParams.append("sous_category", sous_category);
                 }
@@ -111,6 +111,7 @@ const AllProducts = () => {
                                                 onClick={() => addFavorite(product.id)}
                                                 style={{ cursor: "pointer", color: "#FA7F1B" }}
                                             />
+
                                         </div>
                                     )}
                                 </div>

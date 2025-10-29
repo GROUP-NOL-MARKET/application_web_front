@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
@@ -6,9 +6,79 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { Form, FormGroup, FormControl, FormLabel, Button } from "react-bootstrap";
+import { Form, FormGroup, FormControl, FormLabel, Button, Spinner } from "react-bootstrap";
+import API from "./Authentification/api";
+import { toast } from "react-toastify";
 
 const Contact = () => {
+
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const newErrors = {};
+
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]{2,30}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!nom.trim()) {
+      newErrors.nom = "Ce champ est requis";
+    } else if (!nameRegex.test(nom)) {
+      newErrors.nom = "Entrez un nom valide";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Ce champ est requis";
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = "Entrez un mail valide";
+    }
+
+    if (!message.trim()) {
+      newErrors.message = "Ce champ est requis";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await API.post("/contact", {
+        nom,
+        email,
+        message,
+      });
+
+      if (response.status === 201) {
+        toast.success("Message envoyé avec succès !");
+        setNom("");
+        setEmail("");
+        setMessage("");
+        setErrors({});
+      }
+    } catch (error) {
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      } else {
+        toast.error("Une erreur est survenue lors de l’envoi du message.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
     <div className="Contact" style={{ backgroundColor: "rgb(250, 250, 250)" }}>
       <div className="container">
@@ -57,10 +127,14 @@ const Contact = () => {
               Avez vous des suggestions ou quelques difficultés que nous
               pouvions résoudre, envoyez nous un message
             </p>
-            <Form method="post" className="formulaire_suggestion">
+            <Form method="post" onSubmit={handleSubmit} className="formulaire_suggestion">
               <FormGroup className="m-2">
                 <FormLabel className="label_register">Nom</FormLabel>
-                <FormControl type="name" className="input_register" />
+                <FormControl type="name" className="input_register" onChange={(e) => setNom(e.target.value)}
+                  isInvalid={errors?.nom ? true : false} />
+                <FormControl.Feedback type="invalid">
+                  {errors?.nom && errors.nom}
+                </FormControl.Feedback>
               </FormGroup>
               <FormGroup className="m-2">
                 <FormLabel className="label_register">Email</FormLabel>
@@ -68,14 +142,23 @@ const Contact = () => {
                   type="email"
                   placeholder="moi@gmail.com"
                   className="input_register"
+                  onChange={(e) => setEmail(e.target.value)}
+                  isInvalid={errors?.email ? true : false}
                 />
+                <FormControl.Feedback type="invalid">
+                  {errors?.email && errors.email}
+                </FormControl.Feedback>
               </FormGroup>
               <FormGroup className="m-2">
                 <FormLabel className="label_register">Message</FormLabel>
-                <FormControl as={"textarea"} rows={5} />
+                <FormControl as={"textarea"} rows={5} onChange={(e) => setMessage(e.target.value)}
+                  isInvalid={errors?.message ? true : false} />
+                <FormControl.Feedback type="invalid">
+                  {errors?.message && errors.message}
+                </FormControl.Feedback>
               </FormGroup>
-              <Button className="text-white m-2 p-2" style={{ background: "#0066BD", borderRadius: "10px" }}>
-                Envoyer
+              <Button className="text-white m-2 p- w-100 rounded-5" type="submit" style={{ background: "#0066BD" }}>
+                {loading ? <Spinner animation="border" size="sm" /> : "Envoyer"}
               </Button>
             </Form>
           </div>

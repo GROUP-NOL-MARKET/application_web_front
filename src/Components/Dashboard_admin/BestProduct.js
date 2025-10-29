@@ -2,11 +2,18 @@ import React, { useContext, useState } from "react";
 import Entete from "./dataset/Entete";
 import SellPeriod from "./dataset/SellPeriod";
 import { ThemeContext } from "./ThemeContext";
-import { DataSeller } from "./dataset/DataSeller";
 import img_PL_dashboard from "../assets/Images/img_PL_dashboard.webp";
 import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
 import img_epicerie_dashboard from "../assets/Images/img_epicerie_dashboard.webp";
 import img_boissons_dashboard from "../assets/Images/img_boissons_dashboard.webp";
+import produits_locaux from "../assets/Images/produits_locaux.avif";
+import epicerie from "../assets/Images/epicerie.avif";
+import animalerie from "../assets/Images/img_animalerie.webp";
+import divers from "../assets/Images/divers.avif";
+import produits_frais from "../assets/Images/produits_frais.avif";
+import electromenager from "../assets/Images/electromenager.avif";
+import droguerie from "../assets/Images/droguerie.avif";
+import boisson from "../assets/Images/boisson.avif";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -21,6 +28,49 @@ import Rating from "@mui/material/Rating";
 const BestProduct = () => {
   const [dropActive, setDropActive] = useState("Meilleures ventes");
   const { theme } = useContext(ThemeContext);
+
+  const Categpory = [
+
+    {
+      "nom": "Produit Locaux",
+      "revenu": 5000,
+      "image": produits_locaux,
+    },
+    {
+      "nom": "Droguerie",
+      "revenu": 5000,
+      "image": droguerie,
+    },
+
+    {
+      "nom": "Epicerie",
+      "revenu": 5000,
+      'image': epicerie,
+    },
+
+    {
+      "nom": "Boissons",
+      "revenu": 5000,
+      "image": boisson,
+    },
+
+    {
+      "nom": "Produit Frais",
+      "revenu": 5000,
+      "image": produits_frais,
+    },
+
+    {
+      "nom": "Divers",
+      "revenu": 5000,
+      "image": divers,
+    },
+    {
+      "nom ": "Electroménager",
+      "revenu": 5000,
+      "image": electromenager,
+    },
+  ]
 
   return (
     <div className="container-fluid">
@@ -78,28 +128,24 @@ const BestProduct = () => {
       {/* Deuxième content  */}
       <div className="container-fluid">
         <div className="row mt-4">
-          {DataSeller.slice(0, 5).map((seller) => (
+          {Categpory.slice(0, 6).map((category) => (
             <div
-              className="col-2 me-1 d-flex flex-column shadow-sm border border-1"
+              className="col me-2 d-flex flex-column shadow-sm border border-1"
               style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className=" ">
                 <img
-                  src={seller.logo}
+                  src={category.image}
                   alt=""
-                  className="w-auto"
-                  style={{ height: "150px" }}
+                  className="img-fluid mt-2"
+                // style={{ height: "150px" }}
                 />
               </div>
-              <div className="row">
-                <div className="col-4">
-                  <img src={img_PL_dashboard} alt=" " className="img-fluid" />
-                </div>
-                <div className="col-8">
-                  <h5 className="petit_titre">Produits Locaux</h5>
-                </div>
-              </div>
-              <p className="taux_moyen">{seller.revenu} FCFA</p>
+
+              <h5 className="petit_titre" style={{ hyphens: "auto" }}>{category.nom}</h5>
+              <h5 className="petit_titre">Revenu :</h5>
+
+              <p className="taux_moyen">{category.revenu} FCFA</p>
             </div>
           ))}
         </div>

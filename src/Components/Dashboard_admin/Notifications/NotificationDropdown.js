@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import NotificationItem from "./NotificationItem";
 import { demoNotifications } from "../../Product_Data";
@@ -9,7 +9,20 @@ export default function NotificationDropdown({
   onAccept,
   onDecline,
   onLoadMore,
+
+
 }) {
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const dropdown = document.querySelector(".notif-dropdown");
+      if (dropdown && !dropdown.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onClose]);
   // rendu via portal pour être au-dessus du reste de l'UI
   return createPortal(
     <div

@@ -1,34 +1,58 @@
-
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "./Authentification/api";
+import Preloader from "./Preloader";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setIsAuthLoading(false);
+    navigate("/login", { replace: true });
+  }, [navigate]);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const verifyToken = async () => {
       const token = localStorage.getItem("token");
-      if (!token) return setIsLoggedIn(false);
+      if (!token) {
+        setIsAuthLoading(false);
+        return;
+      }
 
       try {
-        const res = await API.get("/user", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await API.get("/user", { headers: { Authorization: `Bearer ${token}` } });
         setIsLoggedIn(true);
       } catch (error) {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
+        logout();
+      } finally {
+        setIsAuthLoading(false);
       }
     };
 
-    checkAuth();
-  }, []);
+    verifyToken();
+  }, [logout]);
+
+  // écoute globale du token expiré
+  useEffect(() => {
+    const handleTokenExpired = () => {
+      logout();
+    };
+
+    window.addEventListener("tokenExpired", handleTokenExpired);
+    return () => {
+      window.removeEventListener("tokenExpired", handleTokenExpired);
+    };
+  }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-      {children}
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, logout, isAuthLoading }}>
+      {!isAuthLoading ? children : <Preloader />}
     </AuthContext.Provider>
   );
 };

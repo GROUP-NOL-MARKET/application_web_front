@@ -1,6 +1,7 @@
 import React from "react";
+import "./Messages.css"
 
-export default function NotificationItem({ item }) {
+export default function MessageItem({ item }) {
   return (
     <div
       className={`message-item ${item.highlight ? "highlight" : ""

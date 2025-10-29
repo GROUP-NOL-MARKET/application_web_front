@@ -19,6 +19,12 @@ const Navbar1 = () => {
   const { products } = useContext(PanierContext);
   const navigate = useNavigate();
 
+  const handleNavLinkClick = () => {
+    const navbar = document.getElementById("navbarCollapse");
+    navbar?.classList.remove("show");
+  };
+
+
   const logout = async () => {
     try {
       await API.post("/logout");
@@ -182,13 +188,41 @@ const Navbar1 = () => {
                   ✖
                 </button>
                 <ul className="navbar-nav ms-2">
-                  <li className="nav-item"><Link to="/" className="nav-link">Accueil</Link></li>
-                  <li className="nav-item"><Link to="/About" className="nav-link">A propos</Link></li>
-                  <li className="nav-item"><Link to="" className="nav-link">Services</Link></li>
-                  <li className="nav-item"><Link to="/Contact" className="nav-link">Contact</Link></li>
-                  <li className="nav-item"><Link to="/cart" className="nav-link">Achat</Link></li>
-                  <li className="nav-item"><Link to="/products" className="nav-link">Produits</Link></li>
-                  <li className="nav-item"><Link to="/aide&Faq" className="nav-link">Faq & aide</Link></li>
+                  <li className="nav-item">
+                    <Link to="/" className="nav-link" onClick={handleNavLinkClick}>
+                      Accueil
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/About" className="nav-link" onClick={handleNavLinkClick}>
+                      A propos
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="" className="nav-link" onClick={handleNavLinkClick}>
+                      Services
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/Contact" className="nav-link" onClick={handleNavLinkClick}>
+                      Contact
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/cart" className="nav-link" onClick={handleNavLinkClick}>
+                      Achat
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/products" className="nav-link" onClick={handleNavLinkClick}>
+                      Produits
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/aide&Faq" className="nav-link" onClick={handleNavLinkClick}>
+                      Faq & aide
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>

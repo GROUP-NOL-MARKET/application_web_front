@@ -109,10 +109,10 @@ const Suppression = ({ closePopUp4 }) => {
                             </FormGroup>
                             <div className='container-fluid'>
                                 <div className="row mt-3">
-                                    <Button className='offset-5 rounded-5 col-3 me-2' onClick={closePopUp4}>
+                                    <Button className='offset-md-5 offset-3 rounded-5 col-md-3 col-4 me-2' onClick={closePopUp4}>
                                         <span className="petit_titre">Annuler</span>
                                     </Button>
-                                    <Button className="col-3 rounded-5 logout" type='submit' disabled={!isChecked} onClick={handleDelete}>
+                                    <Button className="col-4 col-md-3 rounded-5 logout" type='submit' disabled={!isChecked} onClick={handleDelete}>
                                         {
                                             loading ? (<Spinner size="sm" animation='border' />) : (<span className="petit_titre">Supprimer</span>)
                                         }

@@ -26,41 +26,32 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
   const refMessages = useRef(null);
   const navigate = useNavigate();
 
-  // ✅ Fermer les dropdowns au clic extérieur
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (
-        refNotifications.current &&
-        !refNotifications.current.contains(e.target)
-      ) {
-        setOpenNotifications(false);
-      }
-      if (refMessages.current && !refMessages.current.contains(e.target)) {
-        setOpenMessages(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // ✅ Charger plus de notifications
+  // Charger plus de notifications
   const handleLoadMoreNotifications = useCallback(async () => {
     if (!fetchMoreNotifications) return;
     const more = await fetchMoreNotifications();
     setNotifications((prev) => [...prev, ...more]);
   }, [fetchMoreNotifications]);
 
-  // ✅ Charger plus de messages
+  // Charger plus de messages
   const handleLoadMoreMessages = useCallback(async () => {
     if (!fetchMoreMessages) return;
     const more = await fetchMoreMessages();
     setMessages((prev) => [...prev, ...more]);
   }, [fetchMoreMessages]);
 
+  // Calcul des non lus
   const unreadNotifications = notifications.filter((n) => !n.read).length;
   const unreadMessages = messages.filter((m) => !m.read).length;
 
-  // ✅ Déconnexion admin
+  //  Marquer comme lus quand on ouvre le dropdown message
+  useEffect(() => {
+    if (openMessages && unreadMessages > 0) {
+      setMessages((prev) => prev.map((m) => ({ ...m, read: true })));
+    }
+  }, [openMessages]);
+
+  // Déconnexion admin
   const logout = async () => {
     const token = localStorage.getItem("adminToken");
     try {
@@ -158,6 +149,7 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
                   setOpenNotifications(false);
                 }}
               />
+              {/* Badge rouge quand message non lu */}
               {unreadMessages > 0 && (
                 <span className="message-badge">{unreadMessages}</span>
               )}

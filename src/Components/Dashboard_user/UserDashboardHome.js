@@ -43,7 +43,7 @@ const UserDashboardHome = () => {
                 </div>
                 <div className="container-fluid">
                     <div className="row mt-2">
-                        <div className="col-6 me-2 border border-1 border-black d-flex flex-column g-0">
+                        <div className="col-md-6 col-12 me-2 border border-1 border-black d-flex flex-column g-0">
                             <div className="bg-light d-flex align-items-center w-100">
                                 <h2 className="taux_moyen ms-2 mt-2">Informations personnelles</h2>
                             </div>
@@ -55,7 +55,7 @@ const UserDashboardHome = () => {
                                 <div className="petit_titre my-1"> Numéro de téléphone : <b>{user?.phone ? user.phone : "Aucun enregistré"}</b> </div>
                             </div>
                         </div>
-                        <div className="col border border-1 border-black d-flex align-items-center flex-column g-0">
+                        <div className="col-md mt-3 mt-md-0 col-12 border border-1 border-black d-flex align-items-center flex-column g-0">
                             <div className="bg-light d-flex align-items-center w-100">
                                 <h2 className="taux_moyen ms-2 mt-2">Adresses</h2>
                             </div>

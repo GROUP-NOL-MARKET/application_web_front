@@ -17,6 +17,7 @@ const ReviewsSlice = createSlice({
     initialState: {
         reviews: [],
         totalPages: 1,
+        pagination: { current_page: 1, last_page: 1, total: 0 },
         page: 1,
         loading: false,
         cache: {}, // pour stocker les pages déjà chargées
@@ -32,6 +33,11 @@ const ReviewsSlice = createSlice({
                 state.loading = false;
                 state.totalPages = last_page;
                 state.page = page;
+                state.pagination = {
+                    current_page: action.payload.current_page,
+                    last_page: action.payload.last_page,
+                    total: action.payload.total,
+                };
                 state.cache[page] = data;
                 state.reviews = data;
             })

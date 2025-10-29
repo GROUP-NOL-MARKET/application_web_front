@@ -113,7 +113,7 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
                 <div className='d-flex flex-column align-items-center justify-content-center'>
                     <div className="row justify-content-center">
                         {Array.from({ length }).map((_, i) => (
-                            <div className="col-2 me-2" key={i}>
+                            <div className="col-lg-2 col me-1" key={i}>
                                 <FormControl
                                     type="text"
                                     maxLength={1}

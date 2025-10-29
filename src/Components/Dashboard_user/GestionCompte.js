@@ -5,10 +5,11 @@ import InfosProfil from './InfosProfil';
 import ChangeNumero from './ChangeNumero';
 import ModifierPassword from './ModifierPassword';
 import Suppression from './Suppression';
-import axios from 'axios';
+import { Button } from 'react-bootstrap';
 import Preloader from "./Preloader";
 import { toast } from 'react-toastify';
 import API from '../Authentification/api';
+import Profile from './Profile';
 
 const GestionCompte = () => {
 
@@ -19,6 +20,7 @@ const GestionCompte = () => {
     const [showPopUp2, setshowPopUp2] = useState(false);
     const [showPopUp3, setshowPopUp3] = useState(false);
     const [showPopUp4, setshowPopUp4] = useState(false);
+    const [showPopUp5, setshowPopUp5] = useState(false);
 
     const closePopUp1 = () => setshowPopUp1(false);
     const openPopUp1 = () => setshowPopUp1(true);
@@ -28,6 +30,9 @@ const GestionCompte = () => {
     const openPopUp3 = () => setshowPopUp3(true);
     const closePopUp4 = () => setshowPopUp4(false);
     const openPopUp4 = () => setshowPopUp4(true);
+    const closePopUp5 = () => setshowPopUp5(false);
+    const openPopUp5 = () => setshowPopUp5(true);
+
 
     const fetchUserProfile = async () => {
         const token = localStorage.getItem("token");
@@ -56,6 +61,7 @@ const GestionCompte = () => {
 
     const sendOtp = async () => {
         setLoading(true);
+        openPopUp3();
         try {
             const response = await API.post(
                 "http://127.0.0.1:8000/api/user/request-otp",
@@ -63,7 +69,7 @@ const GestionCompte = () => {
             );
 
             toast.success(response.data.message);
-            openPopUp3(); // ouvre le popup pour entrer l'OTP
+
         } catch (error) {
             console.error("Erreur complète :", error);
 
@@ -91,9 +97,7 @@ const GestionCompte = () => {
         }
 
     };
-    if (loading) {
-        return <Preloader />
-    }
+
 
     return (
         <div>
@@ -135,6 +139,10 @@ const GestionCompte = () => {
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                    <div>
+                        <Button className='mt-3 w-100 rounded-5'><span className="petit_titre" onClick={openPopUp5}>Ajouter une photo de profil</span></Button>
                     </div>
                 </div>
 
@@ -148,8 +156,10 @@ const GestionCompte = () => {
                 <ModifierPassword closePopUp3={closePopUp3} />)}
             {showPopUp4 && (
                 <Suppression closePopUp4={closePopUp4} />)}
+            {showPopUp5 && (
+                <Profile closePopUp5={closePopUp5} />)}
         </div>
     )
-}
 
+}
 export default GestionCompte

@@ -31,7 +31,6 @@ const Paiement = () => {
     const [loadingAdresse, setLoadingAdresse] = useState(false);
     const [adresseValidee, setAdresseValidee] = useState(false);
     const [loadingPaiement, setLoadingPaiement] = useState(false);
-    const [firstName, setFirstName] = useState("");
 
     const [user, setUser] = useState({ firstName: "", email: "" }); //  Stocke les infos utilisateur
 
@@ -117,10 +116,10 @@ const Paiement = () => {
             <div className="container">
                 <div className="row">
                     {/* ================= FORMULAIRE D’ADRESSE ================= */}
-                    <div className="col col-lg-8 my-4 me-3 bg-white shadow-sm rounded-3 p-4 border border-1">
+                    <div className="col col-lg-8 my-4 me-lg-3 mx-2 mx-lg-0 bg-white shadow-sm rounded-3 p-4 border border-1">
                         <h2 className="taux_moyen">Informations domicile client</h2>
                         <Form className="w-100" onSubmit={handleAdresseSubmit}>
-                            {["ville", "quartier", "rue", "numero"].map((field) => (
+                            {["ville", "quartier", "rue"].map((field) => (
                                 <FormGroup key={field}>
                                     <FormLabel className="label_register">
                                         {field.charAt(0).toUpperCase() + field.slice(1)}
@@ -136,6 +135,20 @@ const Paiement = () => {
                                     />
                                 </FormGroup>
                             ))}
+                            <FormGroup>
+                                <FormLabel className="label_register">
+                                    Numéro de maison
+                                </FormLabel>
+                                <FormControl
+                                    placeholder={"Entrez votre numéro de maison"}
+                                    className="input_register"
+                                    value={adresse.numero}
+                                    onChange={(e) =>
+                                        setAdresse({ ...adresse, numero: e.target.value })
+                                    }
+                                    disabled={adresseValidee}
+                                />
+                            </FormGroup>
 
                             <FormGroup>
                                 <FormLabel className="label_register">Localisation</FormLabel>

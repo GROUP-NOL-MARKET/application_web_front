@@ -16,6 +16,7 @@ import { store } from "./Store/Store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+
     <Router>
       <AuthProvider>
         <PanierContextProvider>
@@ -27,6 +28,7 @@ root.render(
         </PanierContextProvider>
       </AuthProvider>
     </Router>
+
   </React.StrictMode>
 );
 

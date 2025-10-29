@@ -1,40 +1,58 @@
+// src/components/Bons/Bons.jsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchVouchers } from "../../Store/VouchersSlice";
+import { fetchVouchers, setPage } from "../../Store/VouchersSlice";
 import coupon from "../assets/Images/icone/coupon.png";
 import Lottie from "lottie-react";
 import Animation from "../animation/loading_gray.json";
 
 const Bons = () => {
     const dispatch = useDispatch();
-    const { data: vouchers, loading, currentPage, totalPages } = useSelector((state) => state.vouchers);
-
+    const { dataByPage, loading, currentPage, totalPages } = useSelector(
+        (state) => state.vouchers
+    );
     const [activeTab, setActiveTab] = useState("actif");
     const token = localStorage.getItem("token");
 
-    // Charger les bons si le store est vide
-    useEffect(() => {
-        if (vouchers.length === 0) {
-            dispatch(fetchVouchers({ token, page: currentPage }));
-        }
-    }, [dispatch, token, vouchers.length, currentPage]);
+    const key = `${currentPage}_${activeTab}`;
+    const currentData = dataByPage[key] || [];
 
-    // Pagination
+    // Charger uniquement si la page n’est pas déjà dans le cache
+
+
+
+
+    useEffect(() => {
+        if (!token) return;
+        if (!dataByPage[key]) {
+            dispatch(fetchVouchers({ token, page: currentPage, status: activeTab }));
+        }
+    }, [dispatch, token, currentPage, activeTab]);
+
+
+
+
+    // Pagination fluide
     const handleNextPage = useCallback(() => {
         if (currentPage < totalPages) {
-            dispatch(fetchVouchers({ token, page: currentPage + 1 }));
+            const next = currentPage + 1;
+            dispatch(setPage(next));
+            if (!dataByPage[next]) dispatch(fetchVouchers({ token, page: next, status: activeTab }));
+
         }
-    }, [dispatch, token, currentPage, totalPages]);
+    }, [dispatch, token, currentPage, totalPages, dataByPage]);
 
     const handlePrevPage = useCallback(() => {
         if (currentPage > 1) {
-            dispatch(fetchVouchers({ token, page: currentPage - 1 }));
+            const prev = currentPage - 1;
+            dispatch(setPage(prev));
+            if (!dataByPage[prev]) dispatch(fetchVouchers({ token, page: prev, status: activeTab }));
         }
-    }, [dispatch, token, currentPage]);
+    }, [dispatch, token, currentPage, dataByPage]);
 
-    // Filtres optimisés
-    const vouchersActifs = useMemo(() => vouchers.filter(v => v.status === "actif"), [vouchers]);
-    const vouchersInactifs = useMemo(() => vouchers.filter(v => v.status !== "actif"), [vouchers]);
+    // Filtres
+    const vouchersActifs = useMemo(() => currentData.filter(v => v.status === "actif"), [currentData]);
+    const vouchersInactifs = useMemo(() => currentData.filter(v => v.status === "inactif"), [currentData]);
 
     return (
         <div className="shadow-sm border border-1 p-2">
@@ -63,25 +81,21 @@ const Bons = () => {
             </div>
 
             <div className="mt-3">
-                {loading ? (
-                    <Lottie animationData={Animation} loop={true} style={{ width: 50, height: 50, margin: "auto" }} />
+                {loading && currentData.length === 0 ? (
+                    <Lottie animationData={Animation} loop style={{ width: 50, height: 50, margin: "auto" }} />
                 ) : activeTab === "actif" ? (
                     vouchersActifs.length > 0 ? (
                         vouchersActifs.map((voucher) => (
                             <div key={voucher.id} className="border border-1 col rounded-3 mb-3 p-2">
                                 <div className="row">
-                                    <div className="col-lg-3 col-4 img_coupon" >
+                                    <div className="col-lg-3 col-4 img_coupon">
                                         <img src={coupon} alt="coupon" className="h-100 w-auto" />
                                     </div>
                                     <div className="col">
                                         <h2 className="name_entreprise_dashboard">{voucher.title}</h2>
                                         <h5 className="petit_titre">{voucher.sub_title}</h5>
-                                        <span className="col-3 me-2 pt-3 texte_brut">
-                                            Code : <b>{voucher.code}</b>
-                                        </span>
-                                        <span className="col texte_brut">
-                                            Valeur : <b>{voucher.valeur}</b>
-                                        </span>
+                                        <span className="me-2 texte_brut">Code : <b>{voucher.code}</b></span>
+                                        <span className="texte_brut">Valeur : <b>{voucher.valeur}</b></span>
                                         <p className="texte_brut">
                                             Valide du <b>{voucher.date}</b> au <b>{voucher.until}</b>
                                         </p>
@@ -97,7 +111,7 @@ const Bons = () => {
                     )
                 ) : vouchersInactifs.length > 0 ? (
                     vouchersInactifs.map((voucher) => (
-                        <div key={voucher.id} className="border border-1 col rounded-3 mb-3 opacity-50">
+                        <div key={voucher.id} className="border border-1 col rounded-3 mb-3 opacity-50 p-2">
                             <div className="row">
                                 <div className="col-3">
                                     <img src={coupon} alt="coupon" className="img-fluid" />
@@ -118,12 +132,12 @@ const Bons = () => {
             </div>
 
             {/* Pagination */}
-            {!loading && vouchers.length > 0 && (
+            {!loading && currentData.length > 0 && (
                 <div className="d-flex justify-content-center align-items-center mt-3">
                     <button className="btn btn-outline-dark me-2" disabled={currentPage === 1} onClick={handlePrevPage}>
                         Précédent
                     </button>
-                    <span className="texte_brut">Page {currentPage} sur {totalPages}</span>
+                    <span className="texte_brut">Page {currentPage} / {totalPages}</span>
                     <button className="btn btn-outline-dark ms-2" disabled={currentPage === totalPages} onClick={handleNextPage}>
                         Suivant
                     </button>

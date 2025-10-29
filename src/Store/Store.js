@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "./ProductsSlice";
-import ReviewsReducer from "./ReviewsSlice";
+import reviewsReducer from "./ReviewsSlice";
 import messagesReducer from "./MessagesSlice";
-import CommandesReducer from "./CommandesSlice";
-import FavorisReducer from "./FavorisSlice";
+import commandesReducer from "./CommandesSlice";
+import favorisReducer from "./FavorisSlice";
 import vouchersReducer from "./VouchersSlice";
 import recentViewsReducer from "./RecentViewsSlice";
 import clientsReducer from "./ClientsSlice";
@@ -11,10 +11,10 @@ import clientsReducer from "./ClientsSlice";
 export const store = configureStore({
     reducer: {
         products: productsReducer,
-        reviews: ReviewsReducer,
+        reviews: reviewsReducer,
         messages: messagesReducer,
-        commandes: CommandesReducer,
-        favoris: FavorisReducer,
+        commandes: commandesReducer,
+        favoris: favorisReducer,
         vouchers: vouchersReducer,
         recentViews: recentViewsReducer,
         clients: clientsReducer,

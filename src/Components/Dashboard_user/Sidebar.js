@@ -17,7 +17,7 @@ const Sidebar = () => {
 
   return (
     <div className="container-fluid">
-      <div className="border border-1 shadow-sm p-3 w-100">
+      <div className="border border-0 border-md-1 border-lg-1 shadow-lg shadow-md p-md-3 w-100">
         <ul className="list-unstyled w-100" style={{ lineHeight: "3.0" }}>
           <li className="petit_titre w-100">
             <NavLink

@@ -8,7 +8,7 @@ const About = () => {
     <div>
       <div className="container">
         <div>
-          <div className="title" style={{ fontSize: "1.7rem" }}>
+          <div className="title" style={{ fontSize: "1.4rem" }}>
             A propos de nous
           </div>
           <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />

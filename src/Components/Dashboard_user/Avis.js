@@ -11,7 +11,7 @@ const Lottie = lazy(() => import("lottie-react"));
 
 const Avis = () => {
     const dispatch = useDispatch();
-    const { reviews, loading, page, totalPages, cache } = useSelector(
+    const { reviews, loading, pagination, page, totalPages, cache } = useSelector(
         (state) => state.reviews
     );
 
@@ -63,10 +63,10 @@ const Avis = () => {
                                 <h5 className="taux_moyen">
                                     Commande #{review.order?.id ?? "?"}
                                 </h5>
-                                <h6 className="texte_brut">{review.content}</h6>
+                                <h6 className="texte_brut">{review.appreciation}</h6>
                                 <p className="taux_moyen">
                                     Note :{" "}
-                                    <Rating name="size-medium" defaultValue={review.rating} readOnly />
+                                    <Rating name="size-medium" defaultValue={review.notation} readOnly />
                                 </p>
                                 <p className="texte_brut">{review.dateFormatted}</p>
                             </div>
@@ -92,14 +92,24 @@ const Avis = () => {
                             disabled={page === 1}
                             onClick={() => handlePageChange(page - 1)}
                         >
-                            ← Précédent
+                            Précédent
                         </button>
+                        {Array.from({ length: pagination.lastPage }, (_, i) => (
+                            <button
+                                key={i}
+                                className={`btn btn-sm mx-1 ${pagination.currentPage === i + 1 ? "btn-dark text-white" : "btn-outline-dark"
+                                    }`}
+                                onClick={() => handlePageChange(i + 1)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
                         <button
                             className="btn btn-sm btn-primary"
                             disabled={page === totalPages}
                             onClick={() => handlePageChange(page + 1)}
                         >
-                            Suivant →
+                            Suivant
                         </button>
                     </div>
                 )}

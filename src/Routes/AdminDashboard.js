@@ -5,7 +5,7 @@ import Topbar from "../Components/Dashboard_admin/Topbar";
 import DashboardHome from "../Components/Dashboard_admin/DashboardHome";
 import UsersPage from "../Components/Dashboard_admin/UsersPage";
 import ThemeProvider, {
-  ThemeContext,
+    ThemeContext,
 } from "../Components/Dashboard_admin/ThemeContext";
 import "../Styles/AdminDashbord/appDashboard.css";
 import AnalyseVente from "../Components/Dashboard_admin/AnalyseVente";
@@ -23,36 +23,37 @@ import Transactions from "../Components/Dashboard_admin/Transactions";
 import Settings from "../Components/Dashboard_admin/Settings";
 
 const AdminDashboard = () => {
-  const theme = useContext(ThemeContext);
-  return (
-    <ThemeProvider>
-      <div className="d-flex">
-        <Sidebar />
-        <div className="flex-grow-1">
-          <Topbar />
-          <main className={`p-4 mt-5 ${theme}`} style={{ minHeight: "100vh" }}>
-            <Routes>
-              <Route path="dashboard" element={<DashboardHome />} />
-              <Route path="users" element={<UsersPage />} />
-              <Route path="paramètres" element={<Settings />} />
-              <Route path="analyticSell" element={<AnalyseVente />} />
-              <Route path="profilSeller" element={<ProfilSeller />} />
-              <Route path="revenue" element={<Revenue />} />
-              <Route path="bestProduct" element={<BestProduct />} />
-              <Route path="productGrid" element={<ProductGrid />} />
-              <Route path="productManagement" element={<ProductManagement />} />
-              <Route path="addProduct" element={<AddProduct />} />
-              <Route path="commandes" element={<Commandes />} />
-              <Route path="statistiques" element={<Statistiques />} />
-              <Route path="avis" element={<Avis />} />
-              <Route path="clients" element={<Clients />} />
-              <Route path="transactions" element={<Transactions />} />
-            </Routes>
-          </main>
-        </div>
-      </div>
-    </ThemeProvider>
-  );
+    const theme = useContext(ThemeContext);
+    return (
+        <ThemeProvider>
+            <div className="d-flex">
+                <Sidebar />
+                <div className="flex-grow-1">
+                    <Topbar />
+                    <main className={`p-4 mt-5 ${theme}`} style={{ minHeight: "100vh" }}>
+                        <Routes>
+                            <Route path="dashboard" element={<DashboardHome />} />
+                            <Route path="users" element={<UsersPage />} />
+                            <Route path="paramètres" element={<Settings />} />
+                            <Route path="analyticSell" element={<AnalyseVente />} />
+                            <Route path="profilSeller" element={<ProfilSeller />} />
+                            <Route path="revenue" element={<Revenue />} />
+                            <Route path="bestProduct" element={<BestProduct />} />
+                            <Route path="productGrid" element={<ProductGrid />} />
+                            <Route path="productManagement" element={<ProductManagement />} />
+                            <Route path="addProduct" element={<AddProduct />} />
+                            <Route path="addProduct/:id" element={<AddProduct />} />
+                            <Route path="commandes" element={<Commandes />} />
+                            <Route path="statistiques" element={<Statistiques />} />
+                            <Route path="avis" element={<Avis />} />
+                            <Route path="clients" element={<Clients />} />
+                            <Route path="transactions" element={<Transactions />} />
+                        </Routes>
+                    </main>
+                </div>
+            </div>
+        </ThemeProvider>
+    );
 };
 
 export default AdminDashboard;

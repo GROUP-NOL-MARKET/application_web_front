@@ -105,7 +105,7 @@ const Products = () => {
                 {products.length > 0 ? (
                     products.map((product) => (
                         <div key={product.id} className="col-md-2 col-6 shadow-sm mb-4">
-                            <div className="card" >
+                            <div className="card w-100" >
                                 <img
                                     src={product.image}
                                     className="card-img-top img_product"

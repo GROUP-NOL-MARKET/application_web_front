@@ -13,7 +13,7 @@
 @media (max-width: 575.98px) {
   .popup {
     background-color: #fff;
-    width: 400px;
+    width: 300px;
     position: relative;
   }
   .img_coupon {
@@ -24,7 +24,7 @@
 @media (min-width: 576px) {
   .popup {
     background-color: #fff;
-    width: 400px;
+    width: 500px;
     position: relative;
   }
   .img_coupon {

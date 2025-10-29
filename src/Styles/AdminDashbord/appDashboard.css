@@ -9,9 +9,7 @@ main.dark {
   color: #fff; /* texte blanc */
 }
 
-
 /* Sidebar */
-
 
 /* Images / icônes (optionnel) */
 .img-light {
@@ -22,25 +20,62 @@ main.dark {
   filter: invert(1); /* inverse les couleurs pour le mode sombre */
 }
 
-
 /* Analyse des ventes  */
-.name_entreprise_dashboard, .taux_moyen, .petit_titre{
-    font-family: "Roboto", sans-serif;
-    font-weight: bold;
-    font-size: 18px;
+.name_entreprise_dashboard,
+.taux_moyen,
+.petit_titre {
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
 }
-.name_entreprise_dashboard{
-    font-size: 1.5rem;
+.name_entreprise_dashboard {
+  font-size: 1.5rem;
 }
-.petit_titre{
-    font-weight: normal;
-    font-size: 16px;
+.petit_titre {
+  font-weight: normal;
+  font-size: 16px;
 }
-.texte_brut{
+.texte_brut {
   font-size: 13px;
-  font-family:"Roboto", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-optical-sizing: normal;
 }
-.sidebar_user{
+.sidebar_user {
   min-height: 400px;
+}
+@media (max-width: 575.98px) {
+  .img_product {
+    width: 100%;
+    height: 120px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 576px) {
+  .img_product {
+    width: 100%;
+    height: 120px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 768px) {
+  .img_product {
+    width: 100%;
+    height: 170px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 992px) {
+  .img_product {
+    width: 100%;
+    height: 170px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
 }

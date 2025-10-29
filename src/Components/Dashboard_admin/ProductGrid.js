@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Entete from "./dataset/Entete";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
 
 const ProductGrid = () => {
+  const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
   const [products, setProducts] = useState([]);
   const [dropActive, setDropActive] = useState("Nom");
@@ -19,7 +21,7 @@ const ProductGrid = () => {
 
   const token = localStorage.getItem("adminToken");
 
-  // 🔹 Charger les produits depuis l’API
+  // Charger les produits depuis l’API
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -72,11 +74,10 @@ const ProductGrid = () => {
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="row">
-
               <img src={img_electromenager_dashboard} alt=" " className="col img-fluid" />
-              <p className="col-9 text-center petit_titre fw-bold">{category}</p>
-
-
+              <div className="col-9 d-flex align-items-center justify-content-center">
+                <p className="petit_titre fw-bold">{category}</p>
+              </div>
 
             </div>
           </div>
@@ -100,7 +101,6 @@ const ProductGrid = () => {
                 <li className="dropdown-item" onClick={() => setCategory("Droguerie")}>Droguerie</li>
                 <li className="dropdown-item" onClick={() => setCategory("Divers")}>Divers</li>
                 <li className="dropdown-item" onClick={() => setCategory("Boissons")}>Boissons</li>
-                <li className="dropdown-item" onClick={() => setCategory("Téléphonie")}>Téléphonie</li>
               </ul>
             </div>
           </div>
@@ -147,8 +147,7 @@ const ProductGrid = () => {
                     <img
                       src={product.image_url}
                       alt={product.name}
-                      className="img-fluid"
-                      style={{ minHeight: "120px" }}
+                      className="img_product"
                     />
                   </div>
                   <div className="col-1 mt-2">
@@ -156,8 +155,8 @@ const ProductGrid = () => {
                   </div>
                 </div>
                 <h5 className="taux_moyen fw-normal mt-2">{product.name}</h5>
-                <p className="texte_brut m-0">Prix fixe : {product.price} F</p>
-                <p className="texte_brut m-0">Prix de vente : {product.price} F</p>
+                <p className="texte_brut m-0">Prix fixe : {product.price} FCFA</p>
+                <p className="texte_brut m-0">Prix de vente : {product.price} FCFA</p>
                 <p className="texte_brut m-0" style={{ color: "green" }}>
                   Disponible : {product.disponibility}
                 </p>
@@ -168,7 +167,7 @@ const ProductGrid = () => {
                   <Button
                     className="col me-2"
                     style={{ borderRadius: "15px", borderColor: "blue", color: "blue" }}
-                    onClick={() => toast.info("Page modification à implémenter")}
+                    onClick={() => navigate(`/admin/addProduct/${product.id}`)}
                   >
                     Modifier
                   </Button>

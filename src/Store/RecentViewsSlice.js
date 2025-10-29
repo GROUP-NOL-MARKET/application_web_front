@@ -1,43 +1,56 @@
-// Store/recentViewsSlice.js
+// src/Store/RecentViewsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchRecentViews = createAsyncThunk(
     "recentViews/fetchRecentViews",
-    async (token, { rejectWithValue }) => {
+    async ({ token, page = 1, perPage = 8 }, { rejectWithValue }) => {
         try {
-            const response = await fetch("http://localhost:8000/api/recent-views", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "application/json",
-                },
-            });
+            const response = await fetch(
+                `http://localhost:8000/api/recent-views?page=${page}&per_page=${perPage}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/json",
+                    },
+                }
+            );
 
             if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
-
             const data = await response.json();
-            return data.data || [];
+            return { page, ...data };
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
 );
 
-const recentViewsSlice = createSlice({
+const RecentViewsSlice = createSlice({
     name: "recentViews",
     initialState: {
-        data: [],
+        dataByPage: {}, // cache par page
         loading: false,
         error: null,
-        lastFetched: null, // pour gestion du cache
+        lastFetched: null,
+        pagination: {
+            current_page: 1,
+            last_page: 1,
+            total: 0,
+        },
     },
-    reducers: {},
+    reducers: {
+        setCurrentPage: (state, action) => {
+            state.pagination.current_page = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchRecentViews.pending, (state) => {
                 state.loading = true;
             })
             .addCase(fetchRecentViews.fulfilled, (state, action) => {
-                state.data = action.payload;
+                const { page, data, current_page, last_page, total } = action.payload;
+                state.dataByPage[page] = data || [];
+                state.pagination = { current_page, last_page, total };
                 state.loading = false;
                 state.lastFetched = Date.now();
             })
@@ -48,4 +61,5 @@ const recentViewsSlice = createSlice({
     },
 });
 
-export default recentViewsSlice.reducer;
+export const { setCurrentPage } = RecentViewsSlice.actions;
+export default RecentViewsSlice.reducer;

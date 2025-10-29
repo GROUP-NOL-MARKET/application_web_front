@@ -58,35 +58,6 @@ const Cart = () => {
   return (
     <div className="cart">
       <div className="container">
-        <div className="mb-2">
-          <div className=" mb-2 bg-white rounded-3 col-5 col-lg-2 p-2" >
-            <div className="row">
-              <div className="col-1 d-flex align-items-center">
-                <FontAwesomeIcon icon={faBars} style={{ color: "black" }} />
-              </div>
-
-              <select
-                className="col-9 border-0 bg-white text-black"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option className="petit_titre"> Catégories</option>
-                {[
-                  "Droguerie",
-                  "Animalerie",
-                  "Épicerie",
-                  "Produits Locaux",
-                  "Produits frais",
-                  "Divers",
-                  "Boissons",
-                  "Electroménager",
-                ].map((cat) => (
-                  <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
         <div className="container">
           <div className="row">
             <div className="cart_content col-md-8 col-12 d-flex flex-column mt-4 mb-4 border border-1">

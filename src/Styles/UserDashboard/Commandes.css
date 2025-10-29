@@ -21,3 +21,32 @@
   background-color: black;
   z-index: 1040;
 }
+
+.commandes-container {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Pagination bien visible et espacée */
+.pagination-container {
+  margin-top: 2rem;
+  padding-bottom: 1.5rem;
+}
+
+.pagination .page-link {
+  color: #007bff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  padding: 6px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}

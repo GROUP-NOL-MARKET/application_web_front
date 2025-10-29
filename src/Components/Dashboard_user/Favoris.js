@@ -1,5 +1,5 @@
 // src/components/Favoris/Favoris.jsx
-import React, { useEffect, useMemo, lazy, Suspense, useState } from "react";
+import React, { useEffect, useMemo, useState, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFavoris, removeFavori } from "../../Store/FavorisSlice";
 import favorisImg from "../assets/Images/icone/favourite.png";
@@ -8,20 +8,28 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { PanierContext } from "../../Store/Panier_context";
 import Animation from "../animation/loading_gray.json";
 import VusProduct from "../Products/VusProduct";
-
-const Lottie = lazy(() => import("lottie-react"));
+const Lottie = React.lazy(() => import("lottie-react"));
 
 const Favoris = () => {
     const dispatch = useDispatch();
-    const { items: favorites, loading } = useSelector((state) => state.favoris);
+    const { items: favorites, loading, pagination, cacheTimestamp } = useSelector((state) => state.favoris);
     const { addProductToCart } = React.useContext(PanierContext);
 
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showPopUp, setShowPopUp] = useState(false);
 
+    const [page, setPage] = useState(1);
+    const perPage = 8;
+
+    // Chargement avec cache de 5 min
     useEffect(() => {
-        dispatch(fetchFavoris());
-    }, [dispatch]);
+        const now = Date.now();
+        const cacheValid = cacheTimestamp && now - cacheTimestamp < 5 * 60 * 1000;
+
+        if (!cacheValid) {
+            dispatch(fetchFavoris({ page, perPage }));
+        }
+    }, [dispatch, page, cacheTimestamp]);
 
     const openPopUp = (product) => {
         setSelectedProduct(product);
@@ -71,18 +79,21 @@ const Favoris = () => {
                             <div className="mt-2 text-center">
                                 <h3 className="petit_titre fw-bold text-truncate">{favori.product?.name}</h3>
                                 <h4 className="petit_titre text-secondary">{favori.product?.category}</h4>
-                                <h5 className="petit_titre fw-bold">
+                                <h5 className="petit_titre fw-bold mt-1">
                                     {favori.product?.price?.toLocaleString()} FCFA
                                     <FontAwesomeIcon
                                         icon={faCartShopping}
                                         onClick={() => addProductToCart(favori.product)}
                                         style={{ cursor: "pointer", color: "#fa7f1b" }}
-                                        className="ms-2"
+                                        className="me-2"
                                     />
+                                    <button
+                                        className="btn btn-sm btn-outline-danger"
+                                        onClick={() => dispatch(removeFavori(favori.id))}
+                                    >
+                                        Retirer
+                                    </button>
                                 </h5>
-                                <button className="btn btn-sm btn-outline-danger mt-2" onClick={() => dispatch(removeFavori(favori.id))}>
-                                    Retirer
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -96,7 +107,32 @@ const Favoris = () => {
             <div className="border-bottom border-2 border-black w-100 py-2 d-flex align-items-center">
                 <h2 className="taux_moyen">Favoris</h2>
             </div>
+
             <div className="container-fluid">{contenu}</div>
+
+            {/*  Pagination simple */}
+            {pagination.last_page > 1 && (
+                <div className="d-flex justify-content-center align-items-center mt-3">
+                    <button
+                        className="btn btn-outline-dark btn-sm me-2"
+                        disabled={page <= 1}
+                        onClick={() => setPage(page - 1)}
+                    >
+                        Précédent
+                    </button>
+                    <span className="mx-2">
+                        Page {pagination.current_page} / {pagination.last_page}
+                    </span>
+                    <button
+                        className="btn btn-outline-dark btn-sm"
+                        disabled={page >= pagination.last_page}
+                        onClick={() => setPage(page + 1)}
+                    >
+                        Suivant
+                    </button>
+                </div>
+            )}
+
             {showPopUp && <VusProduct closePopUp={closePopUp} product={selectedProduct} />}
         </div>
     );
