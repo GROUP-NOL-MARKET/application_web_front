@@ -3,9 +3,8 @@ import React from "react";
 export default function NotificationItem({ item, onAccept, onDecline }) {
   return (
     <div
-      className={`notif-item ${
-        item.highlight ? "highlight" : ""
-      } d-flex flex-column`}
+      className={`notif-item ${item.highlight ? "highlight" : ""
+        } d-flex flex-column`}
     >
       <div className="row">
         <div className="col-4">
