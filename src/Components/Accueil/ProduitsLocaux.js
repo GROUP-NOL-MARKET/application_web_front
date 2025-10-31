@@ -26,23 +26,55 @@ const ProduitsLocaux = () => {
 
     const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
     const navigate = useNavigate();
+
     const [selectedProduct, setSelectedProduct] = useState(null);
-
     const [showPopUp, setshowPopUp] = useState(false);
-    const closePopUp = () => {
-        setshowPopUp(false);
-        setSelectedProduct(null);
-    }
-    const openPopUp = (product) => {
-        setSelectedProduct(product);
-        setshowPopUp(true);
-    }
-
-
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    //  Mémoriser la fonction de navigation
+    const closePopUp = () => {
+        setshowPopUp(false);
+        setSelectedProduct(null);
+    };
+
+    const openPopUp = (product) => {
+        setSelectedProduct(product);
+        setshowPopUp(true);
+    };
+
+    // ✅ Chargement des produits avec cache session
+    useEffect(() => {
+        const cachedProducts = sessionStorage.getItem("produits_locaux");
+
+        if (cachedProducts) {
+            setProducts(JSON.parse(cachedProducts));
+            setLoading(false);
+        } else {
+            const fetchProducts = async () => {
+                try {
+                    const url = new URL("http://127.0.0.1:8000/api/products");
+                    url.searchParams.append("sous_category", "Produits Locaux");
+
+                    const response = await fetch(url);
+                    const result = await response.json();
+
+                    const data = result.data || [];
+                    setProducts(data);
+                    sessionStorage.setItem("produits_locaux", JSON.stringify(data));
+                } catch (error) {
+                    console.error("Erreur lors du chargement des produits :", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchProducts();
+        }
+    }, []);
+
+    // Mémorisation
+    const memoizedProducts = useMemo(() => products, [products]);
+
     const handleNavigation2 = useCallback(
         (category) => {
             navigate(`/products?category=${encodeURIComponent(category)}`);
@@ -50,31 +82,6 @@ const ProduitsLocaux = () => {
         [navigate]
     );
 
-    //  Charger et mémoriser les produits
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const url = new URL("http://127.0.0.1:8000/api/products");
-                url.searchParams.append("sous_category", "Produits Locaux");
-
-                const response = await fetch(url);
-                const result = await response.json();
-
-                setProducts(result.data || []);
-            } catch (error) {
-                console.error("Erreur lors du chargement des produits :", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    //  Mémorisation des produits (utile si Redux ou contexte futur)
-    const memoizedProducts = useMemo(() => products, [products]);
-
-    //  Callbacks stables pour éviter rerender sur SwiperSlides
     const handleAddToCart = useCallback(
         (product) => addProductToCart(product),
         [addProductToCart]
@@ -85,16 +92,9 @@ const ProduitsLocaux = () => {
         [addFavorite]
     );
 
-    if (loading) {
-        return (
-            <div className="text-center mt-5">
-                <Preloader />
-            </div>
-        );
-    }
-
     return (
         <div className="container mt-1 mt-md-5">
+            {/* --- Titre --- */}
             <div className="row">
                 <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">
                     Produits Locaux
@@ -113,110 +113,109 @@ const ProduitsLocaux = () => {
                         </div>
                     </div>
                 </div>
-                <hr
-                    style={{ color: "#FA7F1B", height: "0.2rem" }}
-                    className="m-0"
-                />
+                <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
             </div>
 
-            {/* Swiper Desktop avec Lazy Loading */}
-            <Swiper
-                modules={[Navigation]}
-                navigation
-                loop={memoizedProducts.length > 6}
-                slidesPerView={6}
-                spaceBetween={15}
-                className="Liste_produits d-none d-md-block mt-4"
-            >
-                {memoizedProducts.length > 0 ? (
-                    memoizedProducts.map((product) => (
-                        <SwiperSlide
-                            key={product.id}
-                            className="product_slide border border-1 shadow-sm"
-                        >
-                            <img
-                                loading="lazy"
-                                data-src={
-                                    product.image.startsWith("http")
-                                        ? product.image
-                                        : `http://127.0.0.1:8000/storage/${product.image}`
-                                }
-                                alt={product.name}
-                                className="img_product swiper-lazy"
-                                onClick={() => openPopUp(product)}
-                            />
-                            <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                            <div className="border border-1 border-top w-100 text-center py-2">
-                                <div className="product_title fw-bold petit_titre">{product.name}</div>
-                                <div className="text-muted">{product.price} FCFA</div>
-
-                                <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                                    <FontAwesomeIcon
-                                        icon={faCartShopping}
-                                        onClick={() => handleAddToCart(product)}
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                    {isLoggedIn && (
+            {/* --- ✅ Message de chargement sous le titre --- */}
+            {loading ? (
+                <div className="text-center py-4">Chargement des produits...</div>
+            ) : memoizedProducts.length > 0 ? (
+                <>
+                    {/* --- Swiper Desktop --- */}
+                    <Swiper
+                        modules={[Navigation]}
+                        navigation
+                        loop={memoizedProducts.length > 6}
+                        slidesPerView={6}
+                        spaceBetween={15}
+                        className="Liste_produits d-none d-md-block mt-2"
+                    >
+                        {memoizedProducts.map((product) => (
+                            <SwiperSlide
+                                key={product.id}
+                                className="product_slide border border-1 shadow-sm"
+                            >
+                                <img
+                                    loading="lazy"
+                                    src={
+                                        product.image.startsWith("http")
+                                            ? product.image
+                                            : `http://127.0.0.1:8000/storage/${product.image}`
+                                    }
+                                    alt={product.name}
+                                    className="img_product swiper-lazy"
+                                    onClick={() => openPopUp(product)}
+                                />
+                                <div className="border border-1 border-top w-100 text-center py-2">
+                                    <div className="product_title fw-bold petit_titre">
+                                        {product.name}
+                                    </div>
+                                    <div className="text-muted">{product.price} FCFA</div>
+                                    <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                                         <FontAwesomeIcon
-                                            icon={faHeart}
-                                            onClick={() => handleAddFavorite(product.id)}
-                                            style={{ cursor: "pointer", color: "#FA7F1B" }}
+                                            icon={faCartShopping}
+                                            onClick={() => handleAddToCart(product)}
+                                            style={{ cursor: "pointer" }}
                                         />
-                                    )}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    ))
-                ) : (
-                    <div className="text-center w-100">Aucun produit trouvé</div>
-                )}
-            </Swiper>
-
-            {/*  Carrousel Embla Mobile */}
-            <div className="embla d-lg-none mt-3">
-                <div className="embla__viewport" ref={emblaRef}>
-                    <div className="embla__container">
-                        {memoizedProducts.length > 0 ? (
-                            memoizedProducts.map((product) => (
-                                <div
-                                    key={product.id}
-                                    className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
-                                >
-                                    <img
-                                        loading="lazy"
-                                        src={
-                                            product.image.startsWith("http")
-                                                ? product.image
-                                                : `http://127.0.0.1:8000/storage/${product.image}`
-                                        }
-                                        alt={product.name}
-                                        className="img_product"
-                                        onClick={() => openPopUp(product)}
-                                    />
-                                    <div className="text-center mt-2">
-                                        <div className="fw-bold petit_titre">{product.name}</div>
-                                        <div className="text-muted small">{product.price} FCFA</div>
-                                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                                            <FontAwesomeIcon
-                                                icon={faCartShopping}
-                                                onClick={() => handleAddToCart(product)}
-                                                style={{ cursor: "pointer" }}
-                                            />
+                                        {isLoggedIn && (
                                             <FontAwesomeIcon
                                                 icon={faHeart}
                                                 onClick={() => handleAddFavorite(product.id)}
                                                 style={{ cursor: "pointer", color: "#FA7F1B" }}
                                             />
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
-                            ))
-                        ) : (
-                            <p className="text-center text-muted">Aucun produit trouvé</p>
-                        )}
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+
+                    {/* --- Carrousel mobile --- */}
+                    <div className="embla d-lg-none mt-3">
+                        <div className="embla__viewport" ref={emblaRef}>
+                            <div className="embla__container">
+                                {memoizedProducts.map((product) => (
+                                    <div
+                                        key={product.id}
+                                        className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
+                                    >
+                                        <img
+                                            loading="lazy"
+                                            src={
+                                                product.image.startsWith("http")
+                                                    ? product.image
+                                                    : `http://127.0.0.1:8000/storage/${product.image}`
+                                            }
+                                            alt={product.name}
+                                            className="img_product"
+                                            onClick={() => openPopUp(product)}
+                                        />
+                                        <div className="text-center mt-2">
+                                            <div className="fw-bold petit_titre">{product.name}</div>
+                                            <div className="text-muted small">{product.price} FCFA</div>
+                                            <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                                                <FontAwesomeIcon
+                                                    icon={faCartShopping}
+                                                    onClick={() => handleAddToCart(product)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                                <FontAwesomeIcon
+                                                    icon={faHeart}
+                                                    onClick={() => handleAddFavorite(product.id)}
+                                                    style={{ cursor: "pointer", color: "#FA7F1B" }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            ) : (
+                <div className="text-center py-4">Aucun produit trouvé</div>
+            )}
+
             {showPopUp && (
                 <VusProduct closePopUp={closePopUp} product={selectedProduct} />
             )}

@@ -104,19 +104,19 @@ const Products = () => {
             <div className="row mt-lg-3 mt-1">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="col-md-2 col-6 shadow-sm mb-4">
-                            <div className="card w-100" >
+                        <div key={product.id} className="col-md-2 col-6  mb-4 ">
+                            <div className="d-flex flex-column shadow-sm border border-1 p-2" >
                                 <img
                                     src={product.image}
-                                    className="card-img-top img_product"
+                                    className=" img_product"
                                     alt={product.name}
                                     onClick={() => openPopUp(product)}
                                 />
                                 <div className="card-body">
-                                    <h5 className="card-title petit_titre">{product.name}</h5>
+                                    <h5 className="text-truncate petit_titre">{product.name}</h5>
                                     <p className="card-text petit_titre fw-bold">{product.price} FCFA</p>
                                     {!isLoggedIn ? (
-                                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
                                             <FontAwesomeIcon
                                                 icon={faCartShopping}
                                                 onClick={() => addProductToCart(product)}
@@ -125,7 +125,7 @@ const Products = () => {
                                             />
 
                                         </div>) : (
-                                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
                                             <FontAwesomeIcon
                                                 icon={faCartShopping}
                                                 onClick={() => addProductToCart(product)}

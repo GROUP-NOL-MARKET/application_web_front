@@ -74,7 +74,7 @@ const ProductGrid = () => {
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="row">
-              <img src={img_electromenager_dashboard} alt=" " className="col img-fluid" />
+              <img src={img_electromenager_dashboard} alt=" " className="col-3 img-fluid" />
               <div className="col-9 d-flex align-items-center justify-content-center">
                 <p className="petit_titre fw-bold">{category}</p>
               </div>

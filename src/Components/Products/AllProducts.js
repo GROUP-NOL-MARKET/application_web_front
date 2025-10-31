@@ -71,27 +71,27 @@ const AllProducts = () => {
             <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
 
             {/* Liste des produits */}
-            <div className="row mt-md-3 mt-0">
+            <div className="row mt-md-3 mt-0 ">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="col-md-2 shadow-sm col-6 mb-4">
-                            <div className="card">
+                        <div key={product.id} className="col-md-2  mb-4 col-6">
+                            <div className="d-flex flex-column border border-1 shadow-sm p-2">
                                 <img
                                     src={
                                         product.image.startsWith("http")
                                             ? product.image
                                             : `http://127.0.0.1:8000/storage/${product.image}`
                                     }
-                                    className="card-img-top img_product"
+                                    className=" img_product"
                                     alt={product.name}
                                     onClick={() => openPopUp(product)}
                                 />
                                 <div className="card-body">
-                                    <h5 className="card-title petit_titre">{product.name}</h5>
+                                    <h5 className="text-truncate petit_titre">{product.name}</h5>
                                     <p className="card-text petit_titre fw-bold">{product.price} FCFA</p>
                                     <h5 className="card-text petit_titre">{product.category} </h5>
                                     {!isLoggedIn ? (
-                                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
                                             <FontAwesomeIcon
                                                 icon={faCartShopping}
                                                 onClick={() => addProductToCart(product)}
@@ -100,7 +100,7 @@ const AllProducts = () => {
                                             />
 
                                         </div>) : (
-                                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
                                             <FontAwesomeIcon
                                                 icon={faCartShopping}
                                                 onClick={() => addProductToCart(product)}

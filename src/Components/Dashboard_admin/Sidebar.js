@@ -142,7 +142,7 @@ const Sidebar = () => {
                         alt="icône des revenus par période"
                         className="col-1 me-2 img"
                       />
-                      Revenus par période
+                      Promotions
                     </span>
                   </NavLink>
                 </div>
