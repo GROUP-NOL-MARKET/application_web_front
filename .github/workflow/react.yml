@@ -1,0 +1,24 @@
+name: React CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+
+jobs:
+  react-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies & build
+        run: |
+          cd frontend
+          npm install
+          npm run build
