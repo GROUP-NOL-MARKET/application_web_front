@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,15 @@ const Navbar1 = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const { products } = useContext(PanierContext);
   const navigate = useNavigate();
+
+  const totalPrice = useMemo(
+    () =>
+      products.reduce(
+        (acc, product) => acc + (product.price || 0) * (product.quantity || 0),
+        0
+      ),
+    [products]
+  );
 
   const handleNavLinkClick = () => {
     const navbar = document.getElementById("navbarCollapse");
@@ -44,7 +53,7 @@ const Navbar1 = () => {
         <div className="tel col-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
           <div className="row">
             {/* Bloc téléphone */}
-            <div className="col-6 d-none d-sm-block">
+            <div className="col-6 d-none d-lg-block">
               <div className="row p-0 d-flex align-items-center">
                 <div className="col-2 m-0">
                   <img src={telephone} alt="Appel" className="img-fluid" />
@@ -60,7 +69,7 @@ const Navbar1 = () => {
 
             {/* Bouton hamburger responsive */}
             <div className="d-flex align-items-center">
-              <div className="col-5 d-lg-none navbar-brand logo_div">
+              <div className="col-5 col-md-3 d-lg-none navbar-brand logo_div">
                 <Link to="/">
                   <img
                     alt="logo"
@@ -71,12 +80,12 @@ const Navbar1 = () => {
                 </Link>
               </div>
               {!isLoggedIn ? (
-                <div className="offest-1 connexion d-lg-none col-1 d-flex align-items-center">
+                <div className="offest-1 connexion d-lg-none col-1 col-md-3 d-flex align-items-center">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
-                      <div className="dropdown register">
+                      <div className="dropdown mt-1 register">
                         <div
-                          className="dropdown-toggle lien_mon_compte"
+                          className="dropdown-toggle lien_mon_compte d-md-none"
                           role="button"
                           id="registerDropdown"
                           data-bs-toggle="dropdown"
@@ -89,32 +98,50 @@ const Navbar1 = () => {
                             style={{ width: "35px", cursor: "pointer" }}
                           />
                         </div>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="registerDropdown"
-                        >
-                          <li>
-                            <Link className="dropdown-item" to="/register">
-                              Inscription
-                            </Link>
-                          </li>
-                          <li>
-                            <Link className="dropdown-item" to="/login">
-                              Connexion
-                            </Link>
-                          </li>
-                        </ul>
+                        <div className="row">
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user col-3 d-none d-md-block"
+                            style={{ width: "33%", cursor: "pointer" }}
+                          />
+                          <div
+                            className="dropdown-toggle d-none d-md-flex align-items-center col-8"
+                            role="button"
+                            id="registerDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Connexion
+                          </div>
+
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="registerDropdown"
+                          >
+                            <li>
+                              <Link className="dropdown-item" to="/register">
+                                Inscription
+                              </Link>
+                            </li>
+                            <li>
+                              <Link className="dropdown-item" to="/login">
+                                Connexion
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="connexion offset-1 col-1 d-flex align-items-center d-lg-none">
+                <div className="connexion offset-1 col-1 col-md-3 d-flex align-items-center d-lg-none">
                   <div className="w-100 row">
-                    <div className="connexion-text col-12 col-8 p-0">
+                    <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
                         <div
-                          className="dropdown-toggle lien_mon_compte"
+                          className="dropdown-toggle lien_mon_compte d-md-none"
                           role="button"
                           id="userDropdown"
                           data-bs-toggle="dropdown"
@@ -127,34 +154,51 @@ const Navbar1 = () => {
                             style={{ width: "35px", cursor: "pointer" }}
                           />
                         </div>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="userDropdown"
-                        >
-                          <li>
-                            <Link className="dropdown-item" to="/user">
-                              Mon compte
-                            </Link>
-                          </li>
-                          <li>
-                            <button
-                              type="button"
-                              className="dropdown-item text-danger"
-                              onClick={logout}
-                            >
-                              <FontAwesomeIcon icon={faRightFromBracket} />{" "}
-                              Déconnexion
-                            </button>
-                          </li>
-                        </ul>
+                        <span className="row">
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user d-none d-md-block col-3"
+                            style={{ width: "33%", cursor: "pointer" }}
+                          />
+                          <div
+                            className="dropdown-toggle d-none d-md-flex align-items-center col-8"
+                            role="button"
+                            id="registerDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Connexion
+                          </div>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="userDropdown"
+                          >
+                            <li>
+                              <Link className="dropdown-item" to="/user">
+                                Mon compte
+                              </Link>
+                            </li>
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item text-danger"
+                                onClick={logout}
+                              >
+                                <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                                Déconnexion
+                              </button>
+                            </li>
+                          </ul>
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-              <div className=" panier col-2 d-lg-none ">
+              <div className=" panier col-2 col-md-3 d-lg-none ">
                 <Link to="/Cart" style={{ color: "black" }} className="w-100 d-flex align-items-right">
-                  <div className="d-flex position-relative offset-4">
+                  <div className="d-flex position-relative offset-4 offset-md-2">
                     <img className="img-fluid" src={Panier} alt="" style={{ width: "35px" }} />
 
                     <span
@@ -162,11 +206,15 @@ const Navbar1 = () => {
                     >
                       {products.length}
                     </span>
+                    <div className="ps-2 d-md-flex d-none">
+                      <p className="mb-0 fw-bold">Panier</p>
+                      <small>{totalPrice.toLocaleString()} FCFA</small>
+                    </div>
                   </div>
                 </Link>
               </div>
               <button
-                className="navbar-toggler d-lg-none col-2 border-0"
+                className="navbar-toggler d-lg-none col-2 col-md-1 border-0"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse"

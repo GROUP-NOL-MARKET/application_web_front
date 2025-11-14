@@ -182,7 +182,7 @@ const Navbar2 = React.memo(() => {
         </Link>
 
         {/*  Barre de recherche */}
-        <div className="col-12 col-md-5 d-flex align-items-center mx-2">
+        <div className="col-12 col-lg-5 d-flex align-items-center mx-2">
           <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
             <div className="col-5">
               <select

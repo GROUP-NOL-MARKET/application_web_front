@@ -136,8 +136,8 @@
     width: 100%;
   }
   .panier_length {
-    font-size: "14px";
-    min-width: "20px";
+    font-size: 14px !important;
+    min-width: 20px !important;
   }
   .panier {
     font-size: 2rem;
@@ -154,8 +154,8 @@
     font-size: 3rem;
   }
   .panier_length {
-    font-size: "14px";
-    min-width: "20px";
+    font-size: 14px !important;
+    min-width: 20px !important;
   }
   .mon_compte {
     font-size: 1rem;

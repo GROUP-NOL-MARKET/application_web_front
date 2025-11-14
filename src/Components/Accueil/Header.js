@@ -110,7 +110,7 @@ const Header = () => {
                     </aside>
 
                     {/* Carousel principal */}
-                    <section className="col-12 col-lg-9 hauteur_carousel mt-2">
+                    <section className="col-12 col-lg-9 mt-2">
                         <div className="row">
                             <div className="hauteur_carousel col-lg-9">
                                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
@@ -206,7 +206,7 @@ const Header = () => {
                     {/* --- Catégories Mobile --- */}
                     <section className="d-lg-none">
                         <h5 className="fw-bold mb-2 petit_titre">Catégories de produits</h5>
-                        <div className="row g-2">
+                        <div className="row g-1">
                             {categories.slice(0, 9).map((category_p) => (
                                 <div key={category_p.category} className="col-4 col-md-3">
                                     <div

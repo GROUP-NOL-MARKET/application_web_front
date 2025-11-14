@@ -69,7 +69,7 @@
 @media (min-width: 768px) {
   .img_product {
     width: 100%;
-    height: 170px; /* Taille fixe pour uniformité */
+    height: 120px; /* Taille fixe pour uniformité */
     object-fit: cover; /* Coupe proprement si image trop grande */
     border-radius: 8px;
     transition: transform 0.3s ease;

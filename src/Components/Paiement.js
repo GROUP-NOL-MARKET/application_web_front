@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import FedaPayButton from "./FedapayButton";
+import SandboxMomoButton from "./SandboxMomoButton";
 import {
     Button,
     Form,
@@ -238,27 +238,7 @@ const Paiement = () => {
                             </div>
 
                             <div className="w-100 mt-3">
-                                <FedaPayButton
-                                    disabled={!adresseValidee || loadingPaiement}
-                                    amount={totalPrice}
-                                    description="Paiement commande en ligne"
-                                    email={user.email}
-                                    firstName={user.firstName || "Client"}
-                                    products={products.map((p) => ({
-                                        id: p.id,
-                                        name: p.name,
-                                        quantite: p.quantity,
-                                        price: p.price,
-                                    }))}
-                                    onSuccess={async (transaction) => {
-                                        toast.success("Paiement réussi !");
-                                        clearPanier();
-                                        setTimeout(() => {
-                                            window.location.href = "/";
-                                        }, 2000);
-                                    }}
-                                    onClose={() => toast.info("Paiement annulé par l’utilisateur.")}
-                                />
+                                <SandboxMomoButton amount={totalPrice} />
 
                                 {!adresseValidee && (
                                     <p className="text-danger text-center mt-2 texte_brut">

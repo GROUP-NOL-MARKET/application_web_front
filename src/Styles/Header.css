@@ -19,6 +19,32 @@
 }
 
 /* --- Réduction des marges entre carousel et catégories sur mobile --- */
+@media (min-width: 768px) {
+  header .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .carousel {
+    margin-bottom: 0.5rem !important; /* Réduit l’espace sous le carousel */
+  }
+
+  .category_mobile_box {
+    margin-bottom: 0.5rem; /* Uniformise les espacements */
+  }
+
+  section.d-lg-none {
+    margin-top: 0.8rem !important; /* Réduit encore l’écart vertical */
+  }
+
+  h5.fw-bold {
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .hauteur_carousel {
+    height: auto;
+  }
+}
 @media (max-width: 768px) {
   header .container {
     margin-top: 0 !important;

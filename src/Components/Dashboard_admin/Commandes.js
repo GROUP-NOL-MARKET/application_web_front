@@ -9,7 +9,7 @@ import orders_completed from "../assets/Images/orders_completed.webp";
 import orders_confirmed from "../assets/Images/orders_confirmed.webp";
 import orders_deleted from "../assets/Images/orders_deleted.webp";
 import orders_found from "../assets/Images/orders_found.webp";
-import axios from "axios";
+import API from "../Authentification/apiAdmin";
 
 const Commandes = () => {
     const { theme } = useContext(ThemeContext);
@@ -17,7 +17,7 @@ const Commandes = () => {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/api/admin/orders")
+        API.get("/admin/orders")
             .then((res) => {
                 setStats(res.data.stats);
                 setOrders(res.data.orders);
@@ -136,9 +136,21 @@ const Commandes = () => {
                                     <th>{order.id}</th>
                                     <td>{order.user?.name}</td>
                                     <td>
-                                        {Array.isArray(order.produits)
-                                            ? order.produits.join(", ")
-                                            : JSON.parse(order.produits || "[]").join(", ")}
+                                        {(() => {
+                                            try {
+                                                const produits = Array.isArray(order.produits)
+                                                    ? order.produits
+                                                    : JSON.parse(order.produits || "[]");
+
+                                                return produits
+                                                    .map(p => `${p.name ?? p.nom ?? "Produit inconnu"} (x${p.quantite ?? 1})`)
+                                                    .join(", ");
+                                            } catch (e) {
+                                                console.error("Erreur parsing produits:", e);
+                                                return "Aucun produit";
+                                            }
+                                        })()}
+
                                     </td>
                                     <td>{order.total} FCFA</td>
                                     <td>{order.status}</td>

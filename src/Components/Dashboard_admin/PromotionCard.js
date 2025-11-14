@@ -15,7 +15,17 @@ const PromotionCard = ({ promo, onDelete, onToggleActive, onEdit }) => {
                             <small className="text-muted"><s>{promo.initial_price} FCFA</s></small>{" "}
                             <span className="badge bg-warning text-dark ms-2">{discountPercent}%</span>
                         </p>
-                        <p className="card-text"><small className="text-muted">De {promo.start_at ?? '—'} à {promo.end_at ?? '—'}</small></p>
+                        <p className="card-text"> <small className="text-muted">
+                            De {promo.start_at ? new Date(promo.start_at).toLocaleString("fr-FR", {
+                                dateStyle: "short",
+                                timeStyle: "short"
+                            }) : "—"}
+                            {" "}à{" "}
+                            {promo.end_at ? new Date(promo.end_at).toLocaleString("fr-FR", {
+                                dateStyle: "short",
+                                timeStyle: "short"
+                            }) : "—"}
+                        </small></p>
                     </div>
                 </div>
                 <div className="col-md-4 text-end pe-3">

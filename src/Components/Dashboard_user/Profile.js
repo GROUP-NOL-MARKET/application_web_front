@@ -1,4 +1,4 @@
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera } from '@fortawesome/free-solid-svg-icons'
 import { Avatar } from '@mui/material'
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 const Profile = ({ closePopUp5 }) => {
     const [image, setImage] = useState(null)
     const [preview, setPreview] = useState(null)
+    const [loading, setLoading] = useState(false);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0]
@@ -17,6 +18,7 @@ const Profile = ({ closePopUp5 }) => {
     }
 
     const handleSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault()
 
         if (!image) return alert('Veuillez sélectionner une image')
@@ -35,6 +37,8 @@ const Profile = ({ closePopUp5 }) => {
         } catch (error) {
             console.error(error)
             toast.error("Erreur lors du téléversement")
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -83,7 +87,7 @@ const Profile = ({ closePopUp5 }) => {
                     </div>
 
                     <Button type="submit" className="rounded-5 w-100 mt-3">
-                        <span className="petit_titre">Soumettre</span>
+                        <span className="petit_titre">{loading ? (<Spinner />) : ("Soumettre")}</span>
                     </Button>
                 </Form>
             </div>

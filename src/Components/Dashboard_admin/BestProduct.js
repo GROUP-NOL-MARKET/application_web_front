@@ -157,7 +157,6 @@ const BestProduct = () => {
         <div className="row mt-3">
           <div className="col-6">
             <div className="row mb-2">
-              <img className="img-fluid col-2" src={img_PL_dashboard} alt=" " />
               <h4 className="taux_moyen col-10 d-flex align-items-center">
                 Produits Locaux
               </h4>
@@ -196,11 +195,6 @@ const BestProduct = () => {
           </div>
           <div className="col-6">
             <div className="row mb-2">
-              <img
-                className="img-fluid col-2"
-                src={img_electromenager_dashboard}
-                alt=" "
-              />
               <h4 className="col-10 taux_moyen d-flex align-items-center">
                 Electroménager
               </h4>
@@ -242,11 +236,6 @@ const BestProduct = () => {
         <div className="row mt-4">
           <div className="col-6">
             <div className="row mb-2">
-              <img
-                className="img-fluid col-2"
-                src={img_epicerie_dashboard}
-                alt=" "
-              />
               <h4 className="taux_moyen col-10 d-flex align-items-center">
                 Epicerie
               </h4>
@@ -285,11 +274,6 @@ const BestProduct = () => {
           </div>
           <div className="col-6">
             <div className="row mb-2">
-              <img
-                className="img-fluid col-2"
-                src={img_boissons_dashboard}
-                alt=" "
-              />
               <h4 className="taux_moyen col-10 d-flex align-items-center">
                 Boissons
               </h4>
@@ -330,11 +314,6 @@ const BestProduct = () => {
         <div className="row mt-4">
           <div className="col-6">
             <div className="row mb-2">
-              <img
-                className="img-fluid col-2"
-                src={img_boissons_dashboard}
-                alt=" "
-              />
               <h4 className="taux_moyen col-10 d-flex align-items-center">
                 Droguerie
               </h4>
@@ -374,11 +353,6 @@ const BestProduct = () => {
 
           <div className="col-6">
             <div className="row mb-2">
-              <img
-                className="img-fluid col-2"
-                src={img_boissons_dashboard}
-                alt=" "
-              />
               <h4 className="taux_moyen col-10 d-flex align-items-center">
                 Produits Frais
               </h4>

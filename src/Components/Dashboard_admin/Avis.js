@@ -8,8 +8,8 @@ import FooterDashboard from "./dataset/FooterDashboard";
 import avis_dashboard_1 from "../assets/Images/avis_dashboard_1.webp";
 import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.webp";
 import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.webp";
-import axios from "axios";
 import { toast } from "react-toastify";
+import API from "../Authentification/apiAdmin";
 
 const Avis = () => {
   const { theme } = useContext(ThemeContext);
@@ -20,10 +20,9 @@ const Avis = () => {
   useEffect(() => {
     const fetchAvis = async () => {
       try {
-        const token = localStorage.getItem("adminToken");
-        const res = await axios.get("http://127.0.0.1:8000/api/admin/avis", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+
+        const res = await API.get("/admin/avis"
+        );
         setAvis(res.data);
       } catch (error) {
         console.error(error);

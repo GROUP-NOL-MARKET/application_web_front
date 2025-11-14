@@ -75,9 +75,9 @@ const Revenue = () => {
   return (
     <div className="container-fluid">
       <Entete title="Promotions" />
-      <div className="card p-3">
+      <div className="card p-3 mt-3">
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h4>Gestion des promotions</h4>
+          <h4 className="petit_titre fw-bold">Gestion des promotions</h4>
           <div>
             <button className="btn btn-primary me-2" onClick={() => setShowAdd(true)}>Nouvelle promotion</button>
             <button className="btn btn-outline-secondary" onClick={fetchPromos}>Rafraîchir</button>
