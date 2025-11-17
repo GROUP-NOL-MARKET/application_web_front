@@ -3,7 +3,7 @@
       rgba(109, 109, 109, 0.5),
       rgba(109, 109, 109, 0.5)
     ),
-    url("../Components/assets/Images/background_register.jpg");
+    url("../Components/assets/Images/background_register.avif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -12,7 +12,7 @@
 .formulaire_connexion {
   border: solid 1px white;
   border-radius: 15px;
-  box-shadow: 0px 5px 5px 5px rgb(153, 153, 153);
+  /* box-shadow: 0px 5px 5px 5px rgb(153, 153, 153); */
   background-color: white;
 }
 .button_login.btn {

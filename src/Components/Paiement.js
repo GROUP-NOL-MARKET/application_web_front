@@ -1,111 +1,257 @@
-import { useContext, useState } from "react";
-import { Button, Form, FormControl, FormLabel } from "react-bootstrap";
+import { useContext, useState, useEffect } from "react";
+import SandboxMomoButton from "./SandboxMomoButton";
+import {
+    Button,
+    Form,
+    FormControl,
+    FormLabel,
+    FormGroup,
+    Spinner,
+} from "react-bootstrap";
+import { toast } from "react-toastify";
 import { PanierContext } from "../Store/Panier_context";
+import API from "./Authentification/api";
 
 const Paiement = () => {
-  const { products, updateProductQuantity } = useContext(PanierContext);
+    const { products, clearPanier } = useContext(PanierContext);
 
-  const totalPrice = products.reduce(
-    (acc, product) => acc + product.price * product.quantity,
-    0
-  );
+    const totalPrice = products.reduce(
+        (acc, product) => acc + product.price * product.quantity,
+        0
+    );
 
-  return (
-    <div className="bg-light">
-      <div className="container">
-        <div className="row">
-          <div
-            className="col-md-8 paiement_body mt-4"
-            style={{
-              borderRadius: "15px",
-              backgroundColor: "white",
-              boxShadow: "5px",
-            }}
-          >
-            {/* Informations sur le shipment adresse   */}
+    const [adresse, setAdresse] = useState({
+        ville: "",
+        quartier: "",
+        rue: "",
+        numero: "",
+        localisation: "",
+    });
 
-            <h2>Informations domicile client</h2>
-            <Form className="w-100" method="post">
-              <FormLabel>Ville</FormLabel>
-              <FormControl placeholder="Cotonou" />
-              <FormLabel>Quartier</FormLabel>
-              <FormControl placeholder="Fidjrossè" />
-              <FormLabel>Rue</FormLabel>
-              <FormControl placeholder="2536" />
-              <FormLabel>Numéro maison</FormLabel>
-              <FormControl placeholder="236" />
-              <FormLabel>Localisation</FormLabel>
-              <FormControl as="textarea" rows={3} />
-              <Button>Envoyer</Button>
-            </Form>
-          </div>
-        </div>
+    const [loadingAdresse, setLoadingAdresse] = useState(false);
+    const [adresseValidee, setAdresseValidee] = useState(false);
+    const [loadingPaiement, setLoadingPaiement] = useState(false);
 
-        {/* Partie produit acheté  */}
+    const [user, setUser] = useState({ firstName: "", email: "" }); //  Stocke les infos utilisateur
 
-        <div
-          className="offset-1 col-md-3 product_body"
-          style={{
-            borderRadius: "15px",
-            backgroundColor: "white",
-            boxShadow: "5px",
-          }}
-        >
-          <div>
-            {/* Les différents produits du panier  */}
+    const adresseRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,'-]{3,200}$/;
 
-            {products.map((product) => (
-              <div className="row" key={product.id}>
-                <div className="col-md-6 d-flex align-items-center image_product">
-                  <img
-                    alt={product.name}
-                    src={product.image}
-                    className="w-100 h-auto"
-                  />
+    const adresseComplete = `${adresse.ville}, ${adresse.quartier}, ${adresse.rue}, ${adresse.numero}, ${adresse.localisation}`;
+
+    // Récupération des infos utilisateur dès le chargement
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) return;
+
+                const response = await API.get("http://127.0.0.1:8000/api/user", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (response.status === 200 && response.data) {
+                    setUser({
+                        firstName: response.data.firstName || "",
+                        email: response.data.email || "",
+                    });
+                }
+            } catch (error) {
+                console.error("Erreur récupération utilisateur :", error.message);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    //  Soumission de l’adresse
+    const handleAdresseSubmit = async (e) => {
+        e.preventDefault();
+
+        if (
+            !adresse.ville ||
+            !adresse.quartier ||
+            !adresse.rue ||
+            !adresse.numero ||
+            !adresse.localisation
+        ) {
+            toast.error("Veuillez remplir tous les champs de l’adresse.");
+            return;
+        }
+
+        if (!adresseRegex.test(adresse.localisation)) {
+            toast.error("Adresse invalide, veuillez corriger.");
+            return;
+        }
+
+        try {
+            setLoadingAdresse(true);
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                toast.error("Session expirée. Veuillez vous reconnecter.");
+                window.location.href = "/login";
+                return;
+            }
+
+            const response = await API.put(
+                "http://127.0.0.1:8000/api/user/update-address",
+                { addresse: adresseComplete },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            if (response.status === 200) {
+                toast.success("Adresse enregistrée avec succès !");
+                setAdresseValidee(true);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Erreur lors de l’enregistrement de l’adresse.");
+        } finally {
+            setLoadingAdresse(false);
+        }
+    };
+
+    return (
+        <div className="bg-light">
+            <div className="container">
+                <div className="row">
+                    {/* ================= FORMULAIRE D’ADRESSE ================= */}
+                    <div className="col col-lg-8 my-4 me-lg-3 mx-2 mx-lg-0 bg-white shadow-sm rounded-3 p-4 border border-1">
+                        <h2 className="taux_moyen">Informations domicile client</h2>
+                        <Form className="w-100" onSubmit={handleAdresseSubmit}>
+                            {["ville", "quartier", "rue"].map((field) => (
+                                <FormGroup key={field}>
+                                    <FormLabel className="label_register">
+                                        {field.charAt(0).toUpperCase() + field.slice(1)}
+                                    </FormLabel>
+                                    <FormControl
+                                        placeholder={`Entrez votre ${field}`}
+                                        className="input_register"
+                                        value={adresse[field]}
+                                        onChange={(e) =>
+                                            setAdresse({ ...adresse, [field]: e.target.value })
+                                        }
+                                        disabled={adresseValidee}
+                                    />
+                                </FormGroup>
+                            ))}
+                            <FormGroup>
+                                <FormLabel className="label_register">
+                                    Numéro de maison
+                                </FormLabel>
+                                <FormControl
+                                    placeholder={"Entrez votre numéro de maison"}
+                                    className="input_register"
+                                    value={adresse.numero}
+                                    onChange={(e) =>
+                                        setAdresse({ ...adresse, numero: e.target.value })
+                                    }
+                                    disabled={adresseValidee}
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <FormLabel className="label_register">Localisation</FormLabel>
+                                <FormControl
+                                    as="textarea"
+                                    rows={4}
+                                    placeholder="Précisez les détails de localisation"
+                                    value={adresse.localisation}
+                                    onChange={(e) =>
+                                        setAdresse({ ...adresse, localisation: e.target.value })
+                                    }
+                                    disabled={adresseValidee}
+                                />
+                            </FormGroup>
+
+                            <Button
+                                className="mt-3 w-100 rounded-5"
+                                type="submit"
+                                disabled={loadingAdresse || adresseValidee}
+                            >
+                                {loadingAdresse ? (
+                                    <Spinner size="sm" animation="border" />
+                                ) : adresseValidee ? (
+                                    <span className="petit_titre">Adresse validée ✅</span>
+                                ) : (
+                                    <span className="petit_titre">Enregistrer l’adresse</span>
+                                )}
+                            </Button>
+                        </Form>
+                    </div>
+
+                    {/* ================= PANIER ET PAIEMENT ================= */}
+                    <div className="my-4 col-lg col-12">
+                        <div
+                            className="shadow-sm rounded-3 bg-white p-2 border border-1 menu-scroll"
+                            style={{ maxHeight: 300 }}
+                        >
+                            {products.map((product) => (
+                                <div className="row" key={product.id}>
+                                    <div className="col-6 me-2 d-flex align-items-center image_product">
+                                        <img
+                                            alt={product.name}
+                                            src={product.image}
+                                            className="img-fluid"
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <div className="marque text-black-50">{product.marque}</div>
+                                        <div className="name">{product.name}</div>
+                                        <div className="type mt-2">Type : {product.type}</div>
+                                        <div className="type">Quantité : {product.quantity}</div>
+                                        <div className="disponibilité">
+                                            Disponibilité : {product.disponibilité}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Résumé du paiement */}
+                        <div className="shadow-sm bg-white border border-1 rounded-3 p-3 mt-2">
+                            <div className="row">
+                                <FormLabel className="title_prix_total col-7">
+                                    Prix total:
+                                </FormLabel>
+                                <h2 className="taux_moyen col">{totalPrice} FCFA</h2>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7 title_menu_cart">Total HT :</div>
+                                <div className="col texte_brut">{totalPrice} FCFA</div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7 title_menu_cart">Rabais :</div>
+                                <div className="col texte_brut">0%</div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7 title_menu_cart">Remise :</div>
+                                <div className="col texte_brut">Gratuit</div>
+                            </div>
+
+                            <div className="row">
+                                <h2 className="title_menu_cart col-7">Adresse de livraison :</h2>
+                                <p className="col texte_brut">{adresseComplete ? (adresseComplete) : ("Non renseignée")}</p>
+                            </div>
+
+                            <div className="w-100 mt-3">
+                                <SandboxMomoButton amount={totalPrice} />
+
+                                {!adresseValidee && (
+                                    <p className="text-danger text-center mt-2 texte_brut">
+                                        Veuillez d’abord enregistrer votre adresse avant de payer.
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="marque text-black-50">{product.marque}</div>
-                  <div className="name">{product.name}</div>
-                  <div className="type mt-4">Type : {product.type}</div>
-                  <div className="disponibilité">
-                    Disponibilité : {product.disponibilité}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Les prix après remise, rabais et taxe  */}
-
-          <div className="Cart_total w-100 mt-4">
-            <div className="w-100">
-              <FormLabel className="title_prix_total">Prix total</FormLabel>
-              <div className="row">
-                <div className="col-md-7 title_menu_cart">Total HT</div>
-                <div className="col-md-5">{totalPrice} fcfa</div>
-              </div>
-              <div className="row">
-                <div className="col-md-7 title_menu_cart">Rabais</div>
-                <div className="col-md-5">0%</div>
-              </div>
-              <div className="row">
-                <div className="col-md-7 title_menu_cart">Remise</div>
-                <div className="col-md-5">Free</div>
-              </div>
-              <div className="row ">
-                <div className="col-md-7 prix_TTC">Prix total TTC</div>
-                <div className="col-md-5 ">{totalPrice} fcfa</div>
-              </div>
-              <div>
-                <h2>Adresse de livraison</h2>
-              </div>
-              <Button className="paiement_button w-100">Payer</Button>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Paiement;

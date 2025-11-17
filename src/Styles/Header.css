@@ -14,19 +14,98 @@
   height: auto;
   width: 75%;
 }
+.hauteur_carousel {
+  height: 400px;
+}
 
-@media (max-width: 575.98px) {
-  .Description_produits_mobile{
-    height: 120px;
+/* --- Réduction des marges entre carousel et catégories sur mobile --- */
+@media (min-width: 768px) {
+  header .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .carousel {
+    margin-bottom: 0.5rem !important; /* Réduit l’espace sous le carousel */
+  }
+
+  .category_mobile_box {
+    margin-bottom: 0.5rem; /* Uniformise les espacements */
+  }
+
+  section.d-lg-none {
+    margin-top: 0.8rem !important; /* Réduit encore l’écart vertical */
+  }
+
+  h5.fw-bold {
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .hauteur_carousel {
+    height: auto;
+  }
+}
+@media (max-width: 768px) {
+  header .container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .carousel {
+    margin-bottom: 0.5rem !important; /* 🔹 Réduit l’espace sous le carousel */
+  }
+
+  .category_mobile_box {
+    margin-bottom: 0.5rem; /* 🔹 Uniformise les espacements */
+  }
+
+  section.d-lg-none {
+    margin-top: 0.8rem !important; /* 🔹 Réduit encore l’écart vertical */
+  }
+
+  h5.fw-bold {
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .hauteur_carousel {
+    height: 400px;
   }
 }
 
+/* --- Amélioration du rendu sur petits écrans --- */
+@media (max-width: 576px) {
+  .container.mt-3 {
+    margin-top: 0 !important;
+  }
 
-@media (min-width: 576px) {
-  .Description_produits_mobile {
-    height: 120px;
+  section.d-lg-none.mt-4 {
+    margin-top: 0 !important; /* supprime l’espace entre le carousel et les catégories */
+  }
+
+  .carousel {
+    margin-bottom: 0 !important;
+  }
+
+  .hauteur_carousel {
+    height: auto !important;
+  }
+
+  .carousel-inner img {
+    height: auto !important;
+    max-height: 300px; /* optionnel : limite la taille sur petit écran */
+    object-fit: cover;
+  }
+
+  .category_img {
+    height: 70px !important; /* 🔹 plus compact sur mobile */
+  }
+
+  .category_content {
+    height: auto;
+    padding: 6px !important;
   }
 }
+
 .Description_produits .product-item:first-child {
   margin-top: 0 !important;
 }
@@ -42,4 +121,78 @@
 }
 .best_product_name {
   font-weight: bold;
+}
+.banner {
+  height: 65px;
+}
+.category_name {
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+}
+.category_img {
+  height: 90px;
+  width: auto;
+}
+.category_img:hover {
+  transform: scale(1.03);
+}
+.category_content {
+  height: 110px;
+}
+.title_category_product {
+  font-family: "Roboto", sans-serif;
+  font-size: medium;
+  font-weight: bold;
+}
+.text_category {
+  font-size: x-small;
+}
+/* Effet d’apparition
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+} */
+
+.embla {
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.embla__viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 auto; /* ✅ évite que ça se compresse */
+  width: 33%; /* ou 100%, selon combien de produits tu veux par slide */
+  box-sizing: border-box;
+  min-height: 200px;
+}
+
+.embla__prev,
+.embla__next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.embla__prev {
+  left: 10px;
+}
+
+.embla__next {
+  right: 10px;
 }

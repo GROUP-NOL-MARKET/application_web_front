@@ -1,178 +1,350 @@
-import { useContext } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faCircleUser, faUser } from "@fortawesome/free-solid-svg-icons";
-// import { Link } from "react-router-dom";
-import "../../../Styles/Navbar.css";
-import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.png";
-import { AuthContext, AuthProvider } from "../../AuthContext";
-import { Link } from "react-router-dom";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
+import Panier from "../../assets/Images/icone/panier.png";
+import utilisateur from "../../assets/Images/icone/utilisateur.png";
+import question from "../../assets/Images/icone/question.png";
+
+import { AuthContext } from "../../AuthContext";
 import { PanierContext } from "../../../Store/Panier_context";
+import API from "../../Authentification/api";
+import "../../../Styles/Navbar.css";
+import { Form } from "react-bootstrap";
 
-const Navbar2 = () => {
+const Navbar2 = React.memo(() => {
+
+  const categories = [
+    "droguerie",
+    "animalerie",
+    "épicerie",
+    "produits Locaux",
+    "produits frais",
+    "divers",
+    "boissons",
+    "electroménager",
+  ];
+
+  const sousCategories = [
+    "Petit déjeuner",
+    "Céréales-Corn Flakes-pain grillé",
+    "Biscuits gâteaux",
+    "Amuse gueules",
+    "Pains et viennoiseries",
+    "Bonbons-chocolat",
+    "Conserves-plats cuisinés",
+    "Pâtes alimentaires-riz-purée",
+    "Assaisonnement-condiments",
+    "Huile-vinaigre",
+    "Sardine",
+    "Produits du monde",
+    " Monde de Bébé",
+    "Prêt à porter",
+    "Fournitures scolaires",
+    "Hygiène dentaire",
+    "Rasage",
+    "Produits ménagers",
+    "Soins de beauté",
+    "Mouchoirs",
+    "Désodorisant-insecticide",
+    "Hygiène féminine",
+    "Produits locaux",
+    "Fromages-Fruits frais-Légumes",
+    "yaourt",
+    "Produits congélés",
+    "Surgélés-Crêmerie fraîche",
+    "Glâces et crêmes glacées",
+    "Charcuterie volaille poisson",
+    "Produits Locaux frais",
+    "Vins",
+    "Spiriteux",
+    "Chewing Gum", "Piles-rasoirs", "Papeterie", "Ampoule",
+    "Jus de fruits",
+    "Eaux minérales",
+    "Sirop",
+    "Soft Drink",
+    "Cidre",
+    "Champagnes",
+    "Bière et panaché",
+    "Nourriture pour chiens et chats",
+    "Matériels Nasco"
+  ];
+
   const { products } = useContext(PanierContext);
-
   const { isLoggedIn } = useContext(AuthContext);
-  // #CFCFCF
+  const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Catégories");
+
+  /**  Mémoriser les calculs dépendants du panier **/
+  const totalPrice = useMemo(
+    () =>
+      products.reduce(
+        (acc, product) => acc + (product.price || 0) * (product.quantity || 0),
+        0
+      ),
+    [products]
+  );
+
+  /**  Handlers optimisés **/
+  const handleNavigation = useCallback(
+    (category) => navigate(`/products?category=${encodeURIComponent(category)}`),
+    [navigate]
+  );
+
+  const handleSearch = useCallback(async (e) => {
+    e.preventDefault();
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) {
+      toast.info("Veuillez saisir un terme de recherche.");
+      return;
+    }
+
+    // Recherche exacte dans les catégories
+    const exactCategory = categories.find(cat => cat.toLowerCase() === term);
+    if (exactCategory) {
+      navigate(`/products?category=${encodeURIComponent(exactCategory)}`);
+      return;
+    }
+
+    // Recherche approximative (catégorie qui contient le mot)
+    const similarCategory = categories.find(cat => cat.toLowerCase().includes(term));
+    if (similarCategory) {
+      navigate(`/products?category=${encodeURIComponent(similarCategory)}`);
+      return;
+    }
+
+    // Recherche exacte dans les sous-catégories
+    const exactSousCat = sousCategories.find(sub => sub.toLowerCase() === term);
+    if (exactSousCat) {
+      navigate(`/products?sous_category=${encodeURIComponent(exactSousCat)}`);
+      return;
+    }
+
+    // Recherche approximative dans les sous-catégories
+    const similarSousCat = sousCategories.find(sub => sub.toLowerCase().includes(term));
+    if (similarSousCat) {
+      navigate(`/products?sous_category=${encodeURIComponent(similarSousCat)}`);
+      return;
+    }
+
+    // Recherche dans les produits (via ton backend)
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/products/search?q=${encodeURIComponent(term)}`);
+      if (!response.ok) throw new Error("Erreur de recherche produits");
+
+      const data = await response.json();
+      if (data?.data?.length > 0) {
+        // Sauvegarde temporaire dans localStorage pour le transfert
+        localStorage.setItem("searchResults", JSON.stringify(data.data));
+        navigate(`/searchProduct?query=${encodeURIComponent(term)}`);
+      } else {
+        toast.info("Aucun produit trouvé pour votre recherche.");
+      }
+    } catch (error) {
+      toast.error("Erreur lors de la recherche.");
+    }
+  }, [searchTerm, navigate]);
+
+  const logout = useCallback(async () => {
+    try {
+      await API.post("/logout");
+      localStorage.removeItem("token");
+      toast.success("Déconnexion réussie");
+      navigate("/login");
+    } catch {
+      toast.error("Erreur lors de la déconnexion");
+    }
+  }, [navigate]);
 
   return (
-    <AuthProvider>
-      <div
-        className="navbar navbar-expand-lg overflow-hidden shadow-md"
-        style={{
-          backgroundColor: "#CFCFCF",
-          backgroundColorOpacity: "0.4",
-        }}
-      >
-        <div className="container m-md-1 w-100">
-          <div className="offset-md-1 col-12 col-sm-2 navbar-brand logo_div">
-            <a href="/application_web_front">
-              <img
-                alt="logo"
-                src={Logo}
-                className="logo m-sm-2 offset-3 offset-sm-0"
-                style={{ cursor: "pointer" }}
-              />
-            </a>
-          </div>
-          <div className="col-12 col-md-4 col-sm-6 col-lg-4 offset-lg-1 d-flex align-items-center">
-            <div className="row g-0 rounded-5 border border-black overflow-hidden w-100">
-              {/* Menu déroulant */}
-              <div className="col-5">
-                <select className="form-select h-100 rounded-0 border-end select_1">
-                  <option>Catégories</option>
-                  <option>Droguerie</option>
-                  <option>Animalerie</option>
-                  <option>Epicerie</option>
-                </select>
-              </div>
+    <div
+      className="navbar2 navbar navbar-expand-lg shadow-sm"
+      style={{ backgroundColor: "#CFCFCF", zIndex: 10 }}
+    >
+      <div className="container align-items-center d-flex justify-content-between">
+        {/*  Logo avec lazy loading */}
+        <Link to="/" className="d-none d-lg-block">
+          <img
+            alt="logo"
+            src={Logo}
+            className="logo"
+            style={{ cursor: "pointer", height: "55px" }}
+            loading="lazy"
+          />
+        </Link>
 
-              {/* Champ de recherche */}
-              <div className="col-5">
-                <InputBase
-                  placeholder="Tapez ici..."
-                  inputProps={{ "aria-label": "search" }}
-                  className="w-100 px-3 h-100"
-                  sx={{ height: "100%" }}
-                />
-              </div>
+        {/*  Barre de recherche */}
+        <div className="col-12 col-lg-5 d-flex align-items-center mx-2">
+          <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
+            <div className="col-5">
+              <select
+                className="form-select h-100 rounded-0 border-end select_1"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option>Catégories</option>
+                {[
+                  "Droguerie",
+                  "Animalerie",
+                  "Épicerie",
+                  "Produits Locaux",
+                  "Produits frais",
+                  "Divers",
+                  "Boissons",
+                  "Electroménager",
+                ].map((cat) => (
+                  <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
+                ))}
+              </select>
+            </div>
+            <Form onSubmit={handleSearch} className="col">
+              <div className="row">
+                <div className="col-9">
+                  <InputBase
+                    placeholder="Tapez ici..."
+                    inputProps={{ "aria-label": "search" }}
+                    className="w-100 px-3 h-100"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
 
-              {/* Bouton de recherche */}
-              <div className="col-2">
-                <IconButton
-                  type="button"
-                  className="w-100 h-100"
-                  sx={{
-                    backgroundColor: "#0066BD",
-                    color: "white",
-                    borderRadius: 0,
-                    ":hover": {
+                <div className="col-3">
+                  <IconButton
+                    type="submit"
+                    className="w-100 h-100"
+                    sx={{
                       backgroundColor: "#0066BD",
-                    },
-                  }}
-                >
-                  <SearchIcon />
-                </IconButton>
+                      color: "white",
+                      borderRadius: 0,
+                      ":hover": { backgroundColor: "#004d94" },
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </div>
               </div>
+
+            </Form>
+          </div>
+
+        </div>
+
+        {/* Section utilisateur, panier et aide */}
+        <div className="d-none d-lg-flex align-items-center gap-4">
+          {/* Utilisateur */}
+          <div className="d-flex align-items-center gap-2 dropdown">
+            <img
+              src={utilisateur}
+              alt="user"
+              className="icon_user"
+              style={{ width: "35px", cursor: "pointer" }}
+              loading="lazy"
+            />
+
+            <div className="dropdowns register w-100">
+              {!isLoggedIn ? (
+                <>
+                  <div
+                    className="dropdown-toggle"
+                    role="button"
+                    id="registerDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Connexion
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="registerDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/register">
+                        Inscription
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/login">
+                        Connexion
+                      </Link>
+                    </li>
+                  </ul>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="dropdown-toggle"
+                    role="button"
+                    id="userDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Mon compte
+                  </div>
+                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/user">
+                        Mon compte
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        className="dropdown-item text-danger"
+                        onClick={logout}
+                      >
+                        <FontAwesomeIcon icon={faRightFromBracket} /> Déconnexion
+                      </button>
+                    </li>
+                  </ul>
+                </>
+              )}
             </div>
           </div>
-          {!isLoggedIn ? (
-            // Quand l'utilsateur n'est pas connecté : la partie mon compte
 
-            <div
-              className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block"
-            >
-              <div className="w-100 row">
-                <div className="user-icon col-sm-3 col-3 ">
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    size="3x"
-                    className="w-100 icon_user"
-                  ></FontAwesomeIcon>
-                </div>
-                <div className="connexion-text col-md-8 col-8 p-0 d-sm-none d-lg-block">
-                  <p className="mb-sm-1 mb-1 text-black-50 mon_compte w-100">
-                    Mon compte
-                  </p>
-                  <h6 className="mt-1 register w-100">
-                    <Link to="application_web_front/register" className="text-black ">
-                      Inscription
-                    </Link>
-                    <Link to="application_web_front/login" className="text-black">
-                      /Connexion
-                    </Link>
-                  </h6>
-                </div>
-              </div>
+          {/* Panier */}
+          <div className="d-flex align-items-center gap-2 position-relative">
+            <Link to="/Cart" className="position-relative">
+              <img
+                src={Panier}
+                alt="panier"
+                style={{ width: "35px", cursor: "pointer" }}
+                loading="lazy"
+              />
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style={{ fontSize: "12px" }}
+              >
+                {products.length}
+              </span>
+            </Link>
+            <div className="ps-2">
+              <p className="mb-0 fw-bold">Panier</p>
+              <small>{totalPrice.toLocaleString()} FCFA</small>
             </div>
-          ) : (
-            // Quand l'utilisateur est connecté : la partie mon compte
+          </div>
 
-            
-            <div
-              className="connexion col-md-2 col-lg-3 col-10 mt-sm-2 mt-4 d-flex align-items-center d-sm-none d-lg-block"
-            >
-              <div className="w-100 row">
-                <div className="user-icon col-sm-3 col-3 ">
-                  <FontAwesomeIcon
-                    icon={faCircleUser}
-                    size="3x"
-                    className="w-100 icon_user"
-                  ></FontAwesomeIcon>
-                </div>
-                <div className="connexion-text col-md-8 col-8 p-0 d-sm-none d-lg-block">
-                  <p className="mb-sm-1 mb-1 text-black-50 mon_compte w-100">
-                    Mon compte
-                  </p>
-                  <h6 className="mt-1 register w-100">
-                    <Link to="/register" className="text-black ">
-                      Inscription
-                    </Link>
-                    <Link to="/login" className="text-black">
-                      /Connexion
-                    </Link>
-                  </h6>
-                </div>
-              </div>
-            </div>
-
-
-          )}
-
-          {/* Le panier au niveau du second navbar  */}
-
-          <div className="panier_parent offset-sm-1 col-sm-2 col-2 col-md-3 col-lg-2 mt-sm-1 mt-3  mt-md-0 mt-lg-2 m-md-4 d-md-flex align-items-center">
-            <div className="row w-100">
-              <div className="col-sm-4 panier col-xs-4 position-relative">
-                <Link
-                  to="/Cart"
-                  style={{ color: "black" }}
-                >
-                  <FontAwesomeIcon icon={faCartShopping} className="panier" />
-                  {/* Badge compteur */}
-                  <span
-                    className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger panier_length"
-                    style={{fontSize:"10px", minWidth:"20px"}}
-                  >
-                    {products.length}
-                  </span>
-                </Link>
-              </div>
-
-              <div className="m-2 col-sm-6 d-none d-sm-block p-0 d-flex flex-column align-items-center justify-content-center">
-                <p className="mb-1 text-black-50 mon_compte">Panier</p>
-                <h6 style={{ fontSize: "x-small", fontWeight: "bold" }}>
-                  0 FCFA
-                </h6>
-              </div>
-            </div>
+          {/* Aide */}
+          <div className="d-flex align-items-center gap-2">
+            <Link to="/aide&Faq">
+              <img
+                src={question}
+                alt="aide"
+                style={{ width: "30px", cursor: "pointer" }}
+                loading="lazy"
+              />
+            </Link>
+            <p className="mb-0">Aide</p>
           </div>
         </div>
       </div>
-    </AuthProvider>
+    </div>
   );
-};
+});
 
 export default Navbar2;

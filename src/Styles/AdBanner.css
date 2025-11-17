@@ -1,0 +1,84 @@
+/* bouton, titre, etc (tes styles existants gardés) */
+.ad-button {
+  display: flex;
+  justify-content: left;
+  padding: 5px;
+  background-color: #ff9f50;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  width: 100%;
+  box-shadow: rgb(0, 0, 0) 2px 5px 5px;
+}
+.ad-button:hover {
+  background-color: #e65c00;
+}
+.ad-title,
+.ad-subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+}
+.ad-title {
+  font-size: 35px;
+}
+.ad-banner {
+  position: relative;
+  width: 100%;
+  height: var(--ad-banner-height, 320px); /* <- hauteur configurable */
+  overflow: hidden;
+  background-color: #000; /* fallback si la vidéo ne charge pas */
+}
+
+/* Video full-cover */
+.ad-banner-video {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0; /* derrière l'overlay et le contenu */
+  pointer-events: none; /* laisse les clics passer au-dessus */
+}
+
+/* Overlay sombre pour lisibilité */
+.ad-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+/* contenu (tout ce qui est dans container) */
+.ad-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+/* garder les autres styles */
+.text_command {
+  font-family: "Poppins", sans-serif;
+  font-size: large;
+  font-weight: 600;
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%);
+  padding: 10px;
+}
+
+/* Optionel: masquer la vidéo sur petits écrans pour économiser la data */
+@media (max-width: 768px) {
+  .ad-banner-video {
+    display: none;
+  }
+  .ad-overlay {
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .ad-banner {
+    height: auto;
+    min-height: 220px;
+  } /* plus flexible sur mobile */
+}
