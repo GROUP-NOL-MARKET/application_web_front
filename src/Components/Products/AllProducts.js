@@ -74,7 +74,7 @@ const AllProducts = () => {
             <div className="row mt-md-3 mt-0 ">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="col-md-3 col-sm-4  mb-4 col-6">
+                        <div key={product.id} className="col-md-3 col-sm-4 col-lg-2  mb-4 col-6">
                             <div className="d-flex flex-column border border-1 shadow-sm p-2">
                                 <img
                                     src={

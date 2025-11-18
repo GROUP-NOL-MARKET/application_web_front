@@ -70,8 +70,8 @@ const SearchProduct = () => {
             {products.length > 0 ? (
                 <div className="row mt-2">
                     {products.map(prod => (
-                        <div key={prod.id} className="col-md-2 col-6 mb-4 shadow-sm">
-                            <div className="card h-100">
+                        <div key={prod.id} className="col-md-3 col-sm-4 col-lg-2 col-6 mb-4">
+                            <div className="d-flex flex-column shadow-sm border border-1 p-2">
                                 <img
                                     src={prod.image}
                                     className="card-img-top img_product"
@@ -79,8 +79,8 @@ const SearchProduct = () => {
                                     onClick={() => openPopUp(prod)}
                                 />
                                 <div className="card-body">
-                                    <h5 className="card-title petit_titre">{prod.name}</h5>
-                                    <p className="card-text petit_titre">{prod.price.toLocaleString()} FCFA</p>
+                                    <h5 className="card-truncate petit_titre">{prod.name}</h5>
+                                    <p className="card-text petit_titre fw-bold">{prod.price.toLocaleString()} FCFA</p>
                                     {!isLoggedIn ? (
                                         <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                                             <FontAwesomeIcon
