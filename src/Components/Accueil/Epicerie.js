@@ -68,7 +68,7 @@ const Epicerie = () => {
         loop={true}
         slidesPerView={6}
         spaceBetween={15}
-        className="Liste_produits d-none d-md-block"
+        className="Liste_produits d-none d-lg-block"
       >
         {sousCategories.map((sub) => (
           <SwiperSlide
@@ -86,7 +86,7 @@ const Epicerie = () => {
 
       {/* Le swiper pour les petits écrans  */}
       {/* Le swiper pour les tout petits écrans  */}
-      <div className="embla d-lg-none">
+      <div className="embla d-lg-none mt-2">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {sousCategories.map((sub) => (

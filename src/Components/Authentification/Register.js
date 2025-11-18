@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API from "./api";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   faFacebook,
   faGoogle,
@@ -26,6 +27,10 @@ const Register = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [errors, setErrors] = useState({});
 
+
+  const handleNavigateHome = () => {
+    navigate("/")
+  }
 
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -117,6 +122,12 @@ const Register = () => {
       <div className="container-fluid mt-4">
         <div className="col-md-6 col-sm-10 offset-sm-1 offset-md-3 my-5 d-flex align-items-center justify-content-center">
           <div className="formulaire">
+              <ul className="d-flex flex-row list-unstyled gap-2" style={{color:"#0066BD", cursor:"pointer"}} onClick={handleNavigateHome}>
+                            <li>
+                            <FontAwesomeIcon icon={faArrowLeft}/>
+                            </li>
+                            <li>Retour à l'accueil</li>
+                          </ul>
             <div className="en-tête d-flex flex-column align-items-center">
               <img
                 src={img_entreprise}

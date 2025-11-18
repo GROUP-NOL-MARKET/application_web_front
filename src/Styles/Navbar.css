@@ -64,46 +64,42 @@
   font-weight: 500;
 }
 
-#navbarCollapse {
+ /* Menu mobile slide-in */
+.mobile-menu {
   position: fixed;
   top: 0;
-  right: -300px; /* menu caché en dehors de l'écran à droite */
-  width: 250px;
+  right: -300px;
+  width: 260px;
   height: 100vh;
-  background: #ffff; /* couleur de fond */
+  background: #fff;
   transition: right 0.4s ease-in-out;
-  padding-top: 40px;
-  z-index: 1050; /* pour être au-dessus */
+  padding-top: 60px;
+  z-index: 1050;
 }
 
-/* Quand le menu est affiché */
-#navbarCollapse.show {
+.mobile-menu.open {
   right: 0;
 }
 
-/* Croix rouge */
-#navbarCollapse .close-btn {
+/* Bouton close */
+.mobile-menu .close-btn {
   position: absolute;
   top: 15px;
   right: 15px;
   border: none;
   background: transparent;
-  font-size: 24px;
+  font-size: 26px;
   color: red;
   cursor: pointer;
 }
 
-/* Les liens */
-#navbarCollapse ul li {
+.mobile-menu ul li {
   list-style: none;
-  padding: 5px;
+  padding: 10px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-#navbarCollapse ul li:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+
 
 @media (max-width: 575.98px) {
   /* Styles pour les écrans XS */

@@ -12,7 +12,7 @@ const Navbar3 = () => {
 
   return (
     <div>
-      <div className="navigation_produit border border-1 shadow-sm p-3">
+      <div className="navigation_produit border border-1 mt-2 shadow-sm p-3">
         <div className="d-flex flex-column category-menu p-1">
           <div className="dropdown">
             {/* Le content du dropdown  */}

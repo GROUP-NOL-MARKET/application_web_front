@@ -1,68 +1,70 @@
 import axios from "axios";
 
-// ================================
-//  Configuration de base
-// ================================
-const API_URL = "http://127.0.0.1:8000/api";
+// ======================================
+//   BASE URL depuis .env
+// ======================================
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
+// Création d'une instance Axios
 const API = axios.create({
-    baseURL: API_URL,
+  baseURL: API_URL,
 });
 
-// ================================
-//  Messages API
-// ================================
+// ======================================
+//   Messages API
+// ======================================
 
-// Récupérer les messages avec pagination et tri
+// Récupérer les messages
 export const getMessages = async (token, page = 1, sort = "récent") => {
-    const sortParam = sort === "anciens" ? "anciens" : "recent";
-    const res = await axios.get(`${API_URL}/messages?page=${page}&sort=${sortParam}`, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
-    return res.data;
+  const sortParam = sort === "anciens" ? "anciens" : "recent";
+
+  const res = await API.get(`/messages?page=${page}&sort=${sortParam}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return res.data;
 };
 
 // Supprimer un message
 export const deleteMessage = async (id, token) => {
-    return await axios.delete(`${API_URL}/messages/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
+  return await API.delete(`/messages/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// ================================
-//  Intercepteurs Axios
-// ================================
+// ======================================
+//   Intercepteurs Axios
+// ======================================
 
 API.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
-let isLoggingOut = false; // évite de déclencher plusieurs fois la déconnexion
+let isLoggingOut = false;
 
 API.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        const message = error.response?.data?.message;
+  (response) => response,
+  (error) => {
+    const message = error.response?.data?.message;
 
-        if (
-            message === "Token expiré" ||
-            message === "Token invalide" ||
-            error.response?.status === 401
-        ) {
-            if (!isLoggingOut) {
-                isLoggingOut = true;
-                window.dispatchEvent(new Event("tokenExpired"));
-                // on peut aussi vider localStorage immédiatement pour éviter d’autres appels
-                localStorage.removeItem("token");
-            }
-        }
-
-        return Promise.reject(error);
+    if (
+      message === "Token expiré" ||
+      message === "Token invalide" ||
+      error.response?.status === 401
+    ) {
+      if (!isLoggingOut) {
+        isLoggingOut = true;
+        window.dispatchEvent(new Event("tokenExpired"));
+        localStorage.removeItem("token");
+      }
     }
+
+    return Promise.reject(error);
+  }
 );
 
 export default API;

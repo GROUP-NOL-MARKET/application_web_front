@@ -13,7 +13,11 @@ import adresse from "../assets/Images/icone/location.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = () => {
+const Sidebar = (onNavigate) => {
+
+  const handleClick = () => {
+    if(onNavigate) onNavigate();
+  }
 
   return (
     <div className="container-fluid">
@@ -21,7 +25,8 @@ const Sidebar = () => {
         <ul className="list-unstyled w-100" style={{ lineHeight: "3.0" }}>
           <li className="petit_titre w-100">
             <NavLink
-              to="/user"
+              to="/user" 
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate w-100 " + (isActive ? "active-link" : "text-dark")
               }
@@ -34,6 +39,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/Commandes"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
@@ -45,6 +51,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/messages"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link  " + (isActive ? "active-link" : "text-dark")
               }
@@ -56,6 +63,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/avis"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
@@ -71,6 +79,7 @@ const Sidebar = () => {
               }
 
               to="/user/bons"
+              onClick={handleClick}
             >
               <div className="row"><div className="col-3"><img className="w-75" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Bons d'achat</h4></div>
             </NavLink>
@@ -78,6 +87,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/favoris"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
@@ -89,6 +99,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/products_vus"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
@@ -100,6 +111,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/gestion"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
@@ -114,6 +126,7 @@ const Sidebar = () => {
                 "nav-link text-truncate " + (isActive ? "active-link" : "text-dark")
               }
               to="/user/adresses"
+              onClick={handleClick}
             >
               <div className="row">
                 <div className="col-3"><img className="w-75" src={adresse} alt="" /></div>
@@ -125,6 +138,7 @@ const Sidebar = () => {
           <li className="petit_titre">
             <NavLink
               to="/user/logout"
+              onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate" + (isActive ? "active-link" : "text-dark")
               }

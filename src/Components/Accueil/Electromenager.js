@@ -172,7 +172,7 @@ const Electromenager = () => {
           loop={memoizedProducts.length > 6}
           slidesPerView={6}
           spaceBetween={15}
-          className="Liste_produits d-none d-md-block mt-4"
+          className="Liste_produits d-none d-lg-block mt-4"
         >
           {memoizedProducts.map((product) => (
             <SwiperSlide key={product.id} className="product_slide border border-1 shadow-sm">
@@ -214,7 +214,7 @@ const Electromenager = () => {
 
       {/* --- Embla Mobile --- */}
       {!isLoading && memoizedProducts.length > 0 && (
-        <div className="embla d-lg-none mt-3">
+        <div className="embla d-lg-none mt-2">
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {memoizedProducts.map((product) => (

@@ -160,7 +160,7 @@
   overflow: hidden;
 }
 
-.embla__viewport {
+.embla__viewport { 
   overflow: hidden;
   width: 100%;
 }
@@ -195,4 +195,49 @@
 
 .embla__next {
   right: 10px;
+}
+@media (min-width: 768px) {
+  
+.embla {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.embla__viewport { 
+  overflow: hidden;
+  width: 100%;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 auto; /* évite que ça se compresse */
+  width: 25%; /* ou 100%, selon combien de produits tu veux par slide */
+  box-sizing: border-box;
+  min-height: 200px;
+}
+
+.embla__prev,
+.embla__next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.embla__prev {
+  left: 10px;
+}
+
+.embla__next {
+  right: 10px;
+}
 }

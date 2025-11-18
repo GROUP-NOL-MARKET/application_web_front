@@ -11,6 +11,7 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
   Button,
@@ -31,6 +32,10 @@ const Login = () => {
   const [errors, setErrors] = useState({});
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleNavigateHome = () =>{
+    navigate("/");
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -101,7 +106,14 @@ const Login = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="offset-md-3 col-md-6 col-12">
-            <div className="formulaire_connexion mt-5 mb-5 p-3">
+            <div className="formulaire_connexion my-5 p-3">
+              <ul className="d-flex flex-row list-unstyled gap-2" style={{color:"#0066BD", cursor:"pointer"}} onClick={handleNavigateHome}>
+                <li>
+                <FontAwesomeIcon icon={faArrowLeft}/>
+                </li>
+                <li>Retour à l'accueil</li>
+              </ul>
+              
               <div className="en-tête d-flex flex-column align-items-center">
                 <img
                   src={img_entreprise}

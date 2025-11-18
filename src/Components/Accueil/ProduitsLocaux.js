@@ -128,7 +128,7 @@ const ProduitsLocaux = () => {
                         loop={memoizedProducts.length > 6}
                         slidesPerView={6}
                         spaceBetween={15}
-                        className="Liste_produits d-none d-md-block mt-2"
+                        className="Liste_produits d-none d-lg-block mt-2"
                     >
                         {memoizedProducts.map((product) => (
                             <SwiperSlide
@@ -171,7 +171,7 @@ const ProduitsLocaux = () => {
                     </Swiper>
 
                     {/* --- Carrousel mobile --- */}
-                    <div className="embla d-lg-none mt-3">
+                    <div className="embla d-lg-none mt-2">
                         <div className="embla__viewport" ref={emblaRef}>
                             <div className="embla__container">
                                 {memoizedProducts.map((product) => (

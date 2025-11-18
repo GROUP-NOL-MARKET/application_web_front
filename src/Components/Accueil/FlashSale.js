@@ -189,7 +189,7 @@ const FlashSale = ({ duration = 86400000 }) => {
             ) : (
                 <>
                     {/* --- Swiper Desktop --- */}
-                    <div className="product_flash_sale d-none d-md-block">
+                    <div className="product_flash_sale d-none d-lg-block">
                         <Swiper
                             modules={[Navigation]}
                             navigation

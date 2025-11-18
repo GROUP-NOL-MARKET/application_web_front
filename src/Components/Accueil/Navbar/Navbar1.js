@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,11 +12,14 @@ import utilisateur from "../../assets/Images/icone/utilisateur.png";
 import "../../../Styles/Navbar.css";
 import telephone from "../../assets/Images/icone/appel-telephonique.png";
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
+import question from "../../assets/Images/icone/question.png";
 
 const Navbar1 = () => {
   const [active, setActive] = useState("");
   const { isLoggedIn } = useContext(AuthContext);
   const { products } = useContext(PanierContext);
+  const [isOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const totalPrice = useMemo(
@@ -32,6 +35,17 @@ const Navbar1 = () => {
     const navbar = document.getElementById("navbarCollapse");
     navbar?.classList.remove("show");
   };
+
+  useEffect(() => {
+  const closeOnClickOutside = (e) => {
+    if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
+      setIsOpen(false);
+    }
+  };
+
+  document.addEventListener("click", closeOnClickOutside);
+  return () => document.removeEventListener("click", closeOnClickOutside);
+}, []);
 
 
   const logout = async () => {
@@ -63,7 +77,6 @@ const Navbar1 = () => {
                 </h6>
               </div>
             </div>
-
 
             {/* La partie pour les petits écrans  */}
 
@@ -106,7 +119,7 @@ const Navbar1 = () => {
                             style={{ width: "33%", cursor: "pointer" }}
                           />
                           <div
-                            className="dropdown-toggle d-none d-md-flex align-items-center col-8"
+                            className="dropdown-toggle fw-normal d-none d-md-flex align-items-center col-8"
                             role="button"
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
@@ -162,7 +175,7 @@ const Navbar1 = () => {
                             style={{ width: "33%", cursor: "pointer" }}
                           />
                           <div
-                            className="dropdown-toggle d-none d-md-flex align-items-center col-8"
+                            className="dropdown-toggle d-none d-md-flex align-items-center col-8 fw-normal"
                             role="button"
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
@@ -196,78 +209,118 @@ const Navbar1 = () => {
                   </div>
                 </div>
               )}
-              <div className=" panier col-2 col-md-3 d-lg-none ">
-                <Link to="/Cart" style={{ color: "black" }} className="w-100 d-flex align-items-right">
+              <div className=" panier col-2 d-lg-none ">
+                <Link
+                  to="/Cart"
+                  style={{ color: "black" }}
+                  className=" d-flex align-items-right offset-3"
+                >
                   <div className="d-flex position-relative offset-4 offset-md-2">
-                    <img className="img-fluid" src={Panier} alt="" style={{ width: "35px" }} />
+                    <img
+                      className="img-fluid"
+                      src={Panier}
+                      alt=""
+                      style={{ width: "35px" }}
+                    />
 
-                    <span
-                      className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length"
-                    >
+                    <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
                       {products.length}
                     </span>
-                    <div className="ps-2 d-md-flex d-none">
-                      <p className="mb-0 fw-bold">Panier</p>
-                      <small>{totalPrice.toLocaleString()} FCFA</small>
-                    </div>
                   </div>
                 </Link>
               </div>
-              <button
-                className="navbar-toggler d-lg-none col-2 col-md-1 border-0"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span className="navbar-toggler-icon offset-2" style={{ color: "orange" }} />
-              </button>
-
+              <div className="col-md-1 d-none d-md-block d-lg-none">
+                <div className="d-flex align-items-center gap-2">
+                  <Link to="/aide&Faq">
+                    <img
+                      src={question}
+                      alt="aide"
+                      style={{ width: "30px", cursor: "pointer" }}
+                      loading="lazy"
+                    />
+                  </Link>
+                  <p className="mb-0 fw-normal">Aide</p>
+                </div>
+              </div>
+              <div className="col-2  d-flex d-lg-none justify-content-center">
+                <button
+                  className="navbar-toggler border-0"
+                  type="button"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  <span className="navbar-toggler-icon offset-2" />
+                </button>
+              </div>
               {/* Menu mobile */}
-              <div className="collapse navbar-collapse d-lg-none" id="navbarCollapse">
+              <div className={`mobile-menu d-lg-none ${isOpen ? "open" : ""}`}>
                 <button
                   type="button"
                   className="close-btn"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarCollapse"
+                  onClick={() => setIsOpen(false)}
                 >
                   ✖
                 </button>
                 <ul className="navbar-nav ms-2">
                   <li className="nav-item">
-                    <Link to="/" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Accueil
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/About" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/About"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       A propos
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to=""
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Services
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/Contact" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/Contact"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Contact
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/cart" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/cart"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Achat
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/products" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/products"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Produits
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/aide&Faq" className="nav-link" onClick={handleNavLinkClick}>
+                    <Link
+                      to="/aide&Faq"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
                       Faq & aide
                     </Link>
                   </li>

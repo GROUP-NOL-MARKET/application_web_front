@@ -12,16 +12,16 @@ const Offres = () => {
     <div className="Offres mt-2">
       <div className="container">
         <div
-          className="row mt-4 d-flex align-items-center d-lg-none"
+          className="row mt-4 mt-md-5 d-flex align-items-center d-lg-none"
           style={{ borderColor: "#FA7F1B" }}
         >
           {/* Livraison */}
           <div className="col-12 col-sm-6 col-md-3 mb-3 ">
             <div className="row d-flex align-items-center">
-              <div className="col-2 icon">
+              <div className="col-3 icon">
                 <FontAwesomeIcon icon={faRocket} size="2x" />
               </div>
-              <div className="col-10">
+              <div className="col-9">
                 <h6 className="title_offre">Livraison assurée</h6>
                 <p className="text">À partir de 100.000 FCFA</p>
               </div>
@@ -31,10 +31,10 @@ const Offres = () => {
           {/* Paiement */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-2 icon">
+              <div className="col-3 icon">
                 <FontAwesomeIcon icon={faWallet} size="2x" />
               </div>
-              <div className="col-10">
+              <div className="col-9">
                 <h6 className="title_offre">Paiement</h6>
                 <p className="text">Système sécurisé</p>
               </div>
@@ -44,10 +44,10 @@ const Offres = () => {
           {/* Support */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-2 icon">
+              <div className="col-3 icon">
                 <FontAwesomeIcon icon={faHeadphones} size="2x" />
               </div>
-              <div className="col-10">
+              <div className="col-9">
                 <h6 className="title_offre">Support assistance</h6>
                 <p className="text">Disponible 24/7</p>
               </div>
@@ -57,10 +57,10 @@ const Offres = () => {
           {/* Sécurité */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-2 icon">
+              <div className="col-3 icon">
                 <FontAwesomeIcon icon={faUmbrella} size="2x" />
               </div>
-              <div className="col-10">
+              <div className="col-9">
                 <h6 className="title_offre">100% sûre</h6>
                 <p className="text">Achat sécurisé</p>
               </div>

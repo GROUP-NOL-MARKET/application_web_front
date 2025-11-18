@@ -12,8 +12,8 @@ const APropos = () => {
       <div className="" style={{ backgroundColor: "#919191" }}>
         <div className="container">
           <div className="row">
-            <div className="col-md-6 col-12">
-              <div className="entreprise_img w-100 h-50 py-4 p-sm-0 mt-sm-5 mb-md-4">
+            <div className="col-lg-6 col-12">
+              <div className="entreprise_img w-100 h-50 py-4 p-sm-0 mt-sm-5 mb-lg-4">
                 <img
                   alt="entreprse_img"
                   className="w-100 py-4 p-sm-0 border-radius"
@@ -21,7 +21,7 @@ const APropos = () => {
                 />
               </div>
             </div>
-            <div className="col-md-6 col-12 text-white mt-md-5 mb-3">
+            <div className="col-lg-6 col-12 text-white mt-lg-5 mb-3">
               <h1 className="mt-sm-5 a_propos_title_2"><span style={{ color: "#fa7f1b" }}>GROUP N</span><span style={{ color: "#0066BD" }}>OL MARKET</span></h1>
               <p className="text-justify a_propos_text">
                 Nous sommes une entreprise engagée dans la valorisation des
