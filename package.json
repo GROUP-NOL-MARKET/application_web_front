@@ -19,7 +19,7 @@
     "@lottiefiles/dotlottie-react": "^0.17.1",
     "@mui/icons-material": "^7.3.1",
     "@mui/material": "^7.3.1",
-    "@mui/x-charts": "^8.11.1",
+    "@mui/x-charts": "^8.18.0",
     "@mui/x-data-grid": "^8.10.0",
     "@mui/x-date-pickers": "^8.14.0",
     "@mui/x-date-pickers-pro": "^8.14.0",
