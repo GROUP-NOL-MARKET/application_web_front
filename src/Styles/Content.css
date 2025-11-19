@@ -1,13 +1,13 @@
-.title{
-    font-family:"Montserras", sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #0066BD;
+.title {
+  font-family: "Montserras", sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0066bd;
 }
-.voir_tout{
-    font-family:"Roboto", sans-serif;
-    font-size: 1rem;
-    color: black;
+.voir_tout {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  color: black;
 }
 /* Conteneur principal */
 .Liste_produits {
@@ -22,15 +22,6 @@
   text-align: center;
 }
 
-/* Images uniformes */
-.img_product {
-  width: 100%;
-  height: 200px; /* Taille fixe pour uniformité */
-  object-fit: cover; /* Coupe proprement si image trop grande */
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
-
 /* Effet hover */
 .img_product:hover {
   transform: scale(1.05);
@@ -42,9 +33,9 @@
   font-weight: bold;
   font-size: 16px;
   margin-top: 8px;
-  white-space: nowrap;       /* Empêche le retour à la ligne */
-  overflow: hidden;          /* Coupe le texte si trop long */
-  text-overflow: ellipsis;   /* Ajoute "..." si texte trop long */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+  overflow: hidden; /* Coupe le texte si trop long */
+  text-overflow: ellipsis; /* Ajoute "..." si texte trop long */
   max-width: 100%;
 }
 
@@ -54,6 +45,43 @@
   background-color: rgba(255, 255, 255, 0.74);
   border-radius: 100%;
   padding: 30px;
-  color: #FA7F1B;
+  color: #fa7f1b;
   font-weight: bold;
 }
+@media (max-width: 575.98px) {
+  .img_product {
+    width: 100%;
+    height: 120px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 576px) {
+  .img_product {
+    width: 100%;
+    height: 120px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 768px) {
+  .img_product {
+    width: 100%;
+    height: 120px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+@media (min-width: 992px) {
+  .img_product {
+    width: 100%;
+    height: 170px; /* Taille fixe pour uniformité */
+    object-fit: cover; /* Coupe proprement si image trop grande */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+}
+/* Images uniformes */

@@ -3,10 +3,10 @@
       rgba(109, 109, 109, 0.5),
       rgba(109, 109, 109, 0.5)
     ),
-    url("../Components/assets/Images/background_register.jpg");
+    url("../Components/assets/Images/background_register.avif");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
+  overflow: hidden;
 }
 
 .Title_register {

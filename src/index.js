@@ -8,17 +8,27 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./Components/AuthContext";
 import { PanierContextProvider } from "./Store/Panier_context";
+import { FavoriteContextProvider } from "./Store/Favoris_context";
+import { Provider } from "react-redux";
+import { store } from "./Store/Store";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+
     <Router>
       <AuthProvider>
         <PanierContextProvider>
-          <App />
+          <Provider store={store}>
+            <FavoriteContextProvider>
+              <App />
+            </FavoriteContextProvider>
+          </Provider>
         </PanierContextProvider>
       </AuthProvider>
     </Router>
+
   </React.StrictMode>
 );
 

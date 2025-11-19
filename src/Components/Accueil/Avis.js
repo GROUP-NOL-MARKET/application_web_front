@@ -13,7 +13,6 @@ const Avis = () => {
       name: "John Doe",
       rating: 4,
       img: img_profil,
-      profil: "Développeur",
       comment: "Excellent service et produits de qualité !",
     },
     {
@@ -21,7 +20,6 @@ const Avis = () => {
       name: "Jane Smith",
       rating: 5,
       img: img_profil,
-      profil: "Informaticien",
       comment: "J'ai adoré la variété de produits locaux disponibles.",
     },
     {
@@ -29,7 +27,6 @@ const Avis = () => {
       name: "Alice Johnson",
       rating: 3,
       img: img_profil,
-      profil: "Designer UI/UX",
       comment: "Bon choix, mais la livraison était un peu lente.",
     },
     {
@@ -37,7 +34,7 @@ const Avis = () => {
       name: "Bob Brown",
       rating: 4,
       img: img_profil,
-      profil: "Producteur de société",
+
       comment: "Excellent support client et expédition rapide.",
     },
   ];
@@ -55,7 +52,7 @@ const Avis = () => {
           slidesPerView={2}
         >
 
-            {/* Navigation dans le tableau avec Swiper pour l'affichage des avis  */}
+          {/* Navigation dans le tableau avec Swiper pour l'affichage des avis  */}
 
           {Avis.map((avis) => (
             <SwiperSlide
@@ -79,7 +76,6 @@ const Avis = () => {
                   <h5 style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {avis.name}
                   </h5>
-                  <p style={{ fontFamily: "Roboto" }}>{avis.profil}</p>
                 </div>
                 <div className="d-flex flex-column align-items-center p-0">
                   <Rating name="size-medium" value={avis.rating} readOnly />

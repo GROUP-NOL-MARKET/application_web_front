@@ -1,141 +1,373 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../../AuthContext";
+import Panier from "../../assets/Images/icone/panier.png";
+import API from "../../Authentification/api";
 import Button from "react-bootstrap/Button";
+import { PanierContext } from "../../../Store/Panier_context";
+import utilisateur from "../../assets/Images/icone/utilisateur.png";
 import "../../../Styles/Navbar.css";
-import { AuthContext, AuthProvider } from "../../AuthContext";
+import telephone from "../../assets/Images/icone/appel-telephonique.png";
+import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
+import question from "../../assets/Images/icone/question.png";
 
 const Navbar1 = () => {
   const [active, setActive] = useState("");
-  const [isOpen, setIsOpen] = useState("");
+  const { isLoggedIn } = useContext(AuthContext);
+  const { products } = useContext(PanierContext);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const navigate = useNavigate();
+
+  const totalPrice = useMemo(
+    () =>
+      products.reduce(
+        (acc, product) => acc + (product.price || 0) * (product.quantity || 0),
+        0
+      ),
+    [products]
+  );
+
+  const handleNavLinkClick = () => {
+    const navbar = document.getElementById("navbarCollapse");
+    navbar?.classList.remove("show");
   };
 
-  const dropdownRef = useRef(null);
-
-  // Pour l'effet en dehors du dropdown
-
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false); // Ferme le menu si on clique ailleurs
-      }
-    };
+  const closeOnClickOutside = (e) => {
+    if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
+      setIsOpen(false);
+    }
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  document.addEventListener("click", closeOnClickOutside);
+  return () => document.removeEventListener("click", closeOnClickOutside);
+}, []);
 
-  const { isLoggedIn } = useContext(AuthContext);
+
+  const logout = async () => {
+    try {
+      await API.post("/logout");
+      localStorage.removeItem("token");
+      toast.success("Déconnexion réussie");
+      navigate("/login");
+    } catch (err) {
+      console.error("Erreur logout", err.response?.data);
+      toast.error("Erreur lors de la déconnexion");
+    }
+  };
 
   return (
-    <AuthProvider>
-      <div className="bg-light shadow-sm d-flex align-items-center navbar navbar-expand-lg overflow-hidden">
-        {/* Quand l'utilisateur n'est pas connecté  le premier navbar*/}
-
-        {!isLoggedIn ? (
-          <div className="container-fluid">
-            <div className=" tel col-12 col-md-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
-              <div className="row">
-                <div className="col-6 d-none d-sm-block">
-                  <div className="row p-0 d-flex align-items-center">
-                    <FontAwesomeIcon
-                      icon={faPhone}
-                      size="2x"
-                      className="col-1 m-0"
-                    />
-                    <h6 className="col-sm-8 col-xs-8 px-0 fw-semibold flex-lg-wrap">
-                      Appelez-nous au:(+229) 01 65 00 29 29
-                    </h6>
-                  </div>
+    <div className="bg-light shadow-sm d-flex align-items-center navbar navbar-expand-lg w-100">
+      {/* Premier navbar quand l'utilisateur n'est pas connecté */}
+      <div className="container-fluid">
+        <div className="tel col-12 col-lg-5 mx-sm-3 d-sm-block navbar-brand">
+          <div className="row">
+            {/* Bloc téléphone */}
+            <div className="col-6 d-none d-lg-block">
+              <div className="row p-0 d-flex align-items-center">
+                <div className="col-2 m-0">
+                  <img src={telephone} alt="Appel" className="img-fluid" />
                 </div>
-
-                <button
-                  className="navbar-toggler d-lg-none offset-sm-3 offset-9 col-2"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarCollapse"
-                >
-                  <span
-                    className="navbar-toggler-icon"
-                    style={{ color: "orange" }}
-                  ></span>
-                </button>
-                <div
-                  className="collapse navbar-collapse d-lg-none"
-                  id="navbarCollapse"
-                >
-                  <button
-                    type="button"
-                    className="close-btn"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse"
-                  >
-                    ✖
-                  </button>
-                  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="col-md-1">Accueil</li>
-                    <li className="col-md-1">
-                      <a href="application_web_front/About">A propos</a>
-                    </li>
-                    <li className="col-md-1">Services</li>
-                    <li className="col-md-1">
-                      <a href="application_web_front/Contact">Contact</a>
-                    </li>
-                    <li className="col-md-1">Achat</li>
-                    <li className="col-md-1">Produits</li>
-                    <li className="col-md-1"><a href="aide&Faq">Faq & aide</a></li>
-                  </ul>
-                </div>
+                <h6 className="col-8 px-0 fw-semibold flex-lg-wrap">
+                  Appelez-nous au : (+229) 01 65 00 29 29
+                </h6>
               </div>
             </div>
 
-            {/* Les parties contact, a propos et achat immédiat  */}
+            {/* La partie pour les petits écrans  */}
 
-            <div className="offset-3 col-12 text-wrap  d-flex align-items-center d-grid gap-4 nav-link">
-              <h6 className="  fw-semibold nav-item d-none d-lg-block">
-                <Link
-                  to="application_web_front/Contact"
-                  className="nav-link"
-                  style={{ color: active === "Contact" ? "orange" : "black" }}
-                  onClick={() => setActive("Contact")}
-                >
-                  Contactez-nous
+            {/* Bouton hamburger responsive */}
+            <div className="d-flex align-items-center">
+              <div className="col-5 col-md-3 d-lg-none navbar-brand logo_div">
+                <Link to="/">
+                  <img
+                    alt="logo"
+                    src={Logo}
+                    className="logo img-fluid"
+                    style={{ cursor: "pointer" }}
+                  />
                 </Link>
-              </h6>
-              <h6 className=" fw-semibold nav-item d-none d-lg-block">
+              </div>
+              {!isLoggedIn ? (
+                <div className="offest-1 connexion d-lg-none col-1 col-md-3 d-flex align-items-center">
+                  <div className="w-100 row">
+                    <div className="connexion-text col-12 p-0">
+                      <div className="dropdown mt-1 register">
+                        <div
+                          className="dropdown-toggle lien_mon_compte d-md-none"
+                          role="button"
+                          id="registerDropdown"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user"
+                            style={{ width: "35px", cursor: "pointer" }}
+                          />
+                        </div>
+                        <div className="row">
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user col-3 d-none d-md-block"
+                            style={{ width: "33%", cursor: "pointer" }}
+                          />
+                          <div
+                            className="dropdown-toggle fw-normal d-none d-md-flex align-items-center col-8"
+                            role="button"
+                            id="registerDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Connexion
+                          </div>
+
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="registerDropdown"
+                          >
+                            <li>
+                              <Link className="dropdown-item" to="/register">
+                                Inscription
+                              </Link>
+                            </li>
+                            <li>
+                              <Link className="dropdown-item" to="/login">
+                                Connexion
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="connexion offset-1 col-1 col-md-3 d-flex align-items-center d-lg-none">
+                  <div className="w-100 row">
+                    <div className="connexion-text col-12 p-0">
+                      <div className="dropdown mt-1 register">
+                        <div
+                          className="dropdown-toggle lien_mon_compte d-md-none"
+                          role="button"
+                          id="userDropdown"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user"
+                            style={{ width: "35px", cursor: "pointer" }}
+                          />
+                        </div>
+                        <span className="row">
+                          <img
+                            src={utilisateur}
+                            alt="user"
+                            className="icon_user d-none d-md-block col-3"
+                            style={{ width: "33%", cursor: "pointer" }}
+                          />
+                          <div
+                            className="dropdown-toggle d-none d-md-flex align-items-center col-8 fw-normal"
+                            role="button"
+                            id="registerDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Connexion
+                          </div>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="userDropdown"
+                          >
+                            <li>
+                              <Link className="dropdown-item" to="/user">
+                                Mon compte
+                              </Link>
+                            </li>
+                            <li>
+                              <button
+                                type="button"
+                                className="dropdown-item text-danger"
+                                onClick={logout}
+                              >
+                                <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                                Déconnexion
+                              </button>
+                            </li>
+                          </ul>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className=" panier col-2 d-lg-none ">
                 <Link
-                  to="application_web_front/About"
-                  className="nav-link"
-                  style={{ color: active === "About" ? "orange" : "black" }}
-                  onClick={() => setActive("About")}
+                  to="/Cart"
+                  style={{ color: "black" }}
+                  className=" d-flex align-items-right offset-3"
                 >
-                  A propos
+                  <div className="d-flex position-relative offset-4 offset-md-2">
+                    <img
+                      className="img-fluid"
+                      src={Panier}
+                      alt=""
+                      style={{ width: "35px" }}
+                    />
+
+                    <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
+                      {products.length}
+                    </span>
+                  </div>
                 </Link>
-              </h6>
-              <div className=" m-0 p-1 fw-semibold nav-item d-none d-lg-block">
-                <Button
-                  href="application_web_front/products"
-                  style={{
-                    fontFamily: "Roboto, sans-serif",
-                    backgroundColor: "#0066BD",
-                  }}
+              </div>
+              <div className="col-md-1 d-none d-md-block d-lg-none">
+                <div className="d-flex align-items-center gap-2">
+                  <Link to="/aide&Faq">
+                    <img
+                      src={question}
+                      alt="aide"
+                      style={{ width: "30px", cursor: "pointer" }}
+                      loading="lazy"
+                    />
+                  </Link>
+                  <p className="mb-0 fw-normal">Aide</p>
+                </div>
+              </div>
+              <div className="col-2  d-flex d-lg-none justify-content-center">
+                <button
+                  className="navbar-toggler border-0"
+                  type="button"
+                  onClick={() => setIsOpen(!isOpen)}
                 >
-                  Acheter maintenant
-                </Button>
+                  <span className="navbar-toggler-icon offset-2" />
+                </button>
+              </div>
+              {/* Menu mobile */}
+              <div className={`mobile-menu d-lg-none ${isOpen ? "open" : ""}`}>
+                <button
+                  type="button"
+                  className="close-btn"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ✖
+                </button>
+                <ul className="navbar-nav ms-2">
+                  <li className="nav-item">
+                    <Link
+                      to="/"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Accueil
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/About"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      A propos
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to=""
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Services
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/Contact"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Contact
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/cart"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Achat
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/products"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Produits
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to="/aide&Faq"
+                      className="nav-link"
+                      onClick={handleNavLinkClick}
+                    >
+                      Faq & aide
+                    </Link>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-        ) : (
-          <div></div>
-        )}
+        </div>
+
+        {/* Liens desktop à droite */}
+        <div className="offset-3 col d-flex align-items-center">
+          <h6 className="fw-semibold nav-item d-none d-lg-block me-4">
+            <Link
+              to="/Contact"
+              className="nav-link"
+              style={{ color: active === "Contact" ? "orange" : "black" }}
+              onClick={() => setActive("Contact")}
+            >
+              Contactez-nous
+            </Link>
+          </h6>
+          <h6 className="fw-semibold nav-item d-none d-lg-block me-2">
+            <Link
+              to="/About"
+              className="nav-link"
+              style={{ color: active === "About" ? "orange" : "black" }}
+              onClick={() => setActive("About")}
+            >
+              A propos
+            </Link>
+          </h6>
+          <div className="m-0 p-1 fw-semibold nav-item d-none d-lg-block">
+            <Button
+              as={Link}
+              to="/all_products"
+              type="button"
+              style={{
+                fontFamily: "Roboto, sans-serif",
+                backgroundColor: "#0066BD",
+              }}
+            >
+              Acheter maintenant
+            </Button>
+          </div>
+        </div>
       </div>
-    </AuthProvider>
+    </div>
   );
 };
 

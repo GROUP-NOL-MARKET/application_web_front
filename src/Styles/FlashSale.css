@@ -7,18 +7,48 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #0066BD;
+  background: #0066bd;
   color: white;
   font-weight: bold;
   font-size: 15px;
   padding: 10px;
-clip-path: polygon(
-    50% 0%, 60% 6%, 70% 0%, 78% 8%, 88% 2%, 94% 12%, 100% 8%,
-    98% 20%, 100% 30%, 94% 40%, 100% 50%, 94% 60%, 100% 70%,
-    94% 80%, 88% 98%, 78% 92%, 70% 100%, 60% 94%, 50% 100%,
-    40% 94%, 30% 100%, 22% 92%, 12% 98%, 6% 88%, 0% 78%,
-    6% 70%, 0% 60%, 6% 50%, 0% 40%, 6% 30%, 0% 20%, 6% 12%,
-    12% 2%, 22% 8%, 30% 0%, 40% 6%
+  clip-path: polygon(
+    50% 0%,
+    60% 6%,
+    70% 0%,
+    78% 8%,
+    88% 2%,
+    94% 12%,
+    100% 8%,
+    98% 20%,
+    100% 30%,
+    94% 40%,
+    100% 50%,
+    94% 60%,
+    100% 70%,
+    94% 80%,
+    88% 98%,
+    78% 92%,
+    70% 100%,
+    60% 94%,
+    50% 100%,
+    40% 94%,
+    30% 100%,
+    22% 92%,
+    12% 98%,
+    6% 88%,
+    0% 78%,
+    6% 70%,
+    0% 60%,
+    6% 50%,
+    0% 40%,
+    6% 30%,
+    0% 20%,
+    6% 12%,
+    12% 2%,
+    22% 8%,
+    30% 0%,
+    40% 6%
   ); /* Forme étoile */
   text-align: center;
   width: 40x;
@@ -27,20 +57,20 @@ clip-path: polygon(
   align-items: center;
   justify-content: center;
 }
-.price_flash_sale{
-  font-family:"Roboto", sans-serif;
+.price_flash_sale {
+  font-family: "Roboto", sans-serif;
   font-size: "small";
   font-optical-sizing: normal;
 }
-.new_price{
+.new_price {
   font-weight: bold;
 }
 .progress-bar {
-   background: #b636ff;
-    border-radius: 3px;
-   -webkit-transition: width 1.5s ease-in-out;
-   -ms-transition: width 1.5s ease-in-out;
-   -moz-transition: width 1.5s ease-in-out;
-   -o-transition: width 1.5s ease-in-out;
-   transition: width 1.5s ease-in-out;
+  background: #b636ff;
+  border-radius: 3px;
+  -webkit-transition: width 1.5s ease-in-out;
+  -ms-transition: width 1.5s ease-in-out;
+  -moz-transition: width 1.5s ease-in-out;
+  -o-transition: width 1.5s ease-in-out;
+  transition: width 1.5s ease-in-out;
 }
