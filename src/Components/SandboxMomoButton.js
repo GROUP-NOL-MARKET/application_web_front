@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Button, Spinner, Alert, Form } from "react-bootstrap";
+import { Button, Spinner, Alert } from "react-bootstrap";
 import API from './Authentification/api';
 import { toast } from 'react-toastify';
 
 export default function SandboxMomoButton({ amount }) {
-    const [phone, setPhone] = useState("");            // numéro MTN entré par l'utilisateur
+    const [phone, setPhone] = useState(""); // numéro MTN 10 chiffres
     const [refId, setRefId] = useState(null);
     const [txId, setTxId] = useState(null);
     const [status, setStatus] = useState('idle');
@@ -17,14 +17,14 @@ export default function SandboxMomoButton({ amount }) {
     const MAX_POLL_ATTEMPTS = 100;
     const POLL_INTERVAL_MS = 3000;
 
-    // Vérification simple du numéro MTN
+    // Validation MTN BENIN (10 chiffres : 01 + indicatif + 6 chiffres)
     const isValidPhone = (num) => {
-        return /^9[0-9]{7}$/.test(num); // Format béninois MTN (ex: 97xxxxxx, 96xxxxxx...)
+        return /^01(61|62|66|67|90|91|96|97|52)[0-9]{6}$/.test(num);
     };
 
     const createPayment = async () => {
         if (!isValidPhone(phone)) {
-            toast.error("Veuillez entrer un numéro MTN valide.");
+            toast.error("Veuillez entrer un numéro MTN MoMo valide (10 chiffres).");
             return;
         }
 
@@ -44,7 +44,7 @@ export default function SandboxMomoButton({ amount }) {
                 setRefId(res.data.reference || null);
                 setTxId(res.data.transaction_id || null);
                 setStatus('processing');
-                toast.info('Demande envoyée — veuillez valider sur votre téléphone.');
+                toast.info('Demande envoyée — validez le paiement sur votre téléphone.');
             } else {
                 setStatus('failed');
                 setErrorMsg(res?.data?.error || 'Erreur init paiement');
@@ -128,11 +128,10 @@ export default function SandboxMomoButton({ amount }) {
     }, [refId, navigate]);
 
 
-    // === UI ===
     return (
         <div style={{ padding: 20 }}>
 
-            {/* Formulaire façon 1XBet / Betwinner */}
+            {/* Formulaire MoMo */}
             <div
                 style={{
                     background: '#f8f8f8',
@@ -146,9 +145,9 @@ export default function SandboxMomoButton({ amount }) {
 
                 <input
                     type="tel"
-                    maxLength="8"
+                    maxLength="10"
                     className="form-control"
-                    placeholder="Ex: 97000000"
+                    placeholder="Ex: 0197000000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                     style={{
@@ -159,12 +158,14 @@ export default function SandboxMomoButton({ amount }) {
                     }}
                 />
 
-                <small style={{ color: "#777" }}>Saisissez votre numéro MTN sans indicatif.</small>
+                <small style={{ color: "#777" }}>
+                    Entrez votre numéro MTN (10 chiffres, commence par 01 + indicatif).
+                </small>
             </div>
 
             {txId && <div style={{ marginBottom: 8 }}>Transaction : <strong>{txId}</strong></div>}
             {status !== 'idle' && status !== 'processing' && errorMsg && (
-                <Alert variant="danger">{errorMsg}</Alert>
+                <Alert variant="danger"> {errorMsg?.error || (typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg))}</Alert>
             )}
 
             <Button
