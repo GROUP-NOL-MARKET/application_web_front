@@ -5,6 +5,10 @@ import axios from "axios";
 // ======================================
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
+// process.env.REACT_APP_API_URL ||
+
+
+
 // Création d'une instance Axios
 const API = axios.create({
   baseURL: API_URL,
