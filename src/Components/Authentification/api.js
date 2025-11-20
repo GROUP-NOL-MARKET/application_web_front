@@ -3,9 +3,7 @@ import axios from "axios";
 // ======================================
 //   BASE URL depuis .env
 // ======================================
-const API_URL = process.env.REACT_APP_API_URL||  "http://localhost:8000/api";
-
-// process.env.REACT_APP_API_URL ||
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
 // Création d'une instance Axios
 const API = axios.create({
