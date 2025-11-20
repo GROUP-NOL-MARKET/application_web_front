@@ -59,7 +59,7 @@ const ProduitsLocaux = () => {
     setshowPopUp(true);
   };
 
-  // ✅ Chargement des produits avec cache session
+  //  Chargement des produits avec cache session
   useEffect(() => {
     const cachedProducts = sessionStorage.getItem("produits_locaux");
 
@@ -69,17 +69,24 @@ const ProduitsLocaux = () => {
     } else {
       const fetchProducts = async () => {
         try {
-          const url = new URL("http://127.0.0.1:8000/api/products");
-          url.searchParams.append("sous_category", "Produits Locaux");
+          setLoading(true);
 
-          const response = await fetch(url);
-          const result = await response.json();
+          const response = await API.get("/products", {
+            params: {
+              sous_category: "Produits Locaux",
+            },
+          });
 
-          const data = result.data || [];
+          const data = response.data?.data ?? response.data ?? [];
           setProducts(data);
+
+          // Mise en cache pour optimiser la navigation
           sessionStorage.setItem("produits_locaux", JSON.stringify(data));
         } catch (error) {
-          console.error("Erreur lors du chargement des produits :", error);
+          console.error(
+            "Erreur lors du chargement des produits :",
+            error.response?.data?.message || error.message
+          );
         } finally {
           setLoading(false);
         }
