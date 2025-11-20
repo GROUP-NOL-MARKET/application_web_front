@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, FormControl, FormGroup, FormLabel, Spinner } from "react-bootstrap";
 import "../../Styles/UserDashboard/Gestion.css";
-import axios from "axios";
 import { toast } from "react-toastify";
 import API from "../Authentification/api";
 

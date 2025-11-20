@@ -31,9 +31,7 @@ const InfosProfil = ({ closePopUp1 }) => {
                     return;
                 }
 
-                const response = await API.get("/user", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                const response = await API.get("/user");
 
                 const data = response.data?.user || response.data; // compatibilité
                 setForm({

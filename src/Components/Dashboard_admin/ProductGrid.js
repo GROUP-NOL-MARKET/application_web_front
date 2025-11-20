@@ -6,7 +6,6 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "./ThemeContext";
 import { Button, CircularProgress } from "@mui/material";
 import API from "../Authentification/apiAdmin";
-import axios from "axios";
 import { toast } from "react-toastify";
 import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
 
@@ -52,7 +51,7 @@ const ProductGrid = () => {
     if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/admin/products/${id}`, {
+      await API.delete(`/admin/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Produit supprimé avec succès");
