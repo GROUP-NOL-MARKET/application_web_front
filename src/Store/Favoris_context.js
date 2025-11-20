@@ -15,6 +15,8 @@ export const FavoriteContextProvider = ({ children }) => {
   // Charger les favoris depuis l’API Laravel
 
   const fetchFavorites = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
     try {
       const res = await API.get("/favorites");
       setFavorites(res.data);
@@ -52,7 +54,10 @@ export const FavoriteContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchFavorites();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchFavorites();
+    }
   }, []);
 
   return (

@@ -18,13 +18,18 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Button from "@mui/material/Button";
 import { Form, FormControl, FormLabel, FormGroup, FormSelect } from "react-bootstrap";
 import Banniere from "./Banniere";
+import ImageCouverture from "./ImageCouverture";
 
 const Settings = () => {
 
   const [showPopUp, setshowPopUp] = useState(false);
+   const [showPopUp1, setshowPopUp1] = useState(false);
 
   const closePopUp = () => { setshowPopUp(false); }
   const openPopUp = (product) => { setshowPopUp(true); }
+
+   const closePopUp1 = () => { setshowPopUp1(false); }
+  const openPopUp1 = () => { setshowPopUp1(true); }
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -204,11 +209,15 @@ const Settings = () => {
             </Form>
             <h5 className="taux_moyen mt-2">Outils du paneau d'administration</h5>
             <button className="bg-info p-2 b-0 rounded-5" style={{ color: 'white' }} onClick={() => openPopUp()}>Bannières et offres</button>
+             <button className=" p-2 b-0 rounded-5 ms-3" style={{ color: 'white', backgroundColor:"#B01D00" }} onClick={() => openPopUp1()}>Images de couverture</button>
           </div>
         </div>
       </div>
       {showPopUp && (
         <Banniere closePopUp={closePopUp} />
+      )}
+       {showPopUp1 && (
+        <ImageCouverture closePopUp1={closePopUp1} />
       )}
     </div>
   );

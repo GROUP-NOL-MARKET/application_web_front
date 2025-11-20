@@ -24,6 +24,7 @@ import "../../Styles/Content.css";
 import { AuthContext } from "../AuthContext";
 import VusProduct from "../Products/VusProduct";
 import API from "../Authentification/api";
+import divers from "../assets/Images/divers.avif";
 
 const ProduitsLocaux = () => {
   const { addProductToCart } = useContext(PanierContext);
@@ -34,7 +35,7 @@ const ProduitsLocaux = () => {
   const navigate = useNavigate();
 
   const getImageUrl = (image) => {
-    if (!image) return "/placeholder.png"; // Optionnel: une image par défaut
+    if (!image) return divers; // Optionnel: une image par défaut
 
     if (typeof image === "string" && image.startsWith("http")) {
       return image; // URL complète déjà fournie

@@ -3,7 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faLock } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -208,9 +208,16 @@ const Navbar2 = React.memo(() => {
               <select
                 className="form-select h-100 rounded-0 border-end select_1"
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={(e) => {
+                  const category = e.target.value;
+                  setSelectedCategory(category);
+
+                  if (category !== "Catégories") {
+                    handleNavigation(category);
+                  }
+                }}
               >
-                <option>Catégories</option>
+                <option value="Catégories">Catégories</option>
                 {[
                   "Droguerie",
                   "Animalerie",
@@ -294,6 +301,12 @@ const Navbar2 = React.memo(() => {
                     <li>
                       <Link className="dropdown-item" to="/login">
                         Connexion
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/admin">
+                        Mode admin{" "}
+                        <FontAwesomeIcon icon={faLock} size="small" />
                       </Link>
                     </li>
                   </ul>

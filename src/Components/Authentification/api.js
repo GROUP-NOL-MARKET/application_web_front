@@ -3,7 +3,7 @@ import axios from "axios";
 // ======================================
 //   BASE URL depuis .env
 // ======================================
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+const API_URL = "http://localhost:8000/api";
 
 // process.env.REACT_APP_API_URL ||
 
@@ -53,13 +53,13 @@ let isLoggingOut = false;
 API.interceptors.response.use(
   (response) => response,
   (error) => {
+    const token = localStorage.getItem("token");
     const message = error.response?.data?.message;
+    const status = error.response?.status;
 
-    if (
-      message === "Token expiré" ||
-      message === "Token invalide" ||
-      error.response?.status === 401
-    ) {
+    // Si on recevait un 401/erreur d'auth et qu'il y avait un token,
+    // on considère que le token a expiré / est invalide.
+    if (token && (message === "Token expiré" || message === "Token invalide" || status === 401)) {
       if (!isLoggingOut) {
         isLoggingOut = true;
         window.dispatchEvent(new Event("tokenExpired"));

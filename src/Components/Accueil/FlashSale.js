@@ -187,7 +187,7 @@ const FlashSale = ({ duration = 800 }) => {
 
       <hr className="m-0" style={{ border: "1px solid #FA7F1B" }} />
 
-      {/* --- ✅ Message de chargement sous le titre --- */}
+      {/* ---  Message de chargement sous le titre --- */}
       {loading ? (
         <div className="text-center py-4">Chargement des promotions...</div>
       ) : error ? (
@@ -252,7 +252,7 @@ const FlashSale = ({ duration = 800 }) => {
           </div>
 
           {/* --- Mobile --- */}
-          <div className="embla d-md-none mt-2">
+          <div className="embla d-lg-none mt-2">
             <div className="embla__viewport" ref={emblaRef}>
               <div className="embla__container">
                 {memoizedPromos.map((product) => (

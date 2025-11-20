@@ -21,12 +21,13 @@ export const AuthProvider = ({ children }) => {
     const verifyToken = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
+         setIsLoggedIn(false);
         setIsAuthLoading(false);
         return;
       }
 
       try {
-        await API.get("/user", { headers: { Authorization: `Bearer ${token}` } });
+        await API.get("/user");
         setIsLoggedIn(true);
       } catch (error) {
         logout();

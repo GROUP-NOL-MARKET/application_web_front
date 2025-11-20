@@ -159,7 +159,7 @@ export default function SandboxMomoButton({ amount }) {
                 />
 
                 <small style={{ color: "#777" }}>
-                    Entrez votre numéro MTN (10 chiffres, commence par 01 + indicatif).
+                    Entrez votre numéro MTN (10 chiffres, commence par 01).
                 </small>
             </div>
 
