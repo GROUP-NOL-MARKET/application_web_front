@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import Entete from "./dataset/Entete";
 import FooterDashboard from "./dataset/FooterDashboard";
 import { ThemeContext } from "./ThemeContext";
+import API from "../Authentification/apiAdmin";
 import {
     Form,
     FormGroup,
@@ -43,8 +43,8 @@ const AddProduct = () => {
             setIsEditing(true);
             setLoading(true);
             try {
-                const res = await axios.get(
-                    `http://localhost:8000/api/admin/products/${id}`,
+                const res = await API.get(
+                    `/admin/products/${id}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setProductData(res.data);
@@ -90,13 +90,12 @@ const AddProduct = () => {
 
             // URL cible
             const url = isEditing
-                ? `http://localhost:8000/api/admin/products/${id}`
-                : "http://localhost:8000/api/admin/products";
+                ? `/admin/products/${id}`
+                : "/admin/products";
 
             // Envoi unique (POST pour les 2 cas)
-            await axios.post(url, formData, {
+            await API.post(url, formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",
                 },
             });

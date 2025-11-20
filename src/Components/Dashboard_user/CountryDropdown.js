@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import drapeau from "../assets/Images/icone/drapeau.png";
 
 const CountryDropdown = () => {
 

@@ -1,4 +1,4 @@
-// src/components/Favoris/Favoris.jsx
+
 import React, { useEffect, useMemo, useState, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFavoris, removeFavori } from "../../Store/FavorisSlice";

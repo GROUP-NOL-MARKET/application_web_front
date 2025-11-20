@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,7 +7,6 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
-import { product_flash_sale } from "../Product_Data";
 import divers from "../assets/Images/divers.avif";
 
 const Divers = () => {

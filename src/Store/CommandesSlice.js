@@ -24,7 +24,7 @@ const CommandesSlice = createSlice({
         totalPages: 1,
         currentPage: 1,
         loading: false,
-        cache: {}, // ✅ cache des pages déjà récupérées
+        cache: {}, // cache des pages déjà récupérées
     },
     reducers: {
         resetCommandes: (state) => {

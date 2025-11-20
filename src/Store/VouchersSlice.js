@@ -1,20 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API from "../Components/Authentification/api";
 
 export const fetchVouchers = createAsyncThunk(
-    "vouchers/fetchVouchers",
-    async ({ token, page = 1, per_page = 5, status = "actif" }, { rejectWithValue }) => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/vouchers?page=${page}&per_page=${per_page}&status=${status}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (!response.ok) throw new Error("Erreur lors du chargement des bons");
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
+  "vouchers/fetchVouchers",
+  async ({ page = 1, per_page = 5, status = "actif" }, { rejectWithValue }) => {
+    try {
+      const response = await API.get("/vouchers", {
+        params: {
+          page,
+          per_page,
+          status,
+        },
+      });
+
+      return {
+        page,
+        status,
+        ...response.data,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+  }
 );
+
 
 
 const vouchersSlice = createSlice({

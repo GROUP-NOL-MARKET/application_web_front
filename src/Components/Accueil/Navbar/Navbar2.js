@@ -19,7 +19,6 @@ import "../../../Styles/Navbar.css";
 import { Form } from "react-bootstrap";
 
 const Navbar2 = React.memo(() => {
-
   const categories = [
     "droguerie",
     "animalerie",
@@ -64,7 +63,10 @@ const Navbar2 = React.memo(() => {
     "Produits Locaux frais",
     "Vins",
     "Spiriteux",
-    "Chewing Gum", "Piles-rasoirs", "Papeterie", "Ampoule",
+    "Chewing Gum",
+    "Piles-rasoirs",
+    "Papeterie",
+    "Ampoule",
     "Jus de fruits",
     "Eaux minérales",
     "Sirop",
@@ -73,7 +75,7 @@ const Navbar2 = React.memo(() => {
     "Champagnes",
     "Bière et panaché",
     "Nourriture pour chiens et chats",
-    "Matériels Nasco"
+    "Matériels Nasco",
   ];
 
   const { products } = useContext(PanierContext);
@@ -95,63 +97,81 @@ const Navbar2 = React.memo(() => {
 
   /**  Handlers optimisés **/
   const handleNavigation = useCallback(
-    (category) => navigate(`/products?category=${encodeURIComponent(category)}`),
+    (category) =>
+      navigate(`/products?category=${encodeURIComponent(category)}`),
     [navigate]
   );
 
-  const handleSearch = useCallback(async (e) => {
-    e.preventDefault();
-    const term = searchTerm.trim().toLowerCase();
-    if (!term) {
-      toast.info("Veuillez saisir un terme de recherche.");
-      return;
-    }
-
-    // Recherche exacte dans les catégories
-    const exactCategory = categories.find(cat => cat.toLowerCase() === term);
-    if (exactCategory) {
-      navigate(`/products?category=${encodeURIComponent(exactCategory)}`);
-      return;
-    }
-
-    // Recherche approximative (catégorie qui contient le mot)
-    const similarCategory = categories.find(cat => cat.toLowerCase().includes(term));
-    if (similarCategory) {
-      navigate(`/products?category=${encodeURIComponent(similarCategory)}`);
-      return;
-    }
-
-    // Recherche exacte dans les sous-catégories
-    const exactSousCat = sousCategories.find(sub => sub.toLowerCase() === term);
-    if (exactSousCat) {
-      navigate(`/products?sous_category=${encodeURIComponent(exactSousCat)}`);
-      return;
-    }
-
-    // Recherche approximative dans les sous-catégories
-    const similarSousCat = sousCategories.find(sub => sub.toLowerCase().includes(term));
-    if (similarSousCat) {
-      navigate(`/products?sous_category=${encodeURIComponent(similarSousCat)}`);
-      return;
-    }
-
-    // Recherche dans les produits (via ton backend)
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/products/search?q=${encodeURIComponent(term)}`);
-      if (!response.ok) throw new Error("Erreur de recherche produits");
-
-      const data = await response.json();
-      if (data?.data?.length > 0) {
-        // Sauvegarde temporaire dans localStorage pour le transfert
-        localStorage.setItem("searchResults", JSON.stringify(data.data));
-        navigate(`/searchProduct?query=${encodeURIComponent(term)}`);
-      } else {
-        toast.info("Aucun produit trouvé pour votre recherche.");
+  const handleSearch = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const term = searchTerm.trim().toLowerCase();
+      if (!term) {
+        toast.info("Veuillez saisir un terme de recherche.");
+        return;
       }
-    } catch (error) {
-      toast.error("Erreur lors de la recherche.");
-    }
-  }, [searchTerm, navigate]);
+
+      // Recherche exacte dans les catégories
+      const exactCategory = categories.find(
+        (cat) => cat.toLowerCase() === term
+      );
+      if (exactCategory) {
+        navigate(`/products?category=${encodeURIComponent(exactCategory)}`);
+        return;
+      }
+
+      // Recherche approximative (catégorie qui contient le mot)
+      const similarCategory = categories.find((cat) =>
+        cat.toLowerCase().includes(term)
+      );
+      if (similarCategory) {
+        navigate(`/products?category=${encodeURIComponent(similarCategory)}`);
+        return;
+      }
+
+      // Recherche exacte dans les sous-catégories
+      const exactSousCat = sousCategories.find(
+        (sub) => sub.toLowerCase() === term
+      );
+      if (exactSousCat) {
+        navigate(`/products?sous_category=${encodeURIComponent(exactSousCat)}`);
+        return;
+      }
+
+      // Recherche approximative dans les sous-catégories
+      const similarSousCat = sousCategories.find((sub) =>
+        sub.toLowerCase().includes(term)
+      );
+      if (similarSousCat) {
+        navigate(
+          `/products?sous_category=${encodeURIComponent(similarSousCat)}`
+        );
+        return;
+      }
+
+      // Recherche dans les produits (via ton backend)
+      try {
+        const response = await API.get("/products/search", {
+          params: { q: term },
+        });
+
+        const results = response.data?.data ?? [];
+
+        if (results.length > 0) {
+          localStorage.setItem("searchResults", JSON.stringify(results));
+          navigate(`/searchProduct?query=${encodeURIComponent(term)}`);
+        } else {
+          toast.info("Aucun produit trouvé pour votre recherche.");
+        }
+      } catch (error) {
+        console.error("Erreur de recherche :", error);
+        toast.error(
+          error.response?.data?.message || "Erreur lors de la recherche."
+        );
+      }
+    },
+    [searchTerm, navigate]
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -201,7 +221,9 @@ const Navbar2 = React.memo(() => {
                   "Boissons",
                   "Electroménager",
                 ].map((cat) => (
-                  <option key={cat} onClick={() => handleNavigation(cat)}>{cat}</option>
+                  <option key={cat} onClick={() => handleNavigation(cat)}>
+                    {cat}
+                  </option>
                 ))}
               </select>
             </div>
@@ -232,10 +254,8 @@ const Navbar2 = React.memo(() => {
                   </IconButton>
                 </div>
               </div>
-
             </Form>
           </div>
-
         </div>
 
         {/* Section utilisateur, panier et aide */}
@@ -262,7 +282,10 @@ const Navbar2 = React.memo(() => {
                   >
                     Connexion
                   </div>
-                  <ul className="dropdown-menu" aria-labelledby="registerDropdown">
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="registerDropdown"
+                  >
                     <li>
                       <Link className="dropdown-item" to="/register">
                         Inscription
@@ -298,7 +321,8 @@ const Navbar2 = React.memo(() => {
                         className="dropdown-item text-danger"
                         onClick={logout}
                       >
-                        <FontAwesomeIcon icon={faRightFromBracket} /> Déconnexion
+                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        Déconnexion
                       </button>
                     </li>
                   </ul>

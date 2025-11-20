@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Spinner } from "react-bootstrap";
 import "../../Styles/UserDashboard/Gestion.css";
 import CountryDropdown from "./CountryDropdown";
 import { toast } from "react-toastify";
-import axios from "axios";
+import API from "../Authentification/api";
 
 const ChangeNumero = ({ closePopUp2 }) => {
     const [phone, setPhone] = useState("");
@@ -17,7 +17,7 @@ const ChangeNumero = ({ closePopUp2 }) => {
                 const token = localStorage.getItem("token");
                 if (!token) return;
 
-                const response = await axios.get("http://127.0.0.1:8000/api/user/show", {
+                const response = await API.get("/user/show", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -85,8 +85,8 @@ const ChangeNumero = ({ closePopUp2 }) => {
                 return;
             }
 
-            const response = await axios.put(
-                "http://127.0.0.1:8000/api/user/update-phone",
+            const response = await API.put(
+                "/user/update-phone",
                 form,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

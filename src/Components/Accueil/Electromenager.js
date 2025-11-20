@@ -6,7 +6,11 @@ import React, {
   useEffect,
 } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleRight, faHeart, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowAltCircleRight,
+  faHeart,
+  faCartShopping,
+} from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -20,6 +24,7 @@ import { AuthContext } from "../AuthContext";
 import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
 import VusProduct from "../Products/VusProduct";
+import API from "../Authentification/api";
 
 const CACHE_KEY = "materiels_nasco_products_v1";
 
@@ -45,6 +50,17 @@ const Electromenager = () => {
   // Redux slice
   const { items, status } = useSelector((state) => state.products);
   const productsFromRedux = items["Matériels Nasco"] || [];
+
+  const getImageUrl = (image) => {
+    if (!image) return "/placeholder.png"; // Optionnel: une image par défaut
+
+    if (typeof image === "string" && image.startsWith("http")) {
+      return image; // URL complète déjà fournie
+    }
+
+    // Construit automatiquement l'URL depuis l'API actuelle (dev ou prod)
+    return `${API.defaults.baseURL}/storage/${image}`;
+  };
 
   // ---- On mount: try sessionStorage cache first ----
   useEffect(() => {
@@ -74,7 +90,7 @@ const Electromenager = () => {
       try {
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(productsFromRedux));
       } catch (err) {
-        console.warn("Impossible d'écrire le cache Electromenager :", err);
+        console.log("Impossible d'écrire le cache Electromenager :", err);
       }
     }
   }, [productsFromRedux]);
@@ -125,7 +141,8 @@ const Electromenager = () => {
 
   // ---- Compute overall loading state shown under title ----
   // show loading if we are still loading local (cache check) OR redux is loading and no local products yet
-  const isLoading = loadingLocal || (status === "loading" && memoizedProducts.length === 0);
+  const isLoading =
+    loadingLocal || (status === "loading" && memoizedProducts.length === 0);
 
   return (
     <div className="container mt-1 mt-md-5">
@@ -138,7 +155,11 @@ const Electromenager = () => {
           <div
             className="voir_tout"
             onClick={() => handleNavigation2("Electroménager")}
-            style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
+            style={{
+              textDecoration: "none",
+              color: "#FA7F1B",
+              cursor: "pointer",
+            }}
           >
             <div className="row d-flex align-content-end">
               <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
@@ -175,23 +196,24 @@ const Electromenager = () => {
           className="Liste_produits d-none d-lg-block mt-4"
         >
           {memoizedProducts.map((product) => (
-            <SwiperSlide key={product.id} className="product_slide border border-1 shadow-sm">
+            <SwiperSlide
+              key={product.id}
+              className="product_slide border border-1 shadow-sm"
+            >
               <img
                 loading="lazy"
-                src={
-                  product.image && typeof product.image === "string"
-                    ? product.image.startsWith("http")
-                      ? product.image
-                      : `http://127.0.0.1:8000/storage/${product.image}`
-                    : `http://127.0.0.1:8000/storage/${product.image ?? ""}`
-                }
+                src={getImageUrl(product.image)}
                 alt={product.name ?? "Produit"}
-                className="img_product"
+                className="img_product swiper-lazy"
                 onClick={() => openPopUp(product)}
               />
               <div className="border border-1 border-top w-100 text-center py-2">
-                <div className="product_title fw-bold petit_titre">{product.name}</div>
-                <div className="text-muted">{product.price ?? product.new_price ?? "—"} FCFA</div>
+                <div className="product_title fw-bold petit_titre">
+                  {product.name}
+                </div>
+                <div className="text-muted">
+                  {product.price ?? product.new_price ?? "—"} FCFA
+                </div>
                 <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                   <FontAwesomeIcon
                     icon={faCartShopping}
@@ -224,20 +246,17 @@ const Electromenager = () => {
                 >
                   <img
                     loading="lazy"
-                    src={
-                      product.image && typeof product.image === "string"
-                        ? product.image.startsWith("http")
-                          ? product.image
-                          : `http://127.0.0.1:8000/storage/${product.image}`
-                        : `http://127.0.0.1:8000/storage/${product.image ?? ""}`
-                    }
+                    src={getImageUrl(product.image)}
                     alt={product.name ?? "Produit"}
                     className="img_product"
                     onClick={() => openPopUp(product)}
                   />
+
                   <div className="text-center mt-2">
                     <div className="petit_titre fw-bold">{product.name}</div>
-                    <div className="text-muted small">{product.price ?? "—"} FCFA</div>
+                    <div className="text-muted small">
+                      {product.price ?? "—"} FCFA
+                    </div>
                     <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                       <FontAwesomeIcon
                         icon={faCartShopping}
@@ -261,7 +280,9 @@ const Electromenager = () => {
       )}
 
       {/* Pop-up */}
-      {showPopUp && <VusProduct closePopUp={closePopUp} product={selectedProduct} />}
+      {showPopUp && (
+        <VusProduct closePopUp={closePopUp} product={selectedProduct} />
+      )}
     </div>
   );
 };

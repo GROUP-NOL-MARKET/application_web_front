@@ -1,22 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API from "../Components/Authentification/api"
 
-// 🔹 Thunk pour charger les stats clients
+// Thunk pour charger les stats clients
 export const fetchClientsStats = createAsyncThunk(
     "clients/fetchClientsStats",
     async (token, { rejectWithValue }) => {
         try {
-            const res = await fetch("http://localhost:8000/api/admin/clients-stats", {
+            const res = await API.get("/admin/clients-stats", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     Accept: "application/json",
                 },
             });
 
-            if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
-            const data = await res.json();
-            return data;
+            return res.data;
         } catch (err) {
-            return rejectWithValue(err.message);
+            return rejectWithValue(err.response?.data?.message || err.message);
         }
     }
 );

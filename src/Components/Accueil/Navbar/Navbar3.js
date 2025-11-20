@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import "../../../Styles/Navbar.css";
 import { sous_category_product } from "../../Product_Data";
 

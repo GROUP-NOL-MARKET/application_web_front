@@ -1,16 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API from "../Components/Authentification/api";
 
 export const fetchReviews = createAsyncThunk(
-    "reviews/fetchReviews",
-    async (page, { getState }) => {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`http://127.0.0.1:8000/api/reviews?page=${page}`, {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        return { data: data.data, last_page: data.last_page, page };
+  "reviews/fetchReviews",
+  async (page = 1, { rejectWithValue }) => {
+    try {
+      const response = await API.get("/reviews", {
+        params: { page },
+      });
+
+      return {
+        page,
+        data: response.data.data,
+        last_page: response.data.last_page,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
+  }
 );
+
 
 const ReviewsSlice = createSlice({
     name: "reviews",

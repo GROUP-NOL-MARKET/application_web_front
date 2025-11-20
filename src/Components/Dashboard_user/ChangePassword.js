@@ -4,7 +4,6 @@ import API from '../Authentification/api'
 import { Button, Form, FormControl, FormGroup, FormLabel, Spinner } from 'react-bootstrap'
 import "../../Styles/ChangePassword.css"
 import entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp"
-import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const ChangePassword = () => {
@@ -26,8 +25,8 @@ const ChangePassword = () => {
             return;
         }
         try {
-            const response = await axios.get(
-                "http://127.0.0.1:8000/api/user",
+            const response = await API.get(
+                "/user",
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setPassword(response.data.password);
@@ -96,7 +95,7 @@ const ChangePassword = () => {
                 password_confirmation: confirmPassword,
             };
 
-            const res = await API.post("http://127.0.0.1:8000/api/user/reset-password", userInput);
+            const res = await API.post("/user/reset-password", userInput);
             setSuccess(res.data.message);
             toast.success("Changement du mot de passe réussi");
             localStorage.removeItem("reset_otp");

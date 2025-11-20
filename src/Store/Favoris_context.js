@@ -1,91 +1,65 @@
-
 import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import API from "../Components/Authentification/api";
 
 export const FavoriteContext = createContext({
-    favorites: [],
-    addFavorite: async () => { },
-    removeFavorite: async () => { },
-    fetchFavorites: async () => { },
+  favorites: [],
+  addFavorite: async () => {},
+  removeFavorite: async () => {},
+  fetchFavorites: async () => {},
 });
 
 export const FavoriteContextProvider = ({ children }) => {
-    const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-    // Charger les favoris depuis l’API Laravel
-    const fetchFavorites = async () => {
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/favorites", {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
+  // Charger les favoris depuis l’API Laravel
 
-            if (!response.ok) throw new Error("Erreur de chargement des favoris");
+  const fetchFavorites = async () => {
+    try {
+      const res = await API.get("/favorites");
+      setFavorites(res.data);
+    } catch (error) {
+      console.error("Erreur chargement favoris :", error);
+    }
+  };
 
-            const data = await response.json();
-            setFavorites(data);
-        } catch (error) {
+  // Ajouter un produit aux favoris
+  const addFavorite = async (productId) => {
+    try {
+      const res = await API.post("/favorites", {
+        product_id: productId,
+      });
 
-        }
-    };
+      toast.success("Produit ajouté aux favoris");
+      setFavorites((prev) => [...prev, res.data.favorite]);
+    } catch (error) {
+      toast.error("Impossible d’ajouter aux favoris");
+      console.error(error);
+    }
+  };
 
-    // Ajouter un produit aux favoris
-    const addFavorite = async (productId) => {
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/favorites", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-                body: JSON.stringify({ product_id: productId }),
-            });
+  // Supprimer un favori
+  const removeFavorite = async (favoriteId) => {
+    try {
+      await API.delete(`/favorites/${favoriteId}`);
 
-            if (!response.ok) throw new Error("Erreur lors de l’ajout aux favoris");
+      toast.info("Favori supprimé");
+      setFavorites((prev) => prev.filter((fav) => fav.id !== favoriteId));
+    } catch (error) {
+      toast.error("Erreur lors de la suppression");
+      console.error(error);
+    }
+  };
 
-            const result = await response.json();
-            toast.success("Produit ajouté aux favoris");
-            setFavorites((prev) => [...prev, result.favorite]);
-        } catch (error) {
-            toast.error("Impossible d’ajouter aux favoris");
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
 
-        }
-    };
-
-    // Supprimer un favori
-    const removeFavorite = async (favoriteId) => {
-        try {
-            const response = await fetch(
-                `http://127.0.0.1:8000/api/favorites/${favoriteId}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                }
-            );
-
-            if (!response.ok) throw new Error("Erreur lors de la suppression");
-
-            toast.info("Favori supprimé");
-            setFavorites((prev) =>
-                prev.filter((fav) => fav.id !== favoriteId)
-            );
-        } catch (error) {
-            toast.error(error)
-        }
-    };
-
-    useEffect(() => {
-        fetchFavorites();
-    }, []);
-
-    return (
-        <FavoriteContext.Provider
-            value={{ favorites, addFavorite, removeFavorite, fetchFavorites }}
-        >
-            {children}
-        </FavoriteContext.Provider>
-    );
+  return (
+    <FavoriteContext.Provider
+      value={{ favorites, addFavorite, removeFavorite, fetchFavorites }}
+    >
+      {children}
+    </FavoriteContext.Provider>
+  );
 };

@@ -1,21 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API from "../Components/Authentification/api";
 
-// Action asynchrone : fetch depuis ton API
+
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
     async (sousCategory) => {
-        const url = new URL("http://127.0.0.1:8000/api/products");
-        url.searchParams.append("sous_category", sousCategory);
-        const response = await fetch(url);
-        const result = await response.json();
-        return { sousCategory, data: result.data };
+        const response = await API.get("/products", {
+            params: { sous_category: sousCategory },
+        });
+
+        return {
+            sousCategory,
+            data: response.data.data, 
+        };
     }
 );
 
 const ProductsSlice = createSlice({
     name: "products",
     initialState: {
-        items: {}, // ex : { "Matériels Nasco": [...] }
+        items: {},
         status: "idle",
         error: null,
     },

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import Entete from "./dataset/Entete";
 import { ThemeContext } from "./ThemeContext";
-import { markers } from "../Product_Data";
 import img_statistiques_ville from "../assets/Images/img_statistiques_ville.webp";
 import img_revenu_period_4 from "../assets/Images/img_revenu_period_4.webp";
 import FooterDashboard from "./dataset/FooterDashboard";

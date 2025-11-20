@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "./ThemeContext";
-import axios from "axios";
+import API from "../Authentification/apiAdmin";
 import { toast } from "react-toastify";
 import img_entreprise_dashboard from "../assets/Images/img_entreprise_dashboard.webp";
 import img_finance from "../assets/Images/img_finance.webp";
@@ -36,7 +36,7 @@ const AnalyseVente = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("adminToken");
-        const res = await axios.get("http://localhost:8000/api/admin/stats", {
+        const res = await API.get("/admin/stats", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

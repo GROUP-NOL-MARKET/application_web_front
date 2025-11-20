@@ -14,7 +14,7 @@ import imgLune from "../assets/Images/icone/croissant-de-lune.png";
 import NotificationDropdown from "./Notifications/NotificationDropdown";
 import MessageDropdown from "./Messages/MessageDropdown";
 import "../../Styles/AdminDashbord/topbar.css";
-import axios from "axios";
+import API from "../Authentification/apiAdmin";
 
 const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => {
   const { theme, toggleThemeMode } = useContext(ThemeContext);
@@ -55,7 +55,7 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
   const logout = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      await axios.post("http://127.0.0.1:8000/api/admin/logout", {}, {
+      await API.post("/admin/logout", {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.removeItem("adminToken");

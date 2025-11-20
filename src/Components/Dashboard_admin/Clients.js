@@ -8,6 +8,7 @@ import avis_dashboard_2 from "../assets/Images/avis_dashboard_2.webp";
 import avis_dashboard_3 from "../assets/Images/avis_dashboard_3.webp";
 import PieAnimation from "./dataset/PieAnimation";
 import { CircularProgress } from "@mui/material";
+import API from "../Authentification/apiAdmin";
 
 const Clients = () => {
     const { theme } = useContext(ThemeContext);
@@ -16,7 +17,7 @@ const Clients = () => {
     useEffect(() => {
 
         const token = localStorage.getItem("adminToken");
-        fetch("http://127.0.0.1:8000/api/admin/clients/stats", {
+        API.fetch("/admin/clients/stats", {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

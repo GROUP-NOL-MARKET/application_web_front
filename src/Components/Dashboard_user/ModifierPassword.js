@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from "axios";
 import "../../Styles/UserDashboard/Gestion.css";
 import { Button, FormControl, Spinner } from "react-bootstrap";
 import API from '../Authentification/api';
@@ -30,7 +29,7 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
         const token = localStorage.getItem("token");
         if (!token) return (window.location.href = "/login");
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/user", {
+            const response = await API.get("/user", {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUserEmail(response.data.email);
@@ -67,7 +66,7 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
         setLoading(true);
 
         try {
-            const res = await API.post("http://127.0.0.1:8000/api/user/verify-otp", {
+            const res = await API.post("/user/verify-otp", {
                 email: userEmail,
                 otp: otpCode,
             });
@@ -87,7 +86,7 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
 
     const sendNewOtp = async () => {
         try {
-            await axios.post("http://127.0.0.1:8000/api/user/request-otp", { email: userEmail });
+            await API.post("/user/request-otp", { email: userEmail });
             toast.success("Nouveau code OTP envoyé !");
             inputsRef.current.forEach(input => (input.value = ""));
             inputsRef.current[0].focus();

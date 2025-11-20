@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "./ThemeContext";
 import Entete from "./dataset/Entete";
-import axios from "axios";
 import "../../Styles/AdminDashbord/appDashboard.css";
 import API from "../Authentification/apiAdmin";
 import { CircularProgress } from "@mui/material";

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, FormLabel, FormControl, FormGroup, Button, Spinner } from 'react-bootstrap';
-import API from '../Authentification/api'; // axios instance
+import API from "../Authentification/apiAdmin";
 
 const Banniere = ({ closePopUp }) => {
     const [images, setImages] = useState([]);
@@ -53,10 +53,8 @@ const Banniere = ({ closePopUp }) => {
         setSuccess(false);
 
         try {
-            const token = localStorage.getItem("adminToken");
             const res = await API.post('/admin/banniere', formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });

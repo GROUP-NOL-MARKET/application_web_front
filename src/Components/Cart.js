@@ -1,7 +1,5 @@
-import { useState, useContext, useCallback } from "react";
+import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Button, Form, FormControl, FormLabel, Spinner } from "react-bootstrap";
 import corbeille from "./assets/Images/icone/trash.png";
 import { PanierContext } from "../Store/Panier_context";
@@ -16,7 +14,6 @@ const Cart = () => {
   const { products, updateProductQuantity } = useContext(PanierContext);
   const [showPopUp, setShowPopUp] = useState(false);
   const navigate = useNavigate()
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const openPopUp = (message) => {
     setShowPopUp(true);
@@ -43,10 +40,6 @@ const Cart = () => {
     setLoading(false)
   }
 
-  const handleNavigation = useCallback(
-    (category) => navigate(`/products?category=${encodeURIComponent(category)}`),
-    [navigate]
-  );
 
 
   const handleRedirect = () => {

@@ -1,9 +1,7 @@
 // src/store/favorisSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { toast } from "react-toastify";
-
-const API_URL = "http://127.0.0.1:8000/api";
+import API from "../Components/Authentification/api";
 
 // Fetch avec pagination
 export const fetchFavoris = createAsyncThunk(
@@ -11,7 +9,7 @@ export const fetchFavoris = createAsyncThunk(
     async ({ page = 1, perPage = 8 }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
-            const res = await axios.get(`${API_URL}/favorites?page=${page}&per_page=${perPage}`, {
+            const res = await API.get(`/favorites?page=${page}&per_page=${perPage}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             return res.data;
@@ -23,8 +21,8 @@ export const fetchFavoris = createAsyncThunk(
 
 export const addFavori = createAsyncThunk("favoris/add", async (productId) => {
     const token = localStorage.getItem("token");
-    const res = await axios.post(
-        `${API_URL}/favorites`,
+    const res = await API.post(
+        `/favorites`,
         { product_id: productId },
         { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -33,10 +31,7 @@ export const addFavori = createAsyncThunk("favoris/add", async (productId) => {
 });
 
 export const removeFavori = createAsyncThunk("favoris/remove", async (favoriId) => {
-    const token = localStorage.getItem("token");
-    await axios.delete(`${API_URL}/favorites/${favoriId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
+    await API.delete(`/favorites/${favoriId}`);
     toast.info("Favori supprimé");
     return favoriId;
 });

@@ -13,7 +13,7 @@ import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
 
 const Paiement = () => {
-    const { products, clearPanier } = useContext(PanierContext);
+    const { products} = useContext(PanierContext);
 
     const totalPrice = products.reduce(
         (acc, product) => acc + product.price * product.quantity,
@@ -30,7 +30,6 @@ const Paiement = () => {
 
     const [loadingAdresse, setLoadingAdresse] = useState(false);
     const [adresseValidee, setAdresseValidee] = useState(false);
-    const [loadingPaiement, setLoadingPaiement] = useState(false);
 
     const [user, setUser] = useState({ firstName: "", email: "" }); //  Stocke les infos utilisateur
 
@@ -45,9 +44,7 @@ const Paiement = () => {
                 const token = localStorage.getItem("token");
                 if (!token) return;
 
-                const response = await API.get("http://127.0.0.1:8000/api/user", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                const response = await API.get("/user");
 
                 if (response.status === 200 && response.data) {
                     setUser({
@@ -94,7 +91,7 @@ const Paiement = () => {
             }
 
             const response = await API.put(
-                "http://127.0.0.1:8000/api/user/update-address",
+                "/user/update-address",
                 { addresse: adresseComplete },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

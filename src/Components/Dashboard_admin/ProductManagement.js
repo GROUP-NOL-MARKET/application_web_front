@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,7 @@ import { faCirclePlus, faImage } from "@fortawesome/free-solid-svg-icons";
 import Entete from "./dataset/Entete";
 import { Button, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
+import API from "../Authentification/apiAdmin";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -29,7 +29,7 @@ const ProductManagement = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/admin/products?page=${page}&search=${search}`, {
+      const response = await API.get(`/admin/products?page=${page}&search=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

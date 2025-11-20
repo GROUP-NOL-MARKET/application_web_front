@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import MessageItem from "./MessageItem";
-import axios from "axios";
+import API from "../../Authentification/apiAdmin";
 import "./Messages.css";
 import { Spinner } from "react-bootstrap";
 
@@ -25,7 +25,7 @@ export default function MessageDropdown({ onClose }) {
   const fetchMessages = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/admin/messages", {
+      const res = await API.get("/admin/messages", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

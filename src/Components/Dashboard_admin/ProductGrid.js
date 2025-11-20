@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "./ThemeContext";
 import { Button, CircularProgress } from "@mui/material";
+import API from "../Authentification/apiAdmin";
 import axios from "axios";
 import { toast } from "react-toastify";
 import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
@@ -25,8 +26,8 @@ const ProductGrid = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8000/api/admin/products?page=${page}&sort=${dropActive}&category=${category}`,
+      const response = await API.get(
+        `/admin/products?page=${page}&sort=${dropActive}&category=${category}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

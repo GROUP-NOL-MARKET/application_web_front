@@ -2,7 +2,6 @@ import React from "react";
 import StatCard from "./StatCard";
 import TrafficChart from "./TrafficChart";
 import UsersTable from "./UsersTable";
-import axios from "axios";
 
 
 const DashboardHome = () => {

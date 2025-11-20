@@ -6,7 +6,6 @@ import ChangeNumero from './ChangeNumero';
 import ModifierPassword from './ModifierPassword';
 import Suppression from './Suppression';
 import { Button } from 'react-bootstrap';
-import Preloader from "./Preloader";
 import { toast } from 'react-toastify';
 import API from '../Authentification/api';
 import Profile from './Profile';
@@ -42,7 +41,7 @@ const GestionCompte = () => {
         }
         try {
             const response = await API.get(
-                "http://127.0.0.1:8000/api/user"
+                "/user"
             );
             setUserEmail(response.data.email);
         } catch (error) {
@@ -64,7 +63,7 @@ const GestionCompte = () => {
         openPopUp3();
         try {
             const response = await API.post(
-                "http://127.0.0.1:8000/api/user/request-otp",
+                "/user/request-otp",
                 { email: userEmail }
             );
 

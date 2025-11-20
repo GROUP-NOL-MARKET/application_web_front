@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../Styles/UserDashboard/Gestion.css";
 import { Button, Form, FormGroup, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
-import axios from "axios";
+import API from "../Authentification/api";
 
 const InfosProfil = ({ closePopUp1 }) => {
     const [form, setForm] = useState({
@@ -31,7 +31,7 @@ const InfosProfil = ({ closePopUp1 }) => {
                     return;
                 }
 
-                const response = await axios.get("http://127.0.0.1:8000/api/user", {
+                const response = await API.get("/user", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
@@ -105,8 +105,8 @@ const InfosProfil = ({ closePopUp1 }) => {
                 return;
             }
 
-            const response = await axios.put(
-                "http://127.0.0.1:8000/api/user/update",
+            const response = await API.put(
+                "/user/update",
                 form,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

@@ -7,11 +7,10 @@ import carousel_1 from "../assets/Images/carousel_1.webp";
 import carousel_2 from "../assets/Images/carousel_2.avif";
 import carousel_3 from "../assets/Images/carousel_3.avif";
 import "../../Styles/Header.css";
-import axios from "axios";
 import { category_product } from "../Product_Data";
-import img_pub from "../assets/Images/img_pub.webp";
 import "swiper/css";
 import "swiper/css/navigation";
+import API from "../Authentification/api";
 
 const Header = () => {
     //  Mémorisation des catégories et des images
@@ -25,7 +24,7 @@ const Header = () => {
     // Récupération dynamique de la bannière
     useEffect(() => {
 
-        axios.get("http://localhost:8000/api/bannieres")
+        API.get("/bannieres")
             .then((res) => setBanners(res.data.bannieres))
             .catch((err) => console.error(err));
     }, []);

@@ -19,7 +19,7 @@ const UserDashboardHome = () => {
             return;
         }
 
-        API.get("http://localhost:8000/api/user",)
+        API.get("/user",)
             .then((response) => {
                 setUser(response.data); // met à jour state → déclenche useEffect de synchro
             })

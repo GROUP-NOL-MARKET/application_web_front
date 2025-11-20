@@ -3,6 +3,7 @@ import { Button, Form, FormControl, FormGroup, FormLabel, Spinner } from "react-
 import "../../Styles/UserDashboard/Gestion.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import API from "../Authentification/api";
 
 const AjoutAdresse = ({ closePopUp, token }) => {
     const [adresse, setAdresse] = useState("");
@@ -42,8 +43,8 @@ const AjoutAdresse = ({ closePopUp, token }) => {
                 return;
             }
 
-            const response = await axios.put(
-                "http://127.0.0.1:8000/api/user/update-address",
+            const response = await API.put(
+                "/user/update-address",
                 { addresse: adresse },
                 {
                     headers: {

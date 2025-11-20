@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Form, Button, FormControl, FormGroup, FormLabel, InputGroup, Spinner } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp";
 import "../../Styles/AdminDashbord/Connexion.css"
+import API from "../Authentification/apiAdmin";
 
 const AdminLogin = () => {
     const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const AdminLogin = () => {
         setLoading(true);
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8000/api/admin/login", {
+            const response = await API.post("/admin/login", {
                 email,
                 password,
             });
