@@ -82,7 +82,7 @@ const Navbar1 = () => {
 
             {/* Bouton hamburger responsive */}
             <div className="d-flex align-items-center">
-              <div className="col-5 col-md-3 d-lg-none navbar-brand logo_div">
+              <div className="col-4 col-md-3 d-lg-none navbar-brand logo_div">
                 <Link to="/">
                   <img
                     alt="logo"
@@ -93,7 +93,7 @@ const Navbar1 = () => {
                 </Link>
               </div>
               {!isLoggedIn ? (
-                <div className="offest-1 connexion d-lg-none col-1 col-md-3 d-flex align-items-center">
+                <div className="offset-2 connexion d-lg-none col-1 col-md-2">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -149,7 +149,7 @@ const Navbar1 = () => {
                   </div>
                 </div>
               ) : (
-                <div className="connexion offset-1 col-1 col-md-3 d-flex align-items-center d-lg-none">
+                <div className="connexion offset-2 col-1 col-md-2 d-flex align-items-center d-lg-none">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -213,7 +213,7 @@ const Navbar1 = () => {
                 <Link
                   to="/Cart"
                   style={{ color: "black" }}
-                  className=" d-flex align-items-right offset-3"
+                  className=" d-flex align-items-center offset-3"
                 >
                   <div className="d-flex position-relative offset-4 offset-md-2">
                     <img

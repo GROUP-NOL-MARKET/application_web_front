@@ -5,7 +5,7 @@ import axios from "axios";
 // ================================
 const API_URL = "http://127.0.0.1:8000/api";
 
-const API = axios.create({
+const APIAdmin = axios.create({
     baseURL: API_URL,
 });
 
@@ -13,7 +13,7 @@ const API = axios.create({
 //  Intercepteurs Axios
 // ================================
 
-API.interceptors.request.use((config) => {
+APIAdmin.interceptors.request.use((config) => {
     const token = localStorage.getItem("adminToken");
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -23,7 +23,7 @@ API.interceptors.request.use((config) => {
 
 let isLoggingOut = false; // évite de déclencher plusieurs fois la déconnexion
 
-API.interceptors.response.use(
+APIAdmin.interceptors.response.use(
     (response) => response,
     (error) => {
         const message = error.response?.data?.message;
@@ -45,4 +45,4 @@ API.interceptors.response.use(
     }
 );
 
-export default API;
+export default APIAdmin;

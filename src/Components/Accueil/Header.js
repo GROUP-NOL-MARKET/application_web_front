@@ -1,46 +1,70 @@
-// src/components/Header/Header.jsx
 import { useNavigate } from "react-router-dom";
 import { useMemo, useEffect, useState } from "react";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
-import carousel_1 from "../assets/Images/carousel_1.webp";
-import carousel_2 from "../assets/Images/carousel_2.avif";
-import carousel_3 from "../assets/Images/carousel_3.avif";
 import "../../Styles/Header.css";
 import { category_product } from "../Product_Data";
-import "swiper/css";
-import "swiper/css/navigation";
 import API from "../Authentification/api";
 
+import "swiper/css";
+import "swiper/css/navigation";
+
 const Header = () => {
-    //  Mémorisation des catégories et des images
-    const categories = useMemo(() => category_product, []);
-    const carouselImages = useMemo(() => [carousel_1, carousel_2, carousel_3], []);
-
     const navigate = useNavigate();
+    const categories = useMemo(() => category_product, []);
 
+    // Images dynamiques du carousel
+    const [carouselImages, setCarouselImages] = useState([]);
+
+    // Bannières dynamiques
     const [banners, setBanners] = useState([]);
 
-    // Récupération dynamique de la bannière
+    /** ================================
+     *   CHARGEMENT DES BANNIÈRES
+     *  ================================ */
     useEffect(() => {
-
         API.get("/bannieres")
             .then((res) => setBanners(res.data.bannieres))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error("Erreur fetch bannières", err));
     }, []);
 
+    /** ================================
+     *  CHARGEMENT DES IMAGES COVER
+     *  ================================ */
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const res = await API.get("/cover-images");
+                setCarouselImages(res.data.data); // array [{id,url,description,active}, ...]
+            } catch (err) {
+                console.error("Erreur fetch cover images", err);
+            }
+        };
 
+        fetchImages();
+
+        // Mettre à jour automatiquement après ajout côté admin
+        const handler = () => fetchImages();
+        window.addEventListener("coverImagesUpdated", handler);
+
+        return () => window.removeEventListener("coverImagesUpdated", handler);
+    }, []);
+
+    /** ================================
+     *  Navigation catégories
+     *  ================================ */
     const handleNavigation2 = (category) => {
         navigate(`/products?category=${encodeURIComponent(category)}`);
     };
 
-
-    //  Génération du contenu du carousel
+    /** ================================
+     *  INDICATEURS DU CAROUSEL
+     *  ================================ */
     const carouselIndicators = useMemo(
         () =>
-            carouselImages.map((_, index) => (
+            carouselImages.map((img, index) => (
                 <button
-                    key={index}
+                    key={img.id}
                     type="button"
                     data-bs-target="#carouselExampleCaptions"
                     data-bs-slide-to={index}
@@ -51,28 +75,25 @@ const Header = () => {
         [carouselImages]
     );
 
+    /** ================================
+     *  SLIDES DU CAROUSEL
+     *  ================================ */
     const carouselSlides = useMemo(
         () =>
             carouselImages.map((img, index) => (
                 <div
-                    key={index}
+                    key={img.id}
                     className={`carousel-item ${index === 0 ? "active" : ""}`}
                 >
                     <img
                         loading="lazy"
-                        src={img}
-                        className="d-block w-100"
-                        alt={`carousel_${index + 1}`}
+                        src={img.url}
+                        className="d-block w-100 hauteur_carousel"
+                        alt={`carousel_${index}`}
                     />
+
                     <div className="carousel-caption d-none d-md-block">
-                        <h5>Titre de l'image {index + 1}</h5>
-                        <p>
-                            {index === 0
-                                ? "Découvrez nos meilleures offres sur la collection été."
-                                : index === 1
-                                    ? "Profitez des dernières tendances à prix réduits."
-                                    : "Explorez nos nouveautés et bons plans du moment."}
-                        </p>
+                        <h5>{img.description || `Image ${index + 1}`}</h5>
                     </div>
                 </div>
             )),
@@ -96,10 +117,8 @@ const Header = () => {
                         />
                     </div>
                 </div>
-            )
-            )
+            ))}
 
-            }
             {/* --- Section principale --- */}
             <div className="container mt-3">
                 <div className="row">
@@ -111,17 +130,18 @@ const Header = () => {
                     {/* Carousel principal */}
                     <section className="col-12 col-lg-9 mt-2">
                         <div className="row">
-                            <div className="hauteur_carousel col-lg-9">
+                            <div className="col-lg-9">
                                 <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
+
                                     {/* Indicateurs */}
                                     <div className="carousel-indicators">{carouselIndicators}</div>
 
-                                    {/* Images du carousel */}
+                                    {/* Slides */}
                                     <div className="carousel-inner rounded-3 overflow-hidden">
                                         {carouselSlides}
                                     </div>
 
-                                    {/* Contrôles du carousel */}
+                                    {/* Contrôles */}
                                     <button
                                         className="carousel-control-prev"
                                         type="button"
@@ -131,6 +151,7 @@ const Header = () => {
                                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                                         <span className="visually-hidden">Précédent</span>
                                     </button>
+
                                     <button
                                         className="carousel-control-next"
                                         type="button"
@@ -143,11 +164,12 @@ const Header = () => {
                                 </div>
                             </div>
 
-                            {/* --- Catégories Desktop --- */}
+                            {/* Catégories Desktop */}
                             <div className="col-3 d-none d-lg-block">
                                 <p className="text-uppercase font-bold title_category_product d-flex justify-content-center">
                                     Catégories de produits
                                 </p>
+
                                 <div className="m-2">
                                     {categories.slice(0, 3).map((category_p) => (
                                         <div
@@ -162,7 +184,6 @@ const Header = () => {
                                                         alt={category_p.category}
                                                         src={category_p.image}
                                                         className="category_img rounded-2"
-
                                                     />
                                                     <h3 className="category_name text-uppercase">
                                                         {category_p.category}
@@ -174,6 +195,7 @@ const Header = () => {
                                 </div>
                             </div>
 
+                            {/* Autres catégories Desktop */}
                             <div className="mt-4 d-none d-lg-block">
                                 <div className="row">
                                     {categories.slice(3, 9).map((category_p) => (
@@ -205,6 +227,7 @@ const Header = () => {
                     {/* --- Catégories Mobile --- */}
                     <section className="d-lg-none">
                         <h5 className="fw-bold mb-2 petit_titre">Catégories de produits</h5>
+
                         <div className="row g-1">
                             {categories.slice(0, 9).map((category_p) => (
                                 <div key={category_p.category} className="col-4 col-md-3">
@@ -229,6 +252,7 @@ const Header = () => {
                         </div>
                     </section>
                 </div>
+
             </div>
         </header>
     );

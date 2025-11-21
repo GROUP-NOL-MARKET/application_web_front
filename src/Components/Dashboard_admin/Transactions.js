@@ -45,7 +45,7 @@ const Transactions = () => {
                 Date & Heure
               </th>
               <th scope="col" className="col-2 text-center petit_titre fw-bold">
-                Profil
+                Numéro de téléphone
               </th>
               <th scope="col" className="col-2 text-center petit_titre fw-bold">
                 Méthode

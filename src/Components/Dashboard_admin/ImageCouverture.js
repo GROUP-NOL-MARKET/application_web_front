@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import API from "../Authentification/apiAdmin"; // adapte le chemin
+import API from "../Authentification/apiAdmin";
 import { toast } from "react-toastify";
 
 const ImageCouverture = ({ closePopUp1 }) => {
-  const [images, setImages] = useState([]); // liste depuis API
-  const [files, setFiles] = useState([]); // fichiers sélectionnés
+  const [images, setImages] = useState([]);
+  const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch initial
   const loadImages = async () => {
     try {
       const res = await API.get("/admin/cover-images");
       setImages(res.data.data || []);
     } catch (err) {
-      console.error("Erreur fetch cover images:", err.msg);
+      console.error("Erreur fetch cover images:", err);
       toast.error("Impossible de charger les images");
     }
   };
@@ -25,34 +24,36 @@ const ImageCouverture = ({ closePopUp1 }) => {
   }, []);
 
   const handleImageChange = (e) => {
-    setFiles(Array.from(e.target.files));
+    setFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!files.length) {
-      toast.info("Sélectionne au moins une image");
+
+    if (!file) {
+      toast.info("Sélectionne une image");
       return;
     }
 
     const formData = new FormData();
-    files.forEach((f) => formData.append("images", f));
+    formData.append("image", file);
     formData.append("description", description);
-    // active par défaut false, tu peux ajouter checkbox pour l'activer
+
     setLoading(true);
+
     try {
-      const res = await API.post("/admin/cover-images", formData, {
+      await API.post("/admin/cover-images", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      toast.success("Images ajoutées");
-      setFiles([]);
+      toast.success("Image ajoutée");
+      setFile(null);
       setDescription("");
+      loadImages();
 
-      // optional: si tu veux forcer le carousel à se mettre à jour, dispatch event
       window.dispatchEvent(new Event("coverImagesUpdated"));
     } catch (err) {
-      console.error(err.data);
+      console.error(err.response?.data);
       toast.error("Erreur lors de l'envoi");
     } finally {
       setLoading(false);
@@ -63,11 +64,13 @@ const ImageCouverture = ({ closePopUp1 }) => {
     try {
       await API.patch(`/admin/cover-images/${id}/toggle-active`);
       setImages((prev) =>
-        prev.map((img) => (img.id === id ? { ...img, active: !img.active } : img))
+        prev.map((img) =>
+          img.id === id ? { ...img, active: !img.active } : img
+        )
       );
       window.dispatchEvent(new Event("coverImagesUpdated"));
     } catch (err) {
-      console.error(err.data);
+      console.error(err.response?.data);
       toast.error("Impossible de changer le statut");
     }
   };
@@ -77,10 +80,11 @@ const ImageCouverture = ({ closePopUp1 }) => {
     try {
       await API.delete(`/admin/cover-images/${id}`);
       setImages((prev) => prev.filter((i) => i.id !== id));
-      window.dispatchEvent(new Event("coverImagesUpdated"));
+
       toast.info("Supprimé");
+      window.dispatchEvent(new Event("coverImagesUpdated"));
     } catch (err) {
-      console.error(err.data);
+      console.error(err.response?.data);
       toast.error("Impossible de supprimer");
     }
   };
@@ -88,19 +92,21 @@ const ImageCouverture = ({ closePopUp1 }) => {
   return (
     <div className="popup-overlay">
       <div className="popup shadow-sm p-3 rounded-3">
+
         <button onClick={closePopUp1} className="bouton-close text-xxl" style={{ color: "red" }}>
           ✕
         </button>
 
+        {/* LISTE */}
         <section>
           <h2 className="petit_titre">Liste des images</h2>
           <table className="table table-striped">
             <thead>
               <tr>
-                <th className="col-1">id</th>
-                <th className="col-3">image</th>
-                <th className="col-4">Description</th>
-                <th className="col-4">Action</th>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -109,17 +115,30 @@ const ImageCouverture = ({ closePopUp1 }) => {
               ) : (
                 images.map((img) => (
                   <tr key={img.id}>
-                    <th scope="row" className="col-1">{img.id}</th>
-                    <td className="col-3"><img src={img.url} alt={img.title || ""} style={{width:120}}/></td>
-                    <td className="col-4">
-                      <div className="texte_brut">{img.title}</div>
-                      <div className="small">{img.description}</div>
+                    <td>{img.id}</td>
+                    <td>
+                      <img src={img.url} alt="" style={{ width: 120 }} />
                     </td>
-                    <td className="col-4">
-                      <Button size="sm" variant={img.active ? "secondary" : "success"} onClick={() => toggleActive(img.id)}>
+                    <td>
+                      <div>{img.description}</div>
+                    </td>
+                    <td>
+                      <Button
+                        size="sm"
+                        variant={img.active ? "secondary" : "success"}
+                        onClick={() => toggleActive(img.id)}
+                      >
                         {img.active ? "Désactiver" : "Activer"}
                       </Button>
-                      <Button size="sm" className="ms-2" variant="danger" onClick={() => handleDelete(img.id)}>Supprimer</Button>
+
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        className="ms-2"
+                        onClick={() => handleDelete(img.id)}
+                      >
+                        Supprimer
+                      </Button>
                     </td>
                   </tr>
                 ))
@@ -128,24 +147,34 @@ const ImageCouverture = ({ closePopUp1 }) => {
           </table>
         </section>
 
+        {/* FORM */}
         <section className="mt-3">
-          <h2 className="petit_titre">Enregistrer une image</h2>
+          <h2 className="petit_titre">Ajouter une image</h2>
+
           <Form onSubmit={handleSubmit}>
+
             <Form.Group>
-              <Form.Label className="petit_titre">Image(s)</Form.Label>
-              <Form.Control type="file" multiple accept="image/*" onChange={handleImageChange} />
+              <Form.Label>Image</Form.Label>
+              <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
             </Form.Group>
 
             <Form.Group className="mt-2">
-              <Form.Label className="petit_titre">Description</Form.Label>
-              <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </Form.Group>
 
-            <Button type="submit" className="mt-3 w-100" disabled={loading}>
+            <Button className="mt-3 w-100" disabled={loading} type="submit">
               {loading ? "Envoi..." : "Enregistrer"}
             </Button>
+
           </Form>
         </section>
+
       </div>
     </div>
   );

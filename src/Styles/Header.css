@@ -14,9 +14,7 @@
   height: auto;
   width: 75%;
 }
-.hauteur_carousel {
-  height: 400px;
-}
+
 
 /* --- Réduction des marges entre carousel et catégories sur mobile --- */
 @media (min-width: 768px) {
@@ -87,7 +85,7 @@
   }
 
   .hauteur_carousel {
-    height: auto !important;
+    height: 400px !important;
   }
 
   .carousel-inner img {

@@ -53,7 +53,7 @@ const Cart = () => {
       <div className="container">
         <div className="container">
           <div className="row">
-            <div className="cart_content col-md-8 col-12 d-flex flex-column mt-4 mb-4 border border-1">
+            <div className="cart_content col-lg-8 col-12 d-flex flex-column mt-4 mb-4 border border-1">
               <div className="row">
                 <div className="col-6 table_title">Produits  <span className='ps-3' onClick={() => products.length > 0 && openPopUp()}> <img src={corbeille} alt="" style={{ width: 20, cursor: products.length > 0 ? "pointer" : "not-allowed", opacity: products.length > 0 ? 1 : 0.5 }} /></span></div>
                 <div className="col-2 table_title">Prix</div>
@@ -151,7 +151,7 @@ const Cart = () => {
               )}
             </div>
             {/* La deuxième partie montrant le prix total des produits */}
-            <div className="offset-md-1 col-md-3 col-12 mt-3 mb-4 total_product_content border border-1">
+            <div className="offset-lg-1 col-lg-3 col-12 mt-3 mb-4 total_product_content border border-1">
               {/* Pour un code promo existant */}
 
               <div className="coupon_code w-100">
