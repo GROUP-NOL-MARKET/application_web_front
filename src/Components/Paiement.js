@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import SandboxMomoButton from "./SandboxMomoButton";
+import FedapayButton from "./FedapayButton";
 import {
     Button,
     Form,
@@ -13,7 +13,7 @@ import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
 
 const Paiement = () => {
-    const { products} = useContext(PanierContext);
+    const { products } = useContext(PanierContext);
 
     const totalPrice = products.reduce(
         (acc, product) => acc + product.price * product.quantity,
@@ -235,7 +235,7 @@ const Paiement = () => {
                             </div>
 
                             <div className="w-100 mt-3">
-                                <SandboxMomoButton amount={totalPrice} />
+                                <FedapayButton amount={totalPrice} />
 
                                 {!adresseValidee && (
                                     <p className="text-danger text-center mt-2 texte_brut">
