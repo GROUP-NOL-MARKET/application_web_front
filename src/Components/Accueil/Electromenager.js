@@ -54,7 +54,7 @@ const Electromenager = () => {
   const getImageUrl = (image) => {
     if (!image) return "/placeholder.png"; // Optionnel: une image par défaut
 
-    if (typeof image === "string" && image.startsWith("http")) {
+    if (typeof image === "string" && image.startsWith("https")) {
       return image; // URL complète déjà fournie
     }
 

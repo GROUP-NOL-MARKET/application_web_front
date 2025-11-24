@@ -306,7 +306,7 @@ const Navbar2 = React.memo(() => {
                     <li>
                       <Link className="dropdown-item" to="/admin">
                         Mode admin{" "}
-                        <FontAwesomeIcon icon={faLock} size="small" />
+                        <FontAwesomeIcon icon={faLock}  />
                       </Link>
                     </li>
                   </ul>
