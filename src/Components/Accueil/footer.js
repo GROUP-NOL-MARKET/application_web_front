@@ -38,7 +38,7 @@ const Footer = () => {
             <h3 className="taux_moyen">Liens utiles</h3>
             <div className="p-0">
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/confidentialite" className="a_footer texte_brut">
                   Politique de confidentialité
                 </a>
               </div>

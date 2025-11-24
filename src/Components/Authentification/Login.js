@@ -10,7 +10,8 @@ import {
   faInstagram,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash,   faEnvelope,
+  faMobile, } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
@@ -22,6 +23,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import "../../Styles/Login.css";
+import ReactCountryDropdown from "react-country-dropdown";
 
 const Login = () => {
   const [isLoading, setLoading] = useState(false);
@@ -29,13 +31,25 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [modeEmail, setModeEmail] = useState(true);
   const [errors, setErrors] = useState({});
+  const [phone, setPhone] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleNavigateHome = () =>{
+  const handleCountryChange = (country) => {};
+
+  const handleChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Retire tout sauf les chiffres
+    value = value.slice(0, 10); // Limite à 10 chiffres
+    value = value.replace(/(\d{2})(?=\d)/g, "$1 "); // Ajoute un espace après chaque 2 chiffres
+    setPhone(value);
+    setErrors({}); // Réinitialise les erreurs à chaque modification
+  };
+
+  const handleNavigateHome = () => {
     navigate("/");
-  }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -54,6 +68,7 @@ const Login = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    const cleanPhone = phone.replace(/\s/g, "");
 
     if (!email.trim()) {
       newErrors.email = "Veuillez remplir ce champ";
@@ -61,6 +76,20 @@ const Login = () => {
       newErrors.email = "Email invalide";
     } else {
       delete newErrors.email;
+    }
+
+    if (!cleanPhone.trim()) {
+      newErrors.phone = "Entrez un numéro de téléphone.";
+    } else if (!/^01\d{8}$/.test(cleanPhone)) {
+      newErrors.phone =
+        "Le numéro doit commencer par 01 et contenir 10 chiffres au total.";
+    } else {
+      // Vérifie que les deux chiffres après '01' sont entre 20 et 29
+      const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
+      if (secondPair < 50 || secondPair > 99) {
+        newErrors.phone =
+          "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
+      }
     }
 
     if (!password) {
@@ -79,7 +108,8 @@ const Login = () => {
     }
     try {
       const userInput = {
-        email: email,
+        email: modeEmail ? email : null,
+        phone: !modeEmail ? cleanPhone : null,
         password: password,
       };
       const res = await API.post("/login", userInput);
@@ -107,13 +137,17 @@ const Login = () => {
         <div className="row">
           <div className="offset-md-3 col-md-6 col-12">
             <div className="formulaire_connexion my-5 p-3">
-              <ul className="d-flex flex-row list-unstyled gap-2" style={{color:"#0066BD", cursor:"pointer"}} onClick={handleNavigateHome}>
+              <ul
+                className="d-flex flex-row list-unstyled gap-2"
+                style={{ color: "#0066BD", cursor: "pointer" }}
+                onClick={handleNavigateHome}
+              >
                 <li>
-                <FontAwesomeIcon icon={faArrowLeft}/>
+                  <FontAwesomeIcon icon={faArrowLeft} />
                 </li>
                 <li>Retour à l'accueil</li>
               </ul>
-              
+
               <div className="en-tête d-flex flex-column align-items-center">
                 <img
                   src={img_entreprise}
@@ -133,20 +167,58 @@ const Login = () => {
                 method="post"
                 onSubmit={handleSubmit}
               >
-                <FormGroup className="m-2">
-                  <FormLabel className="label_register">Email</FormLabel>
-                  <FormControl
-                    className="input_register"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    isInvalid={errors?.email ? true : false}
-                  />
-                  <FormControl.Feedback type="invalid">
-                    {errors?.email && errors.email}
-                  </FormControl.Feedback>
-                </FormGroup>
+               {modeEmail ? (
+                  <FormGroup className="m-2">
+                    <Form.Label className="label_register">Email</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type="email"
+                        value={email}
+                        className="input_register"
+                        onChange={(e) => setEmail(e.target.value)}
+                        isInvalid={errors?.email ? true : false}
+                      />
+                      <Button onClick={() => setModeEmail(!modeEmail)}>
+                        <FontAwesomeIcon icon={faMobile} />
+                      </Button>
+                    </InputGroup>
+
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.email}
+                    </Form.Control.Feedback>
+                  </FormGroup>
+                ) : (
+                  <FormGroup className="m-2">
+                    <Form.Label className="label_register">
+                      Numéro de téléphone
+                    </Form.Label>
+                    <div className="row">
+                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1">
+                        <ReactCountryDropdown
+                          defaultCountry="BJ"
+                          onSelect={handleCountryChange}
+                        />
+                      </div>
+                      <InputGroup className="col">
+                        <Form.Control
+                          type="tel"
+                          placeholder="01 XX XX XX XX"
+                          className="input_register"
+                          value={phone}
+                          onChange={handleChange}
+                          isInvalid={errors?.phone ? true : false}
+                        />
+                        <Button onClick={() => setModeEmail(!modeEmail)}>
+                          <FontAwesomeIcon icon={faEnvelope} />
+                        </Button>
+                      </InputGroup>
+                    </div>
+
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.phone}
+                    </Form.Control.Feedback>
+                  </FormGroup>
+                )}
                 <FormGroup className="m-2">
                   <FormLabel className="label_register">Mot de passe</FormLabel>
                   <InputGroup>
@@ -159,7 +231,10 @@ const Login = () => {
                       }}
                       isInvalid={errors?.password ? true : false}
                     />
-                    <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
+                    <Button
+                      variant="outline-secondary"
+                      onClick={togglePasswordVisibility}
+                    >
                       <FontAwesomeIcon
                         icon={showPassword ? faEyeSlash : faEye}
                       />
@@ -177,7 +252,6 @@ const Login = () => {
                     position: "relative",
                     width: "150px",
                     height: "50px",
-
                   }}
                 >
                   {isLoading ? (
@@ -190,10 +264,7 @@ const Login = () => {
               <p className="link_connexion_register d-flex justify-content-center mt-2">
                 N'avez-vous pas de compte!{" "}
                 <span style={{ fontWeight: "bold", color: "blue" }}>
-                  <Link to="/register">
-                    {" "}
-                    Inscrivez-vous!!
-                  </Link>
+                  <Link to="/register"> Inscrivez-vous!!</Link>
                 </span>
               </p>
               <div className="container">

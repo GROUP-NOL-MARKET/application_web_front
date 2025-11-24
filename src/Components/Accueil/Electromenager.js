@@ -193,7 +193,7 @@ const Electromenager = () => {
           loop={memoizedProducts.length > 6}
           slidesPerView={6}
           spaceBetween={15}
-          className="Liste_produits d-none d-lg-block mt-4"
+          className="Liste_produits d-none d-lg-block mt-2"
         >
           {memoizedProducts.map((product) => (
             <SwiperSlide

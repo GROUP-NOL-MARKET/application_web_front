@@ -223,64 +223,7 @@ export const markers = [
   },
 ];
 
-export const product_category = [
-  {
-    id: 1,
-    name: "Categorie 1",
-    description: "Description du produit 1",
-    price: 10,
-    img: best_product_4,
-  },
-  {
-    id: 2,
-    name: "Categorie 2",
-    description: "Description du produit 2",
-    price: 20,
-    img: best_product_4,
-  },
-  {
-    id: 3,
-    name: "Categorie 3",
-    description: "Description du produit 3",
-    price: 30,
-    img: best_product_3,
-  },
-  {
-    id: 4,
-    name: "Categorie 4",
-    description: "Description du produit 4",
-    price: 40,
-    img: best_product_4,
-  },
-  {
-    id: 5,
-    name: "Categorie 5",
-    description: "Description du produit 5",
-    price: 50,
-    img: best_product_1,
-  },
-  {
-    id: 6,
-    name: "Categorie 6",
-    price: 25,
-    disponibilité: "Disponible",
-    img: best_product_2,
-  },
-  {
-    id: 7,
-    name: "Categorie 7",
-    price: 25,
-    disponibilité: "Disponible",
-    img: best_product_3,
-  },
-  {
-    id: 8,
-    name: "Categorie 8",
-    price: 25,
-    disponibilité: "Disponible",
-    img: best_product_4,
-  },
-];
+
 export const DUMMY_PRODUCTS = [
   // {products.map((product)=>(
   //   {
@@ -392,71 +335,6 @@ export const category_product = [
   },
 ];
 
-export const product_flash_sale = [
-  {
-    id: 1,
-    name: "Produit 1",
-    description: "Description du produit 1",
-    initial_price: 10,
-    new_price: 5,
-    pourcentage_vendu: 20,
-    img: best_product_4,
-  },
-  {
-    id: 2,
-    name: "Produit 2",
-    description: "Description du produit 2",
-    initial_price: 20,
-    new_price: 16,
-    pourcentage_vendu: 25,
-    img: best_product_4,
-  },
-  {
-    id: 3,
-    name: "Produit 3",
-    description: "Description du produit 3",
-    initial_price: 30,
-    new_price: 18,
-    pourcentage_vendu: 50,
-    img: best_product_3,
-  },
-  {
-    id: 4,
-    name: "Produit 4",
-    description: "Description du produit 4",
-    initial_price: 40,
-    new_price: 15,
-    pourcentage_vendu: 30,
-    img: best_product_4,
-  },
-  {
-    id: 5,
-    name: "Produit 5",
-    description: "Description du produit 5",
-    initial_price: 50,
-    new_price: 20,
-    pourcentage_vendu: 60,
-    img: best_product_4,
-  },
-  {
-    id: 6,
-    name: "Produit 6",
-    description: "Description du produit 6",
-    initial_price: 60,
-    new_price: 30,
-    pourcentage_vendu: 50,
-    img: best_product_1,
-  },
-  {
-    id: 7,
-    name: "Produit 7",
-    description: "Description du produit 6",
-    initial_price: 60,
-    new_price: 30,
-    pourcentage_vendu: 40,
-    img: best_product_2,
-  },
-];
 
 export const messages = [
   {
@@ -551,7 +429,7 @@ export const sous_category_product = [
   {
     category: "Droguerie",
     sous_category: [
-      " Monde de Bébé",
+      "Monde de Bébé",
       "Prêt à porter",
       "Fournitures scolaires",
       "Hygiène dentaire",
@@ -599,11 +477,11 @@ export const sous_category_product = [
   },
   {
     category: "Animalerie",
-    sous_category: ["Nourriture pour chiens et chats"],
+    sous_category: ["Nourriture pour chiens","Nourriture pour chats"],
   },
   {
     category: "electroménager",
-    sous_category: ["Matériels Nasco", "Asecna produit"],
+    sous_category: ["Matériels Nasco"],
   },
 ];
 

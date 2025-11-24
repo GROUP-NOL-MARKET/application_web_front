@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import SandboxMomoButton from "./SandboxMomoButton";
+import FedapayButton from "./FedapayButton";
 import {
     Button,
     Form,
@@ -235,7 +235,7 @@ const Paiement = () => {
                             </div>
 
                             <div className="w-100 mt-3">
-                                <SandboxMomoButton amount={totalPrice} />
+                                <FedapayButton amount={totalPrice} products={products} address={adresseComplete} />
 
                                 {!adresseValidee && (
                                     <p className="text-danger text-center mt-2 texte_brut">

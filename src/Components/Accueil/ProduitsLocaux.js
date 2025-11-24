@@ -115,7 +115,7 @@ const ProduitsLocaux = () => {
   const handleAddFavorite = useCallback((id) => addFavorite(id), [addFavorite]);
 
   return (
-    <div className="container mt-1 mt-md-5">
+    <div className="container mt-md-5">
       {/* --- Titre --- */}
       <div className="row">
         <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">

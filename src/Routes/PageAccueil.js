@@ -13,7 +13,7 @@ import Droguerie from "../Components/Accueil/Droguerie";
 import Epicerie from "../Components/Accueil/Epicerie";
 import Boissons from "../Components/Accueil/Boissons";
 import Divers from "../Components/Accueil/Divers";
-import EnteteMobile from "../Components/Accueil/EnteteMobile";
+
 
 const PageAccueil = () => {
 
@@ -31,7 +31,7 @@ const PageAccueil = () => {
           </div>
         </div> */}
         <div className="page_accueil min-vh-100">
-          <EnteteMobile className="d-lg-none"/>
+
           <Header />
           <Offres />
           <ProduitsLocaux />

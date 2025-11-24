@@ -12,11 +12,11 @@ const Offres = () => {
     <div className="Offres mt-2">
       <div className="container">
         <div
-          className="row mt-4 mt-md-5 d-flex align-items-center d-lg-none"
+          className="row mt-5  d-flex align-items-center d-lg-none"
           style={{ borderColor: "#FA7F1B" }}
         >
           {/* Livraison */}
-          <div className="col-12 col-sm-6 col-md-3 mb-3 ">
+          <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
               <div className="col-3 icon">
                 <FontAwesomeIcon icon={faRocket} size="2x" />

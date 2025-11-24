@@ -33,7 +33,7 @@ export const FavoriteContextProvider = ({ children }) => {
       });
 
       toast.success("Produit ajouté aux favoris");
-      setFavorites((prev) => [...prev, res.data.favorite]);
+      setFavorites((prev) => [prev, res.data.favorite]);
     } catch (error) {
       toast.error("Impossible d’ajouter aux favoris");
       console.error(error);

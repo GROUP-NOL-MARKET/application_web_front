@@ -3,7 +3,7 @@ import axios from "axios";
 // ================================
 //  Configuration de base
 // ================================
-const API_URL = "https://nol-market-back.onrender.com/api";
+const API_URL = "http://localhost:8000/api";
 
 const APIAdmin = axios.create({
     baseURL: API_URL,
