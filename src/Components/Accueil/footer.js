@@ -43,12 +43,12 @@ const Footer = () => {
                 </a>
               </div>
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/conditionUtilisation" className="a_footer texte_brut">
                   Conditions d'utilisation
                 </a>
               </div>
               <div>
-                <a href=" " className="a_footer texte_brut">
+                <a href="/mentions-legales" className="a_footer texte_brut">
                   Mentions légales
                 </a>
               </div>
@@ -63,7 +63,7 @@ const Footer = () => {
             <h3 className="taux_moyen">A Propos</h3>
             <div className=" p-0">
               <div className=" ">
-                <a href="/aide&Faq" className="a_footer texte_brut">
+                <a href="/politique-livraison" className="a_footer texte_brut">
                   Livraisons et retours
                 </a>
               </div>

@@ -31,7 +31,7 @@ const SearchProduct = () => {
 
   const navigate = useNavigate();
 
-  const { addFavorite } = useContext(FavoriteContext);
+  const { addFavorite, removeFavorite, favorites } = useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
 
@@ -95,49 +95,72 @@ const SearchProduct = () => {
       <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
       {products.length > 0 ? (
         <div className="row mt-2">
-          {products.map((prod) => (
-            <div
-              key={prod.id}
-              className="col-md-3 col-sm-4 col-lg-2 col-6 mb-4"
-            >
-              <div className="d-flex flex-column shadow-sm border border-1 p-2">
-                <img
-                  src={prod.image}
-                  className="card-img-top img_product"
-                  alt={prod.name}
-                  onClick={() => openPopUp(prod)}
-                />
-                <div className="card-body">
-                  <h5 className="card-truncate petit_titre">{prod.name}</h5>
-                  <p className="card-text petit_titre fw-bold">
-                    {prod.price.toLocaleString()} FCFA
-                  </p>
-                  {!isLoggedIn ? (
-                    <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
-                        onClick={() => addProductToCart(prod)}
-                        style={{ cursor: "pointer", color: "#0066BD" }}
-                      />
-                    </div>
-                  ) : (
-                    <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
-                        onClick={() => addProductToCart(prod)}
-                        style={{ cursor: "pointer" }}
-                      />
-                      <FontAwesomeIcon
-                        icon={faHeart}
-                        onClick={() => addFavorite(prod.id)}
-                        style={{ cursor: "pointer", color: "#FA7F1B" }}
-                      />
-                    </div>
-                  )}
+          {products.map((prod) => {
+            const toggleFavorite = (prod) => {
+              const existing = favorites.find(
+                (fav) => fav.product_id === prod.id
+              );
+
+              if (existing) {
+                // Le produit est déjà dans les favoris → SUPPRESSION
+                removeFavorite(existing.id);
+              } else {
+                // Le produit n'est pas favori → AJOUT
+                addFavorite(prod.id);
+              }
+            };
+            const isFavorite =
+              favorites && favorites.some((fav) => fav.product_id === prod.id);
+
+            return (
+              <div
+                key={prod.id}
+                className="col-md-3 col-sm-4 col-lg-2 col-6 mb-4"
+              >
+                <div className="d-flex flex-column shadow-sm border border-1 p-2">
+                  <img
+                    src={prod.image}
+                    className="card-img-top img_product"
+                    alt={prod.name}
+                    onClick={() => openPopUp(prod)}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-truncate petit_titre">{prod.name}</h5>
+                    <p className="card-text petit_titre fw-bold">
+                      {prod.price.toLocaleString()} FCFA
+                    </p>
+                    {!isLoggedIn ? (
+                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                        <FontAwesomeIcon
+                          icon={faCartShopping}
+                          onClick={() => addProductToCart(prod)}
+                          style={{ cursor: "pointer", color: "#0066BD" }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                        <FontAwesomeIcon
+                          icon={faCartShopping}
+                          onClick={() => addProductToCart(prod)}
+                          style={{ cursor: "pointer" }}
+                        />
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          onClick={() => toggleFavorite(prod)}
+                          style={{
+                            cursor: "pointer",
+                            color: isFavorite ? "red" : "#FA7F1B",
+                            transition: "0.2s",
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+          ;
         </div>
       ) : (
         <p>Aucun produit trouvé.</p>

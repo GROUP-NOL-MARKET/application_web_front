@@ -16,9 +16,9 @@ const Confidentialité = () => {
         Nous collectons différentes catégories de données : ➤ Informations
         personnelles fournies par vous Nom, prénom Adresse e-mail, numéro de
         téléphone Adresse de livraison et de facturation Mot de passe (chiffré)
-        ➤ Informations liées à l’achat Historique de commandes Mode de paiement
+        ➤ Informations liées à l'achat Historique de commandes Mode de paiement
         utilisé (jamais vos numéros de carte ✘) Factures et reçus 
-        ➤ Données techniques (automatiquement recueillies) telles que : Adresse IP Type d’appareil et
+        ➤ Données techniques (automatiquement recueillies) telles que : Adresse IP Type d'appareil et
         navigateur Cookies et données de navigation (pages visitées, clics…) 
         ➤Données issues de fonctionnalités facultatives Avis et notes de produits
         Messages envoyés au support Listes de souhaits et panier
@@ -50,14 +50,14 @@ const Confidentialité = () => {
       <h2>Partage de données avec des partenaires</h2>{" "}
       <p>
         Nous pouvons partager certaines données avec des partenaires uniquement
-        lorsque c’est nécessaire : Transporteurs (livraison) Services de
-        paiement Hébergeurs et outils d’analyse statistique Chaque partenaire
+        lorsque c'est nécessaire : Transporteurs (livraison) Services de
+        paiement Hébergeurs et outils d'analyse statistique Chaque partenaire
         doit respecter la confidentialité des données traitées.
       </p>{" "}
       <h2> Conservation des données</h2>{" "}
       <p>
         Nous conservons vos données uniquement pendant la durée nécessaire :
-        Pour votre compte : tant qu’il est actif Pour les documents légaux :
+        Pour votre compte : tant qu'il est actif Pour les documents légaux :
         durée conforme aux lois locales Vous pouvez demander la suppression de
         votre compte à tout moment.
       </p>{" "}

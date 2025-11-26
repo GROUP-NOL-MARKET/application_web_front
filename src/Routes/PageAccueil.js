@@ -14,9 +14,7 @@ import Epicerie from "../Components/Accueil/Epicerie";
 import Boissons from "../Components/Accueil/Boissons";
 import Divers from "../Components/Accueil/Divers";
 
-
 const PageAccueil = () => {
-
   return (
     <AuthProvider>
       <div>
@@ -31,9 +29,9 @@ const PageAccueil = () => {
           </div>
         </div> */}
         <div className="page_accueil min-vh-100">
-
           <Header />
           <Offres />
+          <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
           <ProduitsLocaux />
           <Electromenager />
           <ProduitsFrais />
@@ -41,7 +39,7 @@ const PageAccueil = () => {
           <Epicerie />
           <Boissons />
           <Divers />
-          <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
+
           <APropos />
           <Avis />
         </div>

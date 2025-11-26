@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import API from "../Authentification/api";
 import AdBanner from "../AdBannerMobile";
+import { useNavigate } from "react-router-dom";
 
 const EnteteMobile = () => {
   const [banners, setBanners] = useState([]);
+
+const navigate = useNavigate();
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -42,10 +45,10 @@ const EnteteMobile = () => {
     <div className="d-block d-lg-none">
       {banners.map((banner, index) => (
         <div className="container-fluid px-0" key={index}>
-          <div className="banner overflow-hidden shadow-sm">
+          <div className="banner overflow-hidden shadow-sm" onClick={()=>navigate(banner.link)}>
             <AdBanner
               imageUrl={banner.images}
-              title="Promo exclusive !!!"
+              title="Promotion exclusive !!!"
               subtitle={banner.subTitle}
               ctaText1="Jusqu'à"
               ctaText2={`-${banner.percent}%`}

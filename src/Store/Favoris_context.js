@@ -13,13 +13,20 @@ export const FavoriteContextProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
 
   // Charger les favoris depuis l’API Laravel
-
   const fetchFavorites = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
+
     try {
       const res = await API.get("/favorites");
-      setFavorites(res.data);
+
+      // Toujours vérifier et forcer un tableau
+      const data = Array.isArray(res.data.favorites)
+        ? res.data.favorites
+        : [];
+
+      setFavorites(data);
+
     } catch (error) {
       console.error("Erreur chargement favoris :", error);
     }
@@ -33,7 +40,10 @@ export const FavoriteContextProvider = ({ children }) => {
       });
 
       toast.success("Produit ajouté aux favoris");
-      setFavorites((prev) => [prev, res.data.favorite]);
+
+      // Ajout correct
+      setFavorites((prev) => [...prev, res.data.favorite]);
+
     } catch (error) {
       toast.error("Impossible d’ajouter aux favoris");
       console.error(error);
@@ -47,6 +57,7 @@ export const FavoriteContextProvider = ({ children }) => {
 
       toast.info("Favori supprimé");
       setFavorites((prev) => prev.filter((fav) => fav.id !== favoriteId));
+
     } catch (error) {
       toast.error("Erreur lors de la suppression");
       console.error(error);

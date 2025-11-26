@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FavoriteContext } from "../../Store/Favoris_context";
@@ -8,11 +8,25 @@ import { AuthContext } from "../AuthContext";
 import API from "../Authentification/api";
 
 const VusProduct = ({ closePopUp, product }) => {
-  const { addFavorite } = useContext(FavoriteContext);
+  const { addFavorite, favorites, removeFavorite } = useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
-  const { loading, setLoading } = useState(false);
+  const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
 
+  // Vérifie si le produit est dans les favoris
+  const isFavorite = favorites?.some((fav) => fav.product_id === product.id);
+
+  // Fonction toggle favorite
+  const toggleFavorite = useCallback(() => {
+    if (isFavorite) {
+      const fav = favorites.find((f) => f.product_id === product.id);
+      removeFavorite(fav.id);
+    } else {
+      addFavorite(product.id);
+    }
+  }, [isFavorite, favorites, product.id, addFavorite, removeFavorite]);
+
+  // Enregistrement vue récente
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -55,6 +69,7 @@ const VusProduct = ({ closePopUp, product }) => {
               style={{ minHeight: "200px", width: "auto" }}
             />
           </div>
+
           <div className="col-lg col-12">
             <h5 className="name_entreprise_dashboard">{product.name}</h5>
             <h5 className="petit_titre fw-bold">
@@ -62,6 +77,7 @@ const VusProduct = ({ closePopUp, product }) => {
             </h5>
             <p className="texte_brut">{product?.description}</p>
           </div>
+
           <div className="d-flex flex-row justify-content-center gap-3 mt-2">
             <Button onClick={() => addProductToCart(product)}>
               {loading ? (
@@ -71,23 +87,31 @@ const VusProduct = ({ closePopUp, product }) => {
                   <span className="petit_titre">Ajouter au panier</span>
                   <FontAwesomeIcon
                     icon={faCartShopping}
-                    style={{ cursor: "pointer" }}
                     className="ms-2"
                   />
                 </span>
               )}
             </Button>
+
+            {/* BOUTON FAVORI */}
             <Button
-              onClick={() => addFavorite(product.id)}
-              style={{ backgroundColor: "#FA7F1B" }}
+              onClick={toggleFavorite}
+              style={{ backgroundColor: isFavorite ? "red" : "#FA7F1B",}}
               className="border-0"
               disabled={!isLoggedIn}
             >
-              <span className="petit_titre">Ajouter aux favoris</span>
+              <span className="petit_titre">
+                {isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+              </span>
+
               <FontAwesomeIcon
                 icon={faHeart}
-                style={{ cursor: "pointer", color: "#fff" }}
                 className="ms-2"
+                style={{
+                  cursor: "pointer",
+                  color: "white",
+                  transition: "0.2s",
+                }}
               />
             </Button>
           </div>

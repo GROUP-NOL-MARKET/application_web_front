@@ -10,8 +10,12 @@ import {
   faInstagram,
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
-import { faEye, faEyeSlash,   faEnvelope,
-  faMobile, } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faEyeSlash,
+  faEnvelope,
+  faMobile,
+} from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   Form,
@@ -70,25 +74,28 @@ const Login = () => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const cleanPhone = phone.replace(/\s/g, "");
 
-    if (!email.trim()) {
-      newErrors.email = "Veuillez remplir ce champ";
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = "Email invalide";
-    } else {
-      delete newErrors.email;
+    if (!email && !cleanPhone) {
+      newErrors.email = "Veuillez renseigner au moins l'email OU le numéro.";
+      return;
     }
-
-    if (!cleanPhone.trim()) {
-      newErrors.phone = "Entrez un numéro de téléphone.";
-    } else if (!/^01\d{8}$/.test(cleanPhone)) {
-      newErrors.phone =
-        "Le numéro doit commencer par 01 et contenir 10 chiffres au total.";
-    } else {
-      // Vérifie que les deux chiffres après '01' sont entre 20 et 29
-      const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
-      if (secondPair < 50 || secondPair > 99) {
+    if (email) {
+      if (!emailRegex.test(email)) {
+        newErrors.email = "Email invalide";
+      } else {
+        delete newErrors.email;
+      }
+    }
+    if (cleanPhone) {
+      if (!/^01\d{8}$/.test(cleanPhone)) {
         newErrors.phone =
-          "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
+          "Le numéro doit commencer par 01 et contenir 10 chiffres au total.";
+      } else {
+        // Vérifie que les deux chiffres après '01' sont entre 20 et 29
+        const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
+        if (secondPair < 50 || secondPair > 99) {
+          newErrors.phone =
+            "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
+        }
       }
     }
 
@@ -123,6 +130,7 @@ const Login = () => {
         toast.error(err.response.data.error); // erreurs validation Laravel
       } else if (err.response?.status === 422) {
         toast.error(err.response.data.error);
+        console.log(err.response.data)
       } else {
         setSuccess("Identifiants invalides ou erreur serveur");
       }
@@ -167,7 +175,7 @@ const Login = () => {
                 method="post"
                 onSubmit={handleSubmit}
               >
-               {modeEmail ? (
+                {modeEmail ? (
                   <FormGroup className="m-2">
                     <Form.Label className="label_register">Email</Form.Label>
                     <InputGroup>
@@ -193,11 +201,21 @@ const Login = () => {
                       Numéro de téléphone
                     </Form.Label>
                     <div className="row">
-                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1">
-                        <ReactCountryDropdown
-                          defaultCountry="BJ"
-                          onSelect={handleCountryChange}
-                        />
+                <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1" style={{position:"relative"}}>
+                        <ReactCountryDropdown defaultCountry="BJ" />
+                        <div
+                          role="presentation"
+                          onClick={(e) => e.preventDefault()} // capture le clic au cas où
+                          style={{
+                            position: "absolute",
+                            inset: 0, // top:0; right:0; bottom:0; left:0;
+                            background: "transparent",
+                            cursor: "default",
+                            // zIndex plus élevé que le dropdown toggle
+                            zIndex: 10,
+                          }}
+                          title="Pays fixé à Bénin"
+                        ></div>
                       </div>
                       <InputGroup className="col">
                         <Form.Control

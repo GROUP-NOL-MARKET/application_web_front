@@ -4,6 +4,8 @@ import "../Styles/AdBanner.css";
 import telephone from "./assets/Images/icone/telephone.png";
 import promo from "./assets/Images/promo.webp";
 import promo_video from "./assets/Images/promo_video.mp4";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 const AdBanner = React.memo(
   ({ imageUrl, title, subtitle, ctaText1, ctaText2, ctaLink, pub_num }) => {
@@ -184,17 +186,12 @@ const AdBanner = React.memo(
                   zIndex: 3,
                 }}
               >
-                <div className="row">
-                  <div className="col-2">
-                    <img
-                      src={telephone}
-                      alt="tel_img"
-                      className="img-fluid"
-                      loading="lazy"
-                    />
-                  </div>
-                  <h6 className="offset-1 col">Commandez au {pub_num}</h6>
-                </div>
+
+                    
+
+                  <h6 className="offset-1"><FontAwesomeIcon icon={faPhone}
+                    className="me-2"/>Commandez au {pub_num}</h6>
+
               </div>
             </div>
           </div>

@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/Register.css";
-import {
-  Form,
-  FormGroup,
-  Button,
-  Spinner,
-  InputGroup,
-  FormSelect,
-} from "react-bootstrap";
+import { Form, FormGroup, Button, Spinner, InputGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "react-toastify";
@@ -37,7 +30,6 @@ const Register = () => {
   const [success, setSuccess] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [modeEmail, setModeEmail] = useState(true);
-  const [countryData, setCountryData] = useState(null);
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState({});
 
@@ -58,8 +50,6 @@ const Register = () => {
   const handleSocialLogin = (provider) => {
     window.location.href = `http://localhost:8000/auth/${provider}/redirect`;
   };
-
-  const handleCountryChange = (country) => {};
 
   const handleChange = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // Retire tout sauf les chiffres
@@ -145,8 +135,8 @@ const Register = () => {
       localStorage.setItem("token", res.data.token); // Sauvegarde le token
     } catch (err) {
       if (err.response) {
-        setErrors(err.response.data.message); 
-        toast.error(errors)
+        setErrors(err.response.data.message);
+        toast.error(errors);
       } else {
         setSuccess("Erreur serveur");
       }
@@ -215,11 +205,21 @@ const Register = () => {
                       Numéro de téléphone
                     </Form.Label>
                     <div className="row">
-                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1">
-                        <ReactCountryDropdown
-                          defaultCountry="BJ"
-                          onSelect={handleCountryChange}
-                        />
+                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1" style={{position:"relative"}}>
+                        <ReactCountryDropdown defaultCountry="BJ" />
+                        <div
+                          role="presentation"
+                          onClick={(e) => e.preventDefault()} // capture le clic au cas où
+                          style={{
+                            position: "absolute",
+                            inset: 0, // top:0; right:0; bottom:0; left:0;
+                            background: "transparent",
+                            cursor: "default",
+                            // zIndex plus élevé que le dropdown toggle
+                            zIndex: 10,
+                          }}
+                          title="Pays fixé à Bénin"
+                        ></div>
                       </div>
                       <InputGroup className="col">
                         <Form.Control

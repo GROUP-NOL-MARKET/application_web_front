@@ -28,7 +28,8 @@ import divers from "../assets/Images/divers.avif";
 
 const ProduitsLocaux = () => {
   const { addProductToCart } = useContext(PanierContext);
-  const { addFavorite } = useContext(FavoriteContext);
+  const { addFavorite, favorites, removeFavorite } =
+    useContext(FavoriteContext);
   const { isLoggedIn } = useContext(AuthContext);
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
@@ -156,78 +157,123 @@ const ProduitsLocaux = () => {
             spaceBetween={15}
             className="Liste_produits d-none d-lg-block mt-2"
           >
-            {memoizedProducts.map((product) => (
-              <SwiperSlide
-                key={product.id}
-                className="product_slide border border-1 shadow-sm"
-              >
-                <img
-                  loading="lazy"
-                  src={getImageUrl(product.image)}
-                  alt={product.name ?? "Produit"}
-                  className="img_product swiper-lazy"
-                  onClick={() => openPopUp(product)}
-                />
-                <div className="border border-1 border-top w-100 text-center py-2">
-                  <div className="product_title fw-bold petit_titre">
-                    {product.name}
-                  </div>
-                  <div className="text-muted">{product.price} FCFA</div>
-                  <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                    <FontAwesomeIcon
-                      icon={faCartShopping}
-                      onClick={() => handleAddToCart(product)}
-                      style={{ cursor: "pointer" }}
-                    />
-                    {isLoggedIn && (
+            {memoizedProducts.map((product) => {
+              const toggleFavorite = (product) => {
+                const existing = favorites.find(
+                  (fav) => fav.product_id === product.id
+                );
+
+                if (existing) {
+                  // Le produit est déjà dans les favoris → SUPPRESSION
+                  removeFavorite(existing.id);
+                } else {
+                  // Le produit n'est pas favori → AJOUT
+                  addFavorite(product.id);
+                }
+              };
+              const isFavorite =
+                favorites &&
+                favorites.some((fav) => fav.product_id === product.id);
+
+              return (
+                <SwiperSlide
+                  key={product.id}
+                  className="product_slide border border-1 shadow-sm"
+                >
+                  <img
+                    loading="lazy"
+                    src={getImageUrl(product.image)}
+                    alt={product.name ?? "Produit"}
+                    className="img_product swiper-lazy"
+                    onClick={() => openPopUp(product)}
+                  />
+                  <div className="border border-1 border-top w-100 text-center py-2">
+                    <div className="product_title fw-bold petit_titre">
+                      {product.name}
+                    </div>
+                    <div className="text-muted">{product.price} FCFA</div>
+                    <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                       <FontAwesomeIcon
-                        icon={faHeart}
-                        onClick={() => handleAddFavorite(product.id)}
-                        style={{ cursor: "pointer", color: "#FA7F1B" }}
+                        icon={faCartShopping}
+                        onClick={() => handleAddToCart(product)}
+                        style={{ cursor: "pointer" }}
                       />
-                    )}
+                      {isLoggedIn && (
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          onClick={() => toggleFavorite(product)}
+                          style={{
+                            cursor: "pointer",
+                            color: !isFavorite ? "#FA7F1B" : "red",
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
 
           {/* --- Carrousel mobile --- */}
           <div className="embla d-lg-none mt-2">
             <div className="embla__viewport" ref={emblaRef}>
               <div className="embla__container">
-                {memoizedProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
-                  >
-                    <img
-                      loading="lazy"
-                      src={getImageUrl(product.image)}
-                      alt={product.name ?? "Produit"}
-                      className="img_product"
-                      onClick={() => openPopUp(product)}
-                    />
-                    <div className="text-center mt-2">
-                      <div className="fw-bold petit_titre">{product.name}</div>
-                      <div className="text-muted small">
-                        {product.price} FCFA
-                      </div>
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
-                          onClick={() => handleAddToCart(product)}
-                          style={{ cursor: "pointer" }}
-                        />
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          onClick={() => handleAddFavorite(product.id)}
-                          style={{ cursor: "pointer", color: "#FA7F1B" }}
-                        />
+                {memoizedProducts.map((product) => {
+                  const toggleFavorite = (product) => {
+                    const existing = favorites.find(
+                      (fav) => fav.product_id === product.id
+                    );
+
+                    if (existing) {
+                      // Le produit est déjà dans les favoris → SUPPRESSION
+                      removeFavorite(existing.id);
+                    } else {
+                      // Le produit n'est pas favori → AJOUT
+                      addFavorite(product.id);
+                    }
+                  };
+                  const isFavorite =
+                    favorites &&
+                    favorites.some((fav) => fav.product_id === product.id);
+
+                  return (
+                    <div
+                      key={product.id}
+                      className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
+                    >
+                      <img
+                        loading="lazy"
+                        src={getImageUrl(product.image)}
+                        alt={product.name ?? "Produit"}
+                        className="img_product"
+                        onClick={() => openPopUp(product)}
+                      />
+                      <div className="text-center mt-2">
+                        <div className="fw-bold petit_titre">
+                          {product.name}
+                        </div>
+                        <div className="text-muted small">
+                          {product.price} FCFA
+                        </div>
+                        <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                          <FontAwesomeIcon
+                            icon={faCartShopping}
+                            onClick={() => handleAddToCart(product)}
+                            style={{ cursor: "pointer" }}
+                          />
+                          {isLoggedIn && (
+                            <FontAwesomeIcon
+                              icon={faHeart}
+                              onClick={() => handleAddFavorite(product.id)}
+                              style={{ cursor: "pointer", color: "#FA7F1B" }}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
