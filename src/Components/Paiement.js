@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import FedapayButton from "./FedapayButton";
+import FedapayButton from "./FedapayButton";
 import {
     Button,
     Form,
@@ -13,7 +14,7 @@ import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
 
 const Paiement = () => {
-    const { products} = useContext(PanierContext);
+    const { products } = useContext(PanierContext);
 
     const totalPrice = products.reduce(
         (acc, product) => acc + product.price * product.quantity,
