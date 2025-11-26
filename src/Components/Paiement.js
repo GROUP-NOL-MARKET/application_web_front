@@ -235,7 +235,7 @@ const Paiement = () => {
                             </div>
 
                             <div className="w-100 mt-3">
-                                <FedapayButton amount={totalPrice} />
+                                <FedapayButton amount={totalPrice} products={products} address={adresseComplete} />
 
                                 {!adresseValidee && (
                                     <p className="text-danger text-center mt-2 texte_brut">

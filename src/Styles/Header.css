@@ -15,7 +15,6 @@
   width: 75%;
 }
 
-
 /* --- Réduction des marges entre carousel et catégories sur mobile --- */
 @media (min-width: 768px) {
   header .container {
@@ -158,7 +157,7 @@
   overflow: hidden;
 }
 
-.embla__viewport { 
+.embla__viewport {
   overflow: hidden;
   width: 100%;
 }
@@ -169,7 +168,7 @@
 
 .embla__slide {
   flex: 0 0 auto; /* ✅ évite que ça se compresse */
-  width: 33%; /* ou 100%, selon combien de produits tu veux par slide */
+  width: 35%; /* ou 100%, selon combien de produits tu veux par slide */
   box-sizing: border-box;
   min-height: 200px;
 }
@@ -195,47 +194,97 @@
   right: 10px;
 }
 @media (min-width: 768px) {
-  
-.embla {
-  position: relative;
-  max-width: 100%;
-  overflow: hidden;
+  .embla {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .embla__viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .embla__container {
+    display: flex;
+  }
+
+  .embla__slide {
+    flex: 0 0 auto; /* évite que ça se compresse */
+    width: 25%; /* ou 100%, selon combien de produits tu veux par slide */
+    box-sizing: border-box;
+    min-height: 200px;
+  }
+
+  .embla__prev,
+  .embla__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .embla__prev {
+    left: 10px;
+  }
+
+  .embla__next {
+    right: 10px;
+  }
 }
 
-.embla__viewport { 
-  overflow: hidden;
-  width: 100%;
-}
+/* ===== CAROUSEL MOBILE ==== */
 
-.embla__container {
+.mobile-carousel-container {
   display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 10px;
+  padding: 0 10px;
 }
 
-.embla__slide {
-  flex: 0 0 auto; /* évite que ça se compresse */
-  width: 25%; /* ou 100%, selon combien de produits tu veux par slide */
-  box-sizing: border-box;
-  min-height: 200px;
+.mobile-carousel-container::-webkit-scrollbar {
+  display: none; /* no scrollbar */
 }
 
-.embla__prev,
-.embla__next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 50%;
+.mobile-carousel-item {
+  flex: 0 0 85%; /* chaque image prend 85% de la largeur */
+  scroll-snap-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
 }
 
-.embla__prev {
-  left: 10px;
+.mobile-carousel-img {
+  width: 100%;
+  height: 180px; /* taille mobile */
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-.embla__next {
-  right: 10px;
+/* ==== CATEGORIES MOBILE ==== */
+
+.categories-scroll-mobile {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding-bottom: 10px;
+
+  /* Masquer la barre de scroll */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
+.categories-scroll-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+.category-item-mobile {
+  min-width: 50px;
+  flex-shrink: 0;
 }

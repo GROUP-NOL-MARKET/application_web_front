@@ -13,11 +13,12 @@ import adresse from "../assets/Images/icone/location.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = (onNavigate) => {
+const Sidebar = ({onNavigate}) => {
 
+  
   const handleClick = () => {
-    if(onNavigate) onNavigate();
-  }
+    onNavigate?.();   // sécurise si la prop n'existe pas
+  };
 
   return (
     <div className="container-fluid">

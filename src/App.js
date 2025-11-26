@@ -24,6 +24,12 @@ import UserPrivateRoute from "./Components/UserPrivateRoute";
 import AllProducts from "./Components/Products/AllProducts";
 import Promotion from "./Components/Products/Promotion";
 import SearchProduct from "./Components/Products/SearchProduct";
+import EnteteMobile from "./Components/Accueil/EnteteMobile";
+import PaymentResult from "./Components/PaymentResult"
+import ConditionUtilisation from "./Components/ConditionUtilisation";
+import PolitiqueLivraison from "./Components/PolitiqueLivraison";
+import MentionsLegales from "./Components/MentionsLegales";
+import Confidentialité from "./Components/Confidentialité";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,10 +39,9 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // durée initiale du splash loader
+    },4000); // durée initiale du splash loader
     return () => clearTimeout(timer);
   }, []);
-
 
   // Pages sans navbars
   const hideNavbars =
@@ -52,6 +57,7 @@ function App() {
 
       {!hideNavbars && (
         <>
+          <EnteteMobile />
           <Navbar1 />
           <Navbar2 />
         </>
@@ -64,15 +70,34 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/About" element={<About />} />
+          <Route path="/payment-result" element={<PaymentResult/>}/>
           <Route path="/Cart" element={<Cart />} />
           <Route path="/Paiement" element={<Paiement />} />
           <Route path="/aide&Faq" element={<Faq />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/conditionUtilisation" element={<ConditionUtilisation/>}/>
+          <Route path="/politique-livraison"  element={<PolitiqueLivraison/>}/>
+          <Route path="/mentions-legales" element={<MentionsLegales/>}/>
+          <Route path="/confidentialite" element={<Confidentialité/>}/>
           <Route path="/all_products" element={<AllProducts />} />
           <Route path="/Promotion" element={<Promotion />} />
           <Route path="/searchProduct" element={<SearchProduct />} />
-          <Route path="/admin/*" element={<AdminPrivateRoute><AdminDashboard /></AdminPrivateRoute>} />
-          <Route path="/user/*" element={<UserPrivateRoute><UserDashboard /></UserPrivateRoute>} />
+          <Route
+            path="/admin/*"
+            element={
+              <AdminPrivateRoute>
+                <AdminDashboard />
+              </AdminPrivateRoute>
+            }
+          />
+          <Route
+            path="/user/*"
+            element={
+              <UserPrivateRoute>
+                <UserDashboard />
+              </UserPrivateRoute>
+            }
+          />
           <Route path="/reset-password" element={<ChangePassword />} />
         </Routes>
       </main>

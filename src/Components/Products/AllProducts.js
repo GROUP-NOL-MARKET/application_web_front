@@ -15,20 +15,21 @@ const AllProducts = () => {
   const sous_category = queryParams.get("sous_category");
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const [showPopUp, setshowPopUp] = useState(false);
+  const [showPopUp, setShowPopUp] = useState(false);
 
   const closePopUp = () => {
     setSelectedProduct(null);
-    setshowPopUp(false);
+    setShowPopUp(false);
   };
+
   const openPopUp = (product) => {
     setSelectedProduct(product);
-    setshowPopUp(true);
+    setShowPopUp(true);
   };
 
   const { isLoggedIn } = useContext(AuthContext);
-  const { addFavorite } = useContext(FavoriteContext);
+  const { favorites, removeFavorite, addFavorite } =
+    useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
 
   const [products, setProducts] = useState([]);
@@ -51,7 +52,6 @@ const AllProducts = () => {
         });
 
         const result = response.data;
-
         setProducts(result.data);
         setTotalPages(result.total_pages);
       } catch (error) {
@@ -81,54 +81,76 @@ const AllProducts = () => {
       {/* Liste des produits */}
       <div className="row mt-md-3 mt-0 ">
         {products.length > 0 ? (
-          products.map((product) => (
-            <div
-              key={product.id}
-              className="col-md-3 col-sm-4 col-lg-2  mb-4 col-6"
-            >
-              <div className="d-flex flex-column border border-1 shadow-sm p-2">
-                <img
-                  src={
-                    product.image.startsWith("http")
-                      ? product.image
-                      : `http://127.0.0.1:8000/storage/${product.image}`
-                  }
-                  className=" img_product"
-                  alt={product.name}
-                  onClick={() => openPopUp(product)}
-                />
-                <div className="card-body">
-                  <h5 className="text-truncate petit_titre">{product.name}</h5>
-                  <p className="card-text petit_titre fw-bold">
-                    {product.price} FCFA
-                  </p>
-                  <h5 className="card-text petit_titre">{product.category} </h5>
-                  {!isLoggedIn ? (
+          products.map((product) => {
+            const toggleFavorite = (product) => {
+              const existing = favorites.find(
+                (fav) => fav.product_id === product.id
+              );
+
+              if (existing) {
+                // Le produit est déjà dans les favoris → SUPPRESSION
+                removeFavorite(existing.id);
+              } else {
+                // Le produit n'est pas favori → AJOUT
+                addFavorite(product.id);
+              }
+            };
+            const isFavorite =
+              favorites &&
+              favorites.some((fav) => fav.product_id === product.id);
+
+            return (
+              <div
+                key={product.id}
+                className="col-md-3 col-sm-4 col-lg-2 mb-4 col-6"
+              >
+                <div className="d-flex flex-column border border-1 shadow-sm p-2">
+                  <img
+                    src={
+                      product.image.startsWith("http")
+                        ? product.image
+                        : `http://127.0.0.1:8000/storage/${product.image}`
+                    }
+                    className="img_product"
+                    alt={product.name}
+                    onClick={() => openPopUp(product)}
+                  />
+
+                  <div className="card-body">
+                    <h5 className="text-truncate petit_titre">
+                      {product.name}
+                    </h5>
+                    <p className="card-text petit_titre fw-bold">
+                      {product.price} FCFA
+                    </p>
+                    <h5 className="card-text petit_titre">
+                      {product.category}
+                    </h5>
+
                     <div className="d-flex flex-row justify-content-center gap-3 my-2">
                       <FontAwesomeIcon
                         icon={faCartShopping}
                         onClick={() => addProductToCart(product)}
                         style={{ cursor: "pointer", color: "#0066BD" }}
                       />
+
+                      {isLoggedIn && (
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          onClick={() => toggleFavorite(product)}
+                          style={{
+                            cursor: "pointer",
+                            color: isFavorite ? "red" : "#FA7F1B",
+                            transition: "0.2s",
+                          }}
+                        />
+                      )}
                     </div>
-                  ) : (
-                    <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
-                        onClick={() => addProductToCart(product)}
-                        style={{ cursor: "pointer", color: "#0066BD" }}
-                      />
-                      <FontAwesomeIcon
-                        icon={faHeart}
-                        onClick={() => addFavorite(product.id)}
-                        style={{ cursor: "pointer", color: "#FA7F1B" }}
-                      />
-                    </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="text-center text-muted">
             Aucun produit trouvé{" "}
@@ -142,34 +164,35 @@ const AllProducts = () => {
         aria-label="Page navigation example"
         className="d-flex justify-content-center my-4"
       >
-        <ul className="pagination ">
+        <ul className="pagination">
           <li className="page-item">
             <button
               className="page-link"
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              aria-label="Previous"
             >
-              <span aria-hidden="true">&laquo;</span>
+              &laquo;
             </button>
           </li>
+
           <li className="page-item">
             <span className="page-link">
               Page {page} / {totalPages}
             </span>
           </li>
+
           <li className="page-item">
             <button
               className="page-link"
               disabled={page === totalPages}
               onClick={() => setPage(page + 1)}
-              aria-label="Next"
             >
-              <span aria-hidden="true">&raquo;</span>
+              &raquo;
             </button>
           </li>
         </ul>
       </nav>
+
       {showPopUp && (
         <VusProduct closePopUp={closePopUp} product={selectedProduct} />
       )}

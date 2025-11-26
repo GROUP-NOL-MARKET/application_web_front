@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "../Styles/AdBanner.css";
+import "../Styles/AdBannerMobile.css";
 import telephone from "./assets/Images/icone/telephone.png";
 import promo from "./assets/Images/promo.webp";
 import promo_video from "./assets/Images/promo_video.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
-const AdBanner = React.memo(
+const AdBannerMobile = React.memo(
   ({ imageUrl, title, subtitle, ctaText1, ctaText2, ctaLink, pub_num }) => {
     const [showTitle, setShowTitle] = useState(true);
     const [videoVisible, setVideoVisible] = useState(false);
@@ -40,11 +40,11 @@ const AdBanner = React.memo(
     // Élément mémorisé : image promo
     const promoImage = useMemo(
       () => (
-        <div className="position-absolute end-0 top-0" style={{ zIndex: 3 }}>
+        <div className="position-absolute end-0 top-0" style={{ zIndex: 0 }}>
           <img
             src={promo}
             alt="promo"
-            style={{ width: "200px" }}
+            style={{ width: "100px" }}
             loading="lazy"
           />
         </div>
@@ -57,7 +57,7 @@ const AdBanner = React.memo(
       () => (
         <a
           href={ctaLink}
-          className="ad-button w-100"
+          className="ad-button-mobile w-100"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -69,14 +69,14 @@ const AdBanner = React.memo(
 
     return (
       <div
-        className="ad-banner w-100 position-relative overflow-hidden"
+        className="ad-banner-mobile w-100 position-relative overflow-hidden"
         ref={sentinelRef}
-        style={{ "--ad-banner-height": "200px" }}
+        style={{ "--ad-banner-height": "100px" }}
       >
         {/* Vidéo lazy-loaded */}
         {videoVisible ? (
           <video
-            className="ad-banner-video"
+            className="ad-banner-video-mobile"
             autoPlay
             muted
             loop
@@ -102,96 +102,83 @@ const AdBanner = React.memo(
         )}
 
         {/* Voile semi-transparent */}
-        <div className="ad-overlay" aria-hidden="true" />
+        <div className="ad-overlay-mobile" aria-hidden="true" />
 
         {/*  Contenu principal */}
         <div className="container">
-          <div className="ad-content h-100 position-relative">
-            <div className="row d-flex align-items-center h-100">
+          <div className="ad-content-mobile position-relative">
+            <div
+              className="row d-flex align-items-center justify-content-between"
+              style={{ height: "100%" }}
+            >
               {/*  Colonne image */}
-              <div className="col-2">
+              <div className="col-3">
                 <img
                   src={imageUrl}
                   alt="Publicité"
-                  className="ad-image w-100 h-50"
+                  className="ad-image-mobile w-100"
                   loading="lazy"
                 />
               </div>
 
               {/*  Colonne titre + sous-titre */}
-              <div className="col-6 d-flex position-relative">
+              <div className="col-3 d-flex position-relative">
                 <AnimatePresence mode="wait">
                   {showTitle ? (
                     <motion.h2
                       key="title"
                       initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
+                      animate={{ y: 5, opacity: 1 }}
                       exit={{ y: -50, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="ad-title text-uppercase"
+                      className="ad-title-mobile text-uppercase"
                     >
                       {title}
                     </motion.h2>
                   ) : (
-                    <motion.p
+                    <motion.h2
                       key="subtitle"
                       initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
+                      animate={{ y: 3, opacity: 1 }}
                       exit={{ y: -50, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="ad-subtitle"
+                      className="ad-subtitle-mobile text-uppercase"
                     >
                       {subtitle}
-                    </motion.p>
+                    </motion.h2>
                   )}
                 </AnimatePresence>
-                {promoImage}
               </div>
-
+              {promoImage}
               {/* Bouton et pourcentage promo */}
-              <div className="col-2 position-relative">
+              <div className="col-3 position-relative">
                 {ctaButton}
                 <div
                   className="position-absolute"
-                  style={{ bottom: "0px", right: "28px" }}
+                  style={{
+                    top: "15px",
+                    right: "10px",
+                    color: "white",
+                    fontWeight: 700,
+                  }}
                 >
-                  <motion.div
-                    initial={{ scale: 0.6 }}
-                    animate={{ scale: 1.4 }}
-                    transition={{
-                      duration: 0.8,
-                      repeatType: "reverse",
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                    }}
-                    style={{
-                      fontSize: "25px",
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                    className="promo_pourcentage"
-                  >
-                    {ctaText2}
-                  </motion.div>
+                  {ctaText2}
                 </div>
               </div>
 
               {/* Section contact */}
               <div
-                className="col-2 g-0 text-white text_command d-flex align-items-center"
+                className="col-3 g-0 text-white text_command-mobile d-flex align-items-center"
                 style={{
                   backgroundColor: "rgba(0,102,189,0.85)",
-                  minHeight: "100%",
                   overflowY: "auto",
                   zIndex: 3,
                 }}
               >
-
-                    
-
-                  <h6 className="offset-1"><FontAwesomeIcon icon={faPhone}
-                    className="me-2"/>Commandez au {pub_num}</h6>
-
+                <h6 className="offset-1" style={{fontSize: "10px"}}>
+                  <FontAwesomeIcon icon={faPhone} className="me-2" />
+                  Commandez au {pub_num}
+                </h6>
               </div>
             </div>
           </div>
@@ -201,4 +188,4 @@ const AdBanner = React.memo(
   }
 );
 
-export default AdBanner;
+export default AdBannerMobile;

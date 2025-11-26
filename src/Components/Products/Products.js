@@ -36,7 +36,8 @@ const Products = () => {
     setshowPopUp(true);
   };
 
-  const { addFavorite } = useContext(FavoriteContext);
+  const { favorites, removeFavorite, addFavorite } =
+    useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
 
@@ -114,51 +115,74 @@ const Products = () => {
 
       <div className="row mt-lg-3 mt-1">
         {products.length > 0
-          ? products.map((product) => (
-              <div
-                key={product.id}
-                className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
-              >
-                <div className="d-flex flex-column shadow-sm border border-1 p-2">
-                  <img
-                    src={product.image}
-                    className=" img_product"
-                    alt={product.name}
-                    onClick={() => openPopUp(product)}
-                  />
-                  <div className="card-body">
-                    <h5 className="text-truncate petit_titre">
-                      {product.name}
-                    </h5>
-                    <p className="card-text petit_titre fw-bold">
-                      {product.price} FCFA
-                    </p>
-                    {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
-                          onClick={() => addProductToCart(product)}
-                          style={{ cursor: "pointer", color: "#0066BD" }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
-                          onClick={() => addProductToCart(product)}
-                          style={{ cursor: "pointer" }}
-                        />
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          onClick={() => addFavorite(product.id)}
-                          style={{ cursor: "pointer", color: "#FA7F1B" }}
-                        />
-                      </div>
-                    )}
+          ? products.map((product) => {
+              const toggleFavorite = (product) => {
+                const existing = favorites.find(
+                  (fav) => fav.product_id === product.id
+                );
+
+                if (existing) {
+                  // Le produit est déjà dans les favoris → SUPPRESSION
+                  removeFavorite(existing.id);
+                } else {
+                  // Le produit n'est pas favori → AJOUT
+                  addFavorite(product.id);
+                }
+              };
+              const isFavorite =
+                favorites &&
+                favorites.some((fav) => fav.product_id === product.id);
+
+              return (
+                <div
+                  key={product.id}
+                  className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
+                >
+                  <div className="d-flex flex-column shadow-sm border border-1 p-2">
+                    <img
+                      src={product.image}
+                      className=" img_product"
+                      alt={product.name}
+                      onClick={() => openPopUp(product)}
+                    />
+                    <div className="card-body">
+                      <h5 className="text-truncate petit_titre">
+                        {product.name}
+                      </h5>
+                      <p className="card-text petit_titre fw-bold">
+                        {product.price} FCFA
+                      </p>
+                      {!isLoggedIn ? (
+                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                          <FontAwesomeIcon
+                            icon={faCartShopping}
+                            onClick={() => addProductToCart(product)}
+                            style={{ cursor: "pointer", color: "#0066BD" }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                          <FontAwesomeIcon
+                            icon={faCartShopping}
+                            onClick={() => addProductToCart(product)}
+                            style={{ cursor: "pointer" }}
+                          />
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            onClick={() => toggleFavorite(product)}
+                            style={{
+                              cursor: "pointer",
+                              color: isFavorite ? "red" : "#FA7F1B",
+                              transition: "0.2s",
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           : navigate("/all_products")}
       </div>
 

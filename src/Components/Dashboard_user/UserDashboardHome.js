@@ -48,7 +48,7 @@ const UserDashboardHome = () => {
                                 <h2 className="taux_moyen ms-2 mt-2">Informations personnelles</h2>
                             </div>
                             <div className=" ms-2">
-                                <div className="petit_titre my-1"> Email : <b>{user?.email}</b>  </div>
+                                <div className="petit_titre my-1"> Email : <b>{user?.email ? user.email : "Aucun enregistré"}</b>  </div>
                                 <div className="petit_titre my-1"> Nom: <b>{user?.lastName ? user.lastName : "Aucun enregistré"} </b> </div>
                                 <div className="petit_titre my-1"> Prénom : <b>{user?.firstName ? user.firstName : "Aucun enregistré"}</b>  </div>
                                 <div className="petit_titre my-1"> Deuxième prénom : <b>{user?.secondName ? user.secondName : "Aucun enregistré"}</b> </div>

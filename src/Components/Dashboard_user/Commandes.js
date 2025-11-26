@@ -133,14 +133,16 @@ const Commandes = () => {
                                         <div className="accordion-item">
                                             <h2 className="accordion-header" id={`heading${order.id}`}>
                                                 <button
-                                                    className="accordion-button btn_aide"
+                                                    className="accordion-button btn_aide w-100"
                                                     type="button"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target={`#collapse${order.id}`}
                                                     aria-expanded="false"
                                                     aria-controls={`collapse${order.id}`}
                                                 >
-                                                    Commande #{order.id} — Total: {order.total} FCFA
+
+                                                   <span> Commande #{order.id} — Total: {order.total} FCFA </span>
+                                                   <span className="ms-5" style={{fontSize:"10px"}}>{new Date(order.created_at).toLocaleDateString("fr-FR")} à {new Date(order.created_at).toLocaleTimeString("fr-FR")}</span>
                                                 </button>
                                             </h2>
                                             <div
