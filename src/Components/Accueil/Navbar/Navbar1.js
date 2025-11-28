@@ -82,7 +82,7 @@ const Navbar1 = () => {
 
             {/* Bouton hamburger responsive */}
             <div className="d-flex align-items-center">
-              <div className="col-4 col-md-3 d-lg-none navbar-brand logo_div">
+              <div className="col-3  d-lg-none navbar-brand logo_div">
                 <Link to="/">
                   <img
                     alt="logo"
@@ -93,7 +93,7 @@ const Navbar1 = () => {
                 </Link>
               </div>
               {!isLoggedIn ? (
-                <div className="offset-2 connexion d-lg-none col-1 col-md-2">
+                <div className="offset-4 connexion d-lg-none col-1 col-md-2">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -108,18 +108,18 @@ const Navbar1 = () => {
                             src={utilisateur}
                             alt="user"
                             className="icon_user"
-                            style={{ width: "35px", cursor: "pointer" }}
+                            style={{ width: "30px", cursor: "pointer" }}
                           />
                         </div>
                         <div className="row">
                           <img
                             src={utilisateur}
                             alt="user"
-                            className="icon_user col-3 d-none d-md-block"
-                            style={{ width: "33%", cursor: "pointer" }}
+                            className="icon_user col-5 d-none d-md-block"
+                            style={{ cursor: "pointer" }}
                           />
                           <div
-                            className="dropdown-toggle fw-normal d-none d-md-flex align-items-center col-8"
+                            className="dropdown-toggle fw-normal d-none d-md-flex align-items-center col-6"
                             role="button"
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
@@ -149,7 +149,7 @@ const Navbar1 = () => {
                   </div>
                 </div>
               ) : (
-                <div className="connexion offset-2 col-1 col-md-2 d-flex align-items-center d-lg-none">
+                <div className="connexion offset-4 offset-md-2 col-1 col-md-2 d-flex align-items-center d-lg-none">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -163,19 +163,19 @@ const Navbar1 = () => {
                           <img
                             src={utilisateur}
                             alt="user"
-                            className="icon_user"
-                            style={{ width: "35px", cursor: "pointer" }}
+                            className="icon_user ms-auto"
+                            style={{ width: "30px", cursor: "pointer" }}
                           />
                         </div>
                         <span className="row">
                           <img
                             src={utilisateur}
                             alt="user"
-                            className="icon_user d-none d-md-block col-3"
-                            style={{ width: "33%", cursor: "pointer" }}
+                            className="icon_user d-none d-md-block col-5"
+                            style={{ cursor: "pointer" }}
                           />
                           <div
-                            className="dropdown-toggle d-none d-md-flex align-items-center col-8 fw-normal"
+                            className="dropdown-toggle d-none d-md-flex align-items-center col-6 fw-normal"
                             role="button"
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
@@ -209,18 +209,18 @@ const Navbar1 = () => {
                   </div>
                 </div>
               )}
-              <div className=" panier col-2 d-lg-none ">
+              <div className=" panier col-1 col-md-2 d-lg-none ">
                 <Link
                   to="/Cart"
                   style={{ color: "black" }}
-                  className=" d-flex align-items-center offset-3"
+                  className=" d-flex justify-content-center offset-2"
                 >
-                  <div className="d-flex position-relative offset-4 offset-md-2">
+                  <div className="d-flex position-relative offset-md-2">
                     <img
                       className="img-fluid"
                       src={Panier}
                       alt=""
-                      style={{ width: "35px" }}
+                      style={{ width: "30px" }}
                     />
 
                     <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">

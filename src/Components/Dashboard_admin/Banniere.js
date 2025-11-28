@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, FormLabel, FormControl, FormGroup, Button, Spinner } from 'react-bootstrap';
 import API from "../Authentification/apiAdmin";
+import { toast } from 'react-toastify';
 
 const Banniere = ({ closePopUp }) => {
     const [images, setImages] = useState([]);
@@ -61,13 +62,14 @@ const Banniere = ({ closePopUp }) => {
 
             if (res.status === 200 || res.status === 201) {
                 setSuccess(true);
+                toast.success("Promo enregistrée")
                 setSubTitle('');
                 setPercent('');
                 setLink('');
                 setPhone('');
                 setImages([]);
                 setVideo(null);
-                setTimeout(() => closePopUp(), 1500);
+                setTimeout(() => closePopUp(), 500);
             }
         } catch (err) {
             console.error('Erreur envoi bannière :', err);
@@ -155,10 +157,6 @@ const Banniere = ({ closePopUp }) => {
                         />
                         <FormControl.Feedback type="invalid">{errors.phone}</FormControl.Feedback>
                     </FormGroup>
-
-                    {success && (
-                        <p className="text-success text-center mt-2">✅ Bannière publiée avec succès</p>
-                    )}
 
                     <Button className="w-100 rounded-5 mt-3" type="submit" disabled={loading}>
                         {loading ? <Spinner animation="border" /> : 'Publier'}

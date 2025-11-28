@@ -13,6 +13,8 @@ import Droguerie from "../Components/Accueil/Droguerie";
 import Epicerie from "../Components/Accueil/Epicerie";
 import Boissons from "../Components/Accueil/Boissons";
 import Divers from "../Components/Accueil/Divers";
+import PromoBanniere from "../Components/Accueil/PromoBanniere";
+import Publicite from "../Components/Accueil/Publicite";
 
 const PageAccueil = () => {
   return (
@@ -32,16 +34,17 @@ const PageAccueil = () => {
           <Header />
           <Offres />
           <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
-          <ProduitsLocaux />
-          <Electromenager />
+          {/* <ProduitsLocaux />
+          <Electromenager /> */}
           <ProduitsFrais />
           <Droguerie />
+          <Publicite/>
           <Epicerie />
           <Boissons />
           <Divers />
-
           <APropos />
           <Avis />
+          <PromoBanniere/>
         </div>
       </div>
     </AuthProvider>

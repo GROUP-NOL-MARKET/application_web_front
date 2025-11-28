@@ -12,15 +12,14 @@ import useEmblaCarousel from "embla-carousel-react";
 const Droguerie = () => {
   const sousCategories = [
     { id: 1, name: "Monde de Bébé", img: droguerie },
-    { id: 2, name: "Fournitures scolaires", img: droguerie },
-    { id: 3, name: "Hygiène dentaire", img: droguerie },
-    { id: 4, name: "Prêt à porter", img: droguerie },
-    { id: 5, name: "Rasage", img: droguerie },
-    { id: 6, name: "Produits ménagers", img: droguerie },
-    { id: 7, name: "Soins de beauté", img: droguerie },
-    { id: 8, name: "Hygiène féminine", img: droguerie },
-    { id: 9, name: "Désodorisant-insecticide", img: droguerie },
-    { id: 10, name: "Mouchoirs", img: droguerie },
+    { id: 2, name: "Hygiène dentaire", img: droguerie },
+    { id: 3, name: "Prêt à porter", img: droguerie },
+    { id: 4, name: "Rasage", img: droguerie },
+    { id: 5, name: "Produits ménagers", img: droguerie },
+    { id: 6, name: "Soins de beauté", img: droguerie },
+    { id: 7, name: "Hygiène féminine", img: droguerie },
+    { id: 8, name: "Désodorisant-insecticide", img: droguerie },
+    { id: 9, name: "Mouchoirs", img: droguerie },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });

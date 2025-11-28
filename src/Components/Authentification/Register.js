@@ -205,21 +205,8 @@ const Register = () => {
                       Numéro de téléphone
                     </Form.Label>
                     <div className="row">
-                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1" style={{position:"relative"}}>
+                      <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1" style={{pointerEvents:"none"}}>
                         <ReactCountryDropdown defaultCountry="BJ" />
-                        <div
-                          role="presentation"
-                          onClick={(e) => e.preventDefault()} // capture le clic au cas où
-                          style={{
-                            position: "absolute",
-                            inset: 0, // top:0; right:0; bottom:0; left:0;
-                            background: "transparent",
-                            cursor: "default",
-                            // zIndex plus élevé que le dropdown toggle
-                            zIndex: 10,
-                          }}
-                          title="Pays fixé à Bénin"
-                        ></div>
                       </div>
                       <InputGroup className="col">
                         <Form.Control

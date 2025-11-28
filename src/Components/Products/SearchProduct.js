@@ -68,7 +68,7 @@ const SearchProduct = () => {
   return (
     <div className="container mt-4">
       <div className="row">
-        <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-5 mt-md-0 text-capitalize">
+        <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-2 mt-md-0 text-capitalize">
           Résultats de la recherche
         </h1>
         <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-2 mt-md-0">
