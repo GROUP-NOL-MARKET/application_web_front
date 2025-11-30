@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
-import API from "../Authentification/apiAdmin";
+import React, {useEffect,useState} from "react";
 import { toast } from "react-toastify";
+import { Form, Button, Spinner } from "react-bootstrap";
 import APIAdmin from "../Authentification/apiAdmin";
 
-const ImageCouverture = ({ closePopUp1 }) => {
+const Publicite = ({ closePopUp2 }) => {
   const [images, setImages] = useState([]);
   const [file, setFile] = useState(null);
-  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
   const loadImages = async () => {
     try {
-      const res = await APIAdmin.get("/admin/cover-images");
+      const res = await APIAdmin.get("/admin/publicite");
       setImages(res.data.data || []);
     } catch (err) {
-      console.error("Erreur fetch cover images:", err);
+      console.error("Erreur fetch publicite images:", err);
       toast.error("Impossible de charger les images");
     }
   };
@@ -38,7 +36,6 @@ const ImageCouverture = ({ closePopUp1 }) => {
 
     const formData = new FormData();
     formData.append("image", file, file.name);
-    formData.append("description", description);
 
     setLoading(true);
 
@@ -46,14 +43,13 @@ const ImageCouverture = ({ closePopUp1 }) => {
 console.log(formData.get("image"));
 
     try {
-      await APIAdmin.post("/admin/cover-images", formData);
+      await APIAdmin.post("/admin/publicite", formData);
 
       toast.success("Image ajoutée");
       setFile(null);
-      setDescription("");
       loadImages();
 
-      window.dispatchEvent(new Event("coverImagesUpdated"));
+      window.dispatchEvent(new Event("publiciteImagesUpdated"));
     } catch (err) {
       console.error(err.response?.data.message);
       toast.error("Erreur lors de l'envoi");
@@ -64,13 +60,13 @@ console.log(formData.get("image"));
 
   const toggleActive = async (id) => {
     try {
-      await APIAdmin.patch(`/admin/cover-images/${id}/toggle-active`);
+      await APIAdmin.patch(`/admin/publicite/${id}/toggle-active`);
       setImages((prev) =>
         prev.map((img) =>
           img.id === id ? { ...img, active: !img.active } : img
         )
       );
-      window.dispatchEvent(new Event("coverImagesUpdated"));
+      window.dispatchEvent(new Event("publiciteImagesUpdated"));
     } catch (err) {
       console.error(err.response?.data);
       toast.error("Impossible de changer le statut");
@@ -80,11 +76,11 @@ console.log(formData.get("image"));
   const handleDelete = async (id) => {
     if (!window.confirm("Supprimer cette image ?")) return;
     try {
-      await APIAdmin.delete(`/admin/cover-images/${id}`);
+      await APIAdmin.delete(`/admin/publicite/${id}`);
       setImages((prev) => prev.filter((i) => i.id !== id));
 
       toast.info("Supprimé");
-      window.dispatchEvent(new Event("coverImagesUpdated"));
+      window.dispatchEvent(new Event("publiciteImagesUpdated"));
     } catch (err) {
       console.error(err.response?.data);
       toast.error("Impossible de supprimer");
@@ -95,7 +91,7 @@ console.log(formData.get("image"));
     <div className="popup-overlay">
       <div className="popup shadow-sm p-3 rounded-3">
         <button
-          onClick={closePopUp1}
+          onClick={closePopUp2}
           className="bouton-close text-xxl"
           style={{ color: "red" }}
         >
@@ -110,7 +106,6 @@ console.log(formData.get("image"));
               <tr>
                 <th>ID</th>
                 <th>Image</th>
-                <th>Description</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -125,9 +120,6 @@ console.log(formData.get("image"));
                     <td>{img.id}</td>
                     <td>
                       <img src={img.url} alt="" style={{ width: 120 }} />
-                    </td>
-                    <td>
-                      <div>{img.description}</div>
                     </td>
                     <td>
                       <Button
@@ -169,18 +161,8 @@ console.log(formData.get("image"));
               />
             </Form.Group>
 
-            <Form.Group className="mt-2">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Form.Group>
-
             <Button className="mt-3 w-100" disabled={loading} type="submit">
-              {loading ? "Envoi..." : "Enregistrer"}
+              {loading ? <Spinner animation='border'/> : "Enregistrer"}
             </Button>
           </Form>
         </section>
@@ -189,4 +171,4 @@ console.log(formData.get("image"));
   );
 };
 
-export default ImageCouverture;
+export default Publicite;

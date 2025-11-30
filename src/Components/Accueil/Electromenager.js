@@ -121,10 +121,10 @@ const Electromenager = () => {
     [addProductToCart]
   );
 
-  const handleAddFavorite = useCallback(
-    (productId) => addFavorite(productId),
-    [addFavorite]
-  );
+  // const handleAddFavorite = useCallback(
+  //   (productId) => addFavorite(productId),
+  //   [addFavorite]
+  // );
 
   const openPopUp = useCallback((product) => {
     setSelectedProduct(product);
@@ -137,7 +137,7 @@ const Electromenager = () => {
   }, []);
 
   // ---- Memoize products for render ----
-  const memoizedProducts = useMemo(() => localProducts || [], [localProducts]);
+  const memoizedProducts = useMemo(() => (localProducts || []).slice(0, 12), [localProducts]);
 
   // ---- Compute overall loading state shown under title ----
   // show loading if we are still loading local (cache check) OR redux is loading and no local products yet

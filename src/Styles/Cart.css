@@ -88,3 +88,18 @@
     flex-direction: row;
   }
 }
+.bouton_paiement :hover{
+  scale: 1.1;
+  transition: 0.7s;
+}
+.paiement_background{
+  background-image: url("../Components/assets/Images/background_paiement.png");
+  background-size: cover;
+  background-position: top;
+}
+
+.paiement_background_moov{
+  background-image: url("../Components/assets/Images/background_paiement_moov.png");
+  background-size: cover;
+  background-position: top;
+}

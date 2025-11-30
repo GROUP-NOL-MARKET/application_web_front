@@ -85,7 +85,7 @@ const ConditionUtilisation = () => {
         vigueur est celle affichée sur cette page.
       </p>{" "}
       Contact Pour toute question ou réclamation : Email :
-      groupnolmarket@gmail.com Téléphone : +22901 Adresse : Cotonou, Fidjrossè,
+      groupnolmarket@gmail.com Téléphone : +2290165002929 Adresse : Cotonou, Fidjrossè,
       Houenoussou 500m de la fin des pavés..
     </div>
   );
