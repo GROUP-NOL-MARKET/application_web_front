@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Entete from "./dataset/Entete";
 import { ThemeContext } from "./ThemeContext";
@@ -16,20 +16,53 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Button from "@mui/material/Button";
-import { Form, FormControl, FormLabel, FormGroup, FormSelect } from "react-bootstrap";
+import {
+  Form,
+  FormControl,
+  FormLabel,
+  FormGroup,
+  FormSelect,
+} from "react-bootstrap";
 import Banniere from "./Banniere";
 import ImageCouverture from "./ImageCouverture";
+import Publicite from "./Publicite";
 
 const Settings = () => {
-
   const [showPopUp, setshowPopUp] = useState(false);
-   const [showPopUp1, setshowPopUp1] = useState(false);
+  const [showPopUp1, setshowPopUp1] = useState(false);
+  const [showPopUp2, setshowPopUp2] = useState(false);
 
-  const closePopUp = () => { setshowPopUp(false); }
-  const openPopUp = (product) => { setshowPopUp(true); }
+  const closePopUp = () => {
+    setshowPopUp(false);
+  };
+  const openPopUp = (product) => {
+    setshowPopUp(true);
+  };
 
-   const closePopUp1 = () => { setshowPopUp1(false); }
-  const openPopUp1 = () => { setshowPopUp1(true); }
+  const closePopUp1 = () => {
+    setshowPopUp1(false);
+  };
+  const openPopUp1 = () => {
+    setshowPopUp1(true);
+  };
+
+  const closePopUp2 = () => {
+    setshowPopUp2(false);
+  };
+  const openPopUp2 = () => {
+    setshowPopUp2(true);
+  };
+
+    useEffect(() => {
+      const isAnyPopupOpen =
+        showPopUp1 || showPopUp2 || showPopUp;
+  
+      document.body.style.overflow = isAnyPopupOpen ? "hidden" : "auto";
+  
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }, [showPopUp1, showPopUp2, showPopUp]);
   const { theme } = useContext(ThemeContext);
 
   return (
@@ -180,7 +213,9 @@ const Settings = () => {
                   <FormControl placeholder="moi@gmail.com" />
                 </FormGroup>
                 <FormGroup className="col">
-                  <FormLabel className="texte_brut">Numéro de téléphone</FormLabel>
+                  <FormLabel className="texte_brut">
+                    Numéro de téléphone
+                  </FormLabel>
                   <FormControl placeholder="01 ** ** ** **" />
                 </FormGroup>
               </div>
@@ -190,7 +225,9 @@ const Settings = () => {
                   <FormControl placeholder="**" />
                 </FormGroup>
                 <FormGroup className="col">
-                  <FormLabel className="texte_brut">Nom de l'entreprise</FormLabel>
+                  <FormLabel className="texte_brut">
+                    Nom de l'entreprise
+                  </FormLabel>
                   <FormControl placeholder="Group Nol Market" />
                 </FormGroup>
               </div>
@@ -198,27 +235,55 @@ const Settings = () => {
                 <FormGroup className="col me-3">
                   <FormLabel className="texte_brut">Mot de passe</FormLabel>
                   <FormControl placeholder="****" type="password" />
-                  <Link className="texte_brut" style={{ textDecoration: "none" }}>Changer le mot de passe</Link>
+                  <Link
+                    className="texte_brut"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Changer le mot de passe
+                  </Link>
                 </FormGroup>
                 <FormGroup className="col">
                   <FormLabel className="texte_brut">Adresse</FormLabel>
                   <FormControl placeholder="Fidjrossè, Houenoussou" />
                 </FormGroup>
               </div>
-              <Button className="text-lowercase petit_titre rounded-5 bg-primary mt-3" style={{ color: "white" }}>Changer les informations</Button>
+              <Button
+                className="text-lowercase petit_titre rounded-5 bg-primary mt-3"
+                style={{ color: "white" }}
+              >
+                Changer les informations
+              </Button>
             </Form>
-            <h5 className="taux_moyen mt-2">Outils du paneau d'administration</h5>
-            <button className="bg-info p-2 b-0 rounded-5" style={{ color: 'white' }} onClick={() => openPopUp()}>Bannières et offres</button>
-             <button className=" p-2 b-0 rounded-5 ms-3" style={{ color: 'white', backgroundColor:"#B01D00" }} onClick={() => openPopUp1()}>Images de couverture</button>
+            <h5 className="taux_moyen mt-2">
+              Outils du paneau d'administration
+            </h5>
+            <button
+              className="bg-info p-2 b-0 rounded-5 border-0"
+              style={{ color: "white" }}
+              onClick={() => openPopUp()}
+            >
+              Bannières et offres
+            </button>
+            <button
+              className=" p-2 b-0 rounded-5 ms-3 border-0"
+              style={{ color: "white", backgroundColor: "#B01D00" }}
+              onClick={() => openPopUp1()}
+            >
+              Images de couverture
+            </button>
+            <button
+              className=" p-2 b-0 rounded-5 ms-3 border-0"
+              style={{ color: "white", backgroundColor: "#37CC66" }}
+              onClick={() => openPopUp2()}
+            >
+              Publicité
+            </button>
           </div>
         </div>
       </div>
-      {showPopUp && (
-        <Banniere closePopUp={closePopUp} />
-      )}
-       {showPopUp1 && (
-        <ImageCouverture closePopUp1={closePopUp1} />
-      )}
+      {showPopUp && <Banniere closePopUp={closePopUp} />}
+      {showPopUp1 && <ImageCouverture closePopUp1={closePopUp1} />}
+      {showPopUp2 && <Publicite closePopUp2={closePopUp2} />}
     </div>
   );
 };

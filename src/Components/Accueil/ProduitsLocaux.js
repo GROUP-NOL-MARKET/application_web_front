@@ -80,10 +80,17 @@ const ProduitsLocaux = () => {
           });
 
           const data = response.data?.data ?? response.data ?? [];
-          setProducts(data);
 
-          // Mise en cache pour optimiser la navigation
-          sessionStorage.setItem("produits_locaux", JSON.stringify(data));
+          //On limite ici à 12 produits
+          const limitedData = data.slice(0, 12);
+
+          setProducts(limitedData);
+
+          // On limite aussi ce qu’on stocke en cache
+          sessionStorage.setItem(
+            "produits_locaux",
+            JSON.stringify(limitedData)
+          );
         } catch (error) {
           console.error(
             "Erreur lors du chargement des produits :",
@@ -113,7 +120,7 @@ const ProduitsLocaux = () => {
     [addProductToCart]
   );
 
-  const handleAddFavorite = useCallback((id) => addFavorite(id), [addFavorite]);
+  // const handleAddFavorite = useCallback((id) => addFavorite(id), [addFavorite]);
 
   return (
     <div className="container mt-md-5">
@@ -265,8 +272,11 @@ const ProduitsLocaux = () => {
                           {isLoggedIn && (
                             <FontAwesomeIcon
                               icon={faHeart}
-                              onClick={() => handleAddFavorite(product.id)}
-                              style={{ cursor: "pointer", color: "#FA7F1B" }}
+                              onClick={() => toggleFavorite(product)}
+                              style={{
+                                cursor: "pointer",
+                                color: !isFavorite ? "#FA7F1B" : "red",
+                              }}
                             />
                           )}
                         </div>

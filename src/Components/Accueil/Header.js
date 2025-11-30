@@ -133,10 +133,10 @@ const Header = () => {
             className="d-block w-100 hauteur_carousel"
             alt={`carousel_${index}`}
           />
-
+{/* 
           <div className="carousel-caption d-none d-md-block">
             <h5>{img.description || `Image ${index + 1}`}</h5>
-          </div>
+          </div> */}
         </div>
       )),
     [carouselImages]

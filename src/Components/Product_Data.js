@@ -431,7 +431,6 @@ export const sous_category_product = [
     sous_category: [
       "Monde de Bébé",
       "Prêt à porter",
-      "Fournitures scolaires",
       "Hygiène dentaire",
       "Rasage",
       "Produits ménagers",

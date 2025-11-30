@@ -37,6 +37,7 @@
     "bootstrap": "^5.3.7",
     "chart.js": "^4.5.0",
     "dayjs": "^1.11.18",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "fedapay-reactjs": "^1.1.2",
     "formik": "^2.4.6",
