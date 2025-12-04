@@ -19,7 +19,7 @@ const MoovPay = ({ closePopUp1 }) => {
     setErrors({}); // Réinitialise les erreurs à chaque modification
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
     setLoading(true);
@@ -41,40 +41,36 @@ const MoovPay = ({ closePopUp1 }) => {
         }
       }
     }
- const form = { phone: cleanPhone };
+
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Session expirée");
+      return;
+    }
 
     try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Session expirée. Veuillez vous reconnecter.");
-        window.location.href = "/login";
-        return;
-      }
-
-      const response = await API.put("/user/update-phone", form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      toast.success(
-        response.data.message || "Numéro de téléphone mis à jour avec succès !"
+      const response = await API.post(
+        "/moov/pay",
+        {
+          phone: cleanPhone,
+          amount: 1000, // montant dynamique : panier, commande...
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
+
+      toast.success(response.data.message);
       closePopUp1();
+
     } catch (error) {
-      console.error("Erreur :", error);
-      if (error.response?.status === 422) {
-        setErrors(error.response.data.errors || {});
-      } else if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-        toast.warning("Votre session a expiré, veuillez vous reconnecter.");
-        window.location.href = "/login";
-      } else {
-        toast.error("Une erreur est survenue. Veuillez réessayer.");
-      }
+      console.log(error);
+      toast.error("Erreur Moov Money");
     } finally {
       setLoading(false);
     }
-    
+
   };
 
   return (
@@ -95,7 +91,7 @@ const MoovPay = ({ closePopUp1 }) => {
           <div className="w-100 p-3 py-4 ">
             <Form onSubmit={handleSubmit} method="post">
               <FormLabel style={{ color: "white" }} className="label_register">
-                Entrer votre numéro mtn de paiement
+                Entrer votre numéro moov de paiement
               </FormLabel>
               <div className="row">
                 <div

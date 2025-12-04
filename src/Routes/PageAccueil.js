@@ -34,17 +34,17 @@ const PageAccueil = () => {
           <Header />
           <Offres />
           <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
-          {/* <ProduitsLocaux />
-          <Electromenager /> */}
+          {/* <ProduitsLocaux /> */}
+          {/*<Electromenager /> */}
           <ProduitsFrais />
           <Droguerie />
-          <Publicite/>
+          <Publicite />
           <Epicerie />
           <Boissons />
           <Divers />
           <APropos />
           <Avis />
-          <PromoBanniere/>
+          <PromoBanniere />
         </div>
       </div>
     </AuthProvider>

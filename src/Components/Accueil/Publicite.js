@@ -49,7 +49,7 @@ const Publicite = () => {
         ))}
       </div> */}
 
-      <div className="embla d-lg-none">
+      <div className="embla d-lg-none mt-4">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="mobile-carousel-container">
             {carouselImages.map((img, idx) => (
@@ -73,7 +73,7 @@ const Publicite = () => {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         slidesPerView={3}
         spaceBetween={15}
-        className="d-none d-lg-block"
+        className="d-none d-lg-block mt-4"
       >
         {carouselImages.map((img, idx) => (
           <SwiperSlide

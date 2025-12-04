@@ -66,7 +66,7 @@ const VusProduct = ({ closePopUp, product }) => {
             <img
               src={product.image}
               alt={product.name}
-              style={{ minHeight: "200px", width: "auto" }}
+              style={{ width: "500px", height: "800px" }}
             />
           </div>
 
@@ -96,7 +96,7 @@ const VusProduct = ({ closePopUp, product }) => {
             {/* BOUTON FAVORI */}
             <Button
               onClick={toggleFavorite}
-              style={{ backgroundColor: isFavorite ? "red" : "#FA7F1B",}}
+              style={{ backgroundColor: isFavorite ? "red" : "#FA7F1B", }}
               className="border-0"
               disabled={!isLoggedIn}
             >

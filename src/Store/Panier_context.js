@@ -38,9 +38,9 @@ const cartReducer = (state, action) => {
           name: product.name,
           price: product.price,
           quantity: 1,
-          disponibilité: product.disponibilité || "Disponible",
-          marque: product.marque || "",
-          type: product.category || "",
+          disponibilité: product.disponibility || "Disponible",
+          sous_category: product.sous_category || "",
+          category: product.category || "",
         });
       }
     }

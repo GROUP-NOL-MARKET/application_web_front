@@ -4,6 +4,7 @@ import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
 import { AuthContext } from "../AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "react-bootstrap";
 import {
   faHeart,
   faCartShopping,
@@ -131,19 +132,19 @@ const SearchProduct = () => {
                     </p>
                     {!isLoggedIn ? (
                       <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
+                        <Button
+                          className="border-0"
                           onClick={() => addProductToCart(prod)}
-                          style={{ cursor: "pointer", color: "#0066BD" }}
-                        />
+                          style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
+                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
                       </div>
                     ) : (
                       <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
+                        <Button
+                          className="border-0"
                           onClick={() => addProductToCart(prod)}
-                          style={{ cursor: "pointer" }}
-                        />
+                          style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
+                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
                         <FontAwesomeIcon
                           icon={faHeart}
                           onClick={() => toggleFavorite(prod)}
@@ -160,7 +161,7 @@ const SearchProduct = () => {
               </div>
             );
           })}
-          ;
+
         </div>
       ) : (
         <p>Aucun produit trouvé.</p>

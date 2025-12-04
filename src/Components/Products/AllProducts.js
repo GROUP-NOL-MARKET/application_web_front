@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faHeart } from "@fortawesome/free-solid-svg-icons";
 import Preloader from "../Preloader";
+import { Button } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
@@ -128,11 +129,11 @@ const AllProducts = () => {
                     </h5>
 
                     <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
+                      <Button
+                        className="border-0"
                         onClick={() => addProductToCart(product)}
-                        style={{ cursor: "pointer", color: "#0066BD" }}
-                      />
+                        style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
+                      >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
 
                       {isLoggedIn && (
                         <FontAwesomeIcon
@@ -175,8 +176,8 @@ const AllProducts = () => {
             </button>
           </li>
 
-          <li className="page-item">
-            <span className="page-link">
+          <li className="page-item" style={{ width: "150px " }}>
+            <span className="page-link w-100">
               Page {page} / {totalPages}
             </span>
           </li>

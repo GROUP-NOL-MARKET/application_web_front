@@ -33,10 +33,10 @@ const ProduitsFrais = () => {
   return (
     <div className="container mt-1 mt-md-5">
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">
+        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
           Produits frais
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-5 mt-md-0">
+        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
           <div className="voir_tout">
             <div
               onClick={() => handleNavigation2("Produits Frais")}

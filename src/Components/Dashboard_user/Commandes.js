@@ -20,11 +20,11 @@ const Commandes = () => {
 
     const statusColors = useMemo(
         () => ({
-            livrée: "green",
-            en_cours: "orange",
-            en_attente: "gray",
-            annulée: "red",
-            retournée: "purple",
+            livree: "green",
+            "en cours": "orange",
+            validee: "gray",
+            annulee: "red",
+            retournee: "purple",
         }),
         []
     );
@@ -59,8 +59,8 @@ const Commandes = () => {
     const commandesFiltrees = useMemo(() => {
         return orders.filter((cmd) =>
             activeTab === "livraison"
-                ? ["livrée", "en_cours", "en_attente", "pending"].includes(cmd.status)
-                : ["annulée", "retournée", "cancelled"].includes(cmd.status)
+                ? ["livree", "en cours", "validee", "pending"].includes(cmd.status)
+                : ["annulee", "retournee", "cancelled"].includes(cmd.status)
         );
     }, [orders, activeTab]);
 
@@ -141,8 +141,8 @@ const Commandes = () => {
                                                     aria-controls={`collapse${order.id}`}
                                                 >
 
-                                                   <span> Commande #{order.id} — Total: {order.total} FCFA </span>
-                                                   <span className="ms-5" style={{fontSize:"10px"}}>{new Date(order.created_at).toLocaleDateString("fr-FR")} à {new Date(order.created_at).toLocaleTimeString("fr-FR")}</span>
+                                                    <span> Commande #{order.id} — Total: {order.total} FCFA </span>
+                                                    <span className="ms-5" style={{ fontSize: "10px" }}>{new Date(order.created_at).toLocaleDateString("fr-FR")} à {new Date(order.created_at).toLocaleTimeString("fr-FR")}</span>
                                                 </button>
                                             </h2>
                                             <div
@@ -176,10 +176,10 @@ const Commandes = () => {
                                                                 {produit.name}
                                                             </div>
                                                             <div className="col-2 d-none d-md-flex align-items-center texte_brut">
-                                                                {produit.category}
+                                                                {produit.category || produit.sous_category}
                                                             </div>
                                                             <div className="col-2 col-md-1 d-flex align-items-center texte_brut">
-                                                                {produit.quantite}
+                                                                {produit.quantity}
                                                             </div>
                                                             <div className="col-3 d-flex align-items-center texte_brut">
                                                                 {produit.price} FCFA
@@ -192,6 +192,7 @@ const Commandes = () => {
                                     </div>
 
                                     {/* Statut et bouton Avis */}
+                                    {/* Statut et bouton Avis */}
                                     <div className="col-lg">
                                         <h3
                                             className="texte_brut border border-1 rounded-5 text-white text-center py-1"
@@ -201,13 +202,17 @@ const Commandes = () => {
                                         >
                                             {order.status}
                                         </h3>
-                                        <button
-                                            className="bg-primary border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
-                                            onClick={() => openPopUp(order.id)}
-                                        >
-                                            Avis
-                                        </button>
+
+                                        {order.status === "livree" && (
+                                            <button
+                                                className="bg-primary border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
+                                                onClick={() => openPopUp(order.id)}
+                                            >
+                                                Avis
+                                            </button>
+                                        )}
                                     </div>
+
                                 </div>
                             ))}
 

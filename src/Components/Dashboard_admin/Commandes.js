@@ -10,11 +10,21 @@ import orders_confirmed from "../assets/Images/orders_confirmed.webp";
 import orders_deleted from "../assets/Images/orders_deleted.webp";
 import orders_found from "../assets/Images/orders_found.webp";
 import API from "../Authentification/apiAdmin";
+import ValidationCommande from "./ValidationCommande";
 
 const Commandes = () => {
     const { theme } = useContext(ThemeContext);
     const [stats, setStats] = useState({});
     const [orders, setOrders] = useState([]);
+    const [selectedOrder, setSelectedOrder] = useState("");
+
+    const [showPopUp, setShowPopUp] = useState(false);
+    const closePopUp = () => setShowPopUp(false);
+    const openPopUp = (order) => {
+        setSelectedOrder(order);
+        setShowPopUp(true);
+    };
+
 
     useEffect(() => {
         API.get("/admin/orders")
@@ -41,7 +51,7 @@ const Commandes = () => {
                             Commandes vues : {orders.length}/100
                         </h5>
                         <div className="row">
-                            <div className="col-6 me-2">
+                            <div className="col-5 me-2">
                                 <Dropdown type="Catégories de produit" />
                             </div>
                             <div className="col">
@@ -124,7 +134,7 @@ const Commandes = () => {
                             <tr>
                                 <th>#id</th>
                                 <th>Utilisateur</th>
-                                <th>Produits</th>
+                                <th className="col-5">Produits commandés</th>
                                 <th>Total</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
@@ -155,14 +165,25 @@ const Commandes = () => {
                                     <td>{order.total} FCFA</td>
                                     <td>{order.status}</td>
                                     <td>
-                                        <button className="btn btn-sm btn-outline-primary">Voir</button>
+                                        <button
+                                            className={`btn btn-sm ${order.status === "livree" || order.status === "livree"
+                                                ? "btn-secondary"
+                                                : "btn-outline-primary"
+                                                }`}
+                                            onClick={() => openPopUp(order)}
+                                            disabled={order.status === "livree" || order.status === "livree"}
+                                        >
+                                            Voir
+                                        </button>
                                     </td>
+
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
+            {showPopUp && <ValidationCommande closePopUp={closePopUp} order={selectedOrder} />}
         </div>
     );
 };

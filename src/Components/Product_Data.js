@@ -2,18 +2,16 @@
 import best_product_1 from "./assets/Images/best_product_1.webp";
 import best_product_2 from "./assets/Images/best_product_2.webp";
 import best_product_3 from "./assets/Images/bet_product_3.webp";
-import best_product_4 from "./assets/Images/best_product_4.webp";
 import img_profil from "./assets/Images/img_profil.webp";
 import produits_locaux from "./assets/Images/produits_locaux.avif";
 import epicerie from "./assets/Images/epicerie.avif";
-import animalerie from "./assets/Images/img_animalerie.webp";
+import animalerie from "./assets/Images/animalerie.avif";
 import divers from "./assets/Images/divers.avif";
 import produits_frais from "./assets/Images/produits_frais.avif";
 import electromenager from "./assets/Images/electromenager.avif";
 import droguerie from "./assets/Images/droguerie.avif";
 import boisson from "./assets/Images/boisson.avif";
 import all_products from "./assets/Images/all_products.avif";
-import logo_seller from "./assets/Images/logo_seller.webp";
 // import voucher from "./assets/Images/voucher_img.webp";
 
 // const ProductData = () => {
@@ -41,86 +39,6 @@ export const demoNotifications = [
 
 
 
-export const transactions = [
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "en attente",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "approuvé",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "approuvé",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "en attente",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "annulé",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-  {
-    date: "02/10/2026",
-    heure: "14:30",
-    img: logo_seller,
-    name: "Constance PRo",
-    method: "Mtn mobile money",
-    type: "Paiement",
-    status: "refusé",
-    devise: "FCFA",
-    montant: 45000,
-    Taxe: "2%",
-    Total: 44100,
-  },
-]
 
 
 export const avis = [
@@ -223,81 +141,28 @@ export const markers = [
   },
 ];
 
-
-export const DUMMY_PRODUCTS = [
-  // {products.map((product)=>(
-  //   {
-  //     id: {product.id},
-  //     name: product.name,
-  //     price: product.price,
-  //     disponibilité: product.disponibilité,
-  //     image: product.image,
-  //     notation: product.notation,
-  //     marque: product.category,
-  //     type: product.sous_category,
-  //   }
-  // ))},
-  {
-    id: 1,
-    name: "Chemisier",
-    price: "15",
-    sell_price: "15",
-    disponibilité: "100",
-    selled: "185",
-    image: best_product_1,
-    notation: 2.5,
-    marque: "Toto",
-    type: "Banane",
-  },
-  {
-    id: 2,
-    name: "Chemise",
-    price: "300000",
-    sell_price: "300000",
-    disponibilité: "100",
-    selled: "185",
-    image: best_product_2,
-    notation: 4,
-    marque: "Toto",
-    type: "Banane",
-  },
-  {
-    id: 3,
-    name: "Divan",
-    price: "40",
-    sell_price: "40",
-    disponibilité: "100",
-    selled: "185",
-    image: best_product_3,
-    notation: 3.5,
-    marque: "Toto",
-    type: "Banane",
-  },
-  {
-    id: 4,
-    name: "Produits locaux",
-    price: "25",
-    sell_price: "25",
-    disponibilité: "100",
-    selled: "185",
-    image: best_product_4,
-    notation: 4,
-    marque: "Toto",
-    type: "Banane",
-  },
-];
-
 export const category_product = [
-  {
-    category: "Epicerie",
-    image: epicerie,
-    text: "Transformez votre quotidien avec notre sélection de produits authentiques pour votre ménage. Vous voulez de la saveur, de la douceur et de la délictesse dans votre cuisine, cette catégorie de produits est pour  vous. Vous y trouverez les condiments, des plats...",
-  },
   {
     category: "Produits Locaux",
     image: produits_locaux,
     text: 'La réponse à vos besoins en matière de produits locaux "Made in Benin" est enfin arrivés. Découvrez notre large gamme des produits de chez nous en passant des jus simples, des boissons alcoolisés, de la farine, du miel et pleins d\'autres produits de chez nous. Visitez et vous ne serez pas déçus',
   },
+  {
+    category: "Produits Frais",
+    image: produits_frais,
+    text: "Prêt à explorer les différents produits frais, les produits tels que des produits congelés, des fruis frais, des crêmes et glaces et autres? Tu es à la bonne catégorie. Découvre tout ce  qu'il te faut pour te rafraîchir, pour accompagner tes mets",
+  },
+  {
+    category: "Electroménager",
+    image: electromenager,
+    text: "Economisez de temps et de l'argent grâce à nos appareils ménagers tels que nos frigots de marque Nasco, nos appareil pour la lessive automatique, nos climatisateurs authentiques et pleins d'autres appareils de qualité pouvant ainsi rendre votre quotidien tranquille et sans tracasserie",
+  },
+  {
+    category: "Epicerie",
+    image: epicerie,
+    text: "Transformez votre quotidien avec notre sélection de produits authentiques pour votre ménage. Vous voulez de la saveur, de la douceur et de la délictesse dans votre cuisine, cette catégorie de produits est pour  vous. Vous y trouverez les condiments, des plats...",
+  },
+
   {
     category: "Droguerie",
     image: droguerie,
@@ -308,21 +173,13 @@ export const category_product = [
     image: divers,
     text: "Nos divers, ce sont les produits importés de qualité pour une consommation saine et propre et pour un usage quotidien sans tracasserie. Nous offrons des produits athentiques tels que les Chewing Gum, des piles rasoirs et pleins d'autres petits produits que nous utilisons tous quotidiennement",
   },
-  {
-    category: "Produits Frais",
-    image: produits_frais,
-    text: "Prêt à explorer les différents produits frais, les produits tels que des produits congelés, des fruis frais, des crêmes et glaces et autres? Tu es à la bonne catégorie. Découvre tout ce  qu'il te faut pour te rafraîchir, pour accompagner tes mets",
-  },
+
   {
     category: "Boissons",
     image: boisson,
     text: "",
   },
-  {
-    category: "Electroménager",
-    image: electromenager,
-    text: "Economisez de temps et de l'argent grâce à nos appareils ménagers tels que nos frigots de marque Nasco, nos appareil pour la lessive automatique, nos climatisateurs authentiques et pleins d'autres appareils de qualité pouvant ainsi rendre votre quotidien tranquille et sans tracasserie",
-  },
+
   {
     category: "Animalerie",
     image: animalerie,
@@ -476,7 +333,7 @@ export const sous_category_product = [
   },
   {
     category: "Animalerie",
-    sous_category: ["Nourriture pour chiens","Nourriture pour chats"],
+    sous_category: ["Nourriture pour chiens", "Nourriture pour chats"],
   },
   {
     category: "electroménager",

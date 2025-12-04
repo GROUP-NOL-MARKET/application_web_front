@@ -63,47 +63,39 @@ const ProduitsLocaux = () => {
 
   //  Chargement des produits avec cache session
   useEffect(() => {
-    const cachedProducts = sessionStorage.getItem("produits_locaux");
+    const fetchProducts = async () => {
+      const cachedProducts = sessionStorage.getItem("produits_locaux");
 
-    if (cachedProducts) {
-      setProducts(JSON.parse(cachedProducts));
-      setLoading(false);
-    } else {
-      const fetchProducts = async () => {
-        try {
-          setLoading(true);
+      // Charger depuis le cache si disponible
+      if (cachedProducts) {
+        setProducts(JSON.parse(cachedProducts));
+        setLoading(false);
+      }
 
-          const response = await API.get("/products", {
-            params: {
-              sous_category: "Produits Locaux",
-            },
-          });
+      // Toujours tenter de rafraîchir depuis l'API
+      try {
+        const response = await API.get("/products/limited", {
+          params: {
+            category: "Produits Locaux",
+            limit: 10,
+          },
+        });
 
-          const data = response.data?.data ?? response.data ?? [];
+        setProducts(response.data.data);
+        sessionStorage.setItem("produits_locaux", JSON.stringify(response.data.data));
+      } catch (error) {
+        console.error(
+          "Erreur lors du chargement des produits :",
+          error.response?.data?.message || error.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
-          //On limite ici à 12 produits
-          const limitedData = data.slice(0, 12);
-
-          setProducts(limitedData);
-
-          // On limite aussi ce qu’on stocke en cache
-          sessionStorage.setItem(
-            "produits_locaux",
-            JSON.stringify(limitedData)
-          );
-        } catch (error) {
-          console.error(
-            "Erreur lors du chargement des produits :",
-            error.response?.data?.message || error.message
-          );
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchProducts();
-    }
+    fetchProducts();
   }, []);
+
 
   // Mémorisation
   const memoizedProducts = useMemo(() => products, [products]);
@@ -126,10 +118,10 @@ const ProduitsLocaux = () => {
     <div className="container mt-md-5">
       {/* --- Titre --- */}
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">
+        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
           Produits Locaux
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-5 mt-md-0">
+        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
           <div
             className="voir_tout"
             onClick={() => handleNavigation2("Produits Locaux")}

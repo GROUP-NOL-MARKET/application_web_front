@@ -44,8 +44,8 @@ const Electromenager = () => {
 
   // contexts
   const { isLoggedIn } = useContext(AuthContext);
-  const {addFavorite, favorites, removeFavorite }= useContext(FavoriteContext);
-  const {addProductToCart} = useContext(PanierContext);
+  const { addFavorite, favorites, removeFavorite } = useContext(FavoriteContext);
+  const { addProductToCart } = useContext(PanierContext);
 
   // Redux slice
   const { items, status } = useSelector((state) => state.products);
@@ -148,10 +148,10 @@ const Electromenager = () => {
     <div className="container mt-1 mt-md-5">
       {/* --- Titre et Voir tout --- */}
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-5 mt-md-0">
+        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
           Électroménager
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-5 mt-md-0">
+        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
           <div
             className="voir_tout"
             onClick={() => handleNavigation2("Electroménager")}
@@ -259,58 +259,59 @@ const Electromenager = () => {
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {memoizedProducts.map((product) => {
-                              const toggleFavorite = (product) => {
-                const existing = favorites.find(
-                  (fav) => fav.product_id === product.id
-                );
+                const toggleFavorite = (product) => {
+                  const existing = favorites.find(
+                    (fav) => fav.product_id === product.id
+                  );
 
-                if (existing) {
-                  // Le produit est déjà dans les favoris → SUPPRESSION
-                  removeFavorite(existing.id);
-                } else {
-                  // Le produit n'est pas favori → AJOUT
-                  addFavorite(product.id);
-                }
-              };
-              const isFavorite =
-                favorites &&
-                favorites.some((fav) => fav.product_id === product.id);
+                  if (existing) {
+                    // Le produit est déjà dans les favoris → SUPPRESSION
+                    removeFavorite(existing.id);
+                  } else {
+                    // Le produit n'est pas favori → AJOUT
+                    addFavorite(product.id);
+                  }
+                };
+                const isFavorite =
+                  favorites &&
+                  favorites.some((fav) => fav.product_id === product.id);
 
-              return (
-                <div
-                  key={product.id}
-                  className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
-                >
-                  <img
-                    loading="lazy"
-                    src={getImageUrl(product.image)}
-                    alt={product.name ?? "Produit"}
-                    className="img_product"
-                    onClick={() => openPopUp(product)}
-                  />
+                return (
+                  <div
+                    key={product.id}
+                    className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
+                  >
+                    <img
+                      loading="lazy"
+                      src={getImageUrl(product.image)}
+                      alt={product.name ?? "Produit"}
+                      className="img_product"
+                      onClick={() => openPopUp(product)}
+                    />
 
-                  <div className="text-center mt-2">
-                    <div className="petit_titre fw-bold">{product.name}</div>
-                    <div className="text-muted small">
-                      {product.price ?? "—"} FCFA
-                    </div>
-                    <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                      <FontAwesomeIcon
-                        icon={faCartShopping}
-                        onClick={() => handleAddToCart(product)}
-                        style={{ cursor: "pointer" }}
-                      />
-                      {isLoggedIn && (
+                    <div className="text-center mt-2">
+                      <div className="petit_titre fw-bold">{product.name}</div>
+                      <div className="text-muted small">
+                        {product.price ?? "—"} FCFA
+                      </div>
+                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
                         <FontAwesomeIcon
-                          icon={faHeart}
-                          onClick={() => toggleFavorite(product)}
-                          style={{ cursor: "pointer", color: !isFavorite ? "#FA7F1B" : "red" }}
+                          icon={faCartShopping}
+                          onClick={() => handleAddToCart(product)}
+                          style={{ cursor: "pointer" }}
                         />
-                      )}
+                        {isLoggedIn && (
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            onClick={() => toggleFavorite(product)}
+                            style={{ cursor: "pointer", color: !isFavorite ? "#FA7F1B" : "red" }}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )})}
+                )
+              })}
             </div>
           </div>
         </div>

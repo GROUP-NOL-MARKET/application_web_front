@@ -83,7 +83,7 @@ const AdminLogin = () => {
                                 </Button>
                             </InputGroup>
                         </FormGroup>
-                        <Button onClick={handleSubmit} className="mt-4 w-100 rounded-5">{loading ? (<Spinner />) : (<span className="petit_titre fw-bold">Se connecter</span>)}</Button>
+                        <Button onClick={handleSubmit} className="mt-4 w-100 rounded-5">{loading ? (<Spinner animation="border" size="sm" />) : (<span className="petit_titre fw-bold">Se connecter</span>)}</Button>
                     </Form>
                 </div>
             </div>

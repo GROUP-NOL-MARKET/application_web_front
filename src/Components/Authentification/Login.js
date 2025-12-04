@@ -41,7 +41,7 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleCountryChange = (country) => {};
+  const handleCountryChange = (country) => { };
 
   const handleChange = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // Retire tout sauf les chiffres
@@ -129,9 +129,10 @@ const Login = () => {
       if (err.response?.status === 404) {
         toast.error(err.response.data.error); // erreurs validation Laravel
       } else if (err.response?.status === 422) {
-        toast.error(err.response.data.error);
+        toast.error(err.response.data.message);
         console.log(err.response.data);
       } else {
+        toast.error("Identifiants invalides ou erreur serveur");
         setSuccess("Identifiants invalides ou erreur serveur");
       }
     } finally {
@@ -203,10 +204,10 @@ const Login = () => {
                     <div className="row">
                       <div
                         className="col-4 col-sm-3 col-md-4 col-lg-2 me-1"
-                        style={{ pointerEvents:"none"}}
+                        style={{ pointerEvents: "none" }}
                       >
                         <ReactCountryDropdown defaultCountry="BJ" />
-                        
+
                       </div>
                       <InputGroup className="col">
                         <Form.Control

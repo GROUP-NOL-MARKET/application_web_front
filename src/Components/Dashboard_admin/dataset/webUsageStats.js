@@ -5,19 +5,19 @@
 
 export const desktopOS = [
   {
-    label: "Windows",
+    label: "Nouveaux clients",
     value: 72.72,
   },
   {
-    label: "OS X",
+    label: "Clients fréquents",
     value: 16.38,
   },
   {
-    label: "Linux",
+    label: "Clients inactifs",
     value: 3.83,
   },
   {
-    label: "Chrome OS",
+    label: "Panier abandonné",
     value: 2.42,
   },
   {
@@ -28,26 +28,26 @@ export const desktopOS = [
 
 export const mobileOS = [
   {
-    label: "Android",
+    label: "Nouveaux clients",
     value: 70.48,
   },
   {
-    label: "iOS",
+    label: "Clients fréquents",
     value: 28.8,
   },
   {
-    label: "Other",
+    label: "Panier abandonné",
     value: 0.71,
   },
 ];
 
 export const platforms = [
   {
-    label: "Mobile",
+    label: "Nouveaux clients",
     value: 59.12,
   },
   {
-    label: "Desktop",
+    label: "Clients fréquents",
     value: 40.88,
   },
 ];

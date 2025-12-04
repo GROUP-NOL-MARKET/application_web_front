@@ -57,48 +57,50 @@
   font-family: "Roboto", sans-serif !important;
   font-weight: bold !important;
 }
- 
-.button_ajout.btn, .button_ajout.btn:hover{
-    background-color: #FA7F1B;
-    border: solid #FA7F1B 1px;
+
+.button_ajout.btn,
+.button_ajout.btn:hover {
+  background-color: #fa7f1b;
+  border: solid #fa7f1b 1px;
 }
-.paiement_button.btn, .paiement_button.btn:hover{
-    background-color: #FA7F1B;
-    border: solid #FA7F1B 1px;
-    border-radius: 20px;
-    font-family: "Roboto", sans-serif;
+.paiement_button.btn,
+.paiement_button.btn:hover {
+  background-color: #fa7f1b;
+  border: solid #fa7f1b 1px;
+  border-radius: 20px;
+  font-family: "Roboto", sans-serif;
 }
 @media (max-width: 575.98px) {
   /* Styles pour les écrans XS */
- .quantity{
+  .quantity {
     display: flex;
     flex-direction: column;
   }
 }
 
 @media (min-width: 576px) {
- .quantity{
+  .quantity {
     display: flex;
     flex-direction: row;
   }
 }
 @media (min-width: 768px) {
-  .quantity{
+  .quantity {
     display: flex;
     flex-direction: row;
   }
 }
-.bouton_paiement :hover{
-  scale: 1.1;
+.bouton_paiement :hover {
+  scale: 1.01;
   transition: 0.7s;
 }
-.paiement_background{
+.paiement_background {
   background-image: url("../Components/assets/Images/background_paiement.png");
   background-size: cover;
   background-position: top;
 }
 
-.paiement_background_moov{
+.paiement_background_moov {
   background-image: url("../Components/assets/Images/background_paiement_moov.png");
   background-size: cover;
   background-position: top;

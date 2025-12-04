@@ -95,7 +95,7 @@ const Sidebar = () => {
               >
                 <div className="accordion-body">
                   <NavLink
-                    to="/admin/analyticSell"
+                    to="/admin/dashboard"
                     end
                     className={({ isActive }) =>
                       "nav-link text-truncate " +

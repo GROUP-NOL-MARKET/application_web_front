@@ -133,7 +133,7 @@ const Header = () => {
             className="d-block w-100 hauteur_carousel"
             alt={`carousel_${index}`}
           />
-{/* 
+          {/* 
           <div className="carousel-caption d-none d-md-block">
             <h5>{img.description || `Image ${index + 1}`}</h5>
           </div> */}
@@ -246,12 +246,13 @@ const Header = () => {
                       className="text-decoration-none text-black"
                     >
                       <div className="border border-1 mt-2 category_content shadow-sm">
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column align-items-center">
                           <img
                             loading="lazy"
                             alt={category_p.category}
                             src={category_p.image}
                             className="category_img rounded-2"
+                            style={{ width: "90%" }}
                           />
                           <h3 className="category_name text-uppercase">
                             {category_p.category}

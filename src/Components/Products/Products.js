@@ -12,6 +12,7 @@ import { FavoriteContext } from "../../Store/Favoris_context";
 import { AuthContext } from "../AuthContext";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
+import { Button } from "react-bootstrap";
 
 const Products = () => {
   const location = useLocation();
@@ -87,8 +88,8 @@ const Products = () => {
           {sous_category
             ? `${sous_category}`
             : category
-            ? `${category}`
-            : "Tous les produits"}
+              ? `${category}`
+              : "Tous les produits"}
         </h1>
         <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-2 mt-md-0">
           <div className="voir_tout">
@@ -116,73 +117,73 @@ const Products = () => {
       <div className="row mt-lg-3 mt-1">
         {products.length > 0
           ? products.map((product) => {
-              const toggleFavorite = (product) => {
-                const existing = favorites.find(
-                  (fav) => fav.product_id === product.id
-                );
+            const toggleFavorite = (product) => {
+              const existing = favorites.find(
+                (fav) => fav.product_id === product.id
+              );
 
-                if (existing) {
-                  // Le produit est déjà dans les favoris → SUPPRESSION
-                  removeFavorite(existing.id);
-                } else {
-                  // Le produit n'est pas favori → AJOUT
-                  addFavorite(product.id);
-                }
-              };
-              const isFavorite =
-                favorites &&
-                favorites.some((fav) => fav.product_id === product.id);
+              if (existing) {
+                // Le produit est déjà dans les favoris → SUPPRESSION
+                removeFavorite(existing.id);
+              } else {
+                // Le produit n'est pas favori → AJOUT
+                addFavorite(product.id);
+              }
+            };
+            const isFavorite =
+              favorites &&
+              favorites.some((fav) => fav.product_id === product.id);
 
-              return (
-                <div
-                  key={product.id}
-                  className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
-                >
-                  <div className="d-flex flex-column shadow-sm border border-1 p-2">
-                    <img
-                      src={product.image}
-                      className=" img_product"
-                      alt={product.name}
-                      onClick={() => openPopUp(product)}
-                    />
-                    <div className="card-body">
-                      <h5 className="text-truncate petit_titre">
-                        {product.name}
-                      </h5>
-                      <p className="card-text petit_titre fw-bold">
-                        {product.price} FCFA
-                      </p>
-                      {!isLoggedIn ? (
-                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                          <FontAwesomeIcon
-                            icon={faCartShopping}
-                            onClick={() => addProductToCart(product)}
-                            style={{ cursor: "pointer", color: "#0066BD" }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="d-flex flex-row justify-content-center gap-3 my-2">
-                          <FontAwesomeIcon
-                            icon={faCartShopping}
-                            onClick={() => addProductToCart(product)}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            onClick={() => toggleFavorite(product)}
-                            style={{
-                              cursor: "pointer",
-                              color: isFavorite ? "red" : "#FA7F1B",
-                              transition: "0.2s",
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
+            return (
+              <div
+                key={product.id}
+                className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
+              >
+                <div className="d-flex flex-column shadow-sm border border-1 p-2">
+                  <img
+                    src={product.image}
+                    className=" img_product"
+                    alt={product.name}
+                    onClick={() => openPopUp(product)}
+                  />
+                  <div className="card-body">
+                    <h5 className="text-truncate petit_titre">
+                      {product.name}
+                    </h5>
+                    <p className="card-text petit_titre fw-bold">
+                      {product.price} FCFA
+                    </p>
+                    {!isLoggedIn ? (
+                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                        <Button
+                          className="border-0"
+                          onClick={() => addProductToCart(product)}
+                          style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
+                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                      </div>
+                    ) : (
+                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                        <Button
+                          className="border-0"
+                          onClick={() => addProductToCart(product)}
+                          style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
+                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          onClick={() => toggleFavorite(product)}
+                          style={{
+                            cursor: "pointer",
+                            color: isFavorite ? "red" : "#FA7F1B",
+                            transition: "0.2s",
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
-              );
-            })
+              </div>
+            );
+          })
           : navigate("/all_products")}
       </div>
 
@@ -203,8 +204,8 @@ const Products = () => {
               <span aria-hidden="true">&laquo;</span>
             </button>
           </li>
-          <li className="page-item">
-            <span className="page-link">
+          <li className="page-item" style={{ width: "150px " }}>
+            <span className="page-link w-100">
               Page {page} / {totalPages}
             </span>
           </li>

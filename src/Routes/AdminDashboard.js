@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../Components/Dashboard_admin/Sidebar";
 import Topbar from "../Components/Dashboard_admin/Topbar";
-import DashboardHome from "../Components/Dashboard_admin/DashboardHome";
-import UsersPage from "../Components/Dashboard_admin/UsersPage";
 import ThemeProvider, {
     ThemeContext,
 } from "../Components/Dashboard_admin/ThemeContext";
@@ -32,10 +30,8 @@ const AdminDashboard = () => {
                     <Topbar />
                     <main className={`p-4 mt-5 ${theme}`} style={{ minHeight: "100vh" }}>
                         <Routes>
-                            <Route path="dashboard" element={<DashboardHome />} />
-                            <Route path="users" element={<UsersPage />} />
                             <Route path="paramètres" element={<Settings />} />
-                            <Route path="analyticSell" element={<AnalyseVente />} />
+                            <Route path="dashboard" element={<AnalyseVente />} />
                             <Route path="profilSeller" element={<ProfilSeller />} />
                             <Route path="revenue" element={<Revenue />} />
                             <Route path="bestProduct" element={<BestProduct />} />

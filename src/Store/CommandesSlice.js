@@ -5,17 +5,34 @@ export const fetchCommandes = createAsyncThunk(
     "commandes/fetchCommandes",
     async (page, { getState }) => {
         const { commandes } = getState();
-        // Si la page est déjà en cache, on ne refait pas d’appel API
+
+        // Vérification du cache
         if (commandes.cache[page]) {
-            return { cached: true, data: commandes.cache[page], last_page: commandes.totalPages, page };
+            return {
+                cached: true,
+                data: commandes.cache[page],
+                last_page: commandes.totalPages, // toujours exact
+                page
+            };
         }
 
+        // Appel API normal si pas en cache
         const response = await API.get(`/orders?limit=3&page=${page}`);
+
+        // L'API doit retourner :
+        // data.data = les commandes
+        // data.last_page = nombre total de pages
         const data = response.data;
 
-        return { cached: false, data: data.data, last_page: data.last_page, page };
+        return {
+            cached: false,
+            data: data.data,
+            last_page: data.last_page,
+            page
+        };
     }
 );
+
 
 const CommandesSlice = createSlice({
     name: "commandes",

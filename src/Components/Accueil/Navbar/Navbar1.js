@@ -37,15 +37,15 @@ const Navbar1 = () => {
   };
 
   useEffect(() => {
-  const closeOnClickOutside = (e) => {
-    if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
-      setIsOpen(false);
-    }
-  };
+    const closeOnClickOutside = (e) => {
+      if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
+        setIsOpen(false);
+      }
+    };
 
-  document.addEventListener("click", closeOnClickOutside);
-  return () => document.removeEventListener("click", closeOnClickOutside);
-}, []);
+    document.addEventListener("click", closeOnClickOutside);
+    return () => document.removeEventListener("click", closeOnClickOutside);
+  }, []);
 
 
   const logout = async () => {
@@ -93,7 +93,7 @@ const Navbar1 = () => {
                 </Link>
               </div>
               {!isLoggedIn ? (
-                <div className="offset-4 connexion d-lg-none col-1 col-md-2">
+                <div className="offset-3 offset-md-2 connexion d-lg-none col-2">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -108,7 +108,7 @@ const Navbar1 = () => {
                             src={utilisateur}
                             alt="user"
                             className="icon_user"
-                            style={{ width: "30px", cursor: "pointer" }}
+                            style={{ width: "40px", cursor: "pointer" }}
                           />
                         </div>
                         <div className="row">
@@ -149,7 +149,7 @@ const Navbar1 = () => {
                   </div>
                 </div>
               ) : (
-                <div className="connexion offset-4 offset-md-2 col-1 col-md-2 d-flex align-items-center d-lg-none">
+                <div className="connexion offset-3 offset-md-2 col-2 d-flex align-items-center d-lg-none">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -164,7 +164,7 @@ const Navbar1 = () => {
                             src={utilisateur}
                             alt="user"
                             className="icon_user ms-auto"
-                            style={{ width: "30px", cursor: "pointer" }}
+                            style={{ width: "40px", cursor: "pointer" }}
                           />
                         </div>
                         <span className="row">
@@ -209,7 +209,7 @@ const Navbar1 = () => {
                   </div>
                 </div>
               )}
-              <div className=" panier col-1 col-md-2 d-lg-none ">
+              <div className=" panier col-2 d-lg-none ">
                 <Link
                   to="/Cart"
                   style={{ color: "black" }}
@@ -220,7 +220,7 @@ const Navbar1 = () => {
                       className="img-fluid"
                       src={Panier}
                       alt=""
-                      style={{ width: "30px" }}
+                      style={{ width: "40px" }}
                     />
 
                     <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
@@ -242,7 +242,7 @@ const Navbar1 = () => {
                   <p className="mb-0 fw-normal">Aide</p>
                 </div>
               </div>
-              <div className="col-2  d-flex d-lg-none justify-content-center">
+              <div className="col-2 d-flex d-lg-none justify-content-center">
                 <button
                   className="navbar-toggler border-0"
                   type="button"
@@ -335,7 +335,7 @@ const Navbar1 = () => {
           <h6 className="fw-semibold nav-item d-none d-lg-block me-4">
             <Link
               to="/Contact"
-              className="nav-link"
+              className="fw-bold text-decoration-none petit_titre"
               style={{ color: active === "Contact" ? "orange" : "black" }}
               onClick={() => setActive("Contact")}
             >
@@ -345,7 +345,7 @@ const Navbar1 = () => {
           <h6 className="fw-semibold nav-item d-none d-lg-block me-2">
             <Link
               to="/About"
-              className="nav-link"
+              className="fw-bold text-decoration-none petit_titre"
               style={{ color: active === "About" ? "orange" : "black" }}
               onClick={() => setActive("About")}
             >

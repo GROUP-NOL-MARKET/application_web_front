@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import FedapayButton from "./FedapayButton";
+import KkiaPay from "./kkiapay";
 import {
   Button,
   Form,
@@ -8,6 +9,8 @@ import {
   FormGroup,
   Spinner,
 } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { fetchCommandes } from "../Store/CommandesSlice";
 import { toast } from "react-toastify";
 import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
@@ -19,24 +22,26 @@ import MoovPay from "./MoovPay";
 const Paiement = () => {
   const { products } = useContext(PanierContext);
 
+  const dispatch = useDispatch();
+
   const [showPopUp1, setshowPopUp1] = useState(false);
   const [showPopUp, setshowPopUp] = useState(false);
 
-    const closePopUp = () => setshowPopUp(false);
-    const openPopup = () => setshowPopUp(true);
-    const closePopUp1 = () => setshowPopUp1(false);
-    const openPopup1 = () => setshowPopUp1(true);
-  
-    useEffect(() => {
-      const isAnyPopupOpen =
-        showPopUp1 || showPopUp;
-  
-      document.body.style.overflow = isAnyPopupOpen ? "hidden" : "auto";
-  
-      return () => {
-        document.body.style.overflow = "auto";
-      };
-    }, [showPopUp1, showPopUp]);
+  const closePopUp = () => setshowPopUp(false);
+  const openPopup = () => setshowPopUp(true);
+  const closePopUp1 = () => setshowPopUp1(false);
+  const openPopup1 = () => setshowPopUp1(true);
+
+  useEffect(() => {
+    const isAnyPopupOpen =
+      showPopUp1 || showPopUp;
+
+    document.body.style.overflow = isAnyPopupOpen ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showPopUp1, showPopUp]);
 
   const totalPrice = products.reduce(
     (acc, product) => acc + product.price * product.quantity,
@@ -129,6 +134,51 @@ const Paiement = () => {
     }
   };
 
+  const { clearCart } = useContext(PanierContext);
+
+  const handleSuccess = async (payment) => {
+    console.log("Réponse Kkiapay:", payment);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Session expirée. Veuillez vous reconnecter.");
+        window.location.href = "/login";
+        return;
+      }
+
+      // Appel backend pour enregistrer la commande
+      await API.post(
+        "/paiement/kkiapay/callback",
+        {
+          transactionId: payment.transactionId,
+          amount: totalPrice,
+          cart: products,
+          phone: user.phone || '0123456789',
+          paymentData: payment,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      dispatch(fetchCommandes(1));
+
+      // Vider le panier AVANT de quitter la page
+      await clearCart();
+
+      // Rediriger vers la page d'accueil
+      window.location.href = "/";
+
+      toast.success("Paiement effectué et commande enregistrée !");
+
+    } catch (error) {
+      toast.error("Erreur lors du traitement de la commande.");
+      console.error(error);
+    }
+  };
+
+
   return (
     <div className="bg-light">
       <div className="container">
@@ -214,12 +264,12 @@ const Paiement = () => {
                     />
                   </div>
                   <div className="col">
-                    <div className="marque text-black-50">{product.marque}</div>
+                    <div className="marque text-black-50">{product.category}</div>
                     <div className="name">{product.name}</div>
-                    <div className="type mt-2">Type : {product.type}</div>
+                    <div className="type mt-2">Type : {product.sous_category}</div>
                     <div className="type">Quantité : {product.quantity}</div>
                     <div className="disponibilité">
-                      Disponibilité : {product.disponibilité}
+                      Disponibilité : {product.disponibility}
                     </div>
                   </div>
                 </div>
@@ -262,15 +312,37 @@ const Paiement = () => {
               <div className="w-100 mt-1">
                 <h2 className="title_prix_total">Payer avec :</h2>
                 <ul className="d-flex flex-row gap-4">
-                    
-                  <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup} style={{borderRadius:"100%", cursor:"pointer"}}>
-                    <img alt="" src={mtn} style={{width:"60px"}}/>
-                  </li>
-                  <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup1} style={{borderRadius:"100%", cursor:"pointer"}}>
-                    {/* adresseValidee ? openPopup1 : null */}
-                    <img alt="" src={moov} style={{width:"60px"}}/>
-                  </li>
+                  <div>
+                    <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup} style={{ borderRadius: "100%", cursor: "pointer" }}>
+                      <img alt="" src={mtn} style={{ width: "70px" }} />
+
+                    </li>
+                    <p className="fw-bold" style={{ color: "#CCA204" }}>Mtn momo</p>
+                  </div>
+
+                  {/* <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup1} style={{ borderRadius: "100%", cursor: "pointer" }}>
+                    adresseValidee ? openPopup1 : null
+                    <img alt="" src={moov} style={{ width: "60px" }} />
+                  </li> */}
+                  <div>
+                    <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement">
+
+                      <KkiaPay
+                        amount={totalPrice}
+                        email="client@email.com"
+                        phone="0123456789"
+                        name="Client Abonné"
+                        disabled={!adresseValidee}
+                        onSuccess={handleSuccess}
+                      />
+
+                    </li>
+                    <p className="fw-bold" style={{ color: "blue" }}> Kkiapay</p>
+                  </div>
+
                 </ul>
+
+
                 {/* <FedapayButton amount={totalPrice} products={products} address={adresseComplete} /> */}
 
                 {!adresseValidee && (
@@ -283,7 +355,7 @@ const Paiement = () => {
           </div>
         </div>
       </div>
-       {showPopUp && <MomoPay closePopUp={closePopUp} />}
+      {showPopUp && <MomoPay closePopUp={closePopUp} />}
       {showPopUp1 && <MoovPay closePopUp1={closePopUp1} />}
     </div>
   );

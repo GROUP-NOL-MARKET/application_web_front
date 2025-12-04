@@ -32,6 +32,7 @@ const AddProduct = () => {
     });
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [trashLoading, setTrashLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
     const token = localStorage.getItem("adminToken");
@@ -172,9 +173,9 @@ const AddProduct = () => {
                         <Button
                             variant="secondary"
                             disabled={loading}
-                            onClick={(e) => handleSubmit(e, true)}
+
                         >
-                            Brouillon
+                            {trashLoading ? <Spinner animation="border" size="sm" /> : "Brouillon"}
                         </Button>
                         <Button type="submit" variant="primary" disabled={loading}>
                             {loading ? <Spinner animation="border" size="sm" /> : "Enregistrer"}
