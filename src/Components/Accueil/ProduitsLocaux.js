@@ -74,7 +74,7 @@ const ProduitsLocaux = () => {
 
       // Toujours tenter de rafraîchir depuis l'API
       try {
-        const response = await API.get("/products/limited", {
+        const response = await API.get("/products-category/limited", {
           params: {
             category: "Produits Locaux",
             limit: 10,
@@ -155,6 +155,7 @@ const ProduitsLocaux = () => {
             slidesPerView={6}
             spaceBetween={15}
             className="Liste_produits d-none d-lg-block mt-2"
+            style={{ backgroundColor: "#F2F2F2" }}
           >
             {memoizedProducts.map((product) => {
               const toggleFavorite = (product) => {
@@ -181,13 +182,13 @@ const ProduitsLocaux = () => {
                 >
                   <img
                     loading="lazy"
-                    src={getImageUrl(product.image)}
+                    src={product.image}
                     alt={product.name ?? "Produit"}
                     className="img_product swiper-lazy"
                     onClick={() => openPopUp(product)}
                   />
                   <div className="border border-1 border-top w-100 text-center py-2">
-                    <div className="product_title fw-bold petit_titre">
+                    <div className="product_title fw-bold petit_titre" title={product.name}>
                       {product.name}
                     </div>
                     <div className="text-muted">{product.price} FCFA</div>
@@ -215,7 +216,7 @@ const ProduitsLocaux = () => {
           </Swiper>
 
           {/* --- Carrousel mobile --- */}
-          <div className="embla d-lg-none mt-2">
+          <div className="embla d-lg-none mt-2" style={{ backgroundColor: "#F2F2F2" }}>
             <div className="embla__viewport" ref={emblaRef}>
               <div className="embla__container">
                 {memoizedProducts.map((product) => {
@@ -243,7 +244,7 @@ const ProduitsLocaux = () => {
                     >
                       <img
                         loading="lazy"
-                        src={getImageUrl(product.image)}
+                        src={product.image}
                         alt={product.name ?? "Produit"}
                         className="img_product"
                         onClick={() => openPopUp(product)}

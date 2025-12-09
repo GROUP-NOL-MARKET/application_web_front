@@ -6,20 +6,26 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
-import droguerie from "../assets/Images/droguerie.avif";
+import monde from "../assets/Images/monde bb.avif";
+import hygiene from "../assets/Images/hygiene dent.avif";
+import rasage from "../assets/Images/rasage.avif";
+import produits from "../assets/Images/produits menagers.avif";
+import soins from "../assets/Images/soins beauté.avif";
+import feminine from "../assets/Images/hygiene feminine.avif";
+import desodorisant from "../assets/Images/desodorifiant.avif";
+import mouchoir from "../assets/Images/mouchoir.avif";
 import useEmblaCarousel from "embla-carousel-react";
 
 const Droguerie = () => {
   const sousCategories = [
-    { id: 1, name: "Monde de Bébé", img: droguerie },
-    { id: 2, name: "Hygiène dentaire", img: droguerie },
-    { id: 3, name: "Prêt à porter", img: droguerie },
-    { id: 4, name: "Rasage", img: droguerie },
-    { id: 5, name: "Produits ménagers", img: droguerie },
-    { id: 6, name: "Soins de beauté", img: droguerie },
-    { id: 7, name: "Hygiène féminine", img: droguerie },
-    { id: 8, name: "Désodorisant-insecticide", img: droguerie },
-    { id: 9, name: "Mouchoirs", img: droguerie },
+    { id: 1, name: "Monde de Bébé", img: monde },
+    { id: 2, name: "Hygiène dentaire", img: hygiene },
+    { id: 3, name: "Rasage", img: rasage },
+    { id: 4, name: "Produits ménager", img: produits },
+    { id: 5, name: "Soins de beauté", img: soins },
+    { id: 6, name: "Hygiène féminine", img: feminine },
+    { id: 7, name: "Désodorisants - insecticides", img: desodorisant },
+    { id: 8, name: "Mouchoir - papier toilette", img: mouchoir },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });

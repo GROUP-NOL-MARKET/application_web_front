@@ -18,10 +18,10 @@ const Offres = () => {
           {/* Livraison */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-3 icon">
+              <div className=" col-2 icon">
                 <FontAwesomeIcon icon={faRocket} size="2x" />
               </div>
-              <div className="col-9">
+              <div className="col-8">
                 <h6 className="title_offre">Livraison assurée</h6>
                 <p className="text">À partir de 100.000 FCFA</p>
               </div>
@@ -31,7 +31,7 @@ const Offres = () => {
           {/* Paiement */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-3 icon">
+              <div className="col-2 icon">
                 <FontAwesomeIcon icon={faWallet} size="2x" />
               </div>
               <div className="col-9">
@@ -44,7 +44,7 @@ const Offres = () => {
           {/* Support */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-3 icon">
+              <div className="col-2 icon">
                 <FontAwesomeIcon icon={faHeadphones} size="2x" />
               </div>
               <div className="col-9">
@@ -57,7 +57,7 @@ const Offres = () => {
           {/* Sécurité */}
           <div className="col-12 col-sm-6 col-md-3 mb-3">
             <div className="row d-flex align-items-center">
-              <div className="col-3 icon">
+              <div className="col-2 icon">
                 <FontAwesomeIcon icon={faUmbrella} size="2x" />
               </div>
               <div className="col-9">

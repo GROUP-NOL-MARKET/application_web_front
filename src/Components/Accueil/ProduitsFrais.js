@@ -8,17 +8,21 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
 import produits_frais from "../assets/Images/produits_frais.avif";
+import fromage from "../assets/Images/fromages.avif";
+import yaourt from "../assets/Images/yaourt.avif";
+import surgeles from "../assets/Images/surgeles.avif";
+import glaces from "../assets/Images/glaces.avif";
+import charcuterie from "../assets/Images/charcuterie.avif";
 import "../../Styles/Header.css"
 
 const ProduitsFrais = () => {
   const sousCategories = [
-    { id: 1, name: "Fromages-Fruits frais-Légumes", img: produits_frais },
-    { id: 2, name: "yaourt", img: produits_frais },
-    { id: 3, name: "Produits congélés", img: produits_frais },
-    { id: 4, name: "Surgélés-Crêmerie fraîche", img: produits_frais },
-    { id: 5, name: "Glâces et crêmes glacées", img: produits_frais },
-    { id: 6, name: "Charcuterie volaille poisson", img: produits_frais },
-    { id: 7, name: "Produits Locaux frais", img: produits_frais },
+    { id: 1, name: "Fromages - fruits frais - légumes", img: fromage },
+    { id: 2, name: "yaourt", img: yaourt },
+    { id: 3, name: "Surgeles  crèmerie fraîche", img: surgeles },
+    { id: 4, name: "Glaces et crèmes glacées", img: glaces },
+    { id: 5, name: "Charcuterie volaille poisson", img: charcuterie },
+    { id: 6, name: "Produits Locaux Frais", img: produits_frais },
   ];
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
@@ -62,6 +66,7 @@ const ProduitsFrais = () => {
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-lg-block"
+        style={{ backgroundColor: "#F2F2F2" }}
       >
         {sousCategories.map((sub) => (
           <SwiperSlide
@@ -79,7 +84,7 @@ const ProduitsFrais = () => {
 
       {/* Le swiper pour les petits écrans  */}
 
-      <div className="embla d-lg-none mt-2">
+      <div className="embla d-lg-none mt-2" style={{ backgroundColor: "#F2F2F2" }}>
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {sousCategories.map((sub) => (

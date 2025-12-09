@@ -8,23 +8,34 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
 import epicerie from "../assets/Images/epicerie.avif";
+import petit_dejeun from "../assets/Images/petit dejeuner.avif";
+import cereales from "../assets/Images/cereales corn flakes.avif";
+import biscuits from "../assets/Images/biscuits gateaux.avif";
+import amuse from "../assets/Images/amuse gueule.avif";
+import pains from "../assets/Images/pains et viennesoireries.avif";
+import bonbon from "../assets/Images/bonbon chocolat.avif";
+import conserves from "../assets/Images/conserves plats cuisines.avif";
+import pates from "../assets/Images/pates alimentaires riz.avif";
+import assaisonnement from "../assets/Images/condiments.avif";
+import huile from "../assets/Images/huile vinaigre.avif";
+import sardine from "../assets/Images/sardine.avif";
 
 
 const Epicerie = () => {
 
   const sousCategories = [
-    { id: 1, name: "Petit déjeuner", img: epicerie },
-    { id: 2, name: "Céréales-Corn Flakes-pain grillé", img: epicerie },
-    { id: 3, name: "Biscuits gâteaux", img: epicerie },
-    { id: 4, name: "Amuse gueules", img: epicerie },
-    { id: 5, name: "Pains et viennoiseries", img: epicerie },
-    { id: 6, name: "Bonbons-chocolat", img: epicerie },
-    { id: 7, name: "Conserves-plats cuisinés", img: epicerie },
-    { id: 8, name: "Pâtes alimentaires-riz-purée", img: epicerie },
-    { id: 9, name: "Assaisonnement-condiments", img: epicerie },
-    { id: 10, name: "Huile-vinaigre", img: epicerie },
-    { id: 11, name: "Sardine", img: epicerie },
-    { id: 12, name: "Produits du monde", img: epicerie },
+    { id: 1, name: "Petit déjeuner", img: petit_dejeun },
+    { id: 2, name: "Céréales-corn flakes Pain gri", img: cereales },
+    { id: 3, name: "Biscuits gâteaux", img: biscuits },
+    { id: 4, name: "Amuse gueules", img: amuse },
+    { id: 5, name: "Pains et viennoiseries", img: pains },
+    { id: 6, name: "Bonbons-chocolat", img: bonbon },
+    { id: 7, name: "Conserves-plats cuisines", img: conserves },
+    { id: 8, name: "Pâtes alimentaires -riz - purée", img: pates },
+    { id: 9, name: "Assaisonnement - condiments", img: assaisonnement },
+    { id: 10, name: "Huile - Vinaigre", img: huile },
+    { id: 11, name: "Sardine", img: sardine },
+    { id: 12, name: "Epicerie", img: epicerie },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
@@ -69,6 +80,7 @@ const Epicerie = () => {
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-lg-block"
+        style={{ backgroundColor: "#F2F2F2" }}
       >
         {sousCategories.map((sub) => (
           <SwiperSlide
@@ -86,7 +98,7 @@ const Epicerie = () => {
 
       {/* Le swiper pour les petits écrans  */}
       {/* Le swiper pour les tout petits écrans  */}
-      <div className="embla d-lg-none mt-2">
+      <div className="embla d-lg-none mt-2" style={{ backgroundColor: "#F2F2F2" }}>
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {sousCategories.map((sub) => (

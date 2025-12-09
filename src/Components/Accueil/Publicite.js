@@ -4,16 +4,35 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import useEmblaCarousel from "embla-carousel-react";
-import EmblaAutoplay from "embla-carousel-autoplay";
 
 const Publicite = () => {
   const [carouselImages, setCarouselImages] = useState([]);
-  const autoplay = useRef(
-    EmblaAutoplay({ delay: 3000, stopOnInteraction: false }) // défile chaque 3s
-  );
 
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [autoplay.current]);
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const scrollAmount = carousel.offsetWidth * 0.85; // car tes slides font 85%
+    const interval = setInterval(() => {
+      // Si on arrive à la fin → retour au début
+      if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
+        carousel.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else {
+        carousel.scrollBy({
+          left: scrollAmount + 10, // +10 = ton gap
+          behavior: "smooth",
+        });
+      }
+    }, 3000); // toutes les 3 secondes
+
+    return () => clearInterval(interval);
+  }, [carouselImages]);
+
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -40,28 +59,19 @@ const Publicite = () => {
 
   return (
     <div className="container mt-3">
-      {/* Mobile: simple scrollable carousel */}
-      {/* <div className="mobile-carousel-container d-lg-none">
-        {carouselImages.map((img, idx) => (
-          <div key={img.id || idx} className="mobile-carousel-item carousel-slide">
-            <img src={img.url} alt={`img_${idx}`} className="mobile-carousel-img" />
-          </div>
-        ))}
-      </div> */}
 
-      <div className="embla d-lg-none mt-4">
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="mobile-carousel-container">
-            {carouselImages.map((img, idx) => (
-              <div className=" mobile-carousel-item" key={idx}>
-                <img
-                  src={img.url}
-                  alt={`img_${idx}`}
-                  className="mobile-carousel-img"
-                />
-              </div>
-            ))}
-          </div>
+
+      <div className=" d-lg-none mt-4">
+        <div className="mobile-carousel-container" ref={carouselRef}>
+          {carouselImages.map((img, idx) => (
+            <div className=" mobile-carousel-item" key={idx}>
+              <img
+                src={img.url}
+                alt={`img_${idx}`}
+                className="mobile-carousel-img"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -71,7 +81,6 @@ const Publicite = () => {
         navigation
         loop
         autoplay={{ delay: 4000, disableOnInteraction: false }}
-        slidesPerView={3}
         spaceBetween={15}
         className="d-none d-lg-block mt-4"
       >
@@ -91,12 +100,6 @@ const Publicite = () => {
         ))}
       </Swiper>
 
-      {/* CSS inline ou via ton fichier CSS */}
-      <style jsx>{`
-        .zoom-container {
-          overflow: hidden;
-        }
-      `}</style>
     </div>
   );
 };

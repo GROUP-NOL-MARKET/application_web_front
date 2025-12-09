@@ -1,4 +1,4 @@
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, FormControl, FormLabel, Spinner } from "react-bootstrap";
 import corbeille from "./assets/Images/icone/trash.png";
@@ -132,10 +132,16 @@ const Cart = () => {
                           </div>
                           <Button
                             onClick={() => updateProductQuantity(product.id, 1)}
+                            disabled={product.quantity >= product.stock}
                             className="col-3 button_ajout d-flex justify-content-center"
+                            style={{
+                              cursor: product.quantity >= product.stock ? "not-allowed" : "pointer",
+                              opacity: product.quantity >= product.stock ? 0.5 : 1,
+                            }}
                           >
                             +
                           </Button>
+
                         </div>
                         {/* Prix total d'un produit */}
 

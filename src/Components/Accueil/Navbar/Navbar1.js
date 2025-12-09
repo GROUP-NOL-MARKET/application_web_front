@@ -31,21 +31,21 @@ const Navbar1 = () => {
     [products]
   );
 
-  const handleNavLinkClick = () => {
-    const navbar = document.getElementById("navbarCollapse");
-    navbar?.classList.remove("show");
-  };
+  // const handleNavLinkClick = () => {
+  //   const navbar = document.getElementById("navbarCollapse");
+  //   navbar?.classList.remove("show");
+  // };
 
-  useEffect(() => {
-    const closeOnClickOutside = (e) => {
-      if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
-        setIsOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const closeOnClickOutside = (e) => {
+  //     if (!e.target.closest(".mobile-menu") && !e.target.closest(".navbar-toggler")) {
+  //       setIsOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener("click", closeOnClickOutside);
-    return () => document.removeEventListener("click", closeOnClickOutside);
-  }, []);
+  //   document.addEventListener("click", closeOnClickOutside);
+  //   return () => document.removeEventListener("click", closeOnClickOutside);
+  // }, []);
 
 
   const logout = async () => {
@@ -82,7 +82,7 @@ const Navbar1 = () => {
 
             {/* Bouton hamburger responsive */}
             <div className="d-flex align-items-center">
-              <div className="col-3  d-lg-none navbar-brand logo_div">
+              <div className="col-4 col-md-2  d-lg-none navbar-brand logo_div">
                 <Link to="/">
                   <img
                     alt="logo"
@@ -93,7 +93,7 @@ const Navbar1 = () => {
                 </Link>
               </div>
               {!isLoggedIn ? (
-                <div className="offset-3 offset-md-2 connexion d-lg-none col-2">
+                <div className="offset-2 offset-md-4 col-md-2 connexion d-lg-none col-2">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -108,7 +108,7 @@ const Navbar1 = () => {
                             src={utilisateur}
                             alt="user"
                             className="icon_user"
-                            style={{ width: "40px", cursor: "pointer" }}
+                            style={{ width: "35px", cursor: "pointer" }}
                           />
                         </div>
                         <div className="row">
@@ -124,6 +124,7 @@ const Navbar1 = () => {
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
+                            style={{ fontSize: "15px" }}
                           >
                             Connexion
                           </div>
@@ -149,7 +150,7 @@ const Navbar1 = () => {
                   </div>
                 </div>
               ) : (
-                <div className="connexion offset-3 offset-md-2 col-2 d-flex align-items-center d-lg-none">
+                <div className="connexion offset-2 offset-md-4 col-2 col-md-2 d-flex align-items-center d-lg-none">
                   <div className="w-100 row">
                     <div className="connexion-text col-12 p-0">
                       <div className="dropdown mt-1 register">
@@ -164,7 +165,7 @@ const Navbar1 = () => {
                             src={utilisateur}
                             alt="user"
                             className="icon_user ms-auto"
-                            style={{ width: "40px", cursor: "pointer" }}
+                            style={{ width: "35px", cursor: "pointer" }}
                           />
                         </div>
                         <span className="row">
@@ -180,6 +181,7 @@ const Navbar1 = () => {
                             id="registerDropdown"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
+                            style={{ fontSize: "15px" }}
                           >
                             Connexion
                           </div>
@@ -209,27 +211,8 @@ const Navbar1 = () => {
                   </div>
                 </div>
               )}
-              <div className=" panier col-2 d-lg-none ">
-                <Link
-                  to="/Cart"
-                  style={{ color: "black" }}
-                  className=" d-flex justify-content-center offset-2"
-                >
-                  <div className="d-flex position-relative offset-md-2">
-                    <img
-                      className="img-fluid"
-                      src={Panier}
-                      alt=""
-                      style={{ width: "40px" }}
-                    />
 
-                    <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
-                      {products.length}
-                    </span>
-                  </div>
-                </Link>
-              </div>
-              <div className="col-md-1 d-none d-md-block d-lg-none">
+              <div className="offset-md-1 col-1 d-lg-none">
                 <div className="d-flex align-items-center gap-2">
                   <Link to="/aide&Faq">
                     <img
@@ -239,7 +222,7 @@ const Navbar1 = () => {
                       loading="lazy"
                     />
                   </Link>
-                  <p className="mb-0 fw-normal">Aide</p>
+                  <p className="mb-0 fw-normal d-none d-md-block" style={{ fontSize: "15px" }}>Aide</p>
                 </div>
               </div>
               <div className="col-2 d-flex d-lg-none justify-content-center">
@@ -265,7 +248,8 @@ const Navbar1 = () => {
                     <Link
                       to="/"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Accueil
                     </Link>
@@ -274,7 +258,8 @@ const Navbar1 = () => {
                     <Link
                       to="/About"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       A propos
                     </Link>
@@ -283,7 +268,8 @@ const Navbar1 = () => {
                     <Link
                       to=""
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Services
                     </Link>
@@ -292,7 +278,8 @@ const Navbar1 = () => {
                     <Link
                       to="/Contact"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Contact
                     </Link>
@@ -301,7 +288,8 @@ const Navbar1 = () => {
                     <Link
                       to="/cart"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Achat
                     </Link>
@@ -310,7 +298,8 @@ const Navbar1 = () => {
                     <Link
                       to="/products"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Produits
                     </Link>
@@ -319,7 +308,8 @@ const Navbar1 = () => {
                     <Link
                       to="/aide&Faq"
                       className="nav-link"
-                      onClick={handleNavLinkClick}
+                      onClick={() => setIsOpen(false)}
+
                     >
                       Faq & aide
                     </Link>
@@ -328,6 +318,13 @@ const Navbar1 = () => {
               </div>
             </div>
           </div>
+          {isOpen && (
+            <div
+              className="menu-overlay"
+              onClick={() => setIsOpen(false)}
+            ></div>
+          )}
+
         </div>
 
         {/* Liens desktop à droite */}

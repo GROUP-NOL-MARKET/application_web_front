@@ -11,60 +11,82 @@ export const PanierContext = createContext({
 const cartReducer = (state, action) => {
   if (action.type === "AJOUTER_DANS_PANIER") {
     const updateShoppingCartProducts = [...state.products];
+    const product = action.payload.product;
 
-    // NOUVELLE LIGNE : Extraire l'ID du produit du payload
-    const productIdToAdd = action.payload.product ? action.payload.product.id : null;
+    if (!product) return state;
 
-    // MODIFICATION ICI : On recherche l'ID du produit
+    const productIdToAdd = product.id;
+
+    // Recherche
     const existingElementIndex = updateShoppingCartProducts.findIndex(
       (cartProducts) => cartProducts.id === productIdToAdd
     );
     const existingElement = updateShoppingCartProducts[existingElementIndex];
 
+    // Vérifier stock disponible
+    const stock = product.quantity; // IMPORTANT : quantité disponible en stock
+
     if (existingElement) {
-      // 1. SI le produit EXISTE, on augmente la quantité. 
+      if (existingElement.quantity + 1 > stock) {
+        toast.error("Quantité maximale atteinte (stock insuffisant)");
+        return state;
+      }
+
+      // Augmenter quantité
       updateShoppingCartProducts[existingElementIndex] = {
         ...existingElement,
         quantity: existingElement.quantity + 1,
       };
     } else {
-      // 2. SINON, on l'ajoute comme un nouveau produit.
-      const product = action.payload.product;
-
-      if (product) {
-        updateShoppingCartProducts.push({
-          id: product.id,
-          image: product.image,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-          disponibilité: product.disponibility || "Disponible",
-          sous_category: product.sous_category || "",
-          category: product.category || "",
-        });
+      // Ajouter nouveau produit
+      if (stock < 1) {
+        toast.error("Produit en rupture de stock");
+        return state;
       }
+
+      updateShoppingCartProducts.push({
+        id: product.id,
+        image: product.image,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        disponibilité: product.disponibility || "Disponible",
+        sous_category: product.sous_category || "",
+        category: product.category || "",
+        stock: stock, // AJOUT pour vérifier plus tard dans update
+      });
     }
+
     return { products: updateShoppingCartProducts };
-  };
+  }
+
 
   if (action.type === "ACTUALISER_QUANTITE_PRODUIT") {
     const updateShoppingCartProducts = [...state.products];
-    const existingElementIndex = updateShoppingCartProducts.findIndex(
+    const index = updateShoppingCartProducts.findIndex(
       (cartProduct) => cartProduct.id === action.payload.productId
     );
 
-    if (existingElementIndex === -1) return state;
+    if (index === -1) return state;
 
-    const updatedData = {
-      ...updateShoppingCartProducts[existingElementIndex],
-    };
+    const product = updateShoppingCartProducts[index];
 
-    updatedData.quantity += action.payload.quantity;
+    const requestedQuantity = product.quantity + action.payload.quantity;
 
-    if (updatedData.quantity <= 0) {
-      updateShoppingCartProducts.splice(existingElementIndex, 1);
+    // Vérification du stock
+    if (requestedQuantity > product.stock) {
+      toast.error("Quantité maximale atteinte (stock insuffisant)");
+      return state;
+    }
+
+    // Si la quantité devient 0, on supprime
+    if (requestedQuantity <= 0) {
+      updateShoppingCartProducts.splice(index, 1);
     } else {
-      updateShoppingCartProducts[existingElementIndex] = updatedData;
+      updateShoppingCartProducts[index] = {
+        ...product,
+        quantity: requestedQuantity,
+      };
     }
 
     return { products: updateShoppingCartProducts };
@@ -76,6 +98,7 @@ const cartReducer = (state, action) => {
 
   return state;
 };
+
 
 export const PanierContextProvider = ({ children }) => {
   const storedCart = localStorage.getItem("panier");

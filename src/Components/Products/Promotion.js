@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,61 +15,64 @@ import API from "../Authentification/api";
 
 const Promotion = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const sous_category = queryParams.get("sous_category");
   const category = queryParams.get("category");
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const navigate = useNavigate();
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const [showPopUp, setshowPopUp] = useState(false);
-  const closePopUp = () => {
-    setshowPopUp(false);
-    setSelectedProduct(null);
-  };
-  const openPopUp = (product) => {
-    setSelectedProduct(product);
-    setshowPopUp(true);
-  };
+  const [showPopUp, setShowPopUp] = useState(false);
 
   const { addFavorite } = useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
 
-  const handleNavigation = () => {
-    navigate("/all_products");
+  const closePopUp = () => {
+    setSelectedProduct(null);
+    setShowPopUp(false);
   };
 
+  const openPopUp = (product) => {
+    setSelectedProduct(product);
+    setShowPopUp(true);
+  };
+
+  const getImageUrl = (image) => {
+    if (!image) return "/placeholder.png";
+    if (image.startsWith("http")) return image;
+    return `${API.defaults.baseURL}/storage/${image}`;
+  };
+
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await API.get("/promos", {
+        params: {
+          page,
+          ...(sous_category && { sous_category }),
+          ...(category && { category }),
+        },
+      });
+
+      setProducts(response.data.data || []);
+      setTotalPages(response.data.total_pages || 1);
+    } catch (e) {
+      console.error("Erreur produits :", e);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, sous_category, category]);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-
-      try {
-        const response = await API.get("/products", {
-          params: {
-            page,
-            ...(sous_category ? { sous_category } : {}),
-            ...(category ? { category } : {}),
-          },
-        });
-
-        const result = response.data;
-
-        setProducts(result.data);
-        setTotalPages(result.total_pages);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des produits :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, [sous_category, page, category]);
+  }, [fetchProducts]);
+
+  const memoizedProducts = useMemo(() => products, [products]);
 
   if (loading) {
     return (
@@ -79,118 +82,151 @@ const Promotion = () => {
     );
   }
 
+  if (products.length === 0) {
+    return navigate("/all_products");
+  }
+
   return (
     <div className="container mt-lg-4 mt-1">
+      {/* --- Header --- */}
       <div className="row">
-        <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-2 mt-md-0 text-capitalize">
+        <h1 className="col-9 title text-capitalize mt-2">
           {sous_category
-            ? `${sous_category}`
+            ? sous_category
             : category
-            ? `${category}`
-            : "Tous les produits"}
+              ? category
+              : "Tous les produits"}
         </h1>
-        <div className="col-md-3 col-lg-4 col-sm-4 col-2 mt-2 mt-md-0">
-          <div className="voir_tout">
-            <div
-              onClick={handleNavigation}
-              className="row d-flex align-content-end"
-              style={{
-                textDecoration: "none",
-                color: "#FA7F1B",
-                cursor: "pointer",
-              }}
-            >
-              <div className="col-8 text-end d-none d-md-block">
-                Voir tous les produits
-              </div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
-            </div>
+
+        <div className="col-3 text-end mt-2">
+          <div
+            className="voir_tout"
+            onClick={() => navigate("/all_products")}
+            style={{ cursor: "pointer", color: "#FA7F1B" }}
+          >
+            <span className="d-none d-md-inline">Voir tous</span>
+            <FontAwesomeIcon icon={faArrowAltCircleRight} className="ms-1" />
           </div>
         </div>
       </div>
-      <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
 
-      <div className="row mt-lg-3 mt-1">
-        {products.length > 0
-          ? products.map((product) => (
-              <div key={product.id} className="col-md-2 col-6 shadow-sm mb-4">
-                <div className="card">
-                  <img
-                    src={product.image}
-                    className="card-img-top img_product"
-                    alt={product.name}
-                    onClick={() => openPopUp(product)}
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title petit_titre">{product.name}</h5>
-                    <p className="card-text petit_titre fw-bold">
-                      {product.price} FCFA
-                    </p>
-                    {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
-                          onClick={() => addProductToCart(product)}
-                          style={{ cursor: "pointer", color: "#0066BD" }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
-                        <FontAwesomeIcon
-                          icon={faCartShopping}
-                          onClick={() => addProductToCart(product)}
-                          style={{ cursor: "pointer" }}
-                        />
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          onClick={() => addFavorite(product.id)}
-                          style={{ cursor: "pointer", color: "#FA7F1B" }}
-                        />
-                      </div>
-                    )}
+      <hr style={{ border: "1px solid #FA7F1B" }} />
+
+      {/* --- Liste des produits version FlashSale mais en grille --- */}
+      <div className="row mt-3">
+        {memoizedProducts.map((product) => {
+          const hasPromo = product.initial_price && product.price;
+
+          return (
+            <div
+              key={product.id}
+              className="col-lg-2 col-md-3 col-6 mb-4 d-flex"
+              style={{ minHeight: "320px" }}
+            >
+              <div
+                className="border shadow-sm p-2 rounded-3 w-100"
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="img_product w-100 border rounded"
+                  onClick={() => openPopUp(product)}
+                />
+
+                {/* Badge Promotion si dispo */}
+                {product.pourcentage_vendu && (
+                  <div
+                    className="discount_badge"
+                    style={{
+                      position: "absolute",
+                      background: "#FA7F1B",
+                      color: "white",
+                      padding: "2px 8px",
+                      borderRadius: "8px",
+                      fontWeight: "bold",
+                      top: "10px",
+                      right: "10px",
+                    }}
+                  >
+                    -{product.pourcentage_vendu}%
                   </div>
+                )}
+
+                {/* Nom */}
+                <div
+                  className="petit_titre text-center mt-2" title={product.name}
+                  style={{ fontWeight: "600" }}
+                >
+                  {product.name}
+                </div>
+
+                {/* Prix */}
+                <div className="text-center">
+                  <span className="new_price fw-bold">
+                    {product.price} FCFA
+                  </span>
+
+                  {hasPromo && (
+                    <span className="initial_price text-muted ms-2">
+                      <s>{product.initial_price} FCFA</s>
+                    </span>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="d-flex justify-content-center gap-3 mt-2">
+                  <FontAwesomeIcon
+                    icon={faCartShopping}
+                    onClick={() => addProductToCart(product)}
+                    style={{ cursor: "pointer", color: "#0066BD" }}
+                  />
+
+                  {isLoggedIn && (
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      onClick={() => addFavorite(product.id)}
+                      style={{ cursor: "pointer", color: "#FA7F1B" }}
+                    />
+                  )}
                 </div>
               </div>
-            ))
-          : navigate("/all_products")}
+            </div>
+          );
+        })}
       </div>
 
-      {/* Pagination */}
-
-      <nav
-        aria-label="Page navigation example"
-        className="d-flex justify-content-center my-4"
-      >
-        <ul className="pagination ">
+      {/* --- Pagination --- */}
+      <nav className="d-flex justify-content-center my-4">
+        <ul className="pagination">
           <li className="page-item">
             <button
               className="page-link"
-              disabled={page === 1}
               onClick={() => setPage(page - 1)}
-              aria-label="Previous"
+              disabled={page === 1}
             >
-              <span aria-hidden="true">&laquo;</span>
+              &laquo;
             </button>
           </li>
+
           <li className="page-item">
             <span className="page-link">
               Page {page} / {totalPages}
             </span>
           </li>
+
           <li className="page-item">
             <button
               className="page-link"
-              disabled={page === totalPages}
               onClick={() => setPage(page + 1)}
-              aria-label="Next"
+              disabled={page === totalPages}
             >
-              <span aria-hidden="true">&raquo;</span>
+              &raquo;
             </button>
           </li>
         </ul>
       </nav>
+
       {showPopUp && (
         <VusProduct closePopUp={closePopUp} product={selectedProduct} />
       )}

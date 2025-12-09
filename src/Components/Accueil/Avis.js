@@ -1,88 +1,80 @@
-import React from "react";
-import { Rating } from "@mui/material";
-import { Avatar } from "@mui/material";
-import img_profil from "../assets/Images/img_profil.webp";
+import React, { useEffect, useState } from "react";
+import { Rating, Avatar } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-const Avis = () => {
-  const Avis = [
-    {
-      id: 1,
-      name: "John Doe",
-      rating: 4,
-      img: img_profil,
-      comment: "Excellent service et produits de qualité !",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      rating: 5,
-      img: img_profil,
-      comment: "J'ai adoré la variété de produits locaux disponibles.",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-      rating: 3,
-      img: img_profil,
-      comment: "Bon choix, mais la livraison était un peu lente.",
-    },
-    {
-      id: 4,
-      name: "Bob Brown",
-      rating: 4,
-      img: img_profil,
+import API from "../Authentification/api"; // ton axios personnalisé
 
-      comment: "Excellent support client et expédition rapide.",
-    },
-  ];
+const Avis = () => {
+  const [avisList, setAvisList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Chargement des avis depuis l'API
+  useEffect(() => {
+    const fetchAvis = async () => {
+      try {
+        const response = await API.get("/reviews"); // GET /api/reviews
+        setAvisList(response.data || []);
+      } catch (error) {
+        console.error("Erreur lors du chargement des avis :", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAvis();
+  }, []);
+
+  // Si en chargement rien pour éviter les flashs
+  if (loading) return null;
+
+  //  Si aucun avis ne pas afficher le composant
+  if (avisList.length === 0) return null;
+
   return (
     <div className="mt-4 mb-3">
       <div className="container">
-        <div className="a_propos_title_1">
-          <div className="text-uppercase">Nos clients en parlent</div>
+        <div className="a_propos_title_1 text-uppercase">
+          Nos clients en parlent
         </div>
-        <hr style={{ color: "#FA7F1B", height: "0.5rem" }} className="m-0" />
+        <hr
+          style={{ color: "#FA7F1B", height: "0.5rem" }}
+          className="m-0"
+        />
+
         <Swiper
           modules={[Navigation]}
           navigation
           spaceBetween={50}
           slidesPerView={2}
         >
-
-          {/* Navigation dans le tableau avec Swiper pour l'affichage des avis  */}
-
-          {Avis.map((avis) => (
+          {avisList.map((avis) => (
             <SwiperSlide
               key={avis.id}
-              className="border border-1 bg-white shadow-md m-3 "
+              className="border border-1 bg-white shadow-md m-3"
               style={{ borderRadius: "10px", padding: "10px" }}
             >
-              <div className="d-flex flex-column align-items-center m-0 p-0">
-                <div className=" ">
-                  <Avatar
-                    alt={avis.name}
-                    src={avis.img}
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      border: "3px solid #FA7F1B",
-                    }}
-                  />
-                </div>
-                <div className="d-flex flex-column align-items-center p-0">
-                  <h5 style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
-                    {avis.name}
-                  </h5>
-                </div>
-                <div className="d-flex flex-column align-items-center p-0">
-                  <Rating name="size-medium" value={avis.rating} readOnly />
-                  <p style={{ fontFamily: "Roboto", fontSize: "14px" }}>
-                    {avis.comment}
-                  </p>
-                </div>
+              <div className="d-flex flex-column align-items-center">
+                <Avatar
+                  alt={avis.user?.name}
+                  src={avis.user?.avatar || "/default-avatar.webp"} // ton image par défaut
+                  sx={{
+                    width: 60,
+                    height: 60,
+                    border: "3px solid #FA7F1B",
+                  }}
+                />
+
+                <h5 style={{ fontWeight: "bold" }}>
+                  {avis.user?.name || "Client"}
+                </h5>
+
+                <Rating value={avis.notation} readOnly />
+
+                <p style={{ fontSize: "14px", textAlign: "center" }}>
+                  {avis.appreciation}
+                </p>
               </div>
             </SwiperSlide>
           ))}

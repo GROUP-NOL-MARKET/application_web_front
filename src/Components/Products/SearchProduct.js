@@ -126,7 +126,7 @@ const SearchProduct = () => {
                     onClick={() => openPopUp(prod)}
                   />
                   <div className="card-body">
-                    <h5 className="card-truncate petit_titre">{prod.name}</h5>
+                    <h5 className="card-truncate petit_titre" title={prod.name}>{prod.name}</h5>
                     <p className="card-text petit_titre fw-bold">
                       {prod.price.toLocaleString()} FCFA
                     </p>

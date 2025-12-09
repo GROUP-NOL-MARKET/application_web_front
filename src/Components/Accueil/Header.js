@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useRef } from "react";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
 import "../../Styles/Header.css";
@@ -18,6 +18,32 @@ const Header = () => {
 
   // Bannières dynamiques
   const [banners, setBanners] = useState([]);
+
+  const carouselRef = useRef(null);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const scrollAmount = carousel.offsetWidth * 0.85; // car tes slides font 85%
+    const interval = setInterval(() => {
+      // Si on arrive à la fin → retour au début
+      if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
+        carousel.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else {
+        carousel.scrollBy({
+          left: scrollAmount + 10, // +10 = ton gap
+          behavior: "smooth",
+        });
+      }
+    }, 3000); // toutes les 3 secondes
+
+    return () => clearInterval(interval);
+  }, [carouselImages]);
+
 
   /** ================================
    *   CHARGEMENT DES BANNIÈRES
@@ -219,7 +245,7 @@ const Header = () => {
 
               {/* --- Carousel Mobile--- */}
               <div className="d-lg-none mt-2">
-                <div className="mobile-carousel-container">
+                <div className="mobile-carousel-container" ref={carouselRef}>
                   {carouselImages.map((img, index) => (
                     <div key={img.id || index} className="mobile-carousel-item">
                       <img

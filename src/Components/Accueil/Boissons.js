@@ -8,18 +8,27 @@ import { Navigation } from "swiper/modules";
 import useEmblaCarousel from "embla-carousel-react";
 import "swiper/css/navigation";
 import boisson from "../assets/Images/boisson.avif";
+import vins from "../assets/Images/vins.avif";
+import spiritueux from "../assets/Images/Spiritueux.avif";
+import jus from "../assets/Images/jus de fruits.avif";
+import eaux from "../assets/Images/eaux minérales.avif";
+import sirop from "../assets/Images/sirop.avif";
+import soft from "../assets/Images/soft drink.avif";
+import cidre from "../assets/Images/cidre.avif";
+import champagnes from "../assets/Images/champagnes.avif";
+import biere from "../assets/Images/biere.avif";
 
 const Boissons = () => {
   const sousCategories = [
-    { id: 1, name: "Vins", img: boisson },
-    { id: 2, name: "Spiriteux", img: boisson },
-    { id: 3, name: "Jus de fruits", img: boisson },
-    { id: 4, name: "Eaux minérales", img: boisson },
-    { id: 5, name: "Sirop", img: boisson },
-    { id: 6, name: "Soft Drink", img: boisson },
-    { id: 7, name: "Cidre", img: boisson },
-    { id: 8, name: "Champagnes", img: boisson },
-    { id: 9, name: "Bière et panaché", img: boisson },
+    { id: 1, name: "Vins", img: vins },
+    { id: 2, name: "Spiritueux", img: spiritueux },
+    { id: 3, name: "Jus de fruits", img: jus },
+    { id: 4, name: "Eaux minérales", img: eaux },
+    { id: 5, name: "Sirop", img: sirop },
+    { id: 6, name: "Soft Drink", img: soft },
+    { id: 7, name: "Cidre", img: cidre },
+    { id: 8, name: "Champagnes", img: champagnes },
+    { id: 9, name: "Bière et panaché", img: biere },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });

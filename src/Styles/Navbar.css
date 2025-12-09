@@ -17,7 +17,7 @@
 }
 
 .navigation_produit {
-  background-color: #0066BD;
+  background-color: #0066bd;
   width: 100%;
 }
 .category-menu {
@@ -58,7 +58,7 @@
   font-weight: bolder;
 }
 
-.nav-link{
+.nav-link {
   color: white !important;
 }
 .select_1 {
@@ -68,14 +68,14 @@
   font-weight: 500;
 }
 
- /* Menu mobile slide-in */
+/* Menu mobile slide-in */
 .mobile-menu {
   position: fixed;
   top: 0;
   right: -300px;
   width: 260px;
   height: 100vh;
-  background: #0066BD;
+  background: #0066bd;
   transition: right 0.4s ease-in-out;
   padding-top: 60px;
   overflow-y: auto;
@@ -103,8 +103,6 @@
   padding: 10px;
   cursor: pointer;
 }
-
-
 
 @media (max-width: 575.98px) {
   /* Styles pour les écrans XS */
@@ -206,10 +204,18 @@ details {
 }
 .nav-header-3:hover {
   color: black !important;
+  cursor: pointer;
 }
 .navbar-toggler:focus,
 .navbar-toggler:active {
   outline: none !important;
   box-shadow: none !important; /* Pour les navigateurs/frameworks (comme Bootstrap) qui utilisent box-shadow à la place de l'outline */
   border: 0 !important; /* Pour s'assurer qu'aucune bordure ne puisse apparaître */
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
 }

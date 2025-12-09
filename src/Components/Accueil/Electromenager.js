@@ -18,7 +18,7 @@ import { Navigation } from "swiper/modules";
 import useEmblaCarousel from "embla-carousel-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../../Store/ProductsSlice";
+import { fetchLimitedProducts } from "../../Store/ProductsSlice";
 import Preloader from "../Preloader";
 import { AuthContext } from "../AuthContext";
 import { FavoriteContext } from "../../Store/Favoris_context";
@@ -26,43 +26,34 @@ import { PanierContext } from "../../Store/Panier_context";
 import VusProduct from "../Products/VusProduct";
 import API from "../Authentification/api";
 
-const CACHE_KEY = "materiels_nasco_products_v1";
+const CATEGORY = "Électroménager";
+const CACHE_KEY = "electromenager_products_v1";
 
 const Electromenager = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // popup state
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPopUp, setShowPopUp] = useState(false);
 
-  // local products state (priorise cache -> redux)
   const [localProducts, setLocalProducts] = useState([]);
   const [loadingLocal, setLoadingLocal] = useState(true);
   const [cacheError, setCacheError] = useState(null);
 
-  // contexts
   const { isLoggedIn } = useContext(AuthContext);
   const { addFavorite, favorites, removeFavorite } = useContext(FavoriteContext);
   const { addProductToCart } = useContext(PanierContext);
 
-  // Redux slice
   const { items, status } = useSelector((state) => state.products);
-  const productsFromRedux = items["Matériels Nasco"] || [];
+  const productsFromRedux = items[CATEGORY] || [];
 
   const getImageUrl = (image) => {
-    if (!image) return "/placeholder.png"; // Optionnel: une image par défaut
-
-    if (typeof image === "string" && image.startsWith("https")) {
-      return image; // URL complète déjà fournie
-    }
-
-    // Construit automatiquement l'URL depuis l'API actuelle (dev ou prod)
+    if (!image) return "/placeholder.png";
+    if (typeof image === "string" && image.startsWith("https")) return image;
     return `${API.defaults.baseURL}/storage/${image}`;
   };
 
-  // ---- On mount: try sessionStorage cache first ----
   useEffect(() => {
     try {
       const cached = sessionStorage.getItem(CACHE_KEY);
@@ -71,48 +62,37 @@ const Electromenager = () => {
         if (Array.isArray(parsed) && parsed.length > 0) {
           setLocalProducts(parsed);
           setLoadingLocal(false);
-          return; // use cache, skip immediate fetch
+          return;
         }
       }
     } catch (err) {
-      console.warn("Erreur lecture cache Electromenager:", err);
       setCacheError("Erreur cache");
     }
-    // If no cache, keep loadingLocal true and allow next effect to fetch
   }, []);
 
-  // ---- Keep localProducts in sync with Redux when Redux provides data ----
   useEffect(() => {
-    if (productsFromRedux && productsFromRedux.length > 0) {
+    if (productsFromRedux.length > 0) {
       setLocalProducts(productsFromRedux);
       setLoadingLocal(false);
-      // update cache
       try {
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(productsFromRedux));
-      } catch (err) {
-        console.log("Impossible d'écrire le cache Electromenager :", err);
-      }
+      } catch { }
     }
   }, [productsFromRedux]);
 
-  // ---- If nothing in cache and redux empty, dispatch fetch once ----
   useEffect(() => {
     const shouldFetch =
-      (!localProducts || localProducts.length === 0) &&
-      (!productsFromRedux || productsFromRedux.length === 0) &&
+      localProducts.length === 0 &&
+      productsFromRedux.length === 0 &&
       status !== "loading";
 
     if (shouldFetch) {
-      dispatch(fetchProducts("Matériels Nasco"));
+      dispatch(fetchLimitedProducts({ category: CATEGORY, limit: 12 }));
     }
-    // note: dispatch is stable
   }, [localProducts, productsFromRedux, status, dispatch]);
 
-  // ---- Callbacks ----
   const handleNavigation2 = useCallback(
-    (category) => {
-      navigate(`/products?category=${encodeURIComponent(category)}`);
-    },
+    (category) => navigate(`/products?category=${encodeURIComponent(category)}`),
     [navigate]
   );
 
@@ -120,11 +100,6 @@ const Electromenager = () => {
     (product) => addProductToCart(product),
     [addProductToCart]
   );
-
-  // const handleAddFavorite = useCallback(
-  //   (productId) => addFavorite(productId),
-  //   [addFavorite]
-  // );
 
   const openPopUp = useCallback((product) => {
     setSelectedProduct(product);
@@ -136,17 +111,16 @@ const Electromenager = () => {
     setSelectedProduct(null);
   }, []);
 
-  // ---- Memoize products for render ----
-  const memoizedProducts = useMemo(() => (localProducts || []).slice(0, 12), [localProducts]);
+  const memoizedProducts = useMemo(
+    () => localProducts.slice(0, 12),
+    [localProducts]
+  );
 
-  // ---- Compute overall loading state shown under title ----
-  // show loading if we are still loading local (cache check) OR redux is loading and no local products yet
   const isLoading =
     loadingLocal || (status === "loading" && memoizedProducts.length === 0);
 
   return (
     <div className="container mt-1 mt-md-5">
-      {/* --- Titre et Voir tout --- */}
       <div className="row">
         <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
           Électroménager
@@ -154,12 +128,8 @@ const Electromenager = () => {
         <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
           <div
             className="voir_tout"
-            onClick={() => handleNavigation2("Electroménager")}
-            style={{
-              textDecoration: "none",
-              color: "#FA7F1B",
-              cursor: "pointer",
-            }}
+            onClick={() => handleNavigation2(CATEGORY)}
+            style={{ color: "#FA7F1B", cursor: "pointer" }}
           >
             <div className="row d-flex align-content-end">
               <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
@@ -172,10 +142,8 @@ const Electromenager = () => {
         <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
       </div>
 
-      {/* --- Message de chargement / erreur / aucun produit (sous le titre) --- */}
       {isLoading ? (
         <div className="text-center py-4">
-          {/* si tu as un Preloader, tu peux l'utiliser */}
           <Preloader />
         </div>
       ) : cacheError ? (
@@ -184,8 +152,6 @@ const Electromenager = () => {
         <div className="text-center py-4">Aucun produit trouvé</div>
       ) : null}
 
-      {/* --- Swiper Desktop --- */}
-      {/* On affiche le Swiper seulement si on a des produits (et pas si on est en loading) */}
       {!isLoading && memoizedProducts.length > 0 && (
         <Swiper
           modules={[Navigation]}
@@ -196,22 +162,14 @@ const Electromenager = () => {
           className="Liste_produits d-none d-lg-block mt-2"
         >
           {memoizedProducts.map((product) => {
-            const toggleFavorite = (product) => {
-              const existing = favorites.find(
-                (fav) => fav.product_id === product.id
-              );
-
-              if (existing) {
-                // Le produit est déjà dans les favoris → SUPPRESSION
-                removeFavorite(existing.id);
-              } else {
-                // Le produit n'est pas favori → AJOUT
-                addFavorite(product.id);
-              }
-            };
             const isFavorite =
-              favorites &&
               favorites.some((fav) => fav.product_id === product.id);
+            const toggleFavorite = () =>
+              isFavorite
+                ? removeFavorite(
+                  favorites.find((f) => f.product_id === product.id).id
+                )
+                : addFavorite(product.id);
 
             return (
               <SwiperSlide
@@ -220,19 +178,17 @@ const Electromenager = () => {
               >
                 <img
                   loading="lazy"
-                  src={getImageUrl(product.image)}
-                  alt={product.name ?? "Produit"}
-                  className="img_product swiper-lazy"
+                  src={product.image}
+                  alt={product.name}
+                  className="img_product"
                   onClick={() => openPopUp(product)}
                 />
-                <div className="border border-1 border-top w-100 text-center py-2">
-                  <div className="product_title fw-bold petit_titre">
-                    {product.name}
-                  </div>
+                <div className="border-top w-100 text-center py-2">
+                  <div className="fw-bold petit_titre text-truncate" title={product.name}>{product.name}</div>
                   <div className="text-muted">
                     {product.price ?? product.new_price ?? "—"} FCFA
                   </div>
-                  <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                  <div className="d-flex justify-content-center gap-3 mt-2">
                     <FontAwesomeIcon
                       icon={faCartShopping}
                       onClick={() => handleAddToCart(product)}
@@ -241,8 +197,8 @@ const Electromenager = () => {
                     {isLoggedIn && (
                       <FontAwesomeIcon
                         icon={faHeart}
-                        onClick={() => toggleFavorite(product)}
-                        style={{ cursor: "pointer", color: !isFavorite ? "#FA7F1B" : "red" }}
+                        onClick={toggleFavorite}
+                        style={{ cursor: "pointer", color: isFavorite ? "red" : "#FA7F1B" }}
                       />
                     )}
                   </div>
@@ -253,48 +209,39 @@ const Electromenager = () => {
         </Swiper>
       )}
 
-      {/* --- Embla Mobile --- */}
       {!isLoading && memoizedProducts.length > 0 && (
         <div className="embla d-lg-none mt-2">
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
               {memoizedProducts.map((product) => {
-                const toggleFavorite = (product) => {
-                  const existing = favorites.find(
-                    (fav) => fav.product_id === product.id
-                  );
-
-                  if (existing) {
-                    // Le produit est déjà dans les favoris → SUPPRESSION
-                    removeFavorite(existing.id);
-                  } else {
-                    // Le produit n'est pas favori → AJOUT
-                    addFavorite(product.id);
-                  }
-                };
                 const isFavorite =
-                  favorites &&
                   favorites.some((fav) => fav.product_id === product.id);
+                const toggleFavorite = () =>
+                  isFavorite
+                    ? removeFavorite(
+                      favorites.find((f) => f.product_id === product.id).id
+                    )
+                    : addFavorite(product.id);
 
                 return (
                   <div
                     key={product.id}
-                    className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-2 shadow-sm"
+                    className="embla__slide border rounded-3 me-2 shadow-sm"
                   >
                     <img
                       loading="lazy"
-                      src={getImageUrl(product.image)}
-                      alt={product.name ?? "Produit"}
+                      src={product.image}
+                      alt={product.name}
                       className="img_product"
                       onClick={() => openPopUp(product)}
                     />
 
                     <div className="text-center mt-2">
-                      <div className="petit_titre fw-bold">{product.name}</div>
+                      <div className="fw-bold" >{product.name}</div>
                       <div className="text-muted small">
                         {product.price ?? "—"} FCFA
                       </div>
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                      <div className="d-flex justify-content-center gap-3 mt-2">
                         <FontAwesomeIcon
                           icon={faCartShopping}
                           onClick={() => handleAddToCart(product)}
@@ -303,21 +250,23 @@ const Electromenager = () => {
                         {isLoggedIn && (
                           <FontAwesomeIcon
                             icon={faHeart}
-                            onClick={() => toggleFavorite(product)}
-                            style={{ cursor: "pointer", color: !isFavorite ? "#FA7F1B" : "red" }}
+                            onClick={toggleFavorite}
+                            style={{
+                              cursor: "pointer",
+                              color: isFavorite ? "red" : "#FA7F1B",
+                            }}
                           />
                         )}
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
         </div>
       )}
 
-      {/* Pop-up */}
       {showPopUp && (
         <VusProduct closePopUp={closePopUp} product={selectedProduct} />
       )}

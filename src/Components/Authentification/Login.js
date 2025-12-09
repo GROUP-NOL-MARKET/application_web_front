@@ -63,6 +63,14 @@ const Login = () => {
     window.location.href = `http://localhoset:8000/auth/${provider}/redirect`;
   };
 
+  const toggleMode = () => {
+    setModeEmail(!modeEmail);
+    setErrors({});
+
+    if (!modeEmail) setEmail("");
+    else setPhone("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
@@ -78,25 +86,25 @@ const Login = () => {
       newErrors.email = "Veuillez renseigner au moins l'email OU le numéro.";
       return;
     }
-    if (email) {
-      if (!emailRegex.test(email)) {
-        newErrors.email = "Email invalide";
-      } else {
-        delete newErrors.email;
+    if (modeEmail) {
+      if (!email.trim()) {
+        newErrors.email = "Veuillez entrer un email";
+      } else if (!emailRegex.test(email)) {
+        newErrors.email = "L'email est invalide";
       }
-    }
-    if (cleanPhone) {
-      if (!/^01\d{8}$/.test(cleanPhone)) {
-        newErrors.phone =
-          "Le numéro doit commencer par 01 et contenir 10 chiffres au total.";
+    } else {
+      if (!cleanPhone.trim()) {
+        newErrors.phone = "Veuillez entrer un numéro de téléphone";
+      } else if (!/^01\d{8}$/.test(cleanPhone)) {
+        newErrors.phone = "Le numéro doit commencer par 01 et contenir 10 chiffres.";
       } else {
-        // Vérifie que les deux chiffres après '01' sont entre 20 et 29
         const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
         if (secondPair < 50 || secondPair > 99) {
           newErrors.phone =
             "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
         }
       }
+      // 96, 97, 66, 67, 61, 62, 69, 90, 91, 51, 52, 53
     }
 
     if (!password) {
@@ -184,10 +192,11 @@ const Login = () => {
                         type="email"
                         value={email}
                         className="input_register"
+                        disabled={!modeEmail}
                         onChange={(e) => setEmail(e.target.value)}
                         isInvalid={errors?.email ? true : false}
                       />
-                      <Button onClick={() => setModeEmail(!modeEmail)}>
+                      <Button onClick={toggleMode}>
                         <FontAwesomeIcon icon={faMobile} />
                       </Button>
                     </InputGroup>
@@ -215,10 +224,11 @@ const Login = () => {
                           placeholder="01 XX XX XX XX"
                           className="input_register"
                           value={phone}
+                          disabled={modeEmail}
                           onChange={handleChange}
                           isInvalid={errors?.phone ? true : false}
                         />
-                        <Button onClick={() => setModeEmail(!modeEmail)}>
+                        <Button onClick={toggleMode}>
                           <FontAwesomeIcon icon={faEnvelope} />
                         </Button>
                       </InputGroup>

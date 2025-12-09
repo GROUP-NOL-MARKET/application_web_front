@@ -147,7 +147,7 @@ const Products = () => {
                     onClick={() => openPopUp(product)}
                   />
                   <div className="card-body">
-                    <h5 className="text-truncate petit_titre">
+                    <h5 className="text-truncate petit_titre" title={product.name}>
                       {product.name}
                     </h5>
                     <p className="card-text petit_titre fw-bold">

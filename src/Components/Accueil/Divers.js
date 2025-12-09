@@ -7,16 +7,18 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
-import divers from "../assets/Images/divers.avif";
+import chewing from "../assets/Images/chewing gum.avif";
+import piles from "../assets/Images/piles rasoirs.avif";
+import papeterie from "../assets/Images/papeterie.avif";
+import ampoule from "../assets/Images/ampoule.avif";
 
 const Divers = () => {
   const sousCategories = [
-    { id: 1, name: "Chewing Gum", img: divers },
-    { id: 2, name: "Piles-rasoirs", img: divers },
-    { id: 3, name: "Papeterie", img: divers },
-    { id: 4, name: "Ampoule", img: divers },
+    { id: 1, name: "Chewing Gum", img: chewing },
+    { id: 2, name: "Piles - rasoirs", img: piles },
+    { id: 3, name: "papeterie", img: papeterie },
+    { id: 4, name: "Ampoule", img: ampoule },
   ];
-
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
@@ -59,6 +61,7 @@ const Divers = () => {
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-lg-block"
+        style={{ backgroundColor: "#F2F2F2" }}
       >
         {sousCategories.map((sub) => (
           <SwiperSlide
@@ -76,7 +79,7 @@ const Divers = () => {
 
       {/* Le swiper pour les petits écrans  */}
       {/* Le swiper pour les tout petits écrans  */}
-      <div className="embla d-lg-none mt-2">
+      <div className="embla d-lg-none mt-2" style={{ backgroundColor: "#F2F2F2" }}>
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {sousCategories.map((sub) => (

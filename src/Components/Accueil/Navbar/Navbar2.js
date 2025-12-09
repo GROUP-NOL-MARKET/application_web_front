@@ -202,7 +202,7 @@ const Navbar2 = React.memo(() => {
         </Link>
 
         {/*  Barre de recherche */}
-        <div className="col col-lg-5 d-flex align-items-center mx-2">
+        <div className="col-10 col-md-9 col-lg-5 d-flex align-items-center mx-2">
           <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
             <div className="col-5">
               <select
@@ -236,7 +236,7 @@ const Navbar2 = React.memo(() => {
             </div>
             <Form onSubmit={handleSearch} className="col">
               <div className="row">
-                <div className="col-9">
+                <div className="col-md-9 col-8">
                   <InputBase
                     placeholder="Tapez ici..."
                     inputProps={{ "aria-label": "search" }}
@@ -246,7 +246,7 @@ const Navbar2 = React.memo(() => {
                   />
                 </div>
 
-                <div className="col-3">
+                <div className="col-md-3 col-4">
                   <IconButton
                     type="submit"
                     className="w-100 h-100"
@@ -306,7 +306,7 @@ const Navbar2 = React.memo(() => {
                     <li>
                       <Link className="dropdown-item" to="/admin">
                         Mode admin{" "}
-                        <FontAwesomeIcon icon={faLock}  />
+                        <FontAwesomeIcon icon={faLock} />
                       </Link>
                     </li>
                   </ul>
@@ -377,6 +377,31 @@ const Navbar2 = React.memo(() => {
               />
             </Link>
             <p className="mb-0">Aide</p>
+          </div>
+        </div>
+        <div className=" row col-md-3 col-2 d-lg-none ">
+          <Link
+            to="/Cart"
+            style={{ color: "black" }}
+            className=" d-flex justify-content-center col-md-4"
+          >
+            <div className="d-flex position-relative">
+              <img
+                className="img-fluid"
+                src={Panier}
+                alt=""
+                style={{ width: "35px", height: "40px" }}
+              />
+
+              <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
+                {products.length}
+              </span>
+
+            </div>
+          </Link>
+          <div className="col-8 d-none d-md-block">
+            <p className="mb-0 pb-0">Panier</p>
+            <small className="mt-0 pt-0">{totalPrice.toLocaleString()} FCFA</small>
           </div>
         </div>
       </div>

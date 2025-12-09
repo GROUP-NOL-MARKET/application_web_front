@@ -12,23 +12,7 @@ import electromenager from "./assets/Images/electromenager.avif";
 import droguerie from "./assets/Images/droguerie.avif";
 import boisson from "./assets/Images/boisson.avif";
 import all_products from "./assets/Images/all_products.avif";
-// import voucher from "./assets/Images/voucher_img.webp";
 
-// const ProductData = () => {
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(() => {
-//     axios
-//       .get("http://127.0.0.1:8000/api/products")
-//       .then((response) => {
-//         setProducts(response.data);
-//       })
-//       .catch((error) =>
-//         console.log("Erreur de récupération de la liste des produits", error)
-//       );
-//   }, []);
-// };
-// export default ProductData;
 
 
 export const demoNotifications = [
@@ -269,17 +253,17 @@ export const sous_category_product = [
     category: "Epicerie",
     sous_category: [
       "Petit déjeuner",
-      "Céréales-Corn Flakes-pain grillé",
+      "Céréales-corn flakes Pain gri",
       "Biscuits gâteaux",
       "Amuse gueules",
       "Pains et viennoiseries",
       "Bonbons-chocolat",
-      "Conserves-plats cuisinés",
-      "Pâtes alimentaires-riz-purée",
-      "Assaisonnement-condiments",
-      "Huile-vinaigre",
+      "Conserves-plats cuisines",
+      "Pâtes alimentaires -riz - purée",
+      "Assaisonnement - condiments",
+      "Huile - Vinaigre",
       "Sardine",
-      "Produits du monde",
+      "Epicerie",
     ],
   },
 
@@ -287,13 +271,12 @@ export const sous_category_product = [
     category: "Droguerie",
     sous_category: [
       "Monde de Bébé",
-      "Prêt à porter",
       "Hygiène dentaire",
       "Rasage",
-      "Produits ménagers",
+      "Produits ménager",
       "Soins de beauté",
-      "Mouchoirs",
-      "Désodorisant-insecticide",
+      "Mouchoir - papier toilette",
+      "Désodorisants - insecticides",
       "Hygiène féminine",
     ],
   },
@@ -303,25 +286,24 @@ export const sous_category_product = [
   },
   {
     category: "Divers",
-    sous_category: ["Chewing Gum", "Piles-rasoirs", "Papeterie", "Ampoule"],
+    sous_category: ["Chewing Gum", "Piles - rasoirs", "papeterie", "Ampoule"],
   },
   {
     category: "Produits Frais",
     sous_category: [
-      "Fromages-Fruits frais-Légumes",
+      "Fromages - fruits frais - légumes",
       "yaourt",
-      "Produits congélés",
-      "Surgélés-Crêmerie fraîche",
-      "Glâces et crêmes glacées",
+      "Surgeles  crèmerie fraîche",
+      "Glaces et crèmes glacées",
       "Charcuterie volaille poisson",
-      "Produits Locaux frais",
+      "Produits Locaux Frais",
     ],
   },
   {
     category: "Boissons",
     sous_category: [
       "Vins",
-      "Spiriteux",
+      "Spiritueux",
       "Jus de fruits",
       "Eaux minérales",
       "Sirop",
@@ -333,11 +315,11 @@ export const sous_category_product = [
   },
   {
     category: "Animalerie",
-    sous_category: ["Nourriture pour chiens", "Nourriture pour chats"],
+    sous_category: ["Nourritures pour chien et chat"],
   },
   {
     category: "electroménager",
-    sous_category: ["Matériels Nasco"],
+    sous_category: ["Electroménager"],
   },
 ];
 
