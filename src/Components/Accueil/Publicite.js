@@ -82,20 +82,21 @@ const Publicite = () => {
         loop
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         spaceBetween={15}
+        slidesPerView={3}
         className="d-none d-lg-block mt-4"
       >
         {carouselImages.map((img, idx) => (
           <SwiperSlide
             key={img.id || idx}
-            className="carousel-slide mobile-carousel-item"
+            className="desktop-slide"
           >
-            <div className="zoom-container">
+ 
               <img
                 src={img.url}
                 alt={`img_${idx}`}
-                className="mobile-carousel-img"
+                className="desktop-slide-img"
               />
-            </div>
+
           </SwiperSlide>
         ))}
       </Swiper>

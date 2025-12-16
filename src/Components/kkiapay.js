@@ -1,32 +1,34 @@
-import React, { useEffect } from "react";
-import { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } from "kkiapay";
+import React, { useEffect} from "react";
+import {
+  openKkiapayWidget,
+  addKkiapayListener,
+  removeKkiapayListener,
+} from "kkiapay";
 import kiapay from "./assets/Images/kkiapay.png";
+import { Button } from "react-bootstrap";
 
-const KkiaPay = ({ amount, email, phone, name, onSuccess, disabled }) => {
-    useEffect(() => {
-        const handleSuccess = (data) => {
-            onSuccess(data);
-        };
-        addKkiapayListener("success", handleSuccess);
-        return () => removeKkiapayListener("success", handleSuccess);
-    }, [onSuccess]);
+const KkiaPay = ({ amount, phone, email, name, disabled, onSuccess }) => {
+  useEffect(() => {
+    const handleSuccess = (data) => onSuccess && onSuccess(data);
+    addKkiapayListener("success", handleSuccess);
+    return () => removeKkiapayListener("success", handleSuccess);
+  }, [onSuccess]);
 
-    const handleClick = () => {
-        openKkiapayWidget({
-            amount,
-            api_key: "461a5930ce9b11f09f4a631e834d10ba",
-            sandbox: true,          // ou false en prod
-            phone,
-            email,
-            name,
-        });
-    };
+  const handleClick = () => {
+    if (disabled) return;
+    openKkiapayWidget({
+      amount,
+      api_key: "461a5930ce9b11f09f4a631e834d10ba",
+      sandbox: true,
+      phone,
+      email,
+      name,
+      request_id: "KKIA-" + Date.now(),
+    });
+  };
 
-    return (
-        <div onClick={disabled ? null : handleClick} >
-            <img src={kiapay} alt="icone de paiement" style={{ width: 70 }} />
-        </div>
-    );
+  return <Button className="bg-success w-100 rounded-5 border-0" onClick={handleClick}>KkiaPay <img src={kiapay} style={{ width: 20, cursor: "pointer" }}  alt="" /></Button> 
 };
+
 
 export default KkiaPay;

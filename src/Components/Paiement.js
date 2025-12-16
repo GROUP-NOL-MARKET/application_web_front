@@ -33,8 +33,7 @@ const Paiement = () => {
   const openPopup1 = () => setshowPopUp1(true);
 
   useEffect(() => {
-    const isAnyPopupOpen =
-      showPopUp1 || showPopUp;
+    const isAnyPopupOpen = showPopUp1 || showPopUp;
 
     document.body.style.overflow = isAnyPopupOpen ? "hidden" : "auto";
 
@@ -92,11 +91,7 @@ const Paiement = () => {
   const handleAdresseSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !adresse.ville ||
-      !adresse.quartier ||
-      !adresse.localisation
-    ) {
+    if (!adresse.ville || !adresse.quartier || !adresse.localisation) {
       toast.error("Veuillez remplir tous les champs de l’adresse.");
       return;
     }
@@ -137,7 +132,7 @@ const Paiement = () => {
   const { clearCart } = useContext(PanierContext);
 
   const handleSuccess = async (payment) => {
-    console.log("Réponse Kkiapay:", payment);
+    console.log("Réponse Kkiapay (dans Paiement):", payment);
 
     try {
       const token = localStorage.getItem("token");
@@ -147,37 +142,54 @@ const Paiement = () => {
         return;
       }
 
-      // Appel backend pour enregistrer la commande
-      await API.post(
-        "/paiement/kkiapay/callback",
-        {
-          transactionId: payment.transactionId,
-          amount: totalPrice,
-          cart: products,
-          phone: user.phone || '0123456789',
-          paymentData: payment,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const payload = {
+        transactionId: payment.transactionId ?? payment.transaction_id ?? null,
+        amount: totalPrice,
+        cart: products,
+        phone: user.phone ?? "0000000000",
+        requestId: payment.requestId ?? payment.request_id ?? null,
+        paymentData: payment,
+      };
+
+      console.log("Payload vers backend (Paiement):", payload);
+
+      const response = await API.post("/paiement/kkiapay/callback", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // backend renvoie status success + order_id
+      if (response?.status === 200) {
+        dispatch(fetchCommandes(1));
+
+        // Vider le panier AVANT de rediriger (await clearCart si c'est async)
+        await clearCart();
+
+        toast.success("Paiement effectué et commande enregistrée !", {
+          onClose: () => {
+            window.location.href = "/"; // ou navigate("/paiement-reussi", { state: { orderId: response.data.order_id, amount: totalPrice } })
+          },
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Erreur lors du traitement de la commande (Paiement):",
+        error
       );
 
-      dispatch(fetchCommandes(1));
-
-      // Vider le panier AVANT de quitter la page
-      await clearCart();
-
-      // Rediriger vers la page d'accueil
-      window.location.href = "/";
-
-      toast.success("Paiement effectué et commande enregistrée !");
-
-    } catch (error) {
-      toast.error("Erreur lors du traitement de la commande.");
-      console.error(error);
+      // Si erreur de validation du backend, afficher les messages s'ils existent
+      if (error?.response?.status === 422 && error.response.data?.errors) {
+        const errs = error.response.data.errors;
+        const firstKey = Object.keys(errs)[0];
+        const firstMsg = errs[firstKey][0];
+        toast.error(firstMsg);
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erreur lors du traitement de la commande.");
+      }
     }
   };
-
 
   return (
     <div className="bg-light">
@@ -260,13 +272,17 @@ const Paiement = () => {
                     <img
                       alt={product.name}
                       src={product.image}
-                      className="img-fluid"
+                      className="w-100 h-100"
                     />
                   </div>
                   <div className="col">
-                    <div className="marque text-black-50">{product.category}</div>
+                    <div className="marque text-black-50">
+                      {product.category}
+                    </div>
                     <div className="name">{product.name}</div>
-                    <div className="type mt-2">Type : {product.sous_category}</div>
+                    <div className="type mt-2">
+                      Type : {product.sous_category}
+                    </div>
                     <div className="type">Quantité : {product.quantity}</div>
                     <div className="disponibilité">
                       Disponibilité : {product.disponibility}
@@ -309,39 +325,47 @@ const Paiement = () => {
                 </p>
               </div>
 
-              <div className="w-100 mt-1">
-                <h2 className="title_prix_total">Payer avec :</h2>
-                <ul className="d-flex flex-row gap-4">
+              <div className="w-100 mt-3">
+                <h2 className="petit_titre fw-bold">
+                  Procéder au paiement avec :
+                </h2>
+                <ul className="d-flex flex-row ">
                   <div>
-                    <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup} style={{ borderRadius: "100%", cursor: "pointer" }}>
+                    <li
+                      className="bg-light d-flex align-items-center justify-content-center bouton_paiement"
+                      onClick={openPopup}
+                      style={{ borderRadius: "100%", cursor: "pointer" }}
+                    >
                       <img alt="" src={mtn} style={{ width: "70px" }} />
-
                     </li>
-                    <p className="fw-bold" style={{ color: "#CCA204" }}>Mtn momo</p>
+                    <p className="fw-bold" style={{ color: "#CCA204" }}>
+                      Mtn momo
+                    </p>
                   </div>
 
-                  {/* <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement" onClick={openPopup1} style={{ borderRadius: "100%", cursor: "pointer" }}>
-                    adresseValidee ? openPopup1 : null
+                  {/* <li
+                    className="bg-light d-flex align-items-center justify-content-center bouton_paiement"
+                    onClick={openPopup1}
+                    style={{ borderRadius: "100%", cursor: "pointer" }}
+                  >
+                    
                     <img alt="" src={moov} style={{ width: "60px" }} />
                   </li> */}
-                  <div>
-                    <li className="bg-light d-flex align-items-center justify-content-center bouton_paiement">
-
+                  <div className="mt-3">
+                    <li className=" d-flex align-items-center justify-content-center w-100">
                       <KkiaPay
                         amount={totalPrice}
                         email="client@email.com"
                         phone="0123456789"
                         name="Client Abonné"
+                        cart={products}
+                        // reference={orderReference}
                         disabled={!adresseValidee}
                         onSuccess={handleSuccess}
                       />
-
                     </li>
-                    <p className="fw-bold" style={{ color: "blue" }}> Kkiapay</p>
                   </div>
-
                 </ul>
-
 
                 {/* <FedapayButton amount={totalPrice} products={products} address={adresseComplete} /> */}
 
@@ -355,7 +379,7 @@ const Paiement = () => {
           </div>
         </div>
       </div>
-      {showPopUp && <MomoPay closePopUp={closePopUp} />}
+      {showPopUp && <MomoPay closePopUp={closePopUp} product={products} amount={totalPrice}/>}
       {showPopUp1 && <MoovPay closePopUp1={closePopUp1} />}
     </div>
   );

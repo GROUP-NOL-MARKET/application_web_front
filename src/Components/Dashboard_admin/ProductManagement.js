@@ -12,7 +12,12 @@ import API from "../Authentification/apiAdmin";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
-  const [stats, setStats] = useState({ total: 0, published: 0, deleted: 0, draft: 0 });
+  const [stats, setStats] = useState({
+    total: 0,
+    published: 0,
+    deleted: 0,
+    draft: 0,
+  });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -22,18 +27,21 @@ const ProductManagement = () => {
   const token = localStorage.getItem("adminToken");
 
   const handleNavigate = () => {
-    navigate("/admin/AddProduct")
-  }
+    navigate("/admin/AddProduct");
+  };
 
   // Charger les produits
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await API.get(`/admin/products?page=${page}&search=${search}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await API.get(
+        `/admin/products?page=${page}&search=${search}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setProducts(response.data.data);
       setStats({
@@ -62,7 +70,7 @@ const ProductManagement = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container">
       <Entete title="Gestion des produits" />
 
       {/* HEADER ACTIONS */}
@@ -89,9 +97,12 @@ const ProductManagement = () => {
             <div className="mt-2">
               <p className="texte_brut">
                 Produits: Tous ({stats?.total}) |
-                <span style={{ color: "blue" }}> Publiés: </span>({stats?.published}) |
-                <span style={{ color: "blue" }}> Supprimés: </span>({stats?.deleted}) |
-                <span style={{ color: "blue" }}> Brouillons: </span>({stats?.draft})
+                <span style={{ color: "blue" }}> Publiés: </span>(
+                {stats?.published}) |
+                <span style={{ color: "blue" }}> Supprimés: </span>(
+                {stats?.deleted}) |
+                <span style={{ color: "blue" }}> Brouillons: </span>(
+                {stats?.draft})
               </p>
             </div>
           </div>
@@ -137,36 +148,42 @@ const ProductManagement = () => {
         ) : (
           <table className="table table-striped">
             <thead>
-              <tr className="petit_titre">
-                <th><FontAwesomeIcon icon={faImage} /></th>
-                <th>Référence</th>
-                <th>Nom</th>
-                <th>Famille</th>
-                <th>Prix</th>
-                <th>Catégorie</th>
-                <th>Description</th>
-                <th>Disponibilité</th>
-                <th>Sous-catégorie</th>
+              <tr className="petit_titre row">
+                <th className="col-1">
+                  <FontAwesomeIcon icon={faImage} />
+                </th>
+                <th className="col-1">Référence</th>
+                <th className="col-2">Nom</th>
+                <th className="col-1">Famille</th>
+                <th className="col-1">Prix</th>
+                <th className="col-1">Catégorie</th>
+                <th className="col-2">Description</th>
+                <th className="col-1">Disponibilité</th>
+                <th className="col-2">Sous-catégorie</th>
               </tr>
             </thead>
             <tbody>
               {products.length > 0 ? (
                 products.map((p) => (
-                  <tr key={p.id}>
-                    <td><img src={p.image_url} alt={p.name} width="50" /></td>
-                    <td className="texte_brut">{p.reference}</td>
-                    <td className="texte_brut">{p.name}</td>
-                    <td className="texte_brut">{p.family}</td>
-                    <td className="texte_brut">{p.price} FCFA</td>
-                    <td className="texte_brut">{p.category}</td>
-                    <td className="texte_brut">{p.description}</td>
-                    <td className="texte_brut">{p.disponibility}</td>
-                    <td className="texte_brut">{p.sous_category}</td>
+                  <tr key={p.id} className="row">
+                    <td className="col-1">
+                      <img src={p.image} alt={p.name} width="50" />
+                    </td>
+                    <td className="texte_brut col-1">{p.reference}</td>
+                    <td className="texte_brut col-2">{p.name}</td>
+                    <td className="texte_brut col-1">{p.family}</td>
+                    <td className="texte_brut col-1">{p.price} FCFA</td>
+                    <td className="texte_brut col-1">{p.category}</td>
+                    <td className="texte_brut col-2">{p.description}</td>
+                    <td className="texte_brut col-1">{p.disponibility}</td>
+                    <td className="texte_brut col-2">{p.sous_category}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="10" className="text-center">Aucun produit trouvé</td>
+                  <td colSpan="10" className="text-center">
+                    Aucun produit trouvé
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -175,17 +192,37 @@ const ProductManagement = () => {
       </div>
 
       {/* PAGINATION */}
-      <nav aria-label="Pagination" className="mt-3">
-        <ul className="pagination justify-content-center">
-          {[...Array(totalPages)].map((_, index) => (
-            <li key={index} className={`page-item ${page === index + 1 ? "active" : ""}`}>
-              <button className="page-link" onClick={() => setPage(index + 1)}>
-                {index + 1}
+      {totalPages > 1 && (
+        <nav
+          aria-label="Pagination"
+          className="d-flex justify-content-center mt-3"
+        >
+          <ul className="pagination mb-0">
+            {/* Bouton Précédent */}
+            <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={() => setPage(page - 1)}>
+                Précédent
               </button>
             </li>
-          ))}
-        </ul>
-      </nav>
+
+            {/* Indicateur Page X / Y */}
+            <li className="page-item disabled">
+              <span className="page-link">
+                {page} / {totalPages}
+              </span>
+            </li>
+
+            {/* Bouton Suivant */}
+            <li
+              className={`page-item ${page === totalPages ? "disabled" : ""}`}
+            >
+              <button className="page-link" onClick={() => setPage(page + 1)}>
+                Suivant
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 };

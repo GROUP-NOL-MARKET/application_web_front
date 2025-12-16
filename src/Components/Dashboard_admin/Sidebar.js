@@ -11,7 +11,7 @@ import revenu from "../assets/Images/icone/revenu.png";
 import profil from "../assets/Images/icone/vendeur.png";
 import analyse from "../assets/Images/icone/analytique.png";
 import accueil from "../assets/Images/icone/accueil.png";
-import img_profil from "../assets/Images/img_profil.webp";
+import img_profil from "../assets/Images/Logo_entreprise.webp";
 import add_product from "../assets/Images/icone/ajouter-un-produit.png";
 import meilleur_produit from "../assets/Images/icone/meilleur.png";
 import product_management from "../assets/Images/icone/traits.png";

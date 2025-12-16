@@ -1,4 +1,3 @@
-
 import best_product_1 from "./assets/Images/best_product_1.webp";
 import best_product_2 from "./assets/Images/best_product_2.webp";
 import best_product_3 from "./assets/Images/bet_product_3.webp";
@@ -13,17 +12,30 @@ import droguerie from "./assets/Images/droguerie.avif";
 import boisson from "./assets/Images/boisson.avif";
 import all_products from "./assets/Images/all_products.avif";
 
-
-
 export const demoNotifications = [
-  { id: 1, name: "J. Davidson", avatar: img_profil, message: "a adhéré au programme de réduction", time: "2h ago", tag: "Offers", canAct: true, highlight: true, read: false },
-  { id: 2, name: "Mark Dowers", avatar: img_profil, message: "a créé un nouveau compte par mail", time: "3h ago", tag: "Referral link", canAct: false, read: false },
+  {
+    id: 1,
+    name: "J. Davidson",
+    avatar: img_profil,
+    message: "a adhéré au programme de réduction",
+    time: "2h ago",
+    tag: "Offers",
+    canAct: true,
+    highlight: true,
+    read: false,
+  },
+  {
+    id: 2,
+    name: "Mark Dowers",
+    avatar: img_profil,
+    message: "a créé un nouveau compte par mail",
+    time: "3h ago",
+    tag: "Referral link",
+    canAct: false,
+    read: false,
+  },
   // ...
 ];
-
-
-
-
 
 export const avis = [
   {
@@ -176,7 +188,6 @@ export const category_product = [
   },
 ];
 
-
 export const messages = [
   {
     id: 1,
@@ -185,7 +196,7 @@ export const messages = [
     img: best_product_3,
     content: "Intitulé du message",
     date: "01/03/2026",
-    heure: "01:50"
+    heure: "01:50",
   },
   {
     id: 2,
@@ -194,7 +205,7 @@ export const messages = [
     img: best_product_3,
     content: "Intitulé du message",
     date: "01/03/2026",
-    heure: "01:50"
+    heure: "01:50",
   },
   {
     id: 3,
@@ -203,7 +214,7 @@ export const messages = [
     img: best_product_3,
     content: "Intitulé du message",
     date: "01/03/2026",
-    heure: "01:50"
+    heure: "01:50",
   },
   {
     id: 4,
@@ -212,41 +223,44 @@ export const messages = [
     img: best_product_3,
     content: "Intitulé du message",
     date: "01/03/2026",
-    heure: "01:50"
+    heure: "01:50",
   },
 ];
 
 export const reviews = [
   {
     id: 1,
-    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    content:
+      "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
     commande_id: 2,
     date: "01/03/2026",
-    heure: "05:17"
+    heure: "05:17",
   },
   {
     id: 2,
-    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    content:
+      "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
     commande_id: 2,
     date: "01/03/2026",
-    heure: "05:17"
+    heure: "05:17",
   },
   {
     id: 3,
-    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    content:
+      "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
     commande_id: 2,
     date: "01/03/2026",
-    heure: "05:17"
+    heure: "05:17",
   },
   {
     id: 4,
-    content: "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
+    content:
+      "J'ai été satisfait en un temps record et j'en suis tellement ravi. Je recommande ce site à tout le monde pour pouvoir faire leur achats d'une manière ou d'une autre",
     commande_id: 2,
     date: "01/03/2026",
-    heure: "05:17"
+    heure: "05:17",
   },
 ];
-
 
 export const sous_category_product = [
   {
@@ -282,7 +296,19 @@ export const sous_category_product = [
   },
   {
     category: "Produits Locaux",
-    sous_category: ["Produits locaux"],
+    sous_category: [
+      "Épices",
+      "Thés & Infusions",
+      "Miel & Divers",
+      "Amuses bouches",
+      "Farines",
+      "Jus",
+      "Vins",
+      "Sodabi",
+      "Riz, haricots...",
+      "Cosmétique",
+      "Eau",
+    ],
   },
   {
     category: "Divers",

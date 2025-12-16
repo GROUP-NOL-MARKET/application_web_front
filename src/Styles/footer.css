@@ -16,11 +16,11 @@ h3 {
   font-optical-sizing: auto;
   margin-bottom: 4px;
 }
-.politiquelivraison {
+/* .politiquelivraison {
   background: linear-gradient(rgba(231, 231, 231, 0.822), rgb(238, 238, 238)),
     url("../Components/assets/Images/image_livreur.avif");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
-}
+} */

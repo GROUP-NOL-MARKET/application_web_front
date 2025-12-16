@@ -1,270 +1,367 @@
-import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
 import "../../Styles/UserDashboard/Commandes.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommandes } from "../../Store/CommandesSlice";
+import { toast } from "react-toastify";
+import API from "../Authentification/api";
 import Animation from "../animation/loading_gray.json";
 import Rating from "./Rating";
+import ValiderSuppression from "./ValiderSuppression";
 
 const Lottie = lazy(() => import("lottie-react"));
 
 const Commandes = () => {
-    const [showPopUp, setshowPopUp] = useState(false);
-    const [commandeId, setCommandeId] = useState("");
+  const [showPopUp, setshowPopUp] = useState(false);
+  const [commandeId, setCommandeId] = useState("");
 
-    const dispatch = useDispatch();
-    const { orders, loading, totalPages, currentPage, cache } = useSelector(
-        (state) => state.commandes
+  const dispatch = useDispatch();
+  const { orders, loading, totalPages, currentPage, cache } = useSelector(
+    (state) => state.commandes
+  );
+
+  const [activeTab, setActiveTab] = useState("livraison");
+
+  const statusColors = useMemo(
+    () => ({
+      livree: "green",
+      "en cours": "orange",
+      validee: "gray",
+      annulee: "red",
+      retournee: "purple",
+    }),
+    []
+  );
+
+  const closePopUp = () => {
+    setCommandeId(null);
+    setshowPopUp(false);
+  };
+
+  const openPopUp = (id) => {
+    setCommandeId(id);
+    setshowPopUp(true);
+  };
+
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+  const openPopUp1 = (orderId) => {
+    setSelectedOrderId(orderId);
+  };
+  const refreshOrders = () => {
+    dispatch(fetchCommandes(currentPage));
+  };
+
+  const handleRefund = async (orderId, refundRequested) => {
+    if (refundRequested) return;
+    try {
+      await API.post(`/orders/${orderId}/refund-request`);
+
+      toast.success("Demande de remboursement envoyée");
+
+      dispatch(fetchCommandes(currentPage));
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Erreur lors de la demande de remboursement"
+      );
+    }
+  };
+
+  // Charger les commandes avec cache
+  useEffect(() => {
+    if (!cache[currentPage]) {
+      dispatch(fetchCommandes(currentPage));
+    }
+  }, [dispatch, cache, currentPage]);
+
+  // Gestion pagination
+  const handlePageChange = useCallback(
+    (newPage) => {
+      if (newPage >= 1 && newPage <= totalPages) {
+        dispatch(fetchCommandes(newPage));
+      }
+    },
+    [dispatch, totalPages]
+  );
+
+  // Filtrage selon l'onglet actif
+  const commandesFiltrees = useMemo(() => {
+    return orders.filter((cmd) =>
+      activeTab === "livraison"
+        ? ["livree", "en cours", "validee", "pending"].includes(cmd.status)
+        : ["annulee", "retournee", "cancelled"].includes(cmd.status)
     );
+  }, [orders, activeTab]);
 
-    const [activeTab, setActiveTab] = useState("livraison");
-
-    const statusColors = useMemo(
-        () => ({
-            livree: "green",
-            "en cours": "orange",
-            validee: "gray",
-            annulee: "red",
-            retournee: "purple",
-        }),
-        []
-    );
-
-    const closePopUp = () => {
-        setCommandeId(null);
-        setshowPopUp(false);
-    };
-    const openPopUp = (id) => {
-        setCommandeId(id);
-        setshowPopUp(true);
-    };
-
-    // Charger les commandes avec cache
-    useEffect(() => {
-        if (!cache[currentPage]) {
-            dispatch(fetchCommandes(currentPage));
-        }
-    }, [dispatch, cache, currentPage]);
-
-    // Gestion pagination
-    const handlePageChange = useCallback(
-        (newPage) => {
-            if (newPage >= 1 && newPage <= totalPages) {
-                dispatch(fetchCommandes(newPage));
-            }
-        },
-        [dispatch, totalPages]
-    );
-
-    // Filtrage selon l'onglet actif
-    const commandesFiltrees = useMemo(() => {
-        return orders.filter((cmd) =>
-            activeTab === "livraison"
-                ? ["livree", "en cours", "validee", "pending"].includes(cmd.status)
-                : ["annulee", "retournee", "cancelled"].includes(cmd.status)
-        );
-    }, [orders, activeTab]);
-
-    return (
-        <div className="commandes-container">
-            <div className="shadow-sm border border-1 p-2 mb-5">
-                {/* Titre */}
-                <div className="border-bottom border-2 border-black w-100 py-2 d-flex align-items-center">
-                    <h2 className="taux_moyen">Commandes</h2>
-                </div>
-
-                {/* Onglets */}
-                <div className="row mt-3 mb-2">
-                    <div className="col-6 col-md-3">
-                        <button
-                            className={`nav-link text-truncate ${activeTab === "livraison" ? "active-tab" : "text-dark"
-                                }`}
-                            onClick={() => {
-                                setActiveTab("livraison");
-                                handlePageChange(1);
-                            }}
-                        >
-                            En cours / Livrées
-                        </button>
-                    </div>
-                    <div className="col-6 col-md-3">
-                        <button
-                            className={`nav-link text-truncate ${activeTab === "annule" ? "active-tab" : "text-dark"
-                                }`}
-                            onClick={() => {
-                                setActiveTab("annule");
-                                handlePageChange(1);
-                            }}
-                        >
-                            Annulées / Retournées
-                        </button>
-                    </div>
-                </div>
-
-                {/* Liste des commandes */}
-                <div className="mt-3">
-                    {loading ? (
-                        <Suspense fallback={<div>Chargement...</div>}>
-                            <Lottie
-                                animationData={Animation}
-                                loop
-                                style={{
-                                    width: 50,
-                                    height: 50,
-                                    margin: "2rem auto",
-                                    display: "block",
-                                }}
-                            />
-                        </Suspense>
-                    ) : commandesFiltrees.length === 0 ? (
-                        <h4 className="petit_titre text-center">
-                            Vous n’avez aucune commande{" "}
-                            {activeTab === "livraison"
-                                ? "en cours ou livrée"
-                                : "annulée ou retournée"}.
-                        </h4>
-                    ) : (
-                        <>
-                            {commandesFiltrees.map((order) => (
-                                <div key={order.id} className="row mb-3">
-                                    <div
-                                        className="accordion col-lg-10 col-12 pb-3"
-                                        id={`faqAccordion${order.id}`}
-                                    >
-                                        <div className="accordion-item">
-                                            <h2 className="accordion-header" id={`heading${order.id}`}>
-                                                <button
-                                                    className="accordion-button btn_aide w-100"
-                                                    type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target={`#collapse${order.id}`}
-                                                    aria-expanded="false"
-                                                    aria-controls={`collapse${order.id}`}
-                                                >
-
-                                                    <span> Commande #{order.id} — Total: {order.total} FCFA </span>
-                                                    <span className="ms-5" style={{ fontSize: "10px" }}>{new Date(order.created_at).toLocaleDateString("fr-FR")} à {new Date(order.created_at).toLocaleTimeString("fr-FR")}</span>
-                                                </button>
-                                            </h2>
-                                            <div
-                                                id={`collapse${order.id}`}
-                                                className="accordion-collapse collapse show"
-                                                aria-labelledby={`heading${order.id}`}
-                                                data-bs-parent={`#faqAccordion${order.id}`}
-                                            >
-                                                <div className="accordion-body reponse">
-                                                    <div className="row fw-bold border-bottom pb-2 mb-2">
-                                                        <div className="col-3">Image</div>
-                                                        <div className="col-4 col-md-3">Nom</div>
-                                                        <div className="col-2 d-none d-md-block">Catégorie</div>
-                                                        <div className="col-2 col-md-1">Qté</div>
-                                                        <div className="col-3">Prix unitaire</div>
-                                                    </div>
-
-                                                    {order.produits?.map((produit, index) => (
-                                                        <div
-                                                            key={`${order.id}-${index}`}
-                                                            className="row mb-2"
-                                                        >
-                                                            <div className="col-3">
-                                                                <img
-                                                                    src={produit.img}
-                                                                    alt={produit.name}
-                                                                    className="img-fluid rounded-3 shadow-sm"
-                                                                />
-                                                            </div>
-                                                            <div className="col-4 col-md-3 d-flex align-items-center texte_brut">
-                                                                {produit.name}
-                                                            </div>
-                                                            <div className="col-2 d-none d-md-flex align-items-center texte_brut">
-                                                                {produit.category || produit.sous_category}
-                                                            </div>
-                                                            <div className="col-2 col-md-1 d-flex align-items-center texte_brut">
-                                                                {produit.quantity}
-                                                            </div>
-                                                            <div className="col-3 d-flex align-items-center texte_brut">
-                                                                {produit.price} FCFA
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Statut et bouton Avis */}
-                                    {/* Statut et bouton Avis */}
-                                    <div className="col-lg">
-                                        <h3
-                                            className="texte_brut border border-1 rounded-5 text-white text-center py-1"
-                                            style={{
-                                                backgroundColor: statusColors[order.status] || "gray",
-                                            }}
-                                        >
-                                            {order.status}
-                                        </h3>
-
-                                        {order.status === "livree" && (
-                                            <button
-                                                className="bg-primary border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
-                                                onClick={() => openPopUp(order.id)}
-                                            >
-                                                Avis
-                                            </button>
-                                        )}
-                                    </div>
-
-                                </div>
-                            ))}
-
-                            {/*  Pagination propre */}
-                            {totalPages > 1 && (
-                                <div className="pagination-container">
-                                    <nav>
-                                        <ul className="pagination justify-content-center mb-0">
-                                            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() => handlePageChange(currentPage - 1)}
-                                                >
-                                                    Précédent
-                                                </button>
-                                            </li>
-
-                                            {Array.from({ length: totalPages }, (_, i) => (
-                                                <li
-                                                    key={i}
-                                                    className={`page-item ${currentPage === i + 1 ? "active" : ""
-                                                        }`}
-                                                >
-                                                    <button
-                                                        className="page-link"
-                                                        onClick={() => handlePageChange(i + 1)}
-                                                    >
-                                                        {i + 1}
-                                                    </button>
-                                                </li>
-                                            ))}
-
-                                            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-                                                <button
-                                                    className="page-link"
-                                                    onClick={() => handlePageChange(currentPage + 1)}
-                                                >
-                                                    Suivant
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            )}
-                        </>
-                    )}
-                </div>
-            </div>
-
-            {showPopUp && <Rating closePopUp={closePopUp} commande={commandeId} />}
+  return (
+    <div className="commandes-container">
+      <div className="shadow-sm border border-1 p-2 mb-5">
+        {/* Titre */}
+        <div className="border-bottom border-2 border-black w-100 py-2 d-flex align-items-center">
+          <h2 className="taux_moyen">Commandes</h2>
         </div>
-    );
+
+        {/* Onglets */}
+        <div className="row mt-3 mb-2">
+          <div className="col-6 col-md-3">
+            <button
+              className={`nav-link text-truncate ${
+                activeTab === "livraison" ? "active-tab" : "text-dark"
+              }`}
+              onClick={() => {
+                setActiveTab("livraison");
+                handlePageChange(1);
+              }}
+            >
+              Validées / Livrées
+            </button>
+          </div>
+          <div className="col-6 col-md-3">
+            <button
+              className={`nav-link text-truncate ${
+                activeTab === "annule" ? "active-tab" : "text-dark"
+              }`}
+              onClick={() => {
+                setActiveTab("annule");
+                handlePageChange(1);
+              }}
+            >
+              Annulées / Retournées
+            </button>
+          </div>
+        </div>
+
+        {/* Liste des commandes */}
+        <div className="mt-3">
+          {loading ? (
+            <Suspense fallback={<div>Chargement...</div>}>
+              <Lottie
+                animationData={Animation}
+                loop
+                style={{
+                  width: 50,
+                  height: 50,
+                  margin: "2rem auto",
+                  display: "block",
+                }}
+              />
+            </Suspense>
+          ) : commandesFiltrees.length === 0 ? (
+            <h4 className="petit_titre text-center">
+              Vous n’avez aucune commande{" "}
+              {activeTab === "livraison"
+                ? "en cours ou livrée"
+                : "annulée ou retournée"}
+              .
+            </h4>
+          ) : (
+            <>
+              {commandesFiltrees.map((order) => (
+                <div key={order.id} className="row mb-3">
+                  <div
+                    className="accordion col-lg-10 col-12 pb-3"
+                    id={`faqAccordion${order.id}`}
+                  >
+                    <div className="accordion-item">
+                      <h2
+                        className="accordion-header"
+                        id={`heading${order.id}`}
+                      >
+                        <button
+                          className="accordion-button btn_aide w-100"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapse${order.id}`}
+                          aria-expanded="false"
+                          aria-controls={`collapse${order.id}`}
+                        >
+                          <span>
+                            {" "}
+                            Commande #{order.id} — Total: {order.total} FCFA{" "}
+                          </span>
+                          <span className="ms-5" style={{ fontSize: "10px" }}>
+                            {new Date(order.created_at).toLocaleDateString(
+                              "fr-FR"
+                            )}{" "}
+                            à{" "}
+                            {new Date(order.created_at).toLocaleTimeString(
+                              "fr-FR"
+                            )}
+                          </span>
+                        </button>
+                      </h2>
+                      <div
+                        id={`collapse${order.id}`}
+                        className="accordion-collapse collapse show"
+                        aria-labelledby={`heading${order.id}`}
+                        data-bs-parent={`#faqAccordion${order.id}`}
+                      >
+                        <div className="accordion-body reponse">
+                          <div className="row fw-bold border-bottom pb-2 mb-2">
+                            <div className="col-3">Image</div>
+                            <div className="col-4 col-md-3">Nom</div>
+                            <div className="col-2 d-none d-md-block">
+                              Catégorie
+                            </div>
+                            <div className="col-2 col-md-1">Qté</div>
+                            <div className="col-3">Prix unitaire</div>
+                          </div>
+
+                          {order.produits?.map((produit, index) => (
+                            <div
+                              key={`${order.id}-${index}`}
+                              className="row mb-2"
+                            >
+                              <div className="col-3">
+                                <img
+                                  src={produit.image}
+                                  alt={produit.name}
+                                  className="img-fluid rounded-3 shadow-sm"
+                                />
+                              </div>
+                              <div className="col-4 col-md-3 d-flex align-items-center texte_brut">
+                                {produit.name}
+                              </div>
+                              <div className="col-2 d-none d-md-flex align-items-center texte_brut">
+                                {produit.category || produit.sous_category}
+                              </div>
+                              <div className="col-2 col-md-1 d-flex align-items-center texte_brut">
+                                {produit.quantity}
+                              </div>
+                              <div className="col-3 d-flex align-items-center texte_brut">
+                                {produit.price} FCFA
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Statut et bouton Avis */}
+                  <div className="col-lg">
+                    <h3
+                      className="texte_brut border border-1 rounded-5 text-white text-center py-1"
+                      style={{
+                        backgroundColor: statusColors[order.status] || "gray",
+                      }}
+                    >
+                      {order.status}
+                    </h3>
+
+                    {order.status === "livree" && (
+                      <button
+                        className="bg-primary border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
+                        onClick={() => openPopUp(order.id)}
+                      >
+                        Avis
+                      </button>
+                    )}
+
+                    {order.status === "validee" && (
+                      <button
+                        className="bg-black border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
+                        onClick={() => openPopUp1(order.id)}
+                      >
+                        Annuler
+                      </button>
+                    )}
+
+                    {order.status === "annulee" && (
+                      <button
+                        className="bg-black texte_brut border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
+                        disabled={order.refund_requested}
+                        onClick={() =>
+                          handleRefund(order.id, order.refund_requested)
+                        }
+                        style={{
+                          opacity: order.refund_requested ? 0.5 : 1,
+                          cursor: order.refund_requested
+                            ? "not-allowed"
+                            : "pointer",
+                        }}
+                      >
+                        {order.refund_requested
+                          ? "Remboursement demandé"
+                          : "Rembourser"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {/*  Pagination propre */}
+              {totalPages > 1 && (
+                <div className="pagination-container">
+                  <nav>
+                    <ul className="pagination justify-content-center mb-0">
+                      <li
+                        className={`page-item ${
+                          currentPage === 1 ? "disabled" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link"
+                          onClick={() => handlePageChange(currentPage - 1)}
+                        >
+                          Précédent
+                        </button>
+                      </li>
+
+                      {Array.from({ length: totalPages }, (_, i) => (
+                        <li
+                          key={i}
+                          className={`page-item ${
+                            currentPage === i + 1 ? "active" : ""
+                          }`}
+                        >
+                          <button
+                            className="page-link"
+                            onClick={() => handlePageChange(i + 1)}
+                          >
+                            {i + 1}
+                          </button>
+                        </li>
+                      ))}
+
+                      <li
+                        className={`page-item ${
+                          currentPage === totalPages ? "disabled" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                        >
+                          Suivant
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {showPopUp && <Rating closePopUp={closePopUp} commande={commandeId} />}
+      {selectedOrderId && (
+        <ValiderSuppression
+          orderId={selectedOrderId}
+          closePopUp1={() => setSelectedOrderId(null)}
+          onSuccess={refreshOrders}
+        />
+      )}
+    </div>
+  );
 };
 
 export default Commandes;

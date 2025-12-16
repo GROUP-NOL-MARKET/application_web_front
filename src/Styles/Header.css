@@ -89,7 +89,7 @@
 
   .carousel-inner img {
     height: auto !important;
-    max-height: 300px; /* optionnel : limite la taille sur petit écran */
+    max-height: 300px; 
     object-fit: cover;
   }
 
@@ -259,7 +259,7 @@
 
   .mobile-carousel-img {
     width: 100%;
-    height: auto !important; /* taille mobile */
+    height: 250px !important; /* taille mobile */
     transform: scale(1.1);
     transition: transform 8s ease-in-out;
     object-fit: cover;
@@ -301,24 +301,21 @@
 }
 
 @media (min-width: 992px) {
-  /* ===== CAROUSEL MOBILE ==== */
 
-  .mobile-carousel-item {
-    flex: 0 0 40% !important;
-    scroll-snap-align: center;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-  }
 
-  .mobile-carousel-img {
+ .desktop-slide{
+   width: auto;
+   height: 200px;
+  } 
+
+  .desktop-slide-img {
     width: 100%;
-    transform: scale(1.1);
-    transition: transform 8s ease-in-out;
-    height: 300px !important;
+    /* transform: scale(1.1);
+    transition: transform 8s ease-in-out; */
+    height: 250px !important;
     object-fit: cover;
-    border-radius: 12px;
-  }
+    border-radius: 20px;
+  } 
 }
 /* ==== CATEGORIES MOBILE ==== */
 

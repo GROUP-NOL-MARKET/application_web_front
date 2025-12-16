@@ -23,13 +23,8 @@ export default function MessageDropdown({ onClose }) {
 
   // Charger les messages depuis Laravel
   const fetchMessages = async () => {
-    const token = localStorage.getItem("adminToken");
     try {
-      const res = await API.get("/admin/messages", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await API.get("/admin/messages");
       setMessages(res.data);
     } catch (err) {
       console.error("Erreur chargement messages:", err.message);

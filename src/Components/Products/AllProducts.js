@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
+import { sous_category_product } from "../Product_Data";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
 
@@ -14,6 +15,8 @@ const AllProducts = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const sous_category = queryParams.get("sous_category");
+
+  const categories = sous_category_product.map((item) => item.category);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPopUp, setShowPopUp] = useState(false);
@@ -76,6 +79,38 @@ const AllProducts = () => {
         <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-2 mt-md-0">
           {sous_category ? `${sous_category}` : "Tous les produits"}
         </h1>
+        <div
+          className="dropdown border border-0 p-1 mt-2 col"
+          style={{ cursor: "pointer" }}
+        >
+          <span
+            className="dropdown-toggle texte_brut"
+            id="dropdownMenuCategories"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Filtrer par catégorie
+          </span>
+
+          <ul
+            className="dropdown-menu"
+            aria-labelledby="dropdownMenuCategories"
+          >
+            {categories.map((cat, index) => (
+              <li
+                key={index}
+                className="dropdown-item texte_brut"
+                onClick={() =>
+                  (window.location.href = `/products?category=${encodeURIComponent(
+                    cat
+                  )}`)
+                }
+              >
+                {cat}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
 
@@ -107,25 +142,24 @@ const AllProducts = () => {
               >
                 <div className="d-flex flex-column border border-1 shadow-sm p-2">
                   <img
-                    src={
-                      product.image.startsWith("http")
-                        ? product.image
-                        : `http://127.0.0.1:8000/storage/${product.image}`
-                    }
+                    src={product.image}
                     className="img_product"
                     alt={product.name}
                     onClick={() => openPopUp(product)}
                   />
 
-                  <div className="card-body">
-                    <h5 className="text-truncate petit_titre" title={product.name}>
+                  <div className="card-body pt-2">
+                    <h5
+                      className="text-truncate petit_titre"
+                      title={product.name}
+                    >
                       {product.name}
                     </h5>
                     <p className="card-text petit_titre fw-bold">
                       {product.price} FCFA
                     </p>
-                    <h5 className="card-text petit_titre">
-                      {product.category}
+                    <h5 className="card-text petit_titre text-truncate" title={product.sous_category}>
+                      {product.sous_category}
                     </h5>
 
                     <div className="d-flex flex-row justify-content-center gap-3 my-2">
@@ -133,7 +167,10 @@ const AllProducts = () => {
                         className="border-0"
                         onClick={() => addProductToCart(product)}
                         style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                      >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                      >
+                        Ajouter au panier{" "}
+                        <FontAwesomeIcon icon={faCartShopping} />
+                      </Button>
 
                       {isLoggedIn && (
                         <FontAwesomeIcon
