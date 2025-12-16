@@ -3,9 +3,11 @@ import axios from "axios";
 // ======================================
 //   BASE URL depuis .env
 // ======================================
-const API_URL = process.env.REACT_APP_API_URL;
 
-// ||
+
+const API_URL = "http://127.0.0.1:8000/api";
+
+//process.env.REACT_APP_API_URL ||
 
 
 

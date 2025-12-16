@@ -70,18 +70,23 @@ const ProductGrid = () => {
       <div className="container-fluid">
         <div className="row mt-3">
           {/* Catégories */}
-          <div className="shadow-sm border border-1 me-2 col-3 p-2 d-flex align-items-center"
+          <div
+            className="shadow-sm border border-1 me-2 col-3 p-2 d-flex align-items-center"
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="row">
-              <img src={img_electromenager_dashboard} alt=" " className="col-3 img-fluid" />
+              <img
+                src={img_electromenager_dashboard}
+                alt=" "
+                className="col-3 img-fluid"
+              />
               <div className="col-9 d-flex align-items-center justify-content-center">
                 <p className="petit_titre fw-bold">{category}</p>
               </div>
-
             </div>
           </div>
-          <div className="shadow-sm border border-1 me-2 col-4 p-2 d-flex align-items-center"
+          <div
+            className="shadow-sm border border-1 me-2 col-4 p-2 d-flex align-items-center"
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="dropdown w-100" style={{ cursor: "pointer" }}>
@@ -93,20 +98,59 @@ const ProductGrid = () => {
               >
                 Catégories de produits {category && `: ${category}`}
               </span>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li className="dropdown-item" onClick={() => setCategory("Electroménager")}>Electroménager</li>
-                <li className="dropdown-item" onClick={() => setCategory("Produits Locaux")}>Produits Locaux</li>
-                <li className="dropdown-item" onClick={() => setCategory("Produits Frais")}>Produits Frais</li>
-                <li className="dropdown-item" onClick={() => setCategory("Epicerie")}>Epicerie</li>
-                <li className="dropdown-item" onClick={() => setCategory("Droguerie")}>Droguerie</li>
-                <li className="dropdown-item" onClick={() => setCategory("Divers")}>Divers</li>
-                <li className="dropdown-item" onClick={() => setCategory("Boissons")}>Boissons</li>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1"
+              >
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Electroménager")}
+                >
+                  Electroménager
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Produits Locaux")}
+                >
+                  Produits Locaux
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Produits Frais")}
+                >
+                  Produits Frais
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Epicerie")}
+                >
+                  Epicerie
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Droguerie")}
+                >
+                  Droguerie
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Divers")}
+                >
+                  Divers
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setCategory("Boissons")}
+                >
+                  Boissons
+                </li>
               </ul>
             </div>
           </div>
 
           {/* Tri */}
-          <div className="shadow-sm border border-1 col-3 p-2 d-flex align-items-center"
+          <div
+            className="shadow-sm border border-1 col-3 p-2 d-flex align-items-center"
             style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
           >
             <div className="dropdown w-100" style={{ cursor: "pointer" }}>
@@ -118,10 +162,28 @@ const ProductGrid = () => {
               >
                 Trier par : {dropActive}
               </span>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                <li className="dropdown-item" onClick={() => setDropActive("Nom")}>Nom</li>
-                <li className="dropdown-item" onClick={() => setDropActive("Meilleurs ventes")}>Meilleurs ventes</li>
-                <li className="dropdown-item" onClick={() => setDropActive("Pires ventes")}>Pires ventes</li>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton2"
+              >
+                <li
+                  className="dropdown-item"
+                  onClick={() => setDropActive("Nom")}
+                >
+                  Nom
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setDropActive("Meilleurs ventes")}
+                >
+                  Meilleurs ventes
+                </li>
+                <li
+                  className="dropdown-item"
+                  onClick={() => setDropActive("Pires ventes")}
+                >
+                  Pires ventes
+                </li>
               </ul>
             </div>
           </div>
@@ -140,12 +202,14 @@ const ProductGrid = () => {
               <div
                 key={product.id}
                 className="col-2 me-2 shadow-sm border border-1 pb-2 my-1"
-                style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                style={{
+                  backgroundColor: theme === "dark" ? "black" : "white",
+                }}
               >
                 <div className="row">
                   <div className="col-10">
                     <img
-                      src={product.image_url}
+                      src={product.image}
                       alt={product.name}
                       className="img_product"
                     />
@@ -155,8 +219,12 @@ const ProductGrid = () => {
                   </div>
                 </div>
                 <h5 className="taux_moyen fw-normal mt-2">{product.name}</h5>
-                <p className="texte_brut m-0">Prix fixe : {product.price} FCFA</p>
-                <p className="texte_brut m-0">Prix de vente : {product.price} FCFA</p>
+                <p className="texte_brut m-0">
+                  Prix fixe : {product.price} FCFA
+                </p>
+                <p className="texte_brut m-0">
+                  Prix de vente : {product.price} FCFA
+                </p>
                 <p className="texte_brut m-0" style={{ color: "green" }}>
                   Disponible : {product.disponibility}
                 </p>
@@ -166,14 +234,22 @@ const ProductGrid = () => {
                 <div className="row mt-2">
                   <Button
                     className="col me-2"
-                    style={{ borderRadius: "15px", borderColor: "blue", color: "blue" }}
+                    style={{
+                      borderRadius: "15px",
+                      borderColor: "blue",
+                      color: "blue",
+                    }}
                     onClick={() => navigate(`/admin/addProduct/${product.id}`)}
                   >
                     Modifier
                   </Button>
                   <Button
                     className="col-6"
-                    style={{ borderRadius: "15px", borderColor: "red", color: "red" }}
+                    style={{
+                      borderRadius: "15px",
+                      borderColor: "red",
+                      color: "red",
+                    }}
                     onClick={() => handleDelete(product.id)}
                   >
                     Supprimer
@@ -188,17 +264,37 @@ const ProductGrid = () => {
       </div>
 
       {/* PAGINATION */}
-      <nav aria-label="Pagination" className="mt-3">
-        <ul className="pagination justify-content-center">
-          {[...Array(totalPages)].map((_, index) => (
-            <li key={index} className={`page-item ${page === index + 1 ? "active" : ""}`}>
-              <button className="page-link" onClick={() => setPage(index + 1)}>
-                {index + 1}
+      {totalPages > 1 && (
+        <nav
+          aria-label="Pagination"
+          className="d-flex justify-content-center mt-3"
+        >
+          <ul className="pagination mb-0">
+            {/* Bouton Précédent */}
+            <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+              <button className="page-link" onClick={() => setPage(page - 1)}>
+                Précédent
               </button>
             </li>
-          ))}
-        </ul>
-      </nav>
+
+            {/* Indicateur Page X / Y */}
+            <li className="page-item disabled">
+              <span className="page-link">
+                {page} / {totalPages}
+              </span>
+            </li>
+
+            {/* Bouton Suivant */}
+            <li
+              className={`page-item ${page === totalPages ? "disabled" : ""}`}
+            >
+              <button className="page-link" onClick={() => setPage(page + 1)}>
+                Suivant
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { sous_category_product } from "../Product_Data";
 import {
   faArrowAltCircleRight,
   faHeart,
@@ -45,6 +46,11 @@ const Products = () => {
   const handleNavigation = () => {
     navigate("/all_products");
   };
+
+  const subCategories = sous_category_product.find(
+    (item) => item.category === category
+  )?.sous_category || [];
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -102,10 +108,10 @@ const Products = () => {
                 cursor: "pointer",
               }}
             >
-              <div className="col-8 text-end d-none d-md-block">
+              <div className="col-10 text-end d-none d-md-block">
                 Voir tous les produits
               </div>
-              <div className="col-1">
+              <div className="col">
                 <FontAwesomeIcon icon={faArrowAltCircleRight} />
               </div>
             </div>
@@ -113,6 +119,40 @@ const Products = () => {
         </div>
       </div>
       <hr style={{ color: "#FA7F1B", height: "0.2rem" }} className="m-0" />
+      {category && (
+        <div className="dropdown border border-1 p-1 mt-2 d-inline-block" style={{ cursor: "pointer" }}>
+          <span
+            className="dropdown-toggle texte_brut"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Sous catégorie : {sous_category || "Toutes"}
+          </span>
+
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li
+              className="dropdown-item texte_brut"
+              onClick={() => navigate(`/products?category=${category}`)}
+            >
+              Toutes
+            </li>
+
+            {subCategories.map((sc, index) => (
+              <li
+                key={index}
+                className="dropdown-item texte_brut"
+                onClick={() =>
+                  navigate(`/products?category=${category}&sous_category=${sc}`)
+                }
+              >
+                {sc}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
 
       <div className="row mt-lg-3 mt-1">
         {products.length > 0
@@ -147,7 +187,7 @@ const Products = () => {
                     onClick={() => openPopUp(product)}
                   />
                   <div className="card-body">
-                    <h5 className="text-truncate petit_titre" title={product.name}>
+                    <h5 className="text-truncate petit_titre text-lowercase" title={product.name}>
                       {product.name}
                     </h5>
                     <p className="card-text petit_titre fw-bold">

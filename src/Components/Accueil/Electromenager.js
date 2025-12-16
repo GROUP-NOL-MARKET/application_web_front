@@ -184,7 +184,7 @@ const Electromenager = () => {
                   onClick={() => openPopUp(product)}
                 />
                 <div className="border-top w-100 text-center py-2">
-                  <div className="fw-bold petit_titre text-truncate" title={product.name}>{product.name}</div>
+                  <div className="fw-bold petit_titre text-truncate text-lowercase" title={product.name}>{product.name}</div>
                   <div className="text-muted">
                     {product.price ?? product.new_price ?? "—"} FCFA
                   </div>
@@ -237,7 +237,7 @@ const Electromenager = () => {
                     />
 
                     <div className="text-center mt-2">
-                      <div className="fw-bold" >{product.name}</div>
+                      <div className="fw-bold text-lowercase" >{product.name}</div>
                       <div className="text-muted small">
                         {product.price ?? "—"} FCFA
                       </div>

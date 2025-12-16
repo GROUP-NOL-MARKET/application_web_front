@@ -83,7 +83,7 @@ const SearchProduct = () => {
                 cursor: "pointer",
               }}
             >
-              <div className="col-8 text-end d-none d-md-block">
+              <div className="col-10 text-end d-none d-md-block">
                 Voir tous les produits
               </div>
               <div className="col-1">
@@ -126,7 +126,7 @@ const SearchProduct = () => {
                     onClick={() => openPopUp(prod)}
                   />
                   <div className="card-body">
-                    <h5 className="card-truncate petit_titre" title={prod.name}>{prod.name}</h5>
+                    <h5 className="card-truncate petit_titre text-lowercase" title={prod.name}>{prod.name}</h5>
                     <p className="card-text petit_titre fw-bold">
                       {prod.price.toLocaleString()} FCFA
                     </p>

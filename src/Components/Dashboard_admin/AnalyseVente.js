@@ -120,7 +120,7 @@ const AnalyseVente = () => {
                                 alt="logo de transaction"
                                 className="img-fluid col-2"
                               />
-                              Pertes
+                              Remboursés
                             </span>
                             <p className="petit_titre my-2">
                               {stats?.pertes} FCFA

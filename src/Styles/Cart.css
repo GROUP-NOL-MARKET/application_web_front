@@ -105,3 +105,20 @@
   background-size: cover;
   background-position: top;
 }
+/* Corbeille produit */
+.product-trash {
+  width: 18px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.product-trash:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Corbeille globale */
+.cart-clear-trash img {
+  width: 22px;
+}

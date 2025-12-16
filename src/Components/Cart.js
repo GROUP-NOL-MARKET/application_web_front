@@ -13,7 +13,7 @@ import { AuthContext } from "./AuthContext";
 const Cart = () => {
   const { products, updateProductQuantity } = useContext(PanierContext);
   const [showPopUp, setShowPopUp] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const openPopUp = (message) => {
     setShowPopUp(true);
@@ -37,16 +37,13 @@ const Cart = () => {
   const handleNavigate = () => {
     setLoading(true);
     navigate("/paiement");
-    setLoading(false)
-  }
-
-
+    setLoading(false);
+  };
 
   const handleRedirect = () => {
-    navigate('/login');
-  }
+    navigate("/login");
+  };
   const { isLoggedIn } = useContext(AuthContext);
-
 
   return (
     <div className="cart">
@@ -55,7 +52,24 @@ const Cart = () => {
           <div className="row">
             <div className="cart_content col-lg-8 col-12 d-flex flex-column mt-4 mb-4 border border-1">
               <div className="row">
-                <div className="col-6 table_title">Produits  <span className='ps-3' onClick={() => products.length > 0 && openPopUp()}> <img src={corbeille} alt="" style={{ width: 20, cursor: products.length > 0 ? "pointer" : "not-allowed", opacity: products.length > 0 ? 1 : 0.5 }} /></span></div>
+                <div className="col-6 table_title">
+                  Produits{" "}
+                  <span
+                    className="ps-3"
+                    onClick={() => products.length > 0 && openPopUp()}
+                  >
+                    {" "}
+                    <img
+                      src={corbeille}
+                      alt=""
+                      style={{
+                        width: 20,
+                        cursor: products.length > 0 ? "pointer" : "not-allowed",
+                        opacity: products.length > 0 ? 1 : 0.5,
+                      }}
+                    />
+                  </span>
+                </div>
                 <div className="col-2 table_title">Prix</div>
                 <div className="col-4 col-md-2 table_title d-flex justify-content-center">
                   Quantité
@@ -89,7 +103,7 @@ const Cart = () => {
                               <img
                                 alt={product.name}
                                 src={product.image}
-                                className="w-100 h-auto"
+                                className="w-100 h-100"
                               />
                             </div>
                             <div className="col-6">
@@ -106,10 +120,15 @@ const Cart = () => {
                               <div>
                                 <img
                                   src={corbeille}
-                                  alt="delete"
-                                  style={{ width: 20 }}
-
-                                  className="me-2"
+                                  alt="Supprimer le produit"
+                                  title="Supprimer ce produit"
+                                  className="product-trash"
+                                  onClick={() =>
+                                    updateProductQuantity(
+                                      product.id,
+                                      -product.quantity
+                                    )
+                                  }
                                 />
                               </div>
                             </div>
@@ -135,13 +154,16 @@ const Cart = () => {
                             disabled={product.quantity >= product.stock}
                             className="col-3 button_ajout d-flex justify-content-center"
                             style={{
-                              cursor: product.quantity >= product.stock ? "not-allowed" : "pointer",
-                              opacity: product.quantity >= product.stock ? 0.5 : 1,
+                              cursor:
+                                product.quantity >= product.stock
+                                  ? "not-allowed"
+                                  : "pointer",
+                              opacity:
+                                product.quantity >= product.stock ? 0.5 : 1,
                             }}
                           >
                             +
                           </Button>
-
                         </div>
                         {/* Prix total d'un produit */}
 
@@ -202,22 +224,23 @@ const Cart = () => {
                     >
                       Acheter
                     </Button>
+                  ) : // Les deux autres conditions : Le prix est > 1
+                  isLoggedIn ? (
+                    // Condition 2: Panier non vide ET connecté
+                    <Button
+                      className="achat_button text-white mt-3 w-100"
+                      onClick={handleNavigate}
+                    >
+                      {loading ? <Spinner /> : "Acheter"}
+                    </Button>
                   ) : (
-                    // Les deux autres conditions : Le prix est > 1
-                    (isLoggedIn) ? (
-                      // Condition 2: Panier non vide ET connecté
-                      <Button className="achat_button text-white mt-3 w-100" onClick={handleNavigate}>
-                        {loading ? (<Spinner />) : ("Acheter")}
-                      </Button>
-                    ) : (
-                      // Condition 3: Panier non vide ET déconnecté
-                      <Button
-                        className="achat_button mt-3 w-100"
-                        onClick={handleRedirect} // Redirection vers /login
-                      >
-                        Acheter
-                      </Button>
-                    )
+                    // Condition 3: Panier non vide ET déconnecté
+                    <Button
+                      className="achat_button mt-3 w-100"
+                      onClick={handleRedirect} // Redirection vers /login
+                    >
+                      Acheter
+                    </Button>
                   )}
                 </div>
               </div>
@@ -226,6 +249,7 @@ const Cart = () => {
         </div>
         <Offres />
       </div>
+
       {showPopUp && <ValiderSuppression closePopUp={closePopUp} />}
     </div>
   );

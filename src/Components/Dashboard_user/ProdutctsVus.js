@@ -58,7 +58,7 @@ const ProdutctsVus = () => {
                 <div className="border border-1 shadow-sm d-flex flex-column p-2" style={{ height: "250px" }}>
                     <div className="col bg-light d-flex justify-content-center align-items-center" style={{ height: "130px" }}>
                         <img
-                            src={view.product?.img}
+                            src={view.product?.image}
                             alt={view.product?.name}
                             className="img-fluid"
                             style={{ maxHeight: "120px", objectFit: "contain", cursor: "pointer" }}

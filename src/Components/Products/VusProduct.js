@@ -36,14 +36,9 @@ const VusProduct = ({ closePopUp, product }) => {
           await API.post(
             "/recent-views",
             { product_id: product.id },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
           );
         } catch (error) {
-          console.error("Erreur ajout vue récente :", error);
+          console.error("Erreur ajout vue récente :", error.response.data.message);
         }
       };
 
@@ -66,16 +61,16 @@ const VusProduct = ({ closePopUp, product }) => {
             <img
               src={product.image}
               alt={product.name}
-              style={{ width: "500px", height: "800px" }}
+              style={{ width: "300px", height: "400px" }}
             />
           </div>
 
           <div className="col-lg col-12">
-            <h5 className="name_entreprise_dashboard">{product.name}</h5>
+            <h5 className="name_entreprise_dashboard text-lowercase mt-4">{product.name}</h5>
             <h5 className="petit_titre fw-bold">
               {product.price || product.new_price} FCFA
             </h5>
-            <p className="texte_brut">{product?.description}</p>
+            <p className="texte_brut">{product.description ? product.description : " "}</p>
           </div>
 
           <div className="d-flex flex-row justify-content-center gap-3 mt-2">
