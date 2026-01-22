@@ -9,6 +9,7 @@ import Entete from "./dataset/Entete";
 import { Button, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import API from "../Authentification/apiAdmin";
+import * as XLSX from "xlsx";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -63,10 +64,44 @@ const ProductManagement = () => {
     fetchProducts();
   }, [page, search]);
 
-  // 🔹 Gestion de la recherche
+  // Gestion de la recherche
   const handleSearch = (e) => {
     e.preventDefault();
     fetchProducts();
+  };
+
+  const handleExportExcel = () => {
+    if (products.length === 0) {
+      toast.warning("Aucun produit à exporter");
+      return;
+    }
+
+    // Structure identique à MySQL
+    const data = products.map((p) => ({
+      id: p.id,
+      reference: p.reference,
+      name: p.name,
+      family: p.family,
+      price: p.price,
+      category: p.category,
+      description: p.description,
+      disponibility: p.disponibility,
+      quantity: p.quantity,
+      selled: p.selled,      
+      sous_category: p.sous_category,
+      reste: p.reste,
+    }));
+
+    // Création feuille Excel
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "products");
+
+    // Export fichier
+    XLSX.writeFile(workbook, "products.xlsx");
+
+    toast.success("Export Excel réussi");
   };
 
   return (
@@ -89,9 +124,9 @@ const ProductManagement = () => {
               <Button
                 className="col-3 bg-primary rounded-5"
                 style={{ color: "white" }}
-                onClick={() => toast.info("Export CSV à implémenter")}
+                onClick={() => handleExportExcel()}
               >
-                Exporter sous csv
+                Exporter sous excel
               </Button>
             </div>
             <div className="mt-2">

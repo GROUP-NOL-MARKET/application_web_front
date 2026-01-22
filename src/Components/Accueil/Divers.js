@@ -32,20 +32,17 @@ const Divers = () => {
   return (
     <div className="container mt-1 mt-md-5">
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
+        <h1 className="col-8 title mt-3 mt-md-0">
           Divers
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
+        <div className="col mt-3 mt-md-0">
           <div className="voir_tout">
             <div
               onClick={() => handleNavigation2("Divers")}
               className="row d-flex align-content-end"
               style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
             >
-              <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+             <div className="col text-end"> Voir plus <FontAwesomeIcon icon={faArrowAltCircleRight} /></div>
             </div>
           </div>
         </div>

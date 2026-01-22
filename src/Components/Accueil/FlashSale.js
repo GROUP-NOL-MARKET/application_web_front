@@ -39,59 +39,59 @@ const FlashSale = ({ duration = 800 }) => {
   }, []);
 
   //  Caching intelligent pour éviter les appels redondants
- useEffect(() => {
-  const cachedPromos = sessionStorage.getItem("promotions_flash");
+  useEffect(() => {
+    const cachedPromos = sessionStorage.getItem("promotions_flash");
 
-  if (cachedPromos) {
-    setPromotions(JSON.parse(cachedPromos));
-    setLoading(false);
-  } else {
-    const fetchPromos = async () => {
-      try {
-        setLoading(true);
-        const res = await API.get("/promos");
-        const now = new Date();
+    if (cachedPromos) {
+      setPromotions(JSON.parse(cachedPromos));
+      setLoading(false);
+    } else {
+      const fetchPromos = async () => {
+        try {
+          setLoading(true);
+          const res = await API.get("/promos");
+          const now = new Date();
 
-        const data = res.data?.data ?? res.data ?? [];
+          const data = res.data?.data ?? res.data ?? [];
 
-        const mapped = data
-          .filter((promo) => {
-            const debut = new Date(promo.start_at);
-            const fin = new Date(promo.end_at);
-            return debut <= now && now <= fin;
-          })
-          .map((promo) => {
-            const prod = promo.product ?? promo.product_data ?? {};
-            const quantity = prod.quantity ?? 1;
-            const selled = prod.selled ?? 0;
-            const soldPct = Math.floor((selled / quantity) * 100);
+          const mapped = data
+            .filter((promo) => {
+              const debut = new Date(promo.start_at);
+              const fin = new Date(promo.end_at);
+              return debut <= now && now <= fin;
+            })
+            .map((promo) => {
+              const prod = promo.product ?? promo.product_data ?? {};
+              const quantity = prod.quantity ?? 1;
+              const selled = prod.selled ?? 0;
+              const soldPct = Math.floor((selled / quantity) * 100);
 
-            return {
-              id: prod.id ?? promo.id ?? Math.random().toString(36).slice(2, 9),
-              img: getImageUrl(prod.image ?? ""),
-              name: prod.name ?? promo.name ?? "Produit",
-              initial_price: promo.initial_price ?? prod.price ?? 0,
-              new_price: promo.new_price ?? promo.price_promo ?? 0,
-              pourcentage_vendu: promo.pourcentage_vendu ?? 0,
-              soldPct: isNaN(soldPct) ? 0 : soldPct,
-            };
-          });
+              return {
+                id:
+                  prod.id ?? promo.id ?? Math.random().toString(36).slice(2, 9),
+                img: getImageUrl(prod.image ?? ""),
+                name: prod.name ?? promo.name ?? "Produit",
+                initial_price: promo.initial_price ?? prod.price ?? 0,
+                new_price: promo.new_price ?? promo.price_promo ?? 0,
+                pourcentage_vendu: promo.pourcentage_vendu ?? 0,
+                soldPct: isNaN(soldPct) ? 0 : soldPct,
+              };
+            });
 
-        setPromotions(mapped);
-        sessionStorage.setItem("promotions_flash", JSON.stringify(mapped));
-        setError(null);
+          setPromotions(mapped);
+          sessionStorage.setItem("promotions_flash", JSON.stringify(mapped));
+          setError(null);
+        } catch (err) {
+          console.error("Erreur récupération promotions:", err);
+          setError("Impossible de charger les promotions");
+        } finally {
+          setLoading(false);
+        }
+      };
 
-      } catch (err) {
-        console.error("Erreur récupération promotions:", err);
-        setError("Impossible de charger les promotions");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPromos();
-  }
-}, []);
+      fetchPromos();
+    }
+  }, []);
 
   // ✅ Décompte du temps (useEffect isolé pour ne pas rerendre tout le composant)
   useEffect(() => {
@@ -155,10 +155,10 @@ const FlashSale = ({ duration = 800 }) => {
       {/* --- En-tête --- */}
       <div className="enTête row">
         <h2
-          className="col-lg-2 col-3 title_flash_sale mt-2"
+          className="col-lg-2 col-4 title_flash_sale mt-2"
           style={{ color: "#0066BD" }}
         >
-          Vente <span className="d-none d-sm-inline">Flash</span>
+          Promotions
         </h2>
         <div className="col-lg-7 col-md-5 col-sm-5 col-6 promo_temps">
           <div className="row">{getFormattedTime(time)}</div>
@@ -173,13 +173,12 @@ const FlashSale = ({ duration = 800 }) => {
               cursor: "pointer",
             }}
           >
-            <div className="row offset-lg-4 d-flex align-content-end">
-              <div className="offset-1 offset-md-2 offset-lg-0 col-8 col-lg-9 d-none d-sm-block">
-                Voir tout
-              </div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+            <div className="text-end col d-none d-md-block">
+              Voir tout
+              <FontAwesomeIcon icon={faArrowAltCircleRight} />
+            </div>
+            <div className="text-end col d-md-none">
+              <FontAwesomeIcon icon={faArrowAltCircleRight} />
             </div>
           </div>
         </div>

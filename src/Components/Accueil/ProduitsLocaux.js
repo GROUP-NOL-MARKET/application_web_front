@@ -47,10 +47,10 @@ const ProduitsLocaux = () => {
   return (
     <div className="container mt-1 mt-md-5">
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
+        <h1 className="col-8 title mt-3 mt-md-0">
           Produits Locaux
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
+        <div className="col mt-3 mt-md-0">
           <div className="voir_tout">
             <div
               onClick={() => handleNavigation2("Produits Locaux")}
@@ -61,10 +61,8 @@ const ProduitsLocaux = () => {
                 cursor: "pointer",
               }}
             >
-              <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+              <div className="col text-end"> Voir plus <FontAwesomeIcon icon={faArrowAltCircleRight} /></div>
+              
             </div>
           </div>
         </div>

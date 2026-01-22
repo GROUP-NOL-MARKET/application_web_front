@@ -15,6 +15,7 @@ import Boissons from "../Components/Accueil/Boissons";
 import Divers from "../Components/Accueil/Divers";
 import PromoBanniere from "../Components/Accueil/PromoBanniere";
 import Publicite from "../Components/Accueil/Publicite";
+import PopularProducts from "../Components/Accueil/PopularProducts";
 
 const PageAccueil = () => {
   return (
@@ -33,6 +34,7 @@ const PageAccueil = () => {
         <div className="page_accueil min-vh-100">
           <Header />
           <Offres />
+          {/* <PopularProducts/> */}
           <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
           <ProduitsLocaux />
           <Boissons />

@@ -76,7 +76,7 @@ const AllProducts = () => {
     <div className="container mt-4">
       {/* En-tête */}
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-2 mt-md-0">
+        <h1 className="col-md-9 col-lg-10 col-sm-8 col-6 title mt-2 mt-md-0">
           {sous_category ? `${sous_category}` : "Tous les produits"}
         </h1>
         <div

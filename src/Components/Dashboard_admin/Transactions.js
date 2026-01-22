@@ -89,7 +89,7 @@ const Transactions = () => {
                     <p className="texte_brut">à {p.created_at.substring(11, 16)}</p>
                   </div>
                 </td>
-                <td className="text-center texte_brut">{p.phone}</td>
+                <td className="text-center texte_brut">{p.phone ? p.phone : "--"}</td>
                 <td className="text-center texte_brut">{p.method}</td>
                 <td className="text-center texte_brut">
                   <div
@@ -104,6 +104,8 @@ const Transactions = () => {
                               ? "green"
                               : p.status === "annulé"
                                 ? "black"
+                                :p.status === "success"
+                                ? "green"
                                 : "red",
                       color: "white",
                     }}

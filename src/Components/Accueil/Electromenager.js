@@ -122,20 +122,17 @@ const Electromenager = () => {
   return (
     <div className="container mt-1 mt-md-5">
       <div className="row">
-        <h1 className="col-md-9 col-lg-10 col-sm-8 col-10 title mt-3 mt-md-0">
+        <h1 className="col-8 title mt-3 mt-md-0">
           Électroménager
         </h1>
-        <div className="col-md-3 col-lg-2 col-sm-4 col-2 mt-3 mt-md-0">
+        <div className="col mt-3 mt-md-0">
           <div
             className="voir_tout"
             onClick={() => handleNavigation2(CATEGORY)}
             style={{ color: "#FA7F1B", cursor: "pointer" }}
           >
             <div className="row d-flex align-content-end">
-              <div className="col-8 text-end d-none d-sm-block">Voir tout</div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+              <div className="col text-end"> Voir plus <FontAwesomeIcon icon={faArrowAltCircleRight} /></div>
             </div>
           </div>
         </div>
@@ -185,7 +182,7 @@ const Electromenager = () => {
                 />
                 <div className="border-top w-100 text-center py-2">
                   <div className="fw-bold petit_titre text-truncate text-lowercase" title={product.name}>{product.name}</div>
-                  <div className="text-muted">
+                  <div className="text-muted text-primary">
                     {product.price ?? product.new_price ?? "—"} FCFA
                   </div>
                   <div className="d-flex justify-content-center gap-3 mt-2">
@@ -237,8 +234,8 @@ const Electromenager = () => {
                     />
 
                     <div className="text-center mt-2">
-                      <div className="fw-bold text-lowercase" >{product.name}</div>
-                      <div className="text-muted small">
+                      <div className="fw-bold text-lowercase text-truncate" title={product.name} >{product.name}</div>
+                      <div className="text-muted small text-primary">
                         {product.price ?? "—"} FCFA
                       </div>
                       <div className="d-flex justify-content-center gap-3 mt-2">

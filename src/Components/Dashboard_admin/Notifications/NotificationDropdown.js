@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import NotificationItem from "./NotificationItem";
-import { demoNotifications } from "../../Product_Data";
 
 export default function NotificationDropdown({
   notifications,
@@ -9,10 +8,7 @@ export default function NotificationDropdown({
   onAccept,
   onDecline,
   onLoadMore,
-
-
 }) {
-
   useEffect(() => {
     const handleClickOutside = (e) => {
       const dropdown = document.querySelector(".notif-dropdown");
@@ -20,28 +16,20 @@ export default function NotificationDropdown({
         onClose();
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
-  // rendu via portal pour être au-dessus du reste de l'UI
+
   return createPortal(
-    <div
-      className="notif-dropdown"
-      role="dialog"
-      aria-label="Notifications panel"
-    >
+    <div className="notif-dropdown" role="dialog">
       <div className="notif-panel">
         <div className="notif-header">
           <h3 className="notif-title">Notifications</h3>
+
           <div className="notif-filters">
             <button className="filter active">
               Tous <span>({notifications.length})</span>
-            </button>
-            <button className="filter">
-              Suivis <span>(0)</span>
-            </button>
-            <button className="filter">
-              Commandes <span>(0)</span>
             </button>
           </div>
         </div>
@@ -50,10 +38,16 @@ export default function NotificationDropdown({
           {notifications.length === 0 && (
             <div className="empty">Aucune notification</div>
           )}
-          {demoNotifications.map((n) => (
+
+          {notifications.map((n) => (
             <NotificationItem
               key={n.id}
-              item={n}
+              item={{
+                name: n.sender,
+                message: n.content,
+                time: new Date(n.created_at).toLocaleString(),
+                canAct: n.can_act,
+              }}
               onAccept={() => onAccept(n.id)}
               onDecline={() => onDecline(n.id)}
             />
@@ -61,7 +55,7 @@ export default function NotificationDropdown({
         </div>
 
         <div className="notif-footer">
-          <button className="load-more p-1 text-center" onClick={onLoadMore}>
+          <button className="load-more" onClick={onLoadMore}>
             Voir plus
           </button>
         </div>

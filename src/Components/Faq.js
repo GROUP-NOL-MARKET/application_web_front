@@ -41,7 +41,7 @@ const Faq = () => {
               >
                 <div className="accordion-body reponse">
                   Utilisez la barre de recherche en haut de la page pour entrer
-                  des mots-clés relatifs à l'objet que vous souhaitez louer.
+                  des mots-clés relatifs à l'objet que vous souhaitez acheter.
                   Vous pouvez aussi filtrer les résultats par catégorie, menu et
                   produit.
                 </div>
@@ -67,10 +67,10 @@ const Faq = () => {
                 data-bs-parent="#helpAccordion"
               >
                 <div className="accordion-body reponse">
-                  Cliquez sur le bouton "Incription" en haut à droite de la
-                  page. Remplissez le formulaire avec vos informations
-                  personnelles et suivez les instructions pour compléter votre
-                  inscription.
+                  Cliquez sur l'avatar en haut de page et ensuite choisissez le
+                  menu "Incription" . Remplissez le formulaire avec vos
+                  informations personnelles et suivez les instructions pour
+                  compléter votre inscription.
                 </div>
               </div>
             </div>
@@ -95,9 +95,10 @@ const Faq = () => {
               >
                 <div className="accordion-body reponse">
                   Après avoir trouvé l'objet que vous souhaitez acheter,
-                  sélectionnez l'objet puis dirigez vous vers votre panier pour
-                  valider la commande et payer en suivant les étapes pour entrer
-                  vos informations de paiement et confirmer votre réservation.
+                  sélectionnez l'objet, ajoutez le au panier puis dirigez vous
+                  vers votre panier pour valider la commande et payer en suivant
+                  les étapes pour entrer vos informations de paiement et
+                  confirmer votre commande.
                 </div>
               </div>
             </div>
@@ -121,7 +122,7 @@ const Faq = () => {
                 data-bs-parent="#helpAccordion"
               >
                 <div className="accordion-body reponse">
-                  Pour annuler une réservation, allez dans votre compte,
+                  Pour annuler une commande, allez dans votre compte,
                   sélectionnez "Mes commandes", et choisissez la commande que
                   vous souhaitez annuler. Cliquez sur le bouton "Annuler" et
                   suivez les instructions.
@@ -149,9 +150,9 @@ const Faq = () => {
               >
                 <div className="accordion-body reponse">
                   Pour modifier les informations de votre compte, connectez-vous
-                  et allez dans "Mon Profil". Vous pouvez mettre à jour vos
-                  informations personnelles, adresse, et informations de
-                  paiement.
+                  et cliquez sur l'avatar en haut de page puis allez dans "Mon
+                  Profil". Vous pouvez mettre à jour vos informations
+                  personnelles, adresse, et informations de paiement.
                 </div>
               </div>
             </div>
@@ -228,7 +229,7 @@ const Faq = () => {
                   aria-expanded="false"
                   aria-controls="collapseTwo"
                 >
-                  Quels types de produit puis-je acheter chez group nol market ?
+                  Quels types de produit puis-je acheter chez GROUP NOL MARKET ?
                 </button>
               </h2>
               <div
@@ -373,7 +374,7 @@ const Faq = () => {
                 <div className="accordion-body reponse">
                   Non le seul frais qui peut s'appliquer serait pour la
                   livraison. Mais celle-ci est assurée à partir d'un achat de
-                  plus de 100.000 FCFA
+                  plus d'un montant donné.
                 </div>
               </div>
             </div>

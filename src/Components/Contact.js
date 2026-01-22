@@ -100,11 +100,11 @@ const Contact = () => {
             <div className="row">
               <div className="col-6">
                 <FontAwesomeIcon icon={faEnvelope} size="3x" className="m-2" style={{ color: "#0066BD" }} />
-                <p className="text" style={{ fontSize: "medium" }}>groupnol@gmail.com</p>
+                <p className="text" style={{ fontSize: "medium" }}>groupnolmarket@gmail.com</p>
               </div>
               <div className="col-6">
                 <FontAwesomeIcon icon={faFacebook} size="3x" className="m-2" style={{ color: "#0066BD" }} />
-                <p className="text" style={{ fontSize: "medium" }}>https://www.facebook.com/nolmarket</p>
+                <p className="text" style={{ fontSize: "medium", hyphens:"auto" }}>https://www.facebook.com/nolmarket</p>
               </div>
             </div>
 

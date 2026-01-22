@@ -1,6 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import FedapayButton from "./FedapayButton";
+import ReactCountryDropdown from "react-country-dropdown";
+import kiapay from "./assets/Images/kkiapay.png";
 import KkiaPay from "./kkiapay";
+import { openKkiapayWidget } from "kkiapay";
 import {
   Button,
   Form,
@@ -21,11 +24,15 @@ import MoovPay from "./MoovPay";
 
 const Paiement = () => {
   const { products } = useContext(PanierContext);
+  const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
 
   const [showPopUp1, setshowPopUp1] = useState(false);
   const [showPopUp, setshowPopUp] = useState(false);
+
+  const [paymentMode, setPaymentMode] = useState("");
+  const [openKkiaPay, setOpenKkiaPay] = useState(false);
 
   const closePopUp = () => setshowPopUp(false);
   const openPopup = () => setshowPopUp(true);
@@ -44,7 +51,7 @@ const Paiement = () => {
 
   const totalPrice = products.reduce(
     (acc, product) => acc + product.price * product.quantity,
-    0
+    0,
   );
 
   const [adresse, setAdresse] = useState({
@@ -52,6 +59,7 @@ const Paiement = () => {
     quartier: "",
     rue: "",
     numero: "",
+    phone: "",
     localisation: "",
   });
 
@@ -63,6 +71,19 @@ const Paiement = () => {
   const adresseRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,'-]{3,200}$/;
 
   const adresseComplete = `${adresse.ville}, ${adresse.quartier}, ${adresse.rue}, ${adresse.numero}, ${adresse.localisation}`;
+
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // chiffres uniquement
+    value = value.slice(0, 10); // max 10 chiffres
+    value = value.replace(/(\d{2})(?=\d)/g, "$1 "); // espace tous les 2 chiffres
+
+    setUser((prev) => ({
+      ...prev,
+      phone: value,
+    }));
+
+    setErrors({}); // reset erreurs à chaque frappe
+  };
 
   // Récupération des infos utilisateur dès le chargement
   useEffect(() => {
@@ -77,6 +98,7 @@ const Paiement = () => {
           setUser({
             firstName: response.data.firstName || "",
             email: response.data.email || "",
+            phone: response.data.phone || "",
           });
         }
       } catch (error) {
@@ -90,6 +112,27 @@ const Paiement = () => {
   //  Soumission de l’adresse
   const handleAdresseSubmit = async (e) => {
     e.preventDefault();
+
+    const cleanPhone = user.phone.replace(/\s/g, ""); // enlève les espaces
+    let newErrors = {};
+
+    if (!cleanPhone.trim()) {
+      newErrors.phone = "Veuillez entrer un numéro de téléphone";
+    } else if (!/^01\d{8}$/.test(cleanPhone)) {
+      newErrors.phone =
+        "Le numéro doit commencer par 01 et contenir 10 chiffres.";
+    } else {
+      const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
+      if (secondPair < 50 || secondPair > 99) {
+        newErrors.phone =
+          "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     if (!adresse.ville || !adresse.quartier || !adresse.localisation) {
       toast.error("Veuillez remplir tous les champs de l’adresse.");
@@ -113,8 +156,8 @@ const Paiement = () => {
 
       const response = await API.put(
         "/user/update-address",
-        { addresse: adresseComplete },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { addresse: adresseComplete, phone: cleanPhone },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (response.status === 200) {
@@ -142,11 +185,14 @@ const Paiement = () => {
         return;
       }
 
+      const paymentPhone =
+        payment.phone || payment.msisdn || payment.customer?.phone || null;
+
       const payload = {
         transactionId: payment.transactionId ?? payment.transaction_id ?? null,
         amount: totalPrice,
         cart: products,
-        phone: user.phone ?? "0000000000",
+        phone: paymentPhone,
         requestId: payment.requestId ?? payment.request_id ?? null,
         paymentData: payment,
       };
@@ -162,7 +208,7 @@ const Paiement = () => {
         dispatch(fetchCommandes(1));
 
         // Vider le panier AVANT de rediriger (await clearCart si c'est async)
-        await clearCart();
+        // await clearCart();
 
         toast.success("Paiement effectué et commande enregistrée !", {
           onClose: () => {
@@ -174,15 +220,13 @@ const Paiement = () => {
     } catch (error) {
       console.error(
         "Erreur lors du traitement de la commande (Paiement):",
-        error
+        error,
       );
 
       // Si erreur de validation du backend, afficher les messages s'ils existent
       if (error?.response?.status === 422 && error.response.data?.errors) {
         const errs = error.response.data.errors;
-        const firstKey = Object.keys(errs)[0];
-        const firstMsg = errs[firstKey][0];
-        toast.error(firstMsg);
+        toast.error(errs);
       } else if (error?.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
@@ -199,6 +243,31 @@ const Paiement = () => {
           <div className="col col-lg-8 my-4 me-lg-3 mx-2 mx-lg-0 bg-white shadow-sm rounded-3 p-4 border border-1">
             <h2 className="taux_moyen">Informations domicile client</h2>
             <Form className="w-100" onSubmit={handleAdresseSubmit}>
+              <FormGroup className="m-2">
+                <Form.Label className="label_register">
+                  Numéro de téléphone
+                </Form.Label>
+                <div className="row">
+                  <div
+                    className="col-4 col-sm-3 col-md-4 col-lg-2"
+                    style={{ pointerEvents: "none" }}
+                  >
+                    <ReactCountryDropdown defaultCountry="BJ" />
+                  </div>
+                  <Form.Control
+                    type="tel"
+                    placeholder="01 52 34 56 78"
+                    className="input_register col"
+                    value={user.phone}
+                    onChange={handlePhoneChange}
+                    isInvalid={!!errors.phone}
+                  />
+
+                  <Form.Control.Feedback type="invalid">
+                    {errors.phone}
+                  </Form.Control.Feedback>
+                </div>
+              </FormGroup>
               {["ville", "quartier", "rue"].map((field) => (
                 <FormGroup key={field}>
                   <FormLabel className="label_register">
@@ -258,6 +327,11 @@ const Paiement = () => {
                 )}
               </Button>
             </Form>
+            {!adresseValidee && (
+              <p className="text-danger text-center mt-2 taux_moyen">
+                Veuillez d’abord enregistrer votre adresse avant de payer.
+              </p>
+            )}
           </div>
 
           {/* ================= PANIER ET PAIEMENT ================= */}
@@ -300,22 +374,18 @@ const Paiement = () => {
                 </FormLabel>
                 <h2 className="taux_moyen col">{totalPrice} FCFA</h2>
               </div>
-
               <div className="row">
                 <div className="col-7 title_menu_cart">Total HT :</div>
                 <div className="col texte_brut">{totalPrice} FCFA</div>
               </div>
-
               <div className="row">
                 <div className="col-7 title_menu_cart">Rabais :</div>
                 <div className="col texte_brut">0%</div>
               </div>
-
               <div className="row">
                 <div className="col-7 title_menu_cart">Remise :</div>
                 <div className="col texte_brut">Gratuit</div>
               </div>
-
               <div className="row">
                 <h2 className="title_menu_cart col-7">
                   Adresse de livraison :
@@ -329,57 +399,156 @@ const Paiement = () => {
                 <h2 className="petit_titre fw-bold">
                   Procéder au paiement avec :
                 </h2>
-                <ul className="d-flex flex-row ">
-                  <div>
-                    <li
-                      className="bg-light d-flex align-items-center justify-content-center bouton_paiement"
-                      onClick={openPopup}
-                      style={{ borderRadius: "100%", cursor: "pointer" }}
-                    >
-                      <img alt="" src={mtn} style={{ width: "70px" }} />
-                    </li>
-                    <p className="fw-bold" style={{ color: "#CCA204" }}>
-                      Mtn momo
-                    </p>
+
+                {/* ================== MODE DE PAIEMENT ================== */}
+                <div className="bg-white border rounded-3 p-3">
+                  <div className="form-check mb-3">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMode"
+                      value="mobile_money"
+                      checked={paymentMode === "mobile_money"}
+                      onChange={() => setPaymentMode("mobile_money")}
+                    />
+                    <label className="form-check-label fw-semibold">
+                      <span
+                        className=""
+                        style={{
+                          width: 10,
+                          height: 10,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          alt="MTN MoMo"
+                          src={mtn}
+                          style={{ width: "35px" }}
+                        />
+                      </span>
+                      MTN Mobile Money
+                    </label>
                   </div>
 
-                  {/* <li
-                    className="bg-light d-flex align-items-center justify-content-center bouton_paiement"
-                    onClick={openPopup1}
-                    style={{ borderRadius: "100%", cursor: "pointer" }}
-                  >
-                    
-                    <img alt="" src={moov} style={{ width: "60px" }} />
-                  </li> */}
-                  <div className="mt-3">
-                    <li className=" d-flex align-items-center justify-content-center w-100">
-                      <KkiaPay
-                        amount={totalPrice}
-                        email="client@email.com"
-                        phone="0123456789"
-                        name="Client Abonné"
-                        cart={products}
-                        // reference={orderReference}
-                        disabled={!adresseValidee}
-                        onSuccess={handleSuccess}
-                      />
-                    </li>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMode"
+                      value="kkiapay"
+                      checked={paymentMode === "kkiapay"}
+                      onChange={() => setPaymentMode("kkiapay")}
+                    />
+                    <label className="form-check-label fw-semibold">
+                      <span
+                        className="px-2"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <img
+                          src={kiapay}
+                          style={{ width: "15px", cursor: "pointer" }}
+                          alt=""
+                        />
+                      </span>
+                      Paiement via Kkiapay
+                    </label>
                   </div>
-                </ul>
+                  <div className="form-check mt-4">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="paymentMode"
+                      value="livraison"
+                      checked={paymentMode === "livraison"}
+                      onChange={() => setPaymentMode("livraison")}
+                    />
+                    <label className="form-check-label fw-semibold">
+                      <span
+                        className="px-2"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          cursor: "pointer",
+                        }}
+                      >
+                        {/* <img
+                          src={kiapay}
+                          style={{ width: "15px", cursor: "pointer" }}
+                          alt=""
+                        /> */}
+                      </span>
+                      Paiement à la livraison
+                    </label>
+                  </div>
+
+                  {/* ================== ACTION ================== */}
+                  <div className="d-flex justify-content-end mt-4">
+                    <button
+                      className="btn fw-bold"
+                      style={{ backgroundColor: "#f68b1e", color: "#fff" }}
+                      disabled={!paymentMode}
+                      onClick={() => {
+                        if (paymentMode === "mobile_money") {
+                          openPopup();
+                        }
+
+                        if (paymentMode === "kkiapay") {
+                          setOpenKkiaPay(true);
+
+                          openKkiapayWidget({
+                            amount: totalPrice,
+                            api_key: "461a5930ce9b11f09f4a631e834d10ba",
+                            sandbox: true,
+                            phone: user.phone,
+                            email: user.email,
+                            name: user.firstName,
+                            request_id: "KKIA-" + Date.now(),
+                          });
+                        }
+                      }}
+                    >
+                      Confirmer le mode de paiement
+                    </button>
+                  </div>
+                </div>
+
+                {/* MTN MoMo */}
+
+                {showPopUp && (
+                  <MomoPay
+                    closePopUp={closePopUp}
+                    amount={totalPrice}
+                    products={products}
+                  />
+                )}
+
+                {openKkiaPay && (
+                  <KkiaPay
+                    onSuccess={(data) => {
+                      setOpenKkiaPay(false);
+                      handleSuccess(data);
+                    }}
+                    onClose={() => setOpenKkiaPay(false)}
+                  />
+                )}
 
                 {/* <FedapayButton amount={totalPrice} products={products} address={adresseComplete} /> */}
-
-                {!adresseValidee && (
-                  <p className="text-danger text-center mt-2 texte_brut">
-                    Veuillez d’abord enregistrer votre adresse avant de payer.
-                  </p>
-                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {showPopUp && <MomoPay closePopUp={closePopUp} product={products} amount={totalPrice}/>}
+      {showPopUp && (
+        <MomoPay
+          closePopUp={closePopUp}
+          product={products}
+          amount={totalPrice}
+        />
+      )}
       {showPopUp1 && <MoovPay closePopUp1={closePopUp1} />}
     </div>
   );

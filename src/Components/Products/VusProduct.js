@@ -61,7 +61,7 @@ const VusProduct = ({ closePopUp, product }) => {
             <img
               src={product.image}
               alt={product.name}
-              style={{ width: "300px", height: "400px" }}
+              style={{ width: "300px", height: "auto" }}
             />
           </div>
 
@@ -70,7 +70,7 @@ const VusProduct = ({ closePopUp, product }) => {
             <h5 className="petit_titre fw-bold">
               {product.price || product.new_price} FCFA
             </h5>
-            <p className="texte_brut">{product.description ? product.description : " "}</p>
+            <p className="texte_brut">{product.description ? product.description : "Description non disponible pour l'instant"}</p>
           </div>
 
           <div className="d-flex flex-row justify-content-center gap-3 mt-2">
