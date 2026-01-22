@@ -291,14 +291,17 @@ export const sous_category_product = [
       "Soins de beauté",
       "Mouchoir - papier toilette",
       "Désodorisants - insecticides",
+      "Déodorant - eau de toilette",
       "Hygiène féminine",
+      "Droguerie",
+      "Hygiènes",
     ],
   },
   {
     category: "Produits Locaux",
     sous_category: [
       "Épices",
-      "Thés & Infusions",
+      "Thés & Infusion",
       "Miel & Divers",
       "Amuses bouches",
       "Farines",
@@ -315,7 +318,7 @@ export const sous_category_product = [
     sous_category: ["Chewing Gum", "Piles - rasoirs", "papeterie", "Ampoule"],
   },
   {
-    category: "Produits Frais",
+    category: "Produits frais",
     sous_category: [
       "Fromages - fruits frais - légumes",
       "yaourt",
@@ -323,6 +326,7 @@ export const sous_category_product = [
       "Glaces et crèmes glacées",
       "Charcuterie volaille poisson",
       "Produits Locaux Frais",
+      "Produits congélés",
     ],
   },
   {

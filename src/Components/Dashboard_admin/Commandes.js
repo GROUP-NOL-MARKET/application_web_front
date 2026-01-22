@@ -135,6 +135,7 @@ const Commandes = () => {
                                 <th>#id</th>
                                 <th>Utilisateur</th>
                                 <th className="col-5">Produits commandés</th>
+                                <th>Reference</th>
                                 <th>Total</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
@@ -144,8 +145,8 @@ const Commandes = () => {
                             {orders.map((order) => (
                                 <tr key={order.id}>
                                     <th>{order.id}</th>
-                                    <td>{order.user?.name}</td>
-                                    <td>
+                                    <td className="texte_brut">{order.user?.name}</td>
+                                    <td className="texte_brut text-capitalize">
                                         {(() => {
                                             try {
                                                 const produits = Array.isArray(order.produits)
@@ -162,16 +163,17 @@ const Commandes = () => {
                                         })()}
 
                                     </td>
-                                    <td>{order.total} FCFA</td>
-                                    <td>{order.status}</td>
+                                    <td className="texte_brut">{order?.payment?.transaction_id}</td>
+                                    <td className="texte_brut">{order.total} FCFA</td>
+                                    <td className="texte_brut">{order.status}</td>
                                     <td>
                                         <button
-                                            className={`btn btn-sm ${order.status === "livree" || order.status === "livree"
+                                            className={`petit_titre btn btn-sm ${order.status === "livree" || order.status === "livree"
                                                 ? "btn-secondary"
                                                 : "btn-outline-primary"
                                                 }`}
                                             onClick={() => openPopUp(order)}
-                                            disabled={order.status === "livree" || order.status === "livree"}
+                                            disabled={order.status === "livree" || order.status === "remboursee"}
                                         >
                                             Voir
                                         </button>

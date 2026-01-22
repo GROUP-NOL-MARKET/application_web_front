@@ -68,7 +68,7 @@ const Commandes = () => {
       dispatch(fetchCommandes(currentPage));
     } catch (error) {
       toast.error(
-        error.response?.data?.message ||
+        error.response?.data?.message || 
           "Erreur lors de la demande de remboursement"
       );
     }
@@ -96,7 +96,7 @@ const Commandes = () => {
     return orders.filter((cmd) =>
       activeTab === "livraison"
         ? ["livree", "en cours", "validee", "pending"].includes(cmd.status)
-        : ["annulee", "retournee", "cancelled"].includes(cmd.status)
+        : ["annulee", "remboursee", "cancelled"].includes(cmd.status)
     );
   }, [orders, activeTab]);
 
@@ -256,7 +256,7 @@ const Commandes = () => {
                       {order.status}
                     </h3>
 
-                    {order.status === "livree" && (
+                    {(order.status === "livree" || order.status === "remboursee") && (
                       <button
                         className="bg-primary border-0 text-white w-100 rounded-5 text-center mt-2 py-1"
                         onClick={() => openPopUp(order.id)}

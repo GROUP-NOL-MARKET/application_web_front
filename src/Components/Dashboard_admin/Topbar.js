@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useContext, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+  useCallback,
+} from "react";
 import "./Notifications/Notifications.css";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
@@ -16,7 +22,11 @@ import MessageDropdown from "./Messages/MessageDropdown";
 import "../../Styles/AdminDashbord/topbar.css";
 import API from "../Authentification/apiAdmin";
 
-const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => {
+const Topbar = ({
+  initial = [],
+  fetchMoreNotifications,
+  fetchMoreMessages,
+}) => {
   const { theme, toggleThemeMode } = useContext(ThemeContext);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
@@ -41,8 +51,20 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
   }, [fetchMoreMessages]);
 
   // Calcul des non lus
-  const unreadNotifications = notifications.filter((n) => !n.read).length;
+  const unreadNotifications = notifications.filter((n) => n.can_act).length;
   const unreadMessages = messages.filter((m) => !m.read).length;
+
+  useEffect(() => {
+    API.get("/admin/notifications").then((res) => setNotifications(res.data));
+  }, []);
+
+  const handleAccept = (id) => {
+    API.post(`/admin/notifications/${id}/accept`).then(() => {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, can_act: false } : n))
+      );
+    });
+  };
 
   //  Marquer comme lus quand on ouvre le dropdown message
   useEffect(() => {
@@ -55,9 +77,13 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
   const logout = async () => {
     const token = localStorage.getItem("adminToken");
     try {
-      await API.post("/admin/logout", {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await API.post(
+        "/admin/logout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       localStorage.removeItem("adminToken");
       toast.success("Déconnexion réussie");
       navigate("/admin/");
@@ -68,7 +94,9 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
 
   return (
     <nav
-      className={`navbar navbar-expand border-bottom d-flex position-fixed top-0 ${theme === "dark" ? "topbar-dark" : "topbar-light"}`}
+      className={`navbar navbar-expand border-bottom d-flex position-fixed top-0 ${
+        theme === "dark" ? "topbar-dark" : "topbar-light"
+      }`}
       style={{ zIndex: 1 }}
     >
       <div className="container-fluid">
@@ -102,9 +130,11 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
         {/* Section droite */}
         <div className="d-flex align-items-center offset-1 col-3">
           <div className="row w-100 align-items-center">
-
             {/* Thème */}
-            <div className="col-2 d-flex justify-content-center" onClick={toggleThemeMode}>
+            <div
+              className="col-2 d-flex justify-content-center"
+              onClick={toggleThemeMode}
+            >
               <img
                 src={theme === "light" ? imgLune : imgSoleil}
                 alt="toggle theme"
@@ -114,7 +144,10 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
             </div>
 
             {/* Notifications */}
-            <div className="col-2 d-flex justify-content-center position-relative" ref={refNotifications}>
+            <div
+              className="col-2 d-flex justify-content-center position-relative"
+              ref={refNotifications}
+            >
               <img
                 src={notificationIcon}
                 alt="notifications"
@@ -132,13 +165,18 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
                 <NotificationDropdown
                   notifications={notifications}
                   onClose={() => setOpenNotifications(false)}
+                  onAccept={handleAccept}
+                  onDecline={() => {}}
                   onLoadMore={handleLoadMoreNotifications}
                 />
               )}
             </div>
 
             {/* Messages */}
-            <div className="col-2 d-flex justify-content-center position-relative" ref={refMessages}>
+            <div
+              className="col-2 d-flex justify-content-center position-relative"
+              ref={refMessages}
+            >
               <img
                 src={messageIcon}
                 alt="messages"
@@ -187,7 +225,6 @@ const Topbar = ({ initial = [], fetchMoreNotifications, fetchMoreMessages }) => 
                 </li>
               </ul>
             </div>
-
           </div>
         </div>
       </div>

@@ -53,9 +53,6 @@ const AnalyseVente = () => {
     fetchStats();
   }, []);
 
-
-
-
   return (
     <div>
       <div className="container-fluid">
@@ -73,7 +70,7 @@ const AnalyseVente = () => {
               <div className="row mt-3">
                 <div
                   className="col-7 shadow-sm border border-1"
-                  style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                  style={{ backgroundColor: theme === "dark" ? "black" : "white", color: theme === "dark" ? "white" : "black" }}
                 >
                   <div className="row">
                     <div className="col-3 d-flex align-items-center bg-light">
@@ -163,7 +160,7 @@ const AnalyseVente = () => {
                 <div
                   className="mx-4 col w-100  shadow-sm border border-1"
                   style={{
-                    backgroundColor: theme === "dark" ? "black" : "#f7feff",
+                    backgroundColor: theme === "dark" ? "black" : "#f7feff", color: theme === "dark" ? "white" : "black"
                   }}
                 >
                   <div className="row">
@@ -190,7 +187,7 @@ const AnalyseVente = () => {
               <div className="row mt-3">
                 <div
                   className="col-7 shadow-sm border border-1"
-                  style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                  style={{ backgroundColor: theme === "dark" ? "black" : "white", color: theme === "dark" ? "white" : "black" }}
                 >
                   <div>
                     <h2

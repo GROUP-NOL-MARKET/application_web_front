@@ -186,9 +186,6 @@ const AdBanner = React.memo(
                   zIndex: 3,
                 }}
               >
-
-                    
-
                   <h6 className="offset-1"><FontAwesomeIcon icon={faPhone}
                     className="me-2"/>Commandez au {pub_num}</h6>
 

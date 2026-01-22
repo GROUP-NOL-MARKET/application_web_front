@@ -27,7 +27,7 @@ export const fetchProducts = createAsyncThunk(
  */
 export const fetchLimitedProducts = createAsyncThunk(
   "products/fetchLimited",
-  
+
   async ({ category, limit = 10 }, { rejectWithValue }) => {
     try {
       const resp = await API.get("/products-category/limited", {
@@ -68,10 +68,9 @@ export const fetchHomeProducts = createAsyncThunk(
 const ProductsSlice = createSlice({
   name: "products",
   initialState: {
-    items: {},       // items["sousCategory"] ou items["category"]
-    home: {},        // home["category"]
-    status: "idle",
-    error: null,
+    items: {},                 // items[category]
+    statusByCategory: {},      // statusByCategory[category]
+    errorByCategory: {},       // errorByCategory[category]
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -113,17 +112,23 @@ const ProductsSlice = createSlice({
        * FETCH LIMITE PAR CATEGORIE
        */
       .addCase(fetchLimitedProducts.pending, (state, action) => {
-        state.status = "loading";
+        const { category } = action.meta.arg;
+        state.statusByCategory[category] = "loading";
       })
+
       .addCase(fetchLimitedProducts.fulfilled, (state, action) => {
         const { category, items } = action.payload;
         state.items[category] = items;
-        state.status = "succeeded";
+        state.statusByCategory[category] = "succeeded";
       })
+
       .addCase(fetchLimitedProducts.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload?.message || action.error.message;
+        const { category } = action.meta.arg;
+        state.statusByCategory[category] = "failed";
+        state.errorByCategory[category] =
+          action.payload?.message || action.error.message;
       });
+
   },
 });
 

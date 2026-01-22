@@ -35,11 +35,11 @@ const Header = () => {
         });
       } else {
         carousel.scrollBy({
-          left: scrollAmount + 10, // +10 = ton gap
+          left: scrollAmount + 10, // +10 = gap
           behavior: "smooth",
         });
       }
-    }, 3000); // toutes les 3 secondes
+    }, 1000); // toutes les 1 seconde
 
     return () => clearInterval(interval);
   }, [carouselImages]);

@@ -81,31 +81,31 @@ const ValidationCommande = ({ closePopUp, order, refresh }) => {
 
                     <div>
                         <h5 className="taux_moyen">Produits commandés</h5>
-                        {produits}
+                        <div className='petit_titre'>{produits}</div>
                     </div>
 
                     <div className="row mt-3">
                         <Button
-                            className="rounded-5 border-0 offset-2 col-4 me-2"
+                            className="rounded-5 border-0 offset-2 col-3 me-2 petit_titre"
                             style={{ backgroundColor: "green" }}
                             onClick={() => updateStatus("livree")}
                         >
-                            {loading ? <Spinner animation="border" size='sm' /> : "Valider la commande"}
+                            {loading ? <Spinner animation="border" size='sm' /> : "Valider"}
                         </Button>
 
                         <Button
-                            className="rounded-5 border-0 col-4 me-2"
+                            className="rounded-5 border-0 col-3 me-2 petit_titre"
                             style={{ backgroundColor: "red" }}
                             onClick={() => updateAnnuleStatus("annulee")}
                         >
-                            {annuleLoading ? <Spinner animation="border" size="sm" /> : "Annuler la commande"}
+                            {annuleLoading ? <Spinner animation="border" size="sm" /> : "Annuler"}
                         </Button>
                         <Button
-                            className="rounded-5 border-0 col"
-                            style={{ backgroundColor: "red" }}
+                            className="rounded-5 border-0 col petit_titre"
+                            style={{ backgroundColor: "#0066BD" }}
                             onClick={closePopUp}
                         >
-                            {annuleLoading ? <Spinner animation="border" size="sm" /> : "Fermer"}
+                            {annuleLoading ? <Spinner animation="border" size="sm" /> : "Rembourser"}
                         </Button>
                     </div>
                 </div>

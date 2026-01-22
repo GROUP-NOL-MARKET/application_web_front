@@ -390,7 +390,7 @@ const Navbar2 = React.memo(() => {
                 className="img-fluid"
                 src={Panier}
                 alt=""
-                style={{ width: "35px", height: "40px" }}
+                style={{ width: "30px", height: "35px" }}
               />
 
               <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
