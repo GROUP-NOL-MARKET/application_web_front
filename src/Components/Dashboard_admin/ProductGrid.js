@@ -8,6 +8,9 @@ import { Button, CircularProgress } from "@mui/material";
 import API from "../Authentification/apiAdmin";
 import { toast } from "react-toastify";
 import img_electromenager_dashboard from "../assets/Images/img_electromenager_dashboard.webp";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 const ProductGrid = () => {
   const navigate = useNavigate();
@@ -16,10 +19,42 @@ const ProductGrid = () => {
   const [dropActive, setDropActive] = useState("Nom");
   const [category, setCategory] = useState("Electroménager");
   const [loading, setLoading] = useState(false);
+  const [loadingPopular, setLoadingPopular] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const token = localStorage.getItem("adminToken");
+
+  const togglePopular = async (productId) => {
+    setLoadingPopular(productId);
+
+    try {
+      const response = await API.put(
+        `/admin/products/${productId}/toggle-popular`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const { is_popular } = response.data;
+
+      // Mise à jour locale sans recharger toute la liste
+      setProducts((prev) =>
+        prev.map((p) => (p.id === productId ? { ...p, is_popular } : p)),
+      );
+
+      toast.success(
+        is_popular
+          ? "Produit marqué comme populaire"
+          : "Produit retiré des populaires",
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Impossible de modifier le statut populaire");
+    } finally {
+      // ...
+      setLoadingPopular(null);
+    }
+  };
 
   // Charger les produits depuis l’API
   const fetchProducts = async () => {
@@ -29,7 +64,7 @@ const ProductGrid = () => {
         `/admin/products?page=${page}&sort=${dropActive}&category=${category}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setProducts(response.data.data);
@@ -255,6 +290,20 @@ const ProductGrid = () => {
                     Supprimer
                   </Button>
                 </div>
+                <FormGroup className="mt-2">
+                  <FormControlLabel
+                    label="Populaire"
+                    control={
+                      <Switch
+                        checked={Boolean(product.is_popular)}
+                        onChange={() => togglePopular(product.id)}
+                        color="secondary"
+                        size="small"
+                        disabled={loadingPopular === product.id}
+                      />
+                    }
+                  />
+                </FormGroup>
               </div>
             ))
           ) : (
