@@ -7,8 +7,10 @@ import APIAdmin from "../Authentification/apiAdmin";
 const ImageCouverture = ({ closePopUp1 }) => {
   const [images, setImages] = useState([]);
   const [file, setFile] = useState(null);
+  const [link, setLink] = useState();
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const loadImages = async () => {
     try {
@@ -30,20 +32,34 @@ const ImageCouverture = ({ closePopUp1 }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    const newErrors = {};
 
     if (!file) {
       toast.info("Sélectionne une image");
       return;
     }
 
+    if (!link.trim()) {
+      newErrors.email = "Veuillez entrer le lien de redirection";
+    }
+
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", file, file.name);
     formData.append("description", description);
-
-    setLoading(true);
+    formData.append("link", link);
 
     console.log(file);
-console.log(formData.get("image"));
+    console.log(formData.get("image"));
 
     try {
       await APIAdmin.post("/admin/cover-images", formData);
@@ -51,6 +67,7 @@ console.log(formData.get("image"));
       toast.success("Image ajoutée");
       setFile(null);
       setDescription("");
+      setLink('');
       loadImages();
 
       window.dispatchEvent(new Event("coverImagesUpdated"));
@@ -111,6 +128,7 @@ console.log(formData.get("image"));
                 <th>ID</th>
                 <th>Image</th>
                 <th>Description</th>
+                <th>Lien de redirection</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -128,6 +146,10 @@ console.log(formData.get("image"));
                     </td>
                     <td>
                       <div>{img.description}</div>
+                    </td>
+                    <td>
+                      <div>{img.link}</div>
+
                     </td>
                     <td>
                       <Button
@@ -178,6 +200,20 @@ console.log(formData.get("image"));
                 onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Group>
+
+            <Form.Group className="mt-2">
+              <Form.Label>Lien de redirection</Form.Label>
+              <Form.Control
+                type="text"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                isInvalid={errors?.link ? true : false}
+              />
+              <Form.Control.Feedback type='invalid'>
+                {errors?.link}
+              </Form.Control.Feedback>
+            </Form.Group>
+
 
             <Button className="mt-3 w-100" disabled={loading} type="submit">
               {loading ? "Envoi..." : "Enregistrer"}

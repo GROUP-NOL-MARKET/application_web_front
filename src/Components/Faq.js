@@ -30,7 +30,7 @@ const Faq = () => {
                   aria-expanded="true"
                   aria-controls="helpCollapseOne"
                 >
-                  Comment rechercher un objet ?
+                  Comment rechercher un produit ?
                 </button>
               </h2>
               <div
@@ -41,7 +41,7 @@ const Faq = () => {
               >
                 <div className="accordion-body reponse">
                   Utilisez la barre de recherche en haut de la page pour entrer
-                  des mots-clés relatifs à l'objet que vous souhaitez acheter.
+                  des mots-clés relatifs au produit que vous souhaitez acheter.
                   Vous pouvez aussi filtrer les résultats par catégorie, menu et
                   produit.
                 </div>

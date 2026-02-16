@@ -22,10 +22,18 @@
     padding-top: 0 !important;
   }
 
-  .carousel {
-    margin-bottom: 0.5rem !important; /* Réduit l’espace sous le carousel */
+  .carousel,
+  .carousel-inner,
+  .carousel-item {
+    height: 100%;
   }
 
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
   .category_mobile_box {
     margin-bottom: 0.5rem; /* Uniformise les espacements */
   }
@@ -38,9 +46,6 @@
     margin-top: 1.5rem;
     margin-bottom: 0.8rem;
   }
-  .hauteur_carousel {
-    height: auto;
-  }
 }
 @media (max-width: 768px) {
   header .container {
@@ -48,8 +53,17 @@
     padding-top: 0 !important;
   }
 
-  .carousel {
-    margin-bottom: 0.5rem !important; /* 🔹 Réduit l’espace sous le carousel */
+  .carousel,
+  .carousel-inner,
+  .carousel-item {
+    height: 100%;
+  }
+
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .category_mobile_box {
@@ -64,9 +78,6 @@
     margin-top: 0.5rem;
     margin-bottom: 0.8rem;
   }
-  .hauteur_carousel {
-    height: 400px;
-  }
 }
 
 /* --- Amélioration du rendu sur petits écrans --- */
@@ -77,20 +88,6 @@
 
   section.d-lg-none.mt-4 {
     margin-top: 0 !important; /* supprime l’espace entre le carousel et les catégories */
-  }
-
-  .carousel {
-    margin-bottom: 0 !important;
-  }
-
-  .hauteur_carousel {
-    height: 400px !important;
-  }
-
-  .carousel-inner img {
-    height: auto !important;
-    max-height: 300px; 
-    object-fit: cover;
   }
 
   .category_img {
@@ -167,10 +164,10 @@
 }
 
 .embla__slide {
-  flex: 0 0 auto; /* ✅ évite que ça se compresse */
-  width: 35%; /* ou 100%, selon combien de produits tu veux par slide */
+  flex: 0 0 auto; /* éviter que ça se compresse */
+  width: 40%; /* ou 100%, selon combien de produits tu veux par slide */
   box-sizing: border-box;
-  min-height: 200px;
+  min-height: 150px;
 }
 
 .embla__prev,
@@ -181,7 +178,7 @@
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 30px;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -259,11 +256,9 @@
 
   .mobile-carousel-img {
     width: 100%;
-    height: 250px !important; /* taille mobile */
-    transform: scale(1.1);
-    transition: transform 8s ease-in-out;
+    height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    display: block;
   }
 }
 
@@ -292,30 +287,26 @@
 
   .mobile-carousel-img {
     width: 100%;
-    height: 180px; /* taille mobile */
-    transform: scale(1.1);
-    transition: transform 8s ease-in-out;
+    height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    display: block;
   }
 }
 
 @media (min-width: 992px) {
-
-
- .desktop-slide{
-   width: auto;
-   height: 200px;
-  } 
+  .desktop-slide {
+    width: auto;
+    height: 200px;
+  }
 
   .desktop-slide-img {
     width: 100%;
     /* transform: scale(1.1);
     transition: transform 8s ease-in-out; */
-    height: 250px !important;
+    height: auto;
     object-fit: cover;
     border-radius: 20px;
-  } 
+  }
 }
 /* ==== CATEGORIES MOBILE ==== */
 
@@ -340,4 +331,112 @@
 }
 .zoom-container {
   overflow: hidden;
+}
+.amazon-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f3f3f3);
+  z-index: 2;
+  pointer-events: none;
+}
+.amazon-overlay {
+  position: absolute;
+  bottom: -82px; /* chevauchement */
+  left: 51%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+.amazon-card {
+  background: #fff;
+  padding: 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 🔑 */
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.amazon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+}
+.amazon-card-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.amazon-card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.amazon-card-image-suite {
+  width: 100%;
+  height: 410px;
+  /* aspect-ratio: 4 / 3; */
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.amazon-card-image img {
+  width: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+.amazon-card-image-suite img {
+  width: 100%;
+  height: 92%;
+  object-fit: cover;
+  display: block;
+}
+.amazon-card-link {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.amazon-hero {
+  position: relative;
+  aspect-ratio: 16 / 6;
+  /* overflow: hidden; */
+  margin-bottom: 140px;
+}
+@media (max-width: 768px) {
+  .amazon-hero {
+    position: relative;
+    aspect-ratio: 16 / 6;
+    /* overflow: hidden; */
+    margin-bottom: 10px;
+  }
+  .amazon-hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: none;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+.amazon-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

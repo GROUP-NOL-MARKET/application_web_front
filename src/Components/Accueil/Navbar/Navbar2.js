@@ -3,15 +3,19 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+
 
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
-import Panier from "../../assets/Images/icone/panier.png";
 import utilisateur from "../../assets/Images/icone/utilisateur.png";
 import question from "../../assets/Images/icone/question.png";
-
 import { AuthContext } from "../../AuthContext";
 import { PanierContext } from "../../../Store/Panier_context";
 import API from "../../Authentification/api";
@@ -102,6 +106,14 @@ const Navbar2 = React.memo(() => {
     [navigate]
   );
 
+  const navigateto = () => {
+    navigate('/login');
+  }
+
+  const redirectto = () => {
+    navigate('/user/favorites')
+  }
+
   const handleSearch = useCallback(
     async (e) => {
       e.preventDefault();
@@ -189,22 +201,30 @@ const Navbar2 = React.memo(() => {
       className="navbar2 navbar navbar-expand-lg shadow-sm"
       style={{ backgroundColor: "#CFCFCF", zIndex: 10 }}
     >
-      <div className="container align-items-center d-flex justify-content-between">
+      <div className="container-fluid align-items-center d-flex justify-content-between">
         {/*  Logo avec lazy loading */}
         <Link to="/" className="d-none d-lg-block">
           <img
             alt="logo"
             src={Logo}
             className="logo"
-            style={{ cursor: "pointer", height: "55px" }}
+            style={{ cursor: "pointer", height: "50px" }}
             loading="lazy"
           />
         </Link>
 
+        <div className="d-md-flex flex-column ms-2 d-none">
+          <span style={{ fontSize: "13px" }} className="texte_brut fw-bold"><FontAwesomeIcon icon={faLocationDot} size="1x" />localisation</span>
+          <span style={{ fontSize: "11px" }} className="texte_brut fw-normal">Cotonou, Fidjrossè (houenoussou)</span>
+        </div>
+
+
         {/*  Barre de recherche */}
-        <div className="col-10 col-md-9 col-lg-5 d-flex align-items-center mx-2">
-          <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100">
-            <div className="col-5">
+
+
+        <div className="col-10 col-md-9 col-lg-4 d-flex align-items-center mx-1">
+          <div className="row g-0 rounded-5 border border-dark overflow-hidden w-100 search-bar">
+            <div className="col-4 d-none d-md-block">
               <select
                 className="form-select h-100 rounded-0 border-end select_1"
                 value={selectedCategory}
@@ -234,16 +254,54 @@ const Navbar2 = React.memo(() => {
                 ))}
               </select>
             </div>
-            <Form onSubmit={handleSearch} className="col">
+
+            {/* Mobile  */}
+
+            <div className="col-4 d-md-none">
+
+              <select
+                className="form-select h-100 rounded-0 border-end select_1"
+                value={selectedCategory}
+                onChange={(e) => {
+                  const category = e.target.value;
+                  setSelectedCategory(category);
+
+                  if (category !== "Catégories") {
+                    handleNavigation(category);
+                  }
+                }}
+              >
+                <option value="Catégories">Catégories</option>
+                {[
+                  "Droguerie",
+                  "Animalerie",
+                  "Épicerie",
+                  "Produits Locaux",
+                  "Produits frais",
+                  "Divers",
+                  "Boissons",
+                  "Electroménager",
+                ].map((cat) => (
+                  <option key={cat} onClick={() => handleNavigation(cat)}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Form onSubmit={handleSearch} className="col" >
               <div className="row">
-                <div className="col-md-9 col-8">
+                <div className="col-md-9 col-8 d-flex align-items-center">
                   <InputBase
                     placeholder="Tapez ici..."
                     inputProps={{ "aria-label": "search" }}
-                    className="w-100 px-3 h-100"
+                    className="w-100 px-2"
+                    sx={{
+                      fontSize: { xs: "12px", md: "12px" },
+                    }}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
+
                 </div>
 
                 <div className="col-md-3 col-4">
@@ -254,11 +312,13 @@ const Navbar2 = React.memo(() => {
                       backgroundColor: "#0066BD",
                       color: "white",
                       borderRadius: 0,
+                      padding: { xs: "4px", md: "14px" },
                       ":hover": { backgroundColor: "#004d94" },
                     }}
                   >
-                    <SearchIcon />
+                    <SearchIcon fontSize="small" />
                   </IconButton>
+
                 </div>
               </div>
             </Form>
@@ -268,115 +328,119 @@ const Navbar2 = React.memo(() => {
         {/* Section utilisateur, panier et aide */}
         <div className="d-none d-lg-flex align-items-center gap-4">
           {/* Utilisateur */}
-          <div className="d-flex align-items-center gap-2 dropdown">
-            <img
-              src={utilisateur}
-              alt="user"
-              className="icon_user"
-              style={{ width: "35px", cursor: "pointer" }}
-              loading="lazy"
-            />
+          <div className="d-none d-lg-flex align-items-center">
+            <div className="dropdown user-dropdown">
+              <button
+                className="btn d-flex align-items-center gap-2 user-trigger"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src={utilisateur}
+                  alt="user"
+                  className="rounded-circle"
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <span className="fw-semibold text-dark small">
+                  {isLoggedIn ? "Mon compte" : "Connexion"}
+                </span>
+                <i className="fa-solid fa-chevron-down small"></i>
+              </button>
 
-            <div className="dropdowns register w-100">
-              {!isLoggedIn ? (
-                <>
-                  <div
-                    className="dropdown-toggle"
-                    role="button"
-                    id="registerDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Connexion
-                  </div>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="registerDropdown"
-                  >
+              <ul className="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2">
+                {!isLoggedIn ? (
+                  <>
                     <li>
-                      <Link className="dropdown-item" to="/register">
-                        Inscription
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/login">
+                      <Link className="dropdown-item d-flex align-items-center gap-2" to="/login">
+                        <i className="fa-solid fa-right-to-bracket"></i>
                         Connexion
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/admin">
-                        Mode admin{" "}
-                        <FontAwesomeIcon icon={faLock} />
+                      <Link className="dropdown-item d-flex align-items-center gap-2" to="/register">
+                        <i className="fa-solid fa-user-plus"></i>
+                        Inscription
                       </Link>
                     </li>
-                  </ul>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="dropdown-toggle"
-                    role="button"
-                    id="userDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Mon compte
-                  </div>
-                  <ul className="dropdown-menu" aria-labelledby="userDropdown">
+
+                    <li><hr className="dropdown-divider" /></li>
+
                     <li>
-                      <Link className="dropdown-item" to="/user">
-                        Mon compte
+                      <Link className="dropdown-item d-flex align-items-center gap-2 text-warning" to="/admin">
+                        <i className="fa-solid fa-lock"></i>
+                        Mode admin
                       </Link>
                     </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link className="dropdown-item d-flex align-items-center gap-2" to="/user">
+                        <i className="fa-solid fa-user"></i>
+                        Mon profil
+                      </Link>
+                    </li>
+
+                    <li><hr className="dropdown-divider" /></li>
+
                     <li>
                       <button
-                        type="button"
-                        className="dropdown-item text-danger"
+                        className="dropdown-item d-flex align-items-center gap-2 text-danger"
                         onClick={logout}
                       >
-                        <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+                        <i className="fa-solid fa-right-from-bracket"></i>
                         Déconnexion
                       </button>
                     </li>
-                  </ul>
-                </>
-              )}
+                  </>
+                )}
+              </ul>
             </div>
           </div>
 
+
           {/* Panier */}
           <div className="d-flex align-items-center gap-2 position-relative">
-            <Link to="/Cart" className="position-relative">
-              <img
-                src={Panier}
-                alt="panier"
-                style={{ width: "35px", cursor: "pointer" }}
-                loading="lazy"
-              />
-              <span
-                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style={{ fontSize: "12px" }}
-              >
-                {products.length}
-              </span>
+            <Link to="/Cart" className="position-relative" style={{ color: "black" }}>
+              <AddShoppingCartIcon style={{ fontSize: "35px" }} />
+              <span className='notif-badge-navbar-cart position-absolute'>{products.length}</span>
             </Link>
             <div className="ps-2">
-              <p className="mb-0 fw-bold">Panier</p>
+              <p className="mb-0 fw-bold price">Panier</p>
               <small>{totalPrice.toLocaleString()} FCFA</small>
             </div>
           </div>
 
-          {/* Aide */}
+          {/* Favoris  */}
+
           <div className="d-flex align-items-center gap-2">
-            <Link to="/aide&Faq">
+            <Link
+              to={isLoggedIn ? "/user/favoris" : "/login"}
+              className="text-decoration-none position-relative"
+              style={{ color: "black" }}
+            >
+              <FavoriteBorderIcon style={{ fontSize: "35px" }} />
+              <span className="notif-badge-navbar-favorite">0</span>
+            </Link>
+
+            <span className="price">Favoris</span>
+          </div>
+
+
+          {/* Aide */}
+
+          <div className="d-flex align-items-center gap-2">
+            <Link to="/aide&Faq" >
               <img
                 src={question}
                 alt="aide"
-                style={{ width: "30px", cursor: "pointer" }}
+                style={{ width: "25px", cursor: "pointer" }}
                 loading="lazy"
               />
             </Link>
-            <p className="mb-0">Aide</p>
+            <p className="mb-0 price">Aide</p>
           </div>
         </div>
         <div className=" row col-md-3 col-2 d-lg-none ">
@@ -386,21 +450,13 @@ const Navbar2 = React.memo(() => {
             className=" d-flex justify-content-center col-md-4"
           >
             <div className="d-flex position-relative">
-              <img
-                className="img-fluid"
-                src={Panier}
-                alt=""
-                style={{ width: "30px", height: "35px" }}
-              />
-
-              <span className="position-absolute translate-middle badge top-0 start-100 rounded-pill bg-danger panier_length">
-                {products.length}
-              </span>
+              <AddShoppingCartIcon style={{ fontSize: "35px" }} />
+              <span className='notif-badge-navbar-cart position-absolute'>{products.length}</span>
 
             </div>
           </Link>
           <div className="col-8 d-none d-md-block">
-            <p className="mb-0 pb-0">Panier</p>
+            <p className="mb-0 pb-0 price">Panier</p>
             <small className="mt-0 pt-0">{totalPrice.toLocaleString()} FCFA</small>
           </div>
         </div>

@@ -20,7 +20,7 @@ export default function Preloader() {
         zIndex: 9999, // reste au-dessus
       }}
     >
-      <Lottie animationData={Animation} loop={true} style={{ width: 80, height: 80 }} />
+      <Lottie animationData={Animation} loop={true} style={{ width: 65, height: 65 }} />
       <img src={entreprise} alt="" style={{ width: 100 }} />
     </div>
   );

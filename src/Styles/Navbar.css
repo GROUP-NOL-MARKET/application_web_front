@@ -21,7 +21,7 @@
   width: 100%;
 }
 .category-menu {
-  height: 80vh; /* ou calc(100vh - 64px) si tu as un header fixe de 64px */
+  height: 70vh; /* ou calc(100vh - 64px) si tu as un header fixe de 64px */
   overflow: hidden; /* évite les doubles scrollbars */
   min-height: 0; /* IMPORTANT en flex column */
 }
@@ -59,7 +59,7 @@
 }
 
 .nav-link {
-  color: white !important;
+  color: black !important;
 }
 .select_1 {
   font-family: "Roboto", sans-serif;
@@ -75,7 +75,7 @@
   right: -300px;
   width: 260px;
   height: 100vh;
-  background: #0066bd;
+  background: #ececec;
   transition: right 0.4s ease-in-out;
   padding-top: 60px;
   overflow-y: auto;
@@ -218,4 +218,102 @@ details {
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1000;
+}
+/* Taille normale (desktop) */
+.search-bar {
+  height: 48px;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .search-bar {
+    height: 34px; /*plus compact */
+  }
+
+  /* Select catégories */
+  .search-bar .form-select {
+    height: 34px;
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+
+  /* Champ texte */
+  .search-bar input {
+    height: 34px;
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+
+  /* Bouton recherche */
+  .search-bar button {
+    min-height: 34px;
+    padding: 0;
+  }
+
+  /* Icône loupe */
+  .search-bar svg {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 992px) {
+  .search-bar {
+    height: 40px; /*plus compact */
+  }
+
+  /* Select catégories */
+  .search-bar .form-select {
+    height: 34px;
+    font-size: 15px;
+    padding: 2px 6px;
+  }
+
+  /* Champ texte */
+  .search-bar input {
+    height: 34px;
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+
+  /* Bouton recherche */
+  .search-bar button {
+    min-height: 34px;
+    padding: 0;
+  }
+
+  /* Icône loupe */
+  .search-bar svg {
+    font-size: 18px;
+  }
+}
+
+.notif-badge-navbar-cart {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+  background: #ff3b30;
+  color: white;
+  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.notif-badge-navbar-favorite {
+  position: absolute;
+  top: 0px;
+  right: 1px;
+  background: #fa7f1b;
+  color: white;
+  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }

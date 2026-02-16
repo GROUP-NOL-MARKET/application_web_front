@@ -65,10 +65,19 @@ const PopularProducts = () => {
             </section>
         );
     }
+    const formatPrice = (price) => {
+        const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+        return new Intl.NumberFormat('fr-FR', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(numericValue);
+    };
 
     return (
         <section className="py-5 bg-light">
-            <div className="container">
+            <div className="container-fluid">
                 {/* Titre */}
                 <div className="d-flex justify-content-between align-items-center">
                     <h2 className="fw-bold mb-0 title">Produits populaires</h2>
@@ -77,14 +86,14 @@ const PopularProducts = () => {
                         style={{ color: "#FA7F1B", cursor: "pointer" }}
                         onClick={() => navigate("/products?popular=true")}
                     >
-                        Voir plus <FontAwesomeIcon icon={faArrowAltCircleRight} />
+                        Voir plus <FontAwesomeIcon className="d-none d-md-inline" icon={faArrowAltCircleRight} />
                     </span>
                 </div>
 
                 <hr className="mb-2" style={{ height: "3px", backgroundColor: "#FA7F1B" }} />
 
                 {displayedProducts.length === 0 ? (
-                    <div className="text-center py-2" style={{color:"#FA7F1B", fontWeight: "700"}}>
+                    <div className="text-center py-2" style={{ color: "#FA7F1B", fontWeight: "700" }}>
                         Aucun produit populaire
                     </div>
                 ) : (
@@ -94,11 +103,11 @@ const PopularProducts = () => {
                         autoplay={{ delay: 3500, disableOnInteraction: false }}
                         spaceBetween={20}
                         breakpoints={{
-                            0: { slidesPerView: 1.2 },
-                            576: { slidesPerView: 2 },
-                            768: { slidesPerView: 3 },
-                            992: { slidesPerView: 4 },
+
+                            768: { slidesPerView: 4 },
+                            992: { slidesPerView: 6 },
                         }}
+                        className="d-none d-md-block"
                     >
                         {displayedProducts.map((product) => (
                             <SwiperSlide key={product.id}>
@@ -111,10 +120,10 @@ const PopularProducts = () => {
                                     />
                                     <div className="card-body text-center d-flex flex-column">
                                         <h6 className="fw-semibold">{product.name}</h6>
-                                        <p className="text-primary fw-bold mb-2">
-                                            {product.price} FCFA
+                                        <p className="fw-bold mb-2" color="#fa7f1e">
+                                            {formatPrice(product.price)} FCFA
                                         </p>
-                                        <button className="btn btn-primary btn-sm mt-auto">
+                                        <button className="btn btn-primary btn-sm mt-auto rounded-4 taux_moyen">
                                             Ajouter au panier
                                         </button>
                                     </div>

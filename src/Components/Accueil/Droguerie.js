@@ -39,7 +39,7 @@ const Droguerie = () => {
   };
 
   return (
-    <div className="container mt-1 mt-md-5">
+    <div className="container-fluid mt-2 mt-md-5">
       <div className="row">
         <h1 className="col-8 title mt-3 mt-md-0">
           Droguerie
@@ -51,7 +51,7 @@ const Droguerie = () => {
               className="row d-flex align-content-end"
               style={{ textDecoration: "none", color: "#FA7F1B", cursor: "pointer" }}
             >
-              <div className="col text-end"> Voir plus <FontAwesomeIcon icon={faArrowAltCircleRight} /></div>
+              <div className="col text-end"> Voir plus <FontAwesomeIcon className="d-none d-md-inline" icon={faArrowAltCircleRight} /></div>
             </div>
           </div>
         </div>
@@ -75,8 +75,8 @@ const Droguerie = () => {
             onClick={() => handleNavigation(sub.name)}
           >
             <img src={sub.img} alt={sub.name} className="img_product" />
-            <div className="border border-1 border-top w-100">
-              <div className="product_title petit_titre">{sub.name}</div>
+            <div className="border border-1 border-top w-100" style={{ cursor: "pointer" }}>
+              <div className="product_title taux_moyen fw-bolder">{sub.name}</div>
             </div>
           </SwiperSlide>
         ))}
@@ -96,7 +96,7 @@ const Droguerie = () => {
               >
                 <img src={sub.img} alt={sub.name} className="img_product" />
 
-                <div className="text-center petit_titre">{sub.name}</div>
+                <div className="text-center taux_moyen fw-bolder">{sub.name}</div>
               </div>
             ))}
           </div>

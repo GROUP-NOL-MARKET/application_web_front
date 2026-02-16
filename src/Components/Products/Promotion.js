@@ -48,6 +48,16 @@ const Promotion = () => {
     return `${API.defaults.baseURL}/storage/${image}`;
   };
 
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
+
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
@@ -87,7 +97,7 @@ const Promotion = () => {
   }
 
   return (
-    <div className="container mt-lg-4 mt-1">
+    <div className="container-fluid mt-lg-4 mt-1">
       {/* --- Header --- */}
       <div className="row">
         <h1 className="col-9 title text-capitalize mt-2">
@@ -124,7 +134,7 @@ const Promotion = () => {
               style={{ minHeight: "320px" }}
             >
               <div
-                className="border shadow-sm p-2 rounded-3 w-100"
+                className="border-md-only p-2 rounded-3 w-100"
                 style={{ cursor: "pointer" }}
               >
                 <img
@@ -156,7 +166,7 @@ const Promotion = () => {
                 {/* Nom */}
                 <div
                   className="petit_titre text-center mt-2" title={product.name}
-                  style={{ fontWeight: "600" }}
+                  style={{ fontWeight: "600", textTransform: "none" }}
                 >
                   {product.name}
                 </div>
@@ -164,7 +174,7 @@ const Promotion = () => {
                 {/* Prix */}
                 <div className="text-center">
                   <span className="new_price fw-bold">
-                    {product.price} FCFA
+                    {formatPrice(product.price)} FCFA
                   </span>
 
                   {hasPromo && (

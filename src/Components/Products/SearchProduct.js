@@ -36,6 +36,16 @@ const SearchProduct = () => {
   const { addProductToCart } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
 
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const query = params.get("query");
@@ -67,7 +77,7 @@ const SearchProduct = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container-fluid mt-4">
       <div className="row">
         <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-2 mt-md-0 text-capitalize">
           Résultats de la recherche
@@ -83,12 +93,10 @@ const SearchProduct = () => {
                 cursor: "pointer",
               }}
             >
-              <div className="col-10 text-end d-none d-md-block">
-                Voir tous les produits
+              <div className="col text-end d-none d-md-block">
+                Voir tous les produits <FontAwesomeIcon icon={faArrowAltCircleRight} />
               </div>
-              <div className="col-1">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+
             </div>
           </div>
         </div>
@@ -118,7 +126,7 @@ const SearchProduct = () => {
                 key={prod.id}
                 className="col-md-3 col-sm-4 col-lg-2 col-6 mb-4"
               >
-                <div className="d-flex flex-column shadow-sm border border-1 p-2">
+                <div className="d-flex flex-column p-2">
                   <img
                     src={prod.image}
                     className="card-img-top img_product"
@@ -126,12 +134,12 @@ const SearchProduct = () => {
                     onClick={() => openPopUp(prod)}
                   />
                   <div className="card-body">
-                    <h5 className="card-truncate petit_titre text-lowercase" title={prod.name}>{prod.name}</h5>
+                    <h5 className="card-truncate petit_titre" style={{ textTransform: "none" }} title={prod.name}>{prod.name}</h5>
                     <p className="card-text petit_titre fw-bold">
-                      {prod.price.toLocaleString()} FCFA
+                      {formatPrice(prod.price.toLocaleString())} FCFA
                     </p>
                     {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                      <div className="d-flex flex-row justify-content-left gap-3 mt-2">
                         <Button
                           className="border-0"
                           onClick={() => addProductToCart(prod)}

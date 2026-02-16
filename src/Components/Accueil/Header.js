@@ -5,6 +5,10 @@ import Navbar3 from "./Navbar/Navbar3";
 import "../../Styles/Header.css";
 import { category_product } from "../Product_Data";
 import API from "../Authentification/api";
+import epicerie from "../assets/Images/epicerie.avif";
+import droguerie from "../assets/Images/droguerie.avif";
+import promo from "../assets/Images/promotions.avif";
+import boisson from "../assets/Images/boisson.avif";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -35,11 +39,11 @@ const Header = () => {
         });
       } else {
         carousel.scrollBy({
-          left: scrollAmount + 10, // +10 = gap
+          left: scrollAmount + 10, // +10 = ton gap
           behavior: "smooth",
         });
       }
-    }, 1000); // toutes les 1 seconde
+    }, 3000); // toutes les 3 secondes
 
     return () => clearInterval(interval);
   }, [carouselImages]);
@@ -156,9 +160,9 @@ const Header = () => {
           <img
             loading="lazy"
             src={img.url}
-            className="d-block w-100 hauteur_carousel"
             alt={`carousel_${index}`}
           />
+
           {/* 
           <div className="carousel-caption d-none d-md-block">
             <h5>{img.description || `Image ${index + 1}`}</h5>
@@ -168,8 +172,28 @@ const Header = () => {
     [carouselImages]
   );
 
+  const category = [{
+    categories: "epicerie",
+    image: epicerie,
+  },
+  {
+    categories: "Promotions",
+    image: promo,
+
+  },
+  {
+    categories: "droguerie",
+    image: droguerie,
+
+  },
+  {
+    categories: "boissons",
+    image: boisson,
+
+  }];
+
   return (
-    <header className="mb-3">
+    <header className="mb-3 header">
       {/* --- Bannière promo Desktop --- */}
       {banners.map((banner, index) => (
         <div className="container-fluid px-0 d-none d-lg-block" key={index}>
@@ -188,17 +212,17 @@ const Header = () => {
       ))}
 
       {/* --- Section principale --- */}
-      <div className="container mt-3">
+      <div className="container-fluid mt-3">
         <div className="row">
           {/* Menu catégories (Desktop) */}
-          <aside className="col-lg-3 d-none d-lg-block">
+          <aside className="col-lg-2 d-none d-lg-block">
             <Navbar3 />
           </aside>
 
           {/* Carousel principal */}
-          <section className="col-12 col-lg-9 mt-2">
+          <section className="col mt-2 amazon-hero position-relative">
             <div className="row">
-              <div className="col-lg-9 d-none d-lg-block">
+              <div className="col d-none d-lg-block">
                 <div
                   id="carouselExampleCaptions"
                   className="carousel slide"
@@ -247,7 +271,7 @@ const Header = () => {
               <div className="d-lg-none mt-2">
                 <div className="mobile-carousel-container" ref={carouselRef}>
                   {carouselImages.map((img, index) => (
-                    <div key={img.id || index} className="mobile-carousel-item">
+                    <div key={img.id || index} className="mobile-carousel-item" onClick={() => navigate(img.link)}>
                       <img
                         src={img.url}
                         alt={`img_${index}`}
@@ -257,67 +281,34 @@ const Header = () => {
                   ))}
                 </div>
               </div>
-
-              {/* Catégories Desktop */}
-              <div className="col-3 d-none d-lg-block">
-                <p className="text-uppercase font-bold title_category_product d-flex justify-content-center">
-                  Catégories de produits
-                </p>
-
-                <div className="m-2">
-                  {categories.slice(0, 3).map((category_p) => (
+            </div>
+            {/* Blocs superposés type Amazon */}
+            <div className="amazon-overlay container d-none d-lg-flex">
+              <div className="row w-100 g-3">
+                {category.slice(0, 4).map((category_p) => (
+                  <div key={category_p.categories} className="col-3">
                     <div
-                      key={category_p.category}
-                      onClick={() => handleNavigation2(category_p.category)}
-                      className="text-decoration-none text-black"
+                      className="amazon-card"
+                      onClick={() => handleNavigation2(category_p.categories)}
                     >
-                      <div className="border border-1 mt-2 category_content shadow-sm">
-                        <div className="d-flex flex-column align-items-center">
-                          <img
-                            loading="lazy"
-                            alt={category_p.category}
-                            src={category_p.image}
-                            className="category_img rounded-2"
-                            style={{ width: "90%" }}
-                          />
-                          <h3 className="category_name text-uppercase">
-                            {category_p.category}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* Autres catégories Desktop */}
-              <div className="mt-4 d-none d-lg-block">
-                <div className="row">
-                  {categories.slice(3, 9).map((category_p) => (
-                    <div
-                      key={category_p.category}
-                      onClick={() => handleNavigation2(category_p.category)}
-                      className="text-decoration-none text-black col-2"
-                    >
-                      <div className="border border-1 category_content shadow-sm">
-                        <div className="d-flex flex-column">
-                          <img
-                            loading="lazy"
-                            alt={category_p.category}
-                            src={category_p.image}
-                            className="category_img rounded-2"
-                          />
-                          <h3 className="category_name text-uppercase">
-                            {category_p.category}
-                          </h3>
-                        </div>
-                      </div>
+                      <img
+                        src={category_p.image}
+                        alt={category_p.categories}
+                        className="img-fluid rounded-2"
+                      />
+
+                      <small className="text-primary mt-2 d-block">
+                        Voir plus
+                      </small>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
+
           </section>
+
 
           {/* --- Catégories Mobile --- */}
           <section className="d-lg-none">

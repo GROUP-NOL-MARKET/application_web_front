@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import { Button } from "react-bootstrap";
-import img_entreprise from "../assets/Images/img_entreprise.webp";
+import img_entreprise from "../assets/Images/img_entreprise.avif";
 import "../../Styles/APropos.css";
 
 const APropos = () => {
   return (
     <div>
-      <div className="container mt-5">
+      <div className="container-fluid mt-5">
         <h1 className="text-uppercase a_propos_title_1">A Propos de nous</h1></div>
       <div className="" style={{ backgroundColor: "#919191" }}>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-lg-6 col-12">
-              <div className="entreprise_img w-100 h-50 py-4 p-sm-0 mt-sm-5 mb-lg-4">
+              <div className="entreprise_img w-100 py-4 p-sm-0 mt-sm-5 mb-lg-4">
                 <img
                   alt="entreprse_img"
                   className="w-100 py-4 p-sm-0 border-radius"
@@ -36,7 +36,7 @@ const APropos = () => {
                 un service rapide et fiable.....
               </p>
               <Link to="/About">
-                <Button>En savoir plus</Button></Link>
+                <Button className="fw-bold taux_moyen rounded-3">En savoir plus</Button></Link>
             </div>
           </div>
         </div>

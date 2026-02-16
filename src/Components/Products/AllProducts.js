@@ -41,6 +41,16 @@ const AllProducts = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -73,14 +83,14 @@ const AllProducts = () => {
   }
 
   return (
-    <div className="container mt-4">
+    <div className="container-fluid mt-4">
       {/* En-tête */}
       <div className="row">
         <h1 className="col-md-9 col-lg-10 col-sm-8 col-6 title mt-2 mt-md-0">
           {sous_category ? `${sous_category}` : "Tous les produits"}
         </h1>
         <div
-          className="dropdown border border-0 p-1 mt-2 col"
+          className="dropdown border border-0 p-1 mt-2 col text-end"
           style={{ cursor: "pointer" }}
         >
           <span
@@ -101,9 +111,9 @@ const AllProducts = () => {
                 key={index}
                 className="dropdown-item texte_brut"
                 onClick={() =>
-                  (window.location.href = `/products?category=${encodeURIComponent(
-                    cat
-                  )}`)
+                (window.location.href = `/products?category=${encodeURIComponent(
+                  cat
+                )}`)
                 }
               >
                 {cat}
@@ -140,7 +150,7 @@ const AllProducts = () => {
                 key={product.id}
                 className="col-md-3 col-sm-4 col-lg-2 mb-4 col-6"
               >
-                <div className="d-flex flex-column border border-1 shadow-sm p-2">
+                <div className="d-flex flex-column border-md-only p-2">
                   <img
                     src={product.image}
                     className="img_product"
@@ -150,13 +160,13 @@ const AllProducts = () => {
 
                   <div className="card-body pt-2">
                     <h5
-                      className="text-truncate petit_titre"
+                      className="text-truncate petit_titre" style={{ textTransform: "none" }}
                       title={product.name}
                     >
                       {product.name}
                     </h5>
                     <p className="card-text petit_titre fw-bold">
-                      {product.price} FCFA
+                      {formatPrice(product.price)} FCFA
                     </p>
                     <h5 className="card-text petit_titre text-truncate" title={product.sous_category}>
                       {product.sous_category}

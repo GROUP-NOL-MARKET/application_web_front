@@ -109,15 +109,14 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
                 <p className="text-center texte_brut">
                     Entrez le code de sécurité envoyé à votre email
                 </p>
-                <div className='d-flex flex-column align-items-center justify-content-center'>
-                    <div className="row justify-content-center">
+                <div className='d-flex flex-column align-items-center justify-content-center form-otp'>
+                    <div className="row justify-content-center content-otp">
                         {Array.from({ length }).map((_, i) => (
-                            <div className="col-lg-2 col me-1" key={i}>
+                            <div className="col-lg-2 col me-1 inp-otp" key={i}>
                                 <FormControl
                                     type="text"
                                     maxLength={1}
-                                    className="text-center fs-3"
-                                    style={{ height: "60px" }}
+                                    className="text-center fs-3 input-otp"
                                     ref={(el) => (inputsRef.current[i] = el)}
                                     onChange={(e) => handleChange(e, i)}
                                     onKeyDown={(e) => handleKeyDown(e, i)}
@@ -135,6 +134,9 @@ const ModifierPassword = ({ closePopUp3, length = 4 }) => {
                     >
                         {isRequestDisabled ? `Attendez ${timer}s` : "Demandez un nouveau code"}
                     </Button>
+                    <svg class="svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#4073ff" d="M56.8,-23.9C61.7,-3.2,45.7,18.8,26.5,31.7C7.2,44.6,-15.2,48.2,-35.5,36.5C-55.8,24.7,-73.9,-2.6,-67.6,-25.2C-61.3,-47.7,-30.6,-65.6,-2.4,-64.8C25.9,-64.1,51.8,-44.7,56.8,-23.9Z" transform="translate(100 100)" class="path"></path>
+                    </svg>
                 </div>
             </div>
         </div>

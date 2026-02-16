@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import FedapayButton from "./FedapayButton";
 import ReactCountryDropdown from "react-country-dropdown";
 import kiapay from "./assets/Images/kkiapay.png";
 import KkiaPay from "./kkiapay";
@@ -17,37 +16,41 @@ import { fetchCommandes } from "../Store/CommandesSlice";
 import { toast } from "react-toastify";
 import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
-import moov from "./assets/Images/moovmoney.png";
 import mtn from "./assets/Images/momo_img.png";
 import MomoPay from "./MomoPay";
-import MoovPay from "./MoovPay";
+import { useNavigate } from "react-router-dom";
 
 const Paiement = () => {
-  const { products } = useContext(PanierContext);
+  const { products, clearCart } = useContext(PanierContext);
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [showPopUp1, setshowPopUp1] = useState(false);
   const [showPopUp, setshowPopUp] = useState(false);
-
   const [paymentMode, setPaymentMode] = useState("");
   const [openKkiaPay, setOpenKkiaPay] = useState(false);
+  const [loadingLivraison, setLoadingLivraison] = useState(false);
 
   const closePopUp = () => setshowPopUp(false);
   const openPopup = () => setshowPopUp(true);
-  const closePopUp1 = () => setshowPopUp1(false);
-  const openPopup1 = () => setshowPopUp1(true);
+
+  // FONCTION DE FORMATAGE DU PRIX
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
 
   useEffect(() => {
-    const isAnyPopupOpen = showPopUp1 || showPopUp;
-
-    document.body.style.overflow = isAnyPopupOpen ? "hidden" : "auto";
-
+    document.body.style.overflow = showPopUp ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [showPopUp1, showPopUp]);
+  }, [showPopUp]);
 
   const totalPrice = products.reduce(
     (acc, product) => acc + product.price * product.quantity,
@@ -59,33 +62,25 @@ const Paiement = () => {
     quartier: "",
     rue: "",
     numero: "",
-    phone: "",
     localisation: "",
   });
 
-  const [loadingAdresse, setLoadingAdresse] = useState(false);
+  const [phone, setPhone] = useState("");
   const [adresseValidee, setAdresseValidee] = useState(false);
-
-  const [user, setUser] = useState({ firstName: "", email: "" }); //  Stocke les infos utilisateur
+  const [user, setUser] = useState({ firstName: "", email: "" });
 
   const adresseRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s,'-]{3,200}$/;
-
   const adresseComplete = `${adresse.ville}, ${adresse.quartier}, ${adresse.rue}, ${adresse.numero}, ${adresse.localisation}`;
 
   const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // chiffres uniquement
-    value = value.slice(0, 10); // max 10 chiffres
-    value = value.replace(/(\d{2})(?=\d)/g, "$1 "); // espace tous les 2 chiffres
+    let value = e.target.value.replace(/\D/g, "");
+    value = value.slice(0, 10);
+    value = value.replace(/(\d{2})(?=\d)/g, "$1 ");
 
-    setUser((prev) => ({
-      ...prev,
-      phone: value,
-    }));
-
-    setErrors({}); // reset erreurs à chaque frappe
+    setPhone(value);
+    setErrors({});
   };
 
-  // Récupération des infos utilisateur dès le chargement
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -98,8 +93,12 @@ const Paiement = () => {
           setUser({
             firstName: response.data.firstName || "",
             email: response.data.email || "",
-            phone: response.data.phone || "",
           });
+
+          // Pré-remplir le téléphone si disponible
+          if (response.data.phone) {
+            setPhone(response.data.phone);
+          }
         }
       } catch (error) {
         console.error("Erreur récupération utilisateur :", error.message);
@@ -109,11 +108,10 @@ const Paiement = () => {
     fetchUser();
   }, []);
 
-  //  Soumission de l’adresse
-  const handleAdresseSubmit = async (e) => {
+  const handleAdresseSubmit = (e) => {
     e.preventDefault();
 
-    const cleanPhone = user.phone.replace(/\s/g, ""); // enlève les espaces
+    const cleanPhone = phone.replace(/\s/g, "");
     let newErrors = {};
 
     if (!cleanPhone.trim()) {
@@ -135,7 +133,7 @@ const Paiement = () => {
     }
 
     if (!adresse.ville || !adresse.quartier || !adresse.localisation) {
-      toast.error("Veuillez remplir tous les champs de l’adresse.");
+      toast.error("Veuillez remplir tous les champs obligatoires de l'adresse.");
       return;
     }
 
@@ -144,38 +142,18 @@ const Paiement = () => {
       return;
     }
 
-    try {
-      setLoadingAdresse(true);
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        toast.error("Session expirée. Veuillez vous reconnecter.");
-        window.location.href = "/login";
-        return;
-      }
-
-      const response = await API.put(
-        "/user/update-address",
-        { addresse: adresseComplete, phone: cleanPhone },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      if (response.status === 200) {
-        toast.success("Adresse enregistrée avec succès !");
-        setAdresseValidee(true);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Erreur lors de l’enregistrement de l’adresse.");
-    } finally {
-      setLoadingAdresse(false);
-    }
+    // Validation locale uniquement, pas d'envoi au backend
+    toast.success("Adresse validée !");
+    setAdresseValidee(true);
   };
-
-  const { clearCart } = useContext(PanierContext);
 
   const handleSuccess = async (payment) => {
     console.log("Réponse Kkiapay (dans Paiement):", payment);
+
+    if (!adresseValidee) {
+      toast.error("Veuillez d'abord valider votre adresse de livraison.");
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -192,7 +170,8 @@ const Paiement = () => {
         transactionId: payment.transactionId ?? payment.transaction_id ?? null,
         amount: totalPrice,
         cart: products,
-        phone: paymentPhone,
+        phone: phone.replace(/\s/g, ""),  // Téléphone de livraison
+        address: adresseComplete,         // Adresse de livraison
         requestId: payment.requestId ?? payment.request_id ?? null,
         paymentData: payment,
       };
@@ -203,19 +182,17 @@ const Paiement = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // backend renvoie status success + order_id
       if (response?.status === 200) {
+        clearCart();
         dispatch(fetchCommandes(1));
 
-        // Vider le panier AVANT de rediriger (await clearCart si c'est async)
-        // await clearCart();
-
         toast.success("Paiement effectué et commande enregistrée !", {
-          onClose: () => {
-            window.location.href = "/"; // ou navigate("/paiement-reussi", { state: { orderId: response.data.order_id, amount: totalPrice } })
-          },
           autoClose: 2000,
         });
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       }
     } catch (error) {
       console.error(
@@ -223,7 +200,6 @@ const Paiement = () => {
         error,
       );
 
-      // Si erreur de validation du backend, afficher les messages s'ils existent
       if (error?.response?.status === 422 && error.response.data?.errors) {
         const errs = error.response.data.errors;
         toast.error(errs);
@@ -235,17 +211,71 @@ const Paiement = () => {
     }
   };
 
+  //Paiement à la livraison
+  const handlePaiementLivraison = async () => {
+    if (!adresseValidee) {
+      toast.error("Veuillez d'abord valider votre adresse de livraison.");
+      return;
+    }
+
+    try {
+      setLoadingLivraison(true);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        toast.error("Session expirée. Veuillez vous reconnecter.");
+        navigate("/login");
+        return;
+      }
+
+      const payload = {
+        payment_method: "livraison",
+        amount: totalPrice,
+        cart: products,
+        address: adresseComplete,
+        phone: phone.replace(/\s/g, ""),
+      };
+
+      const response = await API.post("/paiement/livraison", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response?.status === 200 || response?.status === 201) {
+        clearCart();
+        dispatch(fetchCommandes(1));
+
+        toast.success("Commande enregistrée avec succès ! Paiement à la livraison.", {
+          autoClose: 2000,
+        });
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
+    } catch (error) {
+      console.error("Erreur paiement à la livraison:", error);
+
+      if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Erreur lors de l'enregistrement de la commande.");
+      }
+    } finally {
+      setLoadingLivraison(false);
+    }
+  };
+
   return (
     <div className="bg-light">
       <div className="container">
         <div className="row">
-          {/* ================= FORMULAIRE D’ADRESSE ================= */}
+          {/* ================= FORMULAIRE D'ADRESSE ================= */}
           <div className="col col-lg-8 my-4 me-lg-3 mx-2 mx-lg-0 bg-white shadow-sm rounded-3 p-4 border border-1">
-            <h2 className="taux_moyen">Informations domicile client</h2>
+            <h2 className="taux_moyen">Informations de livraison</h2>
             <Form className="w-100" onSubmit={handleAdresseSubmit}>
               <FormGroup className="m-2">
                 <Form.Label className="label_register">
-                  Numéro de téléphone
+                  Numéro de téléphone *
                 </Form.Label>
                 <div className="row">
                   <div
@@ -258,9 +288,10 @@ const Paiement = () => {
                     type="tel"
                     placeholder="01 52 34 56 78"
                     className="input_register col"
-                    value={user.phone}
+                    value={phone}
                     onChange={handlePhoneChange}
                     isInvalid={!!errors.phone}
+                    disabled={adresseValidee}
                   />
 
                   <Form.Control.Feedback type="invalid">
@@ -268,6 +299,7 @@ const Paiement = () => {
                   </Form.Control.Feedback>
                 </div>
               </FormGroup>
+
               {["ville", "quartier", "rue"].map((field) => (
                 <FormGroup key={field}>
                   <FormLabel className="label_register">
@@ -284,6 +316,7 @@ const Paiement = () => {
                   />
                 </FormGroup>
               ))}
+
               <FormGroup>
                 <FormLabel className="label_register">
                   Numéro de maison
@@ -316,20 +349,18 @@ const Paiement = () => {
               <Button
                 className="mt-3 w-100 rounded-5"
                 type="submit"
-                disabled={loadingAdresse || adresseValidee}
+                disabled={adresseValidee}
               >
-                {loadingAdresse ? (
-                  <Spinner size="sm" animation="border" />
-                ) : adresseValidee ? (
+                {adresseValidee ? (
                   <span className="petit_titre">Adresse validée ✅</span>
                 ) : (
-                  <span className="petit_titre">Enregistrer l’adresse</span>
+                  <span className="petit_titre">Valider l'adresse</span>
                 )}
               </Button>
             </Form>
             {!adresseValidee && (
               <p className="text-danger text-center mt-2 taux_moyen">
-                Veuillez d’abord enregistrer votre adresse avant de payer.
+                Veuillez d'abord valider votre adresse avant de payer.
               </p>
             )}
           </div>
@@ -372,11 +403,11 @@ const Paiement = () => {
                 <FormLabel className="title_prix_total col-7">
                   Prix total:
                 </FormLabel>
-                <h2 className="taux_moyen col">{totalPrice} FCFA</h2>
+                <h2 className="taux_moyen col">{formatPrice(totalPrice)} FCFA</h2>
               </div>
               <div className="row">
                 <div className="col-7 title_menu_cart">Total HT :</div>
-                <div className="col texte_brut">{totalPrice} FCFA</div>
+                <div className="col texte_brut">{formatPrice(totalPrice)} FCFA</div>
               </div>
               <div className="row">
                 <div className="col-7 title_menu_cart">Rabais :</div>
@@ -391,7 +422,7 @@ const Paiement = () => {
                   Adresse de livraison :
                 </h2>
                 <p className="col texte_brut">
-                  {adresseComplete ? adresseComplete : "Non renseignée"}
+                  {adresseValidee ? adresseComplete : "Non renseignée"}
                 </p>
               </div>
 
@@ -410,6 +441,7 @@ const Paiement = () => {
                       value="mobile_money"
                       checked={paymentMode === "mobile_money"}
                       onChange={() => setPaymentMode("mobile_money")}
+                      disabled={!adresseValidee}
                     />
                     <label className="form-check-label fw-semibold">
                       <span
@@ -430,7 +462,7 @@ const Paiement = () => {
                     </label>
                   </div>
 
-                  <div className="form-check">
+                  <div className="form-check mb-3">
                     <input
                       className="form-check-input"
                       type="radio"
@@ -438,6 +470,7 @@ const Paiement = () => {
                       value="kkiapay"
                       checked={paymentMode === "kkiapay"}
                       onChange={() => setPaymentMode("kkiapay")}
+                      disabled={!adresseValidee}
                     />
                     <label className="form-check-label fw-semibold">
                       <span
@@ -457,7 +490,8 @@ const Paiement = () => {
                       Paiement via Kkiapay
                     </label>
                   </div>
-                  <div className="form-check mt-4">
+
+                  <div className="form-check">
                     <input
                       className="form-check-input"
                       type="radio"
@@ -465,22 +499,10 @@ const Paiement = () => {
                       value="livraison"
                       checked={paymentMode === "livraison"}
                       onChange={() => setPaymentMode("livraison")}
+                      disabled={!adresseValidee}
                     />
                     <label className="form-check-label fw-semibold">
-                      <span
-                        className="px-2"
-                        style={{
-                          width: 10,
-                          height: 10,
-                          cursor: "pointer",
-                        }}
-                      >
-                        {/* <img
-                          src={kiapay}
-                          style={{ width: "15px", cursor: "pointer" }}
-                          alt=""
-                        /> */}
-                      </span>
+                      <span className="px-2">💵</span>
                       Paiement à la livraison
                     </label>
                   </div>
@@ -490,7 +512,7 @@ const Paiement = () => {
                     <button
                       className="btn fw-bold"
                       style={{ backgroundColor: "#f68b1e", color: "#fff" }}
-                      disabled={!paymentMode}
+                      disabled={!paymentMode || !adresseValidee || loadingLivraison}
                       onClick={() => {
                         if (paymentMode === "mobile_money") {
                           openPopup();
@@ -498,25 +520,33 @@ const Paiement = () => {
 
                         if (paymentMode === "kkiapay") {
                           setOpenKkiaPay(true);
-
                           openKkiapayWidget({
                             amount: totalPrice,
                             api_key: "461a5930ce9b11f09f4a631e834d10ba",
                             sandbox: true,
-                            phone: user.phone,
+                            phone: phone.replace(/\s/g, ""),
                             email: user.email,
                             name: user.firstName,
                             request_id: "KKIA-" + Date.now(),
                           });
                         }
+
+                        if (paymentMode === "livraison") {
+                          handlePaiementLivraison();
+                        }
                       }}
                     >
-                      Confirmer le mode de paiement
+                      {loadingLivraison ? (
+                        <>
+                          <Spinner size="sm" animation="border" className="me-2" />
+                          Traitement en cours...
+                        </>
+                      ) : (
+                        "Confirmer le mode de paiement"
+                      )}
                     </button>
                   </div>
                 </div>
-
-                {/* MTN MoMo */}
 
                 {showPopUp && (
                   <MomoPay
@@ -535,21 +565,11 @@ const Paiement = () => {
                     onClose={() => setOpenKkiaPay(false)}
                   />
                 )}
-
-                {/* <FedapayButton amount={totalPrice} products={products} address={adresseComplete} /> */}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {showPopUp && (
-        <MomoPay
-          closePopUp={closePopUp}
-          product={products}
-          amount={totalPrice}
-        />
-      )}
-      {showPopUp1 && <MoovPay closePopUp1={closePopUp1} />}
     </div>
   );
 };

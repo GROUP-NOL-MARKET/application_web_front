@@ -1,4 +1,4 @@
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../../Styles/Navbar.css";
 import { sous_category_product } from "../../Product_Data";
 
@@ -79,16 +79,6 @@ const Navbar3 = () => {
               <li className="mt-2">
                 <a href="/About" className="text-white category_product_name">
                   A propos
-                </a>
-              </li>
-              <li className="mt-2">
-                <a href="/aide&Faq" className="text-white category_product_name">
-                  Services
-                </a>
-              </li>
-              <li className="mt-2">
-                <a href="/Cart" className="text-white category_product_name">
-                  Achats
                 </a>
               </li>
               <li className="mt-2">

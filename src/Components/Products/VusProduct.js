@@ -26,6 +26,16 @@ const VusProduct = ({ closePopUp, product }) => {
     }
   }, [isFavorite, favorites, product.id, addFavorite, removeFavorite]);
 
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
+
   // Enregistrement vue récente
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -66,9 +76,9 @@ const VusProduct = ({ closePopUp, product }) => {
           </div>
 
           <div className="col-lg col-12">
-            <h5 className="name_entreprise_dashboard text-lowercase mt-4">{product.name}</h5>
+            <h5 className="name_entreprise_dashboard mt-4" style={{ textTransform: "none" }}>{product.name}</h5>
             <h5 className="petit_titre fw-bold">
-              {product.price || product.new_price} FCFA
+              {formatPrice(product.price || product.new_price)} FCFA
             </h5>
             <p className="texte_brut">{product.description ? product.description : "Description non disponible pour l'instant"}</p>
           </div>

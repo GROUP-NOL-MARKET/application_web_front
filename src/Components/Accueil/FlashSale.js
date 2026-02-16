@@ -11,295 +11,211 @@ import "../../Styles/FlashSale.css";
 import API from "../Authentification/api";
 import VusProduct from "../Products/VusProduct";
 
-const FlashSale = ({ duration = 800 }) => {
-  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+const FlashSale = () => {
+  const [emblaRef] = useEmblaCarousel({ loop: true });
   const navigate = useNavigate();
-
-  const getImageUrl = (image) => {
-    if (!image) return "/placeholder.png"; // Optionnel
-    if (image.startsWith("http")) return image;
-    return `${API.defaults.baseURL}/storage/${image}`;
-  };
 
   const [promotions, setPromotions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [time, setTime] = useState(duration);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPopUp, setShowPopUp] = useState(false);
   const [error, setError] = useState(null);
 
-  const closePopUp = useCallback(() => {
-    setSelectedProduct(null);
-    setShowPopUp(false);
+  const getImageUrl = (image) => {
+    if (!image) return "/placeholder.png";
+    if (image.startsWith("http")) return image;
+    return `${API.defaults.baseURL}/storage/${image}`;
+  };
+
+  /* ===========================
+     FETCH PROMOTIONS
+  ============================ */
+  useEffect(() => {
+    const fetchPromos = async () => {
+      try {
+        setLoading(true);
+        const res = await API.get("/promos");
+        const now = Date.now();
+
+        const data = res.data?.data ?? [];
+
+        const mapped = data.map((promo) => {
+          const prod = promo.product ?? {};
+          const endAt = new Date(promo.end_at).getTime();
+          const remainingMs = Math.max(endAt - now, 0);
+
+          const quantity = prod.quantity ?? 1;
+          const selled = prod.selled ?? 0;
+          const soldPct = Math.floor((selled / quantity) * 100);
+
+          return {
+            id: prod.id ?? promo.id,
+            img: getImageUrl(prod.image),
+            name: prod.name ?? "Produit",
+            initial_price: promo.initial_price ?? prod.price ?? 0,
+            new_price: promo.new_price ?? 0,
+            pourcentage_vendu: promo.pourcentage_vendu ?? 0,
+            soldPct: isNaN(soldPct) ? 0 : soldPct,
+            remainingMs,
+          };
+        });
+
+        setPromotions(mapped);
+        setError(null);
+      } catch (err) {
+        setError("Impossible de charger les promotions");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPromos();
   }, []);
+
+  /* ===========================
+     TIMER (décompte)
+  ============================ */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPromotions((prev) =>
+        prev.map((p) => ({
+          ...p,
+          remainingMs: Math.max(p.remainingMs - 1000, 0),
+        }))
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  /* ===========================
+     PROMOS VALIDES (non expirées)
+  ============================ */
+  const validPromos = useMemo(
+    () => promotions.filter((p) => p.remainingMs > 0),
+    [promotions]
+  );
+
+  const hasPromos = validPromos.length > 0;
+  const showVoirTout = validPromos.length >= 6;
 
   const openPopUp = useCallback((product) => {
     setSelectedProduct(product);
     setShowPopUp(true);
   }, []);
 
-  //  Caching intelligent pour éviter les appels redondants
-  useEffect(() => {
-    const cachedPromos = sessionStorage.getItem("promotions_flash");
-
-    if (cachedPromos) {
-      setPromotions(JSON.parse(cachedPromos));
-      setLoading(false);
-    } else {
-      const fetchPromos = async () => {
-        try {
-          setLoading(true);
-          const res = await API.get("/promos");
-          const now = new Date();
-
-          const data = res.data?.data ?? res.data ?? [];
-
-          const mapped = data
-            .filter((promo) => {
-              const debut = new Date(promo.start_at);
-              const fin = new Date(promo.end_at);
-              return debut <= now && now <= fin;
-            })
-            .map((promo) => {
-              const prod = promo.product ?? promo.product_data ?? {};
-              const quantity = prod.quantity ?? 1;
-              const selled = prod.selled ?? 0;
-              const soldPct = Math.floor((selled / quantity) * 100);
-
-              return {
-                id:
-                  prod.id ?? promo.id ?? Math.random().toString(36).slice(2, 9),
-                img: getImageUrl(prod.image ?? ""),
-                name: prod.name ?? promo.name ?? "Produit",
-                initial_price: promo.initial_price ?? prod.price ?? 0,
-                new_price: promo.new_price ?? promo.price_promo ?? 0,
-                pourcentage_vendu: promo.pourcentage_vendu ?? 0,
-                soldPct: isNaN(soldPct) ? 0 : soldPct,
-              };
-            });
-
-          setPromotions(mapped);
-          sessionStorage.setItem("promotions_flash", JSON.stringify(mapped));
-          setError(null);
-        } catch (err) {
-          console.error("Erreur récupération promotions:", err);
-          setError("Impossible de charger les promotions");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchPromos();
-    }
+  const closePopUp = useCallback(() => {
+    setSelectedProduct(null);
+    setShowPopUp(false);
   }, []);
 
-  // ✅ Décompte du temps (useEffect isolé pour ne pas rerendre tout le composant)
-  useEffect(() => {
-    const timer = setInterval(() => setTime((t) => t - 1000), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  /* ===========================
+     GUARD CLAUSE (ULTRA IMPORTANT)
+  ============================ */
+  if (!loading && !error && !hasPromos) {
+    return null;
+  }
 
-  // ✅ Mémorisation des produits
-  const memoizedPromos = useMemo(() => promotions, [promotions]);
+  /* ===========================
+     HANDLERS
+  ============================ */
 
-  // ✅ Navigation "Voir tout"
-  const handleNavigation = useCallback(() => {
-    navigate("/Promotion");
-  }, [navigate]);
 
-  // ✅ Formatage du compteur
-  const getFormattedTime = useCallback((milliseconds) => {
-    let total_seconds = Math.floor(milliseconds / 1000);
-    let total_minutes = Math.floor(total_seconds / 60);
-    let total_hours = Math.floor(total_minutes / 60);
-    let days = Math.floor(total_hours / 24);
+  const handleNavigation = () => navigate("/Promotion");
 
-    let seconds = total_seconds % 60;
-    let minutes = total_minutes % 60;
-    let hours = total_hours % 24;
+  const formatCountdown = (ms) => {
+    const total = Math.floor(ms / 1000);
+    return {
+      d: Math.floor(total / 86400),
+      h: Math.floor(total / 3600) % 24,
+      m: Math.floor(total / 60) % 60,
+      s: total % 60,
+    };
+  };
 
-    const Box = ({ value }) => (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: "2px",
-          margin: "2px",
-          border: "1px solid #0066BD",
-          borderRadius: "10px",
-          backgroundColor: "#FA7F1B",
-          minWidth: "25px",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ fontSize: "18px", fontWeight: "bold", color: "white" }}>
-          {String(value).padStart(2, "0")}
-        </span>
-      </div>
-    );
-
-    return (
-      <div className="d-flex">
-        <Box value={days} />J<>&nbsp;</>
-        <Box value={hours} />H<>&nbsp;</>
-        <Box value={minutes} />M<>&nbsp;</>
-        <Box value={seconds} />S
-      </div>
-    );
-  }, []);
-
-  const hasPromos = memoizedPromos.length > 0;
-
+  /* ===========================
+     RENDER
+  ============================ */
   return (
-    <div className="container mt-4">
-      {/* --- En-tête --- */}
-      <div className="enTête row">
-        <h2
-          className="col-lg-2 col-4 title_flash_sale mt-2"
-          style={{ color: "#0066BD" }}
-        >
+    <div className="container-fluid mt-4">
+      {/* --- HEADER --- */}
+      <div className="row align-items-center">
+        <h2 className="col-lg-9 col-10 title_flash_sale mt-2" style={{ color: "#0066BD" }}>
           Promotions
         </h2>
-        <div className="col-lg-7 col-md-5 col-sm-5 col-6 promo_temps">
-          <div className="row">{getFormattedTime(time)}</div>
-        </div>
-        <div className="col-md-3 col-lg-2 offset-1 col-sm-3 col-1 mt-2">
-          <div
-            className="voir_tout"
-            onClick={handleNavigation}
-            style={{
-              textDecoration: "none",
-              color: "#FA7F1B",
-              cursor: "pointer",
-            }}
-          >
-            <div className="text-end col d-none d-md-block">
-              Voir tout
-              <FontAwesomeIcon icon={faArrowAltCircleRight} />
-            </div>
-            <div className="text-end col d-md-none">
-              <FontAwesomeIcon icon={faArrowAltCircleRight} />
-            </div>
+
+        {showVoirTout && (
+          <div className="col-lg-2 col-md-3 col-2 mt-2 text-end">
+            <span
+              className="voir_tout"
+              onClick={handleNavigation}
+              style={{ color: "#FA7F1B", cursor: "pointer" }}
+            >
+              Voir tout <FontAwesomeIcon icon={faArrowAltCircleRight} />
+            </span>
+          </div>
+        )}
+      </div>
+
+      <hr className="m-0 mb-3" style={{ border: "1px solid #FA7F1B" }} />
+
+      {loading && <div className="text-center py-4">Chargement…</div>}
+      {error && <div className="text-center text-danger py-4">{error}</div>}
+
+      {/* --- DESKTOP --- */}
+      <div className="d-none d-lg-block">
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          loop={validPromos.length > 6}
+          slidesPerView={6}
+          spaceBetween={15}
+        >
+          {validPromos.map((product) => (
+            <SwiperSlide key={product.id}>
+              <img
+                src={product.img}
+                alt={product.name}
+                className="img_product shadow-sm"
+                onClick={() => openPopUp(product)}
+              />
+              <div className="discount_badge">{product.pourcentage_vendu}%</div>
+              <div className="petit_titre">{product.name}</div>
+              <div className="price_flash_sale">
+                <span className="new_price">{product.new_price} FCFA</span>
+                <s className="initial_price">{product.initial_price} FCFA</s>
+              </div>
+
+              <div className="promo-countdown">
+                {Object.entries(formatCountdown(product.remainingMs)).map(
+                  ([k, v]) => (
+                    <span key={k} className="time-pill">
+                      {String(v).padStart(2, "0")}
+                    </span>
+                  )
+                )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* --- MOBILE --- */}
+      <div className="d-lg-none embla mt-2">
+        <div className="embla__viewport" ref={emblaRef}>
+          <div className="embla__container">
+            {validPromos.map((product) => (
+              <div key={product.id} className="embla__slide">
+                <img
+                  src={product.img}
+                  alt={product.name}
+                  onClick={() => openPopUp(product)}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-
-      <hr className="m-0" style={{ border: "1px solid #FA7F1B" }} />
-
-      {/* ---  Message de chargement sous le titre --- */}
-      {loading ? (
-        <div className="text-center py-4">Chargement des promotions...</div>
-      ) : error ? (
-        <div className="text-center py-4 text-danger">{error}</div>
-      ) : !hasPromos ? (
-        <div
-          className="text-center py-4"
-          style={{ color: "#FA7F1B", fontWeight: "700" }}
-        >
-          Aucun produit en promotion pour l'instant
-        </div>
-      ) : (
-        <>
-          {/* --- Swiper Desktop --- */}
-          <div className="product_flash_sale d-none d-lg-block">
-            <Swiper
-              modules={[Navigation]}
-              navigation
-              loop={memoizedPromos.length > 6}
-              slidesPerView={6}
-              spaceBetween={15}
-              className="Liste_produits"
-            >
-              {memoizedPromos.map((product) => (
-                <SwiperSlide key={product.id} className="product_slide">
-                  <img
-                    loading="lazy"
-                    src={product.img}
-                    alt={product.name}
-                    className="img_product border border-1 shadow-sm"
-                    onClick={() => openPopUp(product)}
-                  />
-                  <div className="discount_badge">
-                    {product.pourcentage_vendu}%
-                  </div>
-                  <div className="product_title petit_titre">
-                    {product.name}
-                  </div>
-                  <div className="price_flash_sale">
-                    <span className="p-2 new_price">
-                      {product.new_price} FCFA
-                    </span>
-                    <span className="initial_price">
-                      <s>{product.initial_price} FCFA</s>
-                    </span>
-                  </div>
-                  <div className="progress w-100" style={{ height: "20px" }}>
-                    <div
-                      className="progress-bar progress-bar-striped progress-bar-animated"
-                      role="progressbar"
-                      aria-valuenow={product.soldPct}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style={{ width: `${product.soldPct}%` }}
-                    >
-                      {product.soldPct}% vendu
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          {/* --- Mobile --- */}
-          <div className="embla d-lg-none mt-2">
-            <div className="embla__viewport" ref={emblaRef}>
-              <div className="embla__container">
-                {memoizedPromos.map((product) => (
-                  <div
-                    key={product.id}
-                    className="embla__slide border border-1 rounded-3 d-flex flex-column align-items-center me-1"
-                    style={{ height: "200px" }}
-                  >
-                    <img
-                      loading="lazy"
-                      src={product.img}
-                      alt={product.name}
-                      className="img_product"
-                      onClick={() => openPopUp(product)}
-                    />
-                    <div className="discount_badge">
-                      {product.pourcentage_vendu}%
-                    </div>
-                    <div className="text-center petit_titre">
-                      {product.name}
-                    </div>
-                    <div className="price_flash_sale text-center">
-                      <span className="p-2 new_price">
-                        {product.new_price} FCFA
-                      </span>
-                      <span className="initial_price">
-                        <s>{product.initial_price} FCFA</s>
-                      </span>
-                    </div>
-                    <div className="progress w-100" style={{ height: "20px" }}>
-                      <div
-                        className="progress-bar progress-bar-striped progress-bar-animated"
-                        role="progressbar"
-                        aria-valuenow={product.soldPct}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        style={{ width: `${product.soldPct}%` }}
-                      >
-                        {product.soldPct}% vendu
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
 
       {showPopUp && (
         <VusProduct closePopUp={closePopUp} product={selectedProduct} />

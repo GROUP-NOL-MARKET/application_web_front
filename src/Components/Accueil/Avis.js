@@ -34,7 +34,7 @@ const Avis = () => {
 
   return (
     <div className="mt-4 mb-3">
-      <div className="container">
+      <div className="container-fluid">
         <div className="a_propos_title_1 text-uppercase">
           Nos clients en parlent
         </div>

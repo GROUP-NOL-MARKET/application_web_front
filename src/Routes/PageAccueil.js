@@ -16,6 +16,7 @@ import Divers from "../Components/Accueil/Divers";
 import PromoBanniere from "../Components/Accueil/PromoBanniere";
 import Publicite from "../Components/Accueil/Publicite";
 import PopularProducts from "../Components/Accueil/PopularProducts";
+import Suite from "../Components/Accueil/Suite";
 
 const PageAccueil = () => {
   return (
@@ -38,6 +39,9 @@ const PageAccueil = () => {
           <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
           <ProduitsLocaux />
           <Boissons />
+
+          <Suite />
+
           <Epicerie />
 
           <Electromenager />

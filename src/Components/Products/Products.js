@@ -43,6 +43,17 @@ const Products = () => {
   const { addProductToCart } = useContext(PanierContext);
   const { isLoggedIn } = useContext(AuthContext);
 
+  // FONCTION DE FORMATAGE DU PRIX
+  const formatPrice = (price) => {
+    const numericValue = typeof price === 'string' ? parseFloat(price) : price;
+
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'decimal',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numericValue);
+  };
+
   const handleNavigation = () => {
     navigate("/all_products");
   };
@@ -50,7 +61,6 @@ const Products = () => {
   const subCategories = sous_category_product.find(
     (item) => item.category === category
   )?.sous_category || [];
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -88,7 +98,7 @@ const Products = () => {
   }
 
   return (
-    <div className="container mt-lg-4 mt-1">
+    <div className="container-fluid mt-lg-4 mt-1">
       <div className="row">
         <h1 className="col-md-9 col-lg-8 col-sm-8 col-10 title mt-2 mt-md-0 text-capitalize">
           {sous_category
@@ -108,12 +118,10 @@ const Products = () => {
                 cursor: "pointer",
               }}
             >
-              <div className="col-10 text-end d-none d-md-block">
-                Voir tous les produits
+              <div className="col text-end d-none d-md-block">
+                Voir tous les produits <FontAwesomeIcon icon={faArrowAltCircleRight} />
               </div>
-              <div className="col">
-                <FontAwesomeIcon icon={faArrowAltCircleRight} />
-              </div>
+
             </div>
           </div>
         </div>
@@ -127,7 +135,7 @@ const Products = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Sous catégorie : {sous_category || "Toutes"}
+            Filtrer par : {sous_category || "Toutes"}
           </span>
 
           <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -153,7 +161,6 @@ const Products = () => {
         </div>
       )}
 
-
       <div className="row mt-lg-3 mt-1">
         {products.length > 0
           ? products.map((product) => {
@@ -163,10 +170,8 @@ const Products = () => {
               );
 
               if (existing) {
-                // Le produit est déjà dans les favoris → SUPPRESSION
                 removeFavorite(existing.id);
               } else {
-                // Le produit n'est pas favori → AJOUT
                 addFavorite(product.id);
               }
             };
@@ -179,7 +184,7 @@ const Products = () => {
                 key={product.id}
                 className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
               >
-                <div className="d-flex flex-column shadow-sm border border-1 p-2">
+                <div className="d-flex flex-column p-2 border-md-only">
                   <img
                     src={product.image}
                     className=" img_product"
@@ -187,14 +192,15 @@ const Products = () => {
                     onClick={() => openPopUp(product)}
                   />
                   <div className="card-body">
-                    <h5 className="text-truncate petit_titre text-lowercase" title={product.name}>
+                    <h5 className="text-truncate petit_titre" style={{ textTransform: "none" }} title={product.name}>
                       {product.name}
                     </h5>
+                    {/* PRIX FORMATÉ ICI */}
                     <p className="card-text petit_titre fw-bold">
-                      {product.price} FCFA
+                      {formatPrice(product.price)} FCFA
                     </p>
                     {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                      <div className="d-flex flex-row justify-content-left gap-3 my-2">
                         <Button
                           className="border-0"
                           onClick={() => addProductToCart(product)}
@@ -228,7 +234,6 @@ const Products = () => {
       </div>
 
       {/* Pagination */}
-
       <nav
         aria-label="Page navigation example"
         className="d-flex justify-content-center my-4"

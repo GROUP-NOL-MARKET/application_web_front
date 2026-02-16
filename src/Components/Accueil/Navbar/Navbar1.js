@@ -1,10 +1,10 @@
-import { useState, useContext, useMemo, useEffect } from "react";
+import { useState, useContext, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../AuthContext";
-import Panier from "../../assets/Images/icone/panier.png";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import API from "../../Authentification/api";
 import Button from "react-bootstrap/Button";
 import { PanierContext } from "../../../Store/Panier_context";
@@ -13,6 +13,7 @@ import "../../../Styles/Navbar.css";
 import telephone from "../../assets/Images/icone/appel-telephonique.png";
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
 import question from "../../assets/Images/icone/question.png";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar1 = () => {
   const [active, setActive] = useState("");
@@ -104,11 +105,10 @@ const Navbar1 = () => {
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <img
-                            src={utilisateur}
-                            alt="user"
-                            className="icon_user"
-                            style={{ width: "35px", cursor: "pointer" }}
+                          <AccountCircleIcon
+
+                            className=""
+                            style={{ fontSize: "30px", cursor: "pointer" }}
                           />
                         </div>
                         <div className="row">
@@ -134,12 +134,12 @@ const Navbar1 = () => {
                             aria-labelledby="registerDropdown"
                           >
                             <li>
-                              <Link className="dropdown-item" to="/register">
+                              <Link className="dropdown-item texte_brut" to="/register">
                                 Inscription
                               </Link>
                             </li>
                             <li>
-                              <Link className="dropdown-item" to="/login">
+                              <Link className="dropdown-item texte_brut" to="/login">
                                 Connexion
                               </Link>
                             </li>
@@ -161,11 +161,10 @@ const Navbar1 = () => {
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <img
-                            src={utilisateur}
-                            alt="user"
-                            className="icon_user ms-auto"
-                            style={{ width: "35px", cursor: "pointer" }}
+                          <AccountCircleIcon
+
+                            className=""
+                            style={{ fontSize: "30px", cursor: "pointer" }}
                           />
                         </div>
                         <span className="row">
@@ -190,14 +189,14 @@ const Navbar1 = () => {
                             aria-labelledby="userDropdown"
                           >
                             <li>
-                              <Link className="dropdown-item" to="/user">
+                              <Link className="dropdown-item texte_brut" to="/user">
                                 Mon compte
                               </Link>
                             </li>
                             <li>
                               <button
                                 type="button"
-                                className="dropdown-item text-danger"
+                                className="dropdown-item text-danger  texte_brut"
                                 onClick={logout}
                               >
                                 <FontAwesomeIcon icon={faRightFromBracket} />{" "}
@@ -212,19 +211,19 @@ const Navbar1 = () => {
                 </div>
               )}
 
-              <div className="offset-md-1 col-1 d-lg-none">
-                <div className="d-flex align-items-center gap-2">
-                  <Link to="/aide&Faq">
-                    <img
-                      src={question}
-                      alt="aide"
-                      style={{ width: "30px", cursor: "pointer" }}
-                      loading="lazy"
-                    />
-                  </Link>
-                  <p className="mb-0 fw-normal d-none d-md-block" style={{ fontSize: "15px" }}>Aide</p>
-                </div>
+              <div className="nav-item d-lg-none">
+                <Link
+                  to="/favoris"
+                  className=" d-flex align-items-center gap-2 position-relative"
+                  style={{ color: "black" }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FavoriteBorderIcon style={{ fontSize: "30px" }} />
+
+                  <span className='notif-badge-navbar-favorite'>0</span>
+                </Link>
               </div>
+
               <div className="col-2 d-flex d-lg-none justify-content-center">
                 <button
                   className="navbar-toggler border-0"
