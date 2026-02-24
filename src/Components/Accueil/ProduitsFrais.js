@@ -14,7 +14,8 @@ import surgeles from "../assets/Images/surgeles.avif";
 import glaces from "../assets/Images/glaces.avif";
 import charcuterie from "../assets/Images/charcuterie.avif";
 import "../../Styles/Header.css";
-import { useInView } from "./UseInView";
+// import { useInView } from "./UseInView";
+import { motion } from "framer-motion";
 
 const ProduitsFrais = () => {
   const sousCategories = [
@@ -36,7 +37,13 @@ const ProduitsFrais = () => {
   };
 
   return (
-    <div className="container-fluid mt-2 mt-md-5">
+    <motion.div
+      className="container-fluid mt-2 mt-md-5"
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="row">
         <h1 className="col-8 title mt-3 mt-md-0">
           Produits frais
@@ -82,24 +89,26 @@ const ProduitsFrais = () => {
 
       {/* Le swiper pour les petits écrans  */}
 
-      <div className="embla d-lg-none mt-2" style={{ backgroundColor: "#F2F2F2" }}>
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container">
-            {sousCategories.map((sub) => (
-              <div
-                key={sub.id}
-                className="embla__slide border border-1 rounded-3 d-flex flex-column me-1"
-                onClick={() => handleNavigation(sub.name)}
-              >
-                <img src={sub.img} alt={sub.name} className="img_product" />
+      <Swiper
+        slidesPerView={2.4}
+        spaceBetween={12}
+        loop={false}
+        className="d-lg-none mobile-swiper mt-2"
+      >
+        {sousCategories.map((sub) => (
+          <SwiperSlide key={sub.id}>
+            <div
+              className="mobile-product-card"
+              onClick={() => handleNavigation(sub.name)}
+            >
+              <img src={sub.img} alt={sub.name} />
+              <div className="mobile-product-title text-truncate">{sub.name}</div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-                <div className="text-center taux_moyen  fw-bolder">{sub.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

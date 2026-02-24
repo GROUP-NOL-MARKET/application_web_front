@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import monde from "../assets/Images/monde bb.avif";
 import hygiene from "../assets/Images/hygiene dent.avif";
 import rasage from "../assets/Images/rasage.avif";
+import { motion } from "framer-motion";
 import produits from "../assets/Images/produits menagers.avif";
 import soins from "../assets/Images/soins beauté.avif";
 import feminine from "../assets/Images/hygiene feminine.avif";
@@ -39,7 +40,13 @@ const Droguerie = () => {
   };
 
   return (
-    <div className="container-fluid mt-2 mt-md-5">
+    <motion.div
+      className="container-fluid mt-2 mt-md-5"
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="row">
         <h1 className="col-8 title mt-3 mt-md-0">
           Droguerie
@@ -84,26 +91,25 @@ const Droguerie = () => {
 
       {/* Le swiper pour les petits écrans  */}
       {/* Le swiper pour les tout petits écrans  */}
-      <div className="embla d-lg-none mt-2">
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container">
-            {sousCategories.map((sub) => (
-              <div
-                key={sub.id}
-                className="embla__slide border border-1 rounded-3 d-flex flex-column  me-1"
-                onClick={() => handleNavigation(sub.name)}
-
-              >
-                <img src={sub.img} alt={sub.name} className="img_product" />
-
-                <div className="text-center taux_moyen fw-bolder">{sub.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </div>
+      <Swiper
+        slidesPerView={2.4}
+        spaceBetween={12}
+        loop={false}
+        className="d-lg-none mobile-swiper mt-2"
+      >
+        {sousCategories.map((sub) => (
+          <SwiperSlide key={sub.id}>
+            <div
+              className="mobile-product-card"
+              onClick={() => handleNavigation(sub.name)}
+            >
+              <img src={sub.img} alt={sub.name} />
+              <div className="mobile-product-title text-truncate">{sub.name}</div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </motion.div>
   );
 };
 

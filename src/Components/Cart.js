@@ -167,6 +167,22 @@ const Cart = () => {
                   ))}
                 </div>
               )}
+
+              <button
+                className="border-0 rounded-4 p-1 my-2 price"
+                onClick={() => products.length > 0 && openPopUp()}
+                style={{ color: 'white', backgroundColor: "red" }}
+              >
+                Vider le panier
+                <DeleteIcon
+                  style={{
+                    width: 20,
+                    cursor: products.length > 0 ? "pointer" : "not-allowed",
+                    opacity: products.length > 0 ? 1 : 0.5,
+                  }}
+
+                />
+              </button>
             </div>
 
 
@@ -369,7 +385,10 @@ const Cart = () => {
             </div>
           </div>
         </div>
-        <Offres />
+        <div className="pb-5 container-fluid">
+          <Offres />
+        </div>
+
       </div>
 
       {showPopUp && <ValiderSuppression closePopUp={closePopUp} />}

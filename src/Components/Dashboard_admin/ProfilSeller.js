@@ -17,7 +17,7 @@ const ProfilSeller = () => {
 
   return (
     <div>
-      <div className="containter-fluid">
+      <div className="">
         <Entete title="Profil vendeurs" />
 
         {/* Premier content  */}

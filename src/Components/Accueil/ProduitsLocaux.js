@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
@@ -45,11 +46,23 @@ const ProduitsLocaux = () => {
   };
 
   return (
-    <div className="container-fluid mt-2 mt-md-5">
+    <motion.div
+      className="container-fluid mt-2 mt-md-5"
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className="row">
-        <h1 className="col-8 title mt-3 mt-md-0">
+        <motion.h1
+          className="col-8 title mt-3 mt-md-0"
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           Produits Locaux
-        </h1>
+        </motion.h1>
         <div className="col mt-3 mt-md-0">
           <div className="voir_tout">
             <div
@@ -96,28 +109,25 @@ const ProduitsLocaux = () => {
 
       {/* Le swiper pour les petits écrans  */}
 
-      <div
-        className="embla d-lg-none mt-2"
-        style={{ backgroundColor: "#F2F2F2" }}
+      <Swiper
+        slidesPerView={2.4}
+        spaceBetween={12}
+        loop={false}
+        className="d-lg-none mobile-swiper mt-2"
       >
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container">
-            {sousCategories.map((sub) => (
-              <div
-                key={sub.id}
-                className="embla__slide border border-1 rounded-3 d-flex flex-column me-1"
-                onClick={() => handleNavigation(sub.name)}
-              >
-                <img src={sub.img} alt={sub.name} className="img_product" />
-
-                <div className="text-center taux_moyen  fw-bolder" data-bs-toggle="tooltip"
-                  data-bs-placement="top" title={sub.name}>{sub.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+        {sousCategories.map((sub) => (
+          <SwiperSlide key={sub.id}>
+            <div
+              className="mobile-product-card"
+              onClick={() => handleNavigation(sub.name)}
+            >
+              <img src={sub.img} alt={sub.name} />
+              <div className="mobile-product-title text-truncate">{sub.name}</div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </motion.div>
   );
 };
 

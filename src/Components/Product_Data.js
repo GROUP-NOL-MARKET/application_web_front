@@ -348,7 +348,7 @@ export const sous_category_product = [
     sous_category: ["Nourritures pour chien et chat"],
   },
   {
-    category: "electroménager",
+    category: "Electroménager",
     sous_category: ["Electroménager"],
   },
 ];

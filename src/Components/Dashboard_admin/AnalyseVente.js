@@ -55,7 +55,7 @@ const AnalyseVente = () => {
 
   return (
     <div>
-      <div className="container-fluid">
+      <div className="">
         {/* En-tête  */}
 
         <Entete title="Analyse des ventes" />
@@ -66,7 +66,7 @@ const AnalyseVente = () => {
           <CircularProgress />
         </div> : (
           <div>
-            <div className="container-fluid">
+            <div className="">
               <div className="row mt-3">
                 <div
                   className="col-7 shadow-sm border border-1"
@@ -183,7 +183,7 @@ const AnalyseVente = () => {
             </div>
 
             {/* Deuxième content   */}
-            <div className="container-fluid">
+            <div className="">
               <div className="row mt-3">
                 <div
                   className="col-7 shadow-sm border border-1"

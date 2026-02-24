@@ -42,7 +42,7 @@ const Transactions = () => {
   }, [page, sort, dateRange]);
 
   return (
-    <div className="container-fluid">
+    <div className="">
       <Entete title="Transactions" />
 
       <div className="row mt-3">
@@ -104,9 +104,9 @@ const Transactions = () => {
                               ? "green"
                               : p.status === "annulé"
                                 ? "black"
-                                :p.status === "success"
-                                ? "green"
-                                : "red",
+                                : p.status === "success"
+                                  ? "green"
+                                  : "red",
                       color: "white",
                     }}
                   >

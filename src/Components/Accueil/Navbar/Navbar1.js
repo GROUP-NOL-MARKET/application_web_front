@@ -1,36 +1,42 @@
-import { useState, useContext, useMemo } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../../AuthContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import API from "../../Authentification/api";
 import Button from "react-bootstrap/Button";
-import { PanierContext } from "../../../Store/Panier_context";
-import utilisateur from "../../assets/Images/icone/utilisateur.png";
 import "../../../Styles/Navbar.css";
 import telephone from "../../assets/Images/icone/appel-telephonique.png";
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
-import question from "../../assets/Images/icone/question.png";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
+import MiscellaneousServicesOutlinedIcon from '@mui/icons-material/MiscellaneousServicesOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
+
+
+// Import dropdown moderne
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 
 const Navbar1 = () => {
   const [active, setActive] = useState("");
   const { isLoggedIn } = useContext(AuthContext);
-  const { products } = useContext(PanierContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
-
-  const totalPrice = useMemo(
-    () =>
-      products.reduce(
-        (acc, product) => acc + (product.price || 0) * (product.quantity || 0),
-        0
-      ),
-    [products]
-  );
 
   // const handleNavLinkClick = () => {
   //   const navbar = document.getElementById("navbarCollapse");
@@ -61,6 +67,13 @@ const Navbar1 = () => {
     }
   };
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
+
   return (
     <div className="bg-light shadow-sm d-flex align-items-center navbar navbar-expand-lg w-100">
       {/* Premier navbar quand l'utilisateur n'est pas connecté */}
@@ -81,159 +94,109 @@ const Navbar1 = () => {
 
             {/* La partie pour les petits écrans  */}
 
-            {/* Bouton hamburger responsive */}
-            <div className="d-flex align-items-center">
-              <div className="col-4 col-md-2  d-lg-none navbar-brand logo_div">
+            <div className="d-flex align-items-center justify-content-between d-lg-none w-100 px-2">
+
+              {/* LOGO */}
+              <div className="navbar-brand logo_div">
                 <Link to="/">
                   <img
                     alt="logo"
                     src={Logo}
                     className="logo img-fluid"
-                    style={{ cursor: "pointer" }}
+                    style={{ height: "40px" }}
                   />
                 </Link>
               </div>
-              {!isLoggedIn ? (
-                <div className="offset-2 offset-md-4 col-md-2 connexion d-lg-none col-2">
-                  <div className="w-100 row">
-                    <div className="connexion-text col-12 p-0">
-                      <div className="dropdown mt-1 register">
-                        <div
-                          className="dropdown-toggle lien_mon_compte d-md-none"
-                          role="button"
-                          id="registerDropdown"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <AccountCircleIcon
 
-                            className=""
-                            style={{ fontSize: "30px", cursor: "pointer" }}
-                          />
-                        </div>
-                        <div className="row">
-                          <img
-                            src={utilisateur}
-                            alt="user"
-                            className="icon_user col-5 d-none d-md-block"
-                            style={{ cursor: "pointer" }}
-                          />
-                          <div
-                            className="dropdown-toggle fw-normal d-none d-md-flex align-items-center col-6"
-                            role="button"
-                            id="registerDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style={{ fontSize: "15px" }}
-                          >
-                            Connexion
-                          </div>
+              {/* ACTIONS MOBILE */}
+              <div className="d-flex align-items-center gap-3">
 
-                          <ul
-                            className="dropdown-menu"
-                            aria-labelledby="registerDropdown"
-                          >
-                            <li>
-                              <Link className="dropdown-item texte_brut" to="/register">
-                                Inscription
-                              </Link>
-                            </li>
-                            <li>
-                              <Link className="dropdown-item texte_brut" to="/login">
-                                Connexion
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="connexion offset-2 offset-md-4 col-2 col-md-2 d-flex align-items-center d-lg-none">
-                  <div className="w-100 row">
-                    <div className="connexion-text col-12 p-0">
-                      <div className="dropdown mt-1 register">
-                        <div
-                          className="dropdown-toggle lien_mon_compte d-md-none"
-                          role="button"
-                          id="userDropdown"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <AccountCircleIcon
+                {/* USER */}
+                <>
+                  <AccountCircleOutlinedIcon
+                    onClick={handleOpen}
+                    sx={{ fontSize: 32, cursor: "pointer" }}
+                    aria-controls={open ? "account-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                  />
 
-                            className=""
-                            style={{ fontSize: "30px", cursor: "pointer" }}
-                          />
-                        </div>
-                        <span className="row">
-                          <img
-                            src={utilisateur}
-                            alt="user"
-                            className="icon_user d-none d-md-block col-5"
-                            style={{ cursor: "pointer" }}
-                          />
-                          <div
-                            className="dropdown-toggle d-none d-md-flex align-items-center col-6 fw-normal"
-                            role="button"
-                            id="registerDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                            style={{ fontSize: "15px" }}
-                          >
-                            Connexion
-                          </div>
-                          <ul
-                            className="dropdown-menu"
-                            aria-labelledby="userDropdown"
-                          >
-                            <li>
-                              <Link className="dropdown-item texte_brut" to="/user">
-                                Mon compte
-                              </Link>
-                            </li>
-                            <li>
-                              <button
-                                type="button"
-                                className="dropdown-item text-danger  texte_brut"
-                                onClick={logout}
-                              >
-                                <FontAwesomeIcon icon={faRightFromBracket} />{" "}
-                                Déconnexion
-                              </button>
-                            </li>
-                          </ul>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                    PaperProps={{
+                      elevation: 4,
+                      sx: {
+                        mt: 1,
+                        minWidth: 180,
+                        borderRadius: 2,
+                      },
+                    }}
+                  >
+                    {!isLoggedIn ? (
+                      <>
+                        <MenuItem component={Link} to="/login">
+                          <ListItemIcon>
+                            <LoginOutlinedIcon fontSize="small" />
+                          </ListItemIcon>
+                          Connexion
+                        </MenuItem>
 
-              <div className="nav-item d-lg-none">
+                        <MenuItem component={Link} to="/register">
+                          <ListItemIcon>
+                            <PersonAddAltOutlinedIcon fontSize="small" />
+                          </ListItemIcon>
+                          Inscription
+                        </MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <MenuItem component={Link} to="/user">
+                          <ListItemIcon>
+                            <PersonOutlineOutlinedIcon fontSize="small" />
+                          </ListItemIcon>
+                          Mon compte
+                        </MenuItem>
+
+                        <Divider />
+
+                        <MenuItem onClick={logout} sx={{ color: "error.main" }}>
+                          <ListItemIcon>
+                            <LogoutOutlinedIcon fontSize="small" color="error" />
+                          </ListItemIcon>
+                          Déconnexion
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
+                </>
+
+
+                {/* FAVORIS */}
                 <Link
-                  to="/favoris"
-                  className=" d-flex align-items-center gap-2 position-relative"
+                  to={isLoggedIn ? "/user/favoris" : "/login"}
+                  className="position-relative"
                   style={{ color: "black" }}
-                  onClick={() => setIsOpen(false)}
                 >
-                  <FavoriteBorderIcon style={{ fontSize: "30px" }} />
-
-                  <span className='notif-badge-navbar-favorite'>0</span>
+                  <FavoriteBorderIcon sx={{ fontSize: 30 }} />
+                  <span className="notif-badge-navbar-favorite">0</span>
                 </Link>
-              </div>
 
-              <div className="col-2 d-flex d-lg-none justify-content-center">
+                {/* HAMBURGER */}
                 <button
-                  className="navbar-toggler border-0"
                   type="button"
+                  className="btn p-0"
                   onClick={() => setIsOpen(!isOpen)}
+                  aria-label="Menu"
                 >
-                  <span className="navbar-toggler-icon offset-2" />
+                  <DehazeOutlinedIcon sx={{ fontSize: 34 }} />
                 </button>
               </div>
-              {/* Menu mobile */}
               <div className={`mobile-menu d-lg-none ${isOpen ? "open" : ""}`}>
                 <button
                   type="button"
@@ -250,6 +213,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <HomeOutlinedIcon className="me-2" />
                       Accueil
                     </Link>
                   </li>
@@ -260,6 +224,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <InfoOutlinedIcon className="me-2" />
                       A propos
                     </Link>
                   </li>
@@ -270,6 +235,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <MiscellaneousServicesOutlinedIcon className="me-2" />
                       Services
                     </Link>
                   </li>
@@ -280,6 +246,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <ContactMailOutlinedIcon className="me-2" />
                       Contact
                     </Link>
                   </li>
@@ -290,6 +257,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <ShoppingCartOutlinedIcon className="me-2" />
                       Achat
                     </Link>
                   </li>
@@ -300,6 +268,7 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <StorefrontOutlinedIcon className="me-2" />
                       Produits
                     </Link>
                   </li>
@@ -310,12 +279,14 @@ const Navbar1 = () => {
                       onClick={() => setIsOpen(false)}
 
                     >
+                      <HelpOutlineOutlinedIcon className="me-2" />
                       Faq & aide
                     </Link>
                   </li>
                 </ul>
               </div>
             </div>
+
           </div>
           {isOpen && (
             <div

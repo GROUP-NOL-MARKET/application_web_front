@@ -87,7 +87,7 @@ const ProductManagement = () => {
       description: p.description,
       disponibility: p.disponibility,
       quantity: p.quantity,
-      selled: p.selled,      
+      selled: p.selled,
       sous_category: p.sous_category,
       reste: p.reste,
     }));
@@ -175,7 +175,7 @@ const ProductManagement = () => {
       </div>
 
       {/* TABLEAU PRODUITS */}
-      <div className="container-fluid mt-3">
+      <div className=" mt-3">
         {loading ? (
           <div className="text-center my-5">
             <CircularProgress />

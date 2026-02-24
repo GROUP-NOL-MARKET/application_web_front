@@ -14,12 +14,12 @@ const Entete = ({ title }) => {
   });
   const currentTime = new Date().toLocaleTimeString();
   return (
-    <div className="container-fluid">
+    <div className="">
       <div
         className="border border-1 shadow-sm row p-2
        d-flex align-items-center"
         style={{
-          backgroundColor: theme === "dark" ? "black" : "white", 
+          backgroundColor: theme === "dark" ? "black" : "white",
         }}
       >
         <h4
@@ -28,7 +28,7 @@ const Entete = ({ title }) => {
         >
           {title}
         </h4>
-        <h5 className="col-2 petit_titre d-flex justify-content-end" style={{ color: theme === "dark" ? "white" : "black" }}><FontAwesomeIcon icon={faArrowsRotate}/> Rafraîchir</h5>
+        <h5 className="col-2 petit_titre d-flex justify-content-end" style={{ color: theme === "dark" ? "white" : "black" }}><FontAwesomeIcon icon={faArrowsRotate} /> Rafraîchir</h5>
         <h6
           className="col-4 petit_title d-flex align-items-center justify-content-center bg-light p-2"
         >

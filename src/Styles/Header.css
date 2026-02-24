@@ -147,93 +147,7 @@
   to { opacity: 1; transform: translateY(0); }
 } */
 
-.embla {
-  position: relative;
-  max-width: 600px;
-  margin: auto;
-  overflow: hidden;
-}
-
-.embla__viewport {
-  overflow: hidden;
-  width: 100%;
-}
-
-.embla__container {
-  display: flex;
-}
-
-.embla__slide {
-  flex: 0 0 auto; /* éviter que ça se compresse */
-  width: 40%; /* ou 100%, selon combien de produits tu veux par slide */
-  box-sizing: border-box;
-  min-height: 150px;
-}
-
-.embla__prev,
-.embla__next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 30px;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.embla__prev {
-  left: 10px;
-}
-
-.embla__next {
-  right: 10px;
-}
 @media (min-width: 768px) {
-  .embla {
-    position: relative;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  .embla__viewport {
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .embla__container {
-    display: flex;
-  }
-
-  .embla__slide {
-    flex: 0 0 auto; /* évite que ça se compresse */
-    width: 25%; /* ou 100%, selon combien de produits tu veux par slide */
-    box-sizing: border-box;
-    min-height: 200px;
-  }
-
-  .embla__prev,
-  .embla__next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-
-  .embla__prev {
-    left: 10px;
-  }
-
-  .embla__next {
-    right: 10px;
-  }
-
   .mobile-carousel-container {
     display: flex;
     overflow-x: auto;
@@ -296,7 +210,7 @@
 @media (min-width: 992px) {
   .desktop-slide {
     width: auto;
-    height: 200px;
+    height: auto;
   }
 
   .desktop-slide-img {
@@ -420,7 +334,7 @@
     position: relative;
     aspect-ratio: 16 / 6;
     /* overflow: hidden; */
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   .amazon-hero::after {
     content: "";
@@ -433,10 +347,152 @@
     z-index: 2;
     pointer-events: none;
   }
+  .amazon-card {
+    background: #fff;
+    padding: 1px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 🔑 */
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .voir {
+    font-size: 12px;
+  }
+  .amazon-overlay {
+    position: absolute;
+    bottom: -23px; /* chevauchement */
+    left: 51%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+
+  .amazon-card-image-suite img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  .amazon-card-image-suite {
+    width: 100%;
+    height: auto;
+    /* aspect-ratio: 4 / 3; */
+    overflow: hidden;
+    border-radius: 4px;
+  }
 }
 .amazon-hero img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Pour le swipper mobile */
+
+.mobile-swiper {
+  padding: 10px 0 20px 10px;
+}
+
+.mobile-product-card {
+  background: #fff;
+  border: rgb(216, 216, 216) solid 1px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mobile-product-card:active {
+  transform: scale(0.97);
+}
+
+.mobile-product-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.mobile-product-title {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  color: #222;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.product-img-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.product-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 10px 8px;
+}
+
+.product-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.product-price {
+  color: #0066bd;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Loading du carousel */
+
+.skeleton-loader {
+  width: 100%;
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 37%, #e0e0e0 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }

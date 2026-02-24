@@ -68,3 +68,50 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Fonctionnement de l'application en question
+
+L'application est structurée en plusieurs sections :
+
+1. #### La page d'accueil
+
+Elle est la page que visite en premier l'utilisateur qui se connecte à l'application web. Elle est également structurée en plusieurs sections :
+
+##### Deux navbars (Les composants liés aux deux navbars sont dans le dossier Navbar situé dans le dossier Accueil) :
+
+    * **Navbar 1** : C'est lui qui est le premier élément de la page d'accueil. Il est structuré en différentes sections inline avec le numéro de téléphone d'urgence, les sections de navigatons à propos et contact ainsi qu'un bouton d'action à l'achat immédiat de produit.
+    * **Navbar 2** : C'est le deuxième élément visible sur la page d'accueil. Il est constitué du logo de l'entreprise en question, de la localisation, d'une barre de recherche, d'une option de connexion et d'inscription, des éléments de navigation d'aide, de favoris et du panier.
+    * **Navbar 3** : Le navbar 3 est joint au header pour un rendu fluide et professionnel.
+
+##### Le header (Le composant lié au header se trouve directement dans le dossier Accueil).
+
+    * **Navbar 3** : Il est constitué des différentes catégories de produits dont dispose la structure et aussi de quelques liens de navigations.
+    * **Le carousel et les blocs d'affiches supperposées** : Les composants liés à cette structure se retrouvent dans le dossier Accueil précisément dans le fichier header.
+
+##### Les différentes sections de catégories de produit :
+
+    La section des différentes catégories de produit est pareille, disons le même design pour tout. Et le nom de chaque section est spécifié à travers le nom de son composant dans le dossier Accueil.
+    Entre autre il y a d'autres composants tels que les vente flash, les publicités : le nom des composants dans le dossier en dit exactement sur l'élément pris en compte.
+    Les différentes affiches avec un bouton d'action d'achat sont implémentés dans le fichier **Suite** se trouvant dans le dossier Accueil.
+
+##### Un page d'A propos:
+
+    Une petite section qui montre l'apperçu de l'entreprise en question et de ces activités. Le composant qui en est chargé se retrouve dans le fichier Apropos dans le dossier Accueil.
+
+##### Le footer :
+
+    C'est le pied de page contenant tous les liens de redirections et les politiques de vente...
+
+2. #### La page d'À propos
+
+   Cette page est liée à la représentation de l'entreprise. Ce que l'entreprise fait, ce qu'il est ainsi que tout ce qui est lié à l'histoire de l'entreprise. Le composant chargé de cela est le composant About.js situé directement dans le dossier Components.
+
+3. #### La page de Contact
+
+   Cette page est liée au contact et dipose d'un formulaire de contact, et aussi de l'intégration de l'iframe de map pour la localisation. Le composant chargé de cela est le composant Contact qui se trouve directement dans le dossier Component...
+
+4. #### La page du panier
+
+   La page du panier est la première étape vers l'achat de certains produits... Le composant chargé de cette action est Cart.js et se trouve directement dans le dossier Components.
+
+5. #### La page de paiement

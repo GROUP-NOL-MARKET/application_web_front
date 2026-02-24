@@ -36,11 +36,11 @@ const Commandes = () => {
     }, []);
 
     return (
-        <div className="container-fluid">
+        <div className="">
             <Entete title="Commandes" />
 
             {/* Premier content */}
-            <div className="container-fluid">
+            <div className="">
                 <div className="row mt-3">
                     <div className="col-4">
                         <SellPeriod />
@@ -63,65 +63,65 @@ const Commandes = () => {
             </div>
 
             {/* Deuxième content */}
-            <div className="container-fluid">
-                <div className="row mt-3">
-                    <div
-                        className="col-4 me-2 shadow-sm border border-1 p-2"
-                        style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
-                    >
-                        <h5 className="taux_moyen">Taux moyen (en %)</h5>
-                        <p className="p-0 mb-1 m-0 petit_titre">Vues des produits</p>
-                        <div className="progress">
-                            <div
-                                className="progress-bar"
-                                role="progressbar"
-                                style={{ width: `${stats.product_views_rate || 0}%` }}
-                            >
-                                {stats.product_views_rate || 0}%
-                            </div>
-                        </div>
-                        <p className="p-0 m-0 mb-1 petit_titre mt-2">
-                            Taux d'abandon du panier
-                        </p>
-                        <div className="progress">
-                            <div
-                                className="progress-bar"
-                                role="progressbar"
-                                style={{ width: `${stats.cart_abandon_rate || 0}%` }}
-                            >
-                                {stats.cart_abandon_rate || 0}%
-                            </div>
+
+            <div className="row mt-3">
+                <div
+                    className="col-4 me-2 shadow-sm border border-1 p-2"
+                    style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                >
+                    <h5 className="taux_moyen">Taux moyen (en %)</h5>
+                    <p className="p-0 mb-1 m-0 petit_titre">Vues des produits</p>
+                    <div className="progress">
+                        <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{ width: `${stats.product_views_rate || 0}%` }}
+                        >
+                            {stats.product_views_rate || 0}%
                         </div>
                     </div>
-
-                    {/* Cartes statistiques */}
-                    {[
-                        { img: orders_completed, label: "Commandes effectuées", value: stats.completed },
-                        { img: orders_confirmed, label: "Commandes confirmées", value: stats.confirmed },
-                        { img: orders_deleted, label: "Commandes supprimées", value: stats.deleted },
-                        { img: orders_found, label: "Total commandes", value: stats.found },
-                    ].map((item, i) => (
+                    <p className="p-0 m-0 mb-1 petit_titre mt-2">
+                        Taux d'abandon du panier
+                    </p>
+                    <div className="progress">
                         <div
-                            key={i}
-                            className="shadow-sm border border-1 col me-2"
-                            style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{ width: `${stats.cart_abandon_rate || 0}%` }}
                         >
-                            <div className="row mt-2">
-                                <div className="col">
-                                    <img src={item.img} alt=" " className="w-auto" style={{ height: "50px" }} />
-                                </div>
-                                <div className="col-3">
-                                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                                </div>
+                            {stats.cart_abandon_rate || 0}%
+                        </div>
+                    </div>
+                </div>
+
+                {/* Cartes statistiques */}
+                {[
+                    { img: orders_completed, label: "Commandes effectuées", value: stats.completed },
+                    { img: orders_confirmed, label: "Commandes confirmées", value: stats.confirmed },
+                    { img: orders_deleted, label: "Commandes supprimées", value: stats.deleted },
+                    { img: orders_found, label: "Total commandes", value: stats.found },
+                ].map((item, i) => (
+                    <div
+                        key={i}
+                        className="shadow-sm border border-1 col me-2"
+                        style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+                    >
+                        <div className="row mt-2">
+                            <div className="col">
+                                <img src={item.img} alt=" " className="w-auto" style={{ height: "50px" }} />
                             </div>
-                            <div className="mt-2">
-                                <h5 className="petit_titre">{item.label}</h5>
-                                <h5 className="taux_moyen">{item.value || 0}</h5>
+                            <div className="col-3">
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
                             </div>
                         </div>
-                    ))}
-                </div>
+                        <div className="mt-2">
+                            <h5 className="petit_titre">{item.label}</h5>
+                            <h5 className="taux_moyen">{item.value || 0}</h5>
+                        </div>
+                    </div>
+                ))}
             </div>
+
 
             {/* Troisième content */}
             <div className="mt-3">

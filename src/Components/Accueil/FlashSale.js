@@ -7,6 +7,7 @@ import { Navigation } from "swiper/modules";
 import useEmblaCarousel from "embla-carousel-react";
 import "swiper/css";
 import "swiper/css/navigation";
+import { motion } from "framer-motion";
 import "../../Styles/FlashSale.css";
 import API from "../Authentification/api";
 import VusProduct from "../Products/VusProduct";
@@ -112,7 +113,8 @@ const FlashSale = () => {
   /* ===========================
      GUARD CLAUSE (ULTRA IMPORTANT)
   ============================ */
-  if (!loading && !error && !hasPromos) {
+
+  if (loading || error || !hasPromos) {
     return null;
   }
 
@@ -137,7 +139,12 @@ const FlashSale = () => {
      RENDER
   ============================ */
   return (
-    <div className="container-fluid mt-4">
+    <motion.div
+      className="container-fluid mt-4"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       {/* --- HEADER --- */}
       <div className="row align-items-center">
         <h2 className="col-lg-9 col-10 title_flash_sale mt-2" style={{ color: "#0066BD" }}>
@@ -159,10 +166,7 @@ const FlashSale = () => {
 
       <hr className="m-0 mb-3" style={{ border: "1px solid #FA7F1B" }} />
 
-      {loading && <div className="text-center py-4">Chargement…</div>}
-      {error && <div className="text-center text-danger py-4">{error}</div>}
-
-      {/* --- DESKTOP --- */}
+      {/* ===== DESKTOP ===== */}
       <div className="d-none d-lg-block">
         <Swiper
           modules={[Navigation]}
@@ -200,28 +204,34 @@ const FlashSale = () => {
         </Swiper>
       </div>
 
-      {/* --- MOBILE --- */}
-      <div className="d-lg-none embla mt-2">
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container">
-            {validPromos.map((product) => (
-              <div key={product.id} className="embla__slide">
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  onClick={() => openPopUp(product)}
-                />
+      {/* ===== MOBILE (PRO) ===== */}
+      <Swiper
+        slidesPerView={2.4}
+        spaceBetween={12}
+        className="d-lg-none mobile-swiper mt-2"
+      >
+        {validPromos.map((product) => (
+          <SwiperSlide key={product.id}>
+            <div
+              className="mobile-product-card"
+              onClick={() => openPopUp(product)}
+            >
+              <img src={product.img} alt={product.name} />
+              <div className="mobile-product-title text-truncate">{product.name}</div>
+              <div className="mobile-product-price">
+                {product.new_price} FCFA
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       {showPopUp && (
         <VusProduct closePopUp={closePopUp} product={selectedProduct} />
       )}
-    </div>
+    </motion.div>
   );
+
 };
 
 export default React.memo(FlashSale);

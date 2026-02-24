@@ -11,6 +11,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
@@ -21,6 +25,7 @@ import { PanierContext } from "../../../Store/Panier_context";
 import API from "../../Authentification/api";
 import "../../../Styles/Navbar.css";
 import { Form } from "react-bootstrap";
+import { FavoriteContext } from "../../../Store/Favoris_context";
 
 const Navbar2 = React.memo(() => {
   const categories = [
@@ -83,7 +88,9 @@ const Navbar2 = React.memo(() => {
   ];
 
   const { products } = useContext(PanierContext);
+  const { favorites, isLoading } = useContext(FavoriteContext)
   const { isLoggedIn } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -106,13 +113,6 @@ const Navbar2 = React.memo(() => {
     [navigate]
   );
 
-  const navigateto = () => {
-    navigate('/login');
-  }
-
-  const redirectto = () => {
-    navigate('/user/favorites')
-  }
 
   const handleSearch = useCallback(
     async (e) => {
@@ -354,13 +354,13 @@ const Navbar2 = React.memo(() => {
                   <>
                     <li>
                       <Link className="dropdown-item d-flex align-items-center gap-2" to="/login">
-                        <i className="fa-solid fa-right-to-bracket"></i>
+                        <LoginOutlinedIcon />
                         Connexion
                       </Link>
                     </li>
                     <li>
                       <Link className="dropdown-item d-flex align-items-center gap-2" to="/register">
-                        <i className="fa-solid fa-user-plus"></i>
+                        <PersonAddAltOutlinedIcon />
                         Inscription
                       </Link>
                     </li>
@@ -378,7 +378,7 @@ const Navbar2 = React.memo(() => {
                   <>
                     <li>
                       <Link className="dropdown-item d-flex align-items-center gap-2" to="/user">
-                        <i className="fa-solid fa-user"></i>
+                        <PersonOutlineOutlinedIcon />
                         Mon profil
                       </Link>
                     </li>
@@ -390,7 +390,7 @@ const Navbar2 = React.memo(() => {
                         className="dropdown-item d-flex align-items-center gap-2 text-danger"
                         onClick={logout}
                       >
-                        <i className="fa-solid fa-right-from-bracket"></i>
+                        <LogoutOutlinedIcon />
                         Déconnexion
                       </button>
                     </li>
@@ -422,7 +422,9 @@ const Navbar2 = React.memo(() => {
               style={{ color: "black" }}
             >
               <FavoriteBorderIcon style={{ fontSize: "35px" }} />
-              <span className="notif-badge-navbar-favorite">0</span>
+              <span className="notif-badge-navbar-favorite">
+                {isLoggedIn && !isLoading ? favorites.length : "0"}
+              </span>
             </Link>
 
             <span className="price">Favoris</span>

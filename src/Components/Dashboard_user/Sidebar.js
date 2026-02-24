@@ -13,9 +13,9 @@ import adresse from "../assets/Images/icone/location.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = ({onNavigate}) => {
+const Sidebar = ({ onNavigate }) => {
 
-  
+
   const handleClick = () => {
     onNavigate?.();   // sécurise si la prop n'existe pas
   };
@@ -26,7 +26,7 @@ const Sidebar = ({onNavigate}) => {
         <ul className="list-unstyled w-100" style={{ lineHeight: "3.0" }}>
           <li className="petit_titre w-100">
             <NavLink
-              to="/user" 
+              to="/user"
               onClick={handleClick}
               className={({ isActive }) =>
                 "nav-link text-truncate w-100 " + (isActive ? "active-link" : "text-dark")
@@ -34,7 +34,7 @@ const Sidebar = ({onNavigate}) => {
               end
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={user} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mon profil</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={user} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mon profil</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -46,7 +46,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"> <img className="w-75" src={cheklist} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">  Mes commandes</h4></div>
+              <div className="row"><div className="col-3"> <img className="w-100" src={cheklist} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">  Mes commandes</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -58,7 +58,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={comment} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Boîte de réception</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={comment} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Boîte de réception</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -70,7 +70,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"> <img className="w-75" src={avi} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mes avis</h4> </div>
+              <div className="row"><div className="col-3"> <img className="w-100" src={avi} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Mes avis</h4> </div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -82,7 +82,7 @@ const Sidebar = ({onNavigate}) => {
               to="/user/bons"
               onClick={handleClick}
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Bons d'achat</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={bon} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Bons d'achat</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -94,7 +94,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={favorie} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Favoris</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={favorie} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Favoris</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -106,7 +106,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={vu} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Vus récemment</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={vu} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate">Vus récemment</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -118,7 +118,7 @@ const Sidebar = ({onNavigate}) => {
               }
 
             >
-              <div className="row"><div className="col-3"><img className="w-75" src={compte} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate"> Gestion du compte</h4></div>
+              <div className="row"><div className="col-3"><img className="w-100" src={compte} alt="" /></div><h4 className="col petit_titre d-flex align-items-center text-truncate"> Gestion du compte</h4></div>
             </NavLink>
           </li>
           <li className="petit_titre">
@@ -130,7 +130,7 @@ const Sidebar = ({onNavigate}) => {
               onClick={handleClick}
             >
               <div className="row">
-                <div className="col-3"><img className="w-75" src={adresse} alt="" /></div>
+                <div className="col-3"><img className="w-100" src={adresse} alt="" /></div>
 
                 <h4 className="col petit_titre d-flex align-items-center text-truncate"> Mon adresse</h4>
               </div>

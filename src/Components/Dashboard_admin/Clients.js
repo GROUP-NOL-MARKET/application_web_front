@@ -44,7 +44,7 @@ const Clients = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* Entete */}
       <Entete title="Clients" />
 
@@ -56,7 +56,7 @@ const Clients = () => {
         <div>
           {/* Premier content */}
 
-          <div className="container-fluid">
+          <div className="">
             x
             <div className="row mt-4">
               {/* Tous les clients */}
@@ -161,7 +161,7 @@ const Clients = () => {
           </div>
 
           {/* Deuxième content */}
-          <div className="container-fluid">
+          <div className="">
             <div className="row mt-4">
               {/* Graphique fidélisation */}
               <div

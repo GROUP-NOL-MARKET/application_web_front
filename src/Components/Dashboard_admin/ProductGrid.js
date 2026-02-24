@@ -97,12 +97,12 @@ const ProductGrid = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* En-tête */}
       <Entete title="Grille des produits" />
 
       {/* FILTRES */}
-      <div className="container-fluid">
+      <div className="">
         <div className="row mt-3">
           {/* Catégories */}
           <div
@@ -226,7 +226,7 @@ const ProductGrid = () => {
       </div>
 
       {/* GRID PRODUITS */}
-      <div className="container-fluid">
+      <div className="">
         <div className="row mt-4">
           {loading ? (
             <div className="text-center my-5">

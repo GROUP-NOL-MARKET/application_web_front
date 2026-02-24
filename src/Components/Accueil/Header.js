@@ -1,21 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { useMemo, useEffect, useState, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+import { motion } from "framer-motion";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
 import "../../Styles/Header.css";
-import { category_product } from "../Product_Data";
 import API from "../Authentification/api";
 import epicerie from "../assets/Images/epicerie.avif";
 import droguerie from "../assets/Images/droguerie.avif";
 import promo from "../assets/Images/promotions.avif";
 import boisson from "../assets/Images/boisson.avif";
+import { AnimatePresence } from "framer-motion";
+import Skeleton from "../ui/Skeleton";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 const Header = () => {
   const navigate = useNavigate();
-  const categories = useMemo(() => category_product, []);
+  const [isCarouselLoading, setIsCarouselLoading] = useState(true);
+  const [isBannerLoading, setIsBannerLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
 
   // Images dynamiques du carousel
   const [carouselImages, setCarouselImages] = useState([]);
@@ -29,7 +37,7 @@ const Header = () => {
     const carousel = carouselRef.current;
     if (!carousel) return;
 
-    const scrollAmount = carousel.offsetWidth * 0.85; // car tes slides font 85%
+    const scrollAmount = carousel.offsetWidth * 0.85; // car les slides font 85%
     const interval = setInterval(() => {
       // Si on arrive à la fin → retour au début
       if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
@@ -55,29 +63,31 @@ const Header = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
+        setIsBannerLoading(true);
+
         const localCache = localStorage.getItem("bannersCache");
 
-        // Charger immédiatement depuis le cache
         if (localCache) {
-          const parsed = JSON.parse(localCache);
-          setBanners(parsed);
+          setBanners(JSON.parse(localCache));
+          setIsBannerLoading(false);
         }
 
-        // Fetch en arrière-plan
         const res = await API.get("/bannieres");
         const freshData = res.data.bannieres;
 
-        // Si aucune différence → ne rien mettre à jour
         if (JSON.stringify(freshData) !== localCache) {
           setBanners(freshData);
           localStorage.setItem("bannersCache", JSON.stringify(freshData));
         }
       } catch (err) {
         console.error("Erreur fetch bannières", err);
+      } finally {
+        setIsBannerLoading(false);
       }
     };
 
     fetchBanners();
+
 
     // Mise à jour automatique après ajout côté admin
     const handler = () => fetchBanners();
@@ -91,36 +101,46 @@ const Header = () => {
    *  ================================ */
   useEffect(() => {
     const fetchImages = async () => {
+      setIsCarouselLoading(true);
+      setImageLoaded(false);
+
       try {
-        const localCache = localStorage.getItem("carouselImages");
-
-        if (localCache) {
-          const parsed = JSON.parse(localCache);
-          setCarouselImages(parsed);
-        }
-
-        // On fetch en arrière-plan pour vérifier si y’a du nouveau
         const res = await API.get("/cover-images");
         const freshData = res.data.data;
 
-        // Si aucune différence → ne rien faire
-        if (JSON.stringify(freshData) !== localCache) {
-          setCarouselImages(freshData);
-          localStorage.setItem("carouselImages", JSON.stringify(freshData));
-        }
+        setCarouselImages(freshData);
+
       } catch (err) {
         console.error("Erreur fetch cover images", err);
+        setIsCarouselLoading(false);
       }
     };
 
     fetchImages();
 
-    // Mettre à jour automatiquement après ajout côté admin
     const handler = () => fetchImages();
     window.addEventListener("coverImagesUpdated", handler);
 
     return () => window.removeEventListener("coverImagesUpdated", handler);
   }, []);
+
+
+  useEffect(() => {
+    if (!carouselImages.length) return;
+
+    const img = new Image();
+    img.src = carouselImages[0].url;
+
+    img.onload = () => {
+      setImageLoaded(true);
+      setIsCarouselLoading(false);
+    };
+
+    img.onerror = () => {
+      // fallback sécurité
+      setIsCarouselLoading(false);
+    };
+  }, [carouselImages]);
 
   /** ================================
    *  Navigation catégories
@@ -158,9 +178,14 @@ const Header = () => {
           className={`carousel-item ${index === 0 ? "active" : ""}`}
         >
           <img
-            loading="lazy"
             src={img.url}
             alt={`carousel_${index}`}
+          // onLoad={() => {
+          //   if (index === 0) {
+          //     setImageLoaded(true);
+          //     setIsCarouselLoading(false);
+          //   }
+          // }}
           />
 
           {/* 
@@ -235,7 +260,27 @@ const Header = () => {
 
                   {/* Slides */}
                   <div className="carousel-inner rounded-3 overflow-hidden">
-                    {carouselSlides}
+                    <AnimatePresence mode="wait">
+                      {isCarouselLoading ? (
+                        <motion.div
+                          key="skeleton"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <Skeleton height={400} />
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="carousel"
+                          initial={{ opacity: 0, scale: 0.98 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          {carouselSlides}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   {/* Contrôles */}
@@ -269,21 +314,41 @@ const Header = () => {
 
               {/* --- Carousel Mobile--- */}
               <div className="d-lg-none mt-2">
-                <div className="mobile-carousel-container" ref={carouselRef}>
-                  {carouselImages.map((img, index) => (
-                    <div key={img.id || index} className="mobile-carousel-item" onClick={() => navigate(img.link)}>
-                      <img
-                        src={img.url}
-                        alt={`img_${index}`}
-                        className="mobile-carousel-img"
-                      />
-                    </div>
-                  ))}
-                </div>
+                <AnimatePresence mode="wait">
+                  {isCarouselLoading ? (
+                    <motion.div
+                      key="mobile-skeleton"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <Skeleton height={220} radius={16} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="mobile-carousel"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <div className="mobile-carousel-container" ref={carouselRef}>
+                        {carouselImages.map((img, index) => (
+                          <div key={img.id || index} className="mobile-carousel-item" onClick={() => navigate(img.link)}>
+                            <img
+                              src={img.url}
+                              alt={`img_${index}`}
+                              className="mobile-carousel-img"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
               </div>
             </div>
             {/* Blocs superposés type Amazon */}
-            <div className="amazon-overlay container d-none d-lg-flex">
+            <div className="amazon-overlay container d-none d-md-block">
               <div className="row w-100 g-3">
                 {category.slice(0, 4).map((category_p) => (
                   <div key={category_p.categories} className="col-3">
@@ -298,7 +363,7 @@ const Header = () => {
                         className="img-fluid rounded-2"
                       />
 
-                      <small className="text-primary mt-2 d-block">
+                      <small className="text-primary mt-2 d-block voir">
                         Voir plus
                       </small>
                     </div>
@@ -307,11 +372,54 @@ const Header = () => {
               </div>
             </div>
 
+
+            {/* ====== MOBILE SWIPER ====== */}
+            <div className=" my-4 d-md-none">
+              <Swiper
+                modules={[Autoplay]}
+                spaceBetween={12}
+                slidesPerView={2.4}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+                loop={true}
+              >
+                {category.slice(0, 4).map((category_p, index) => (
+                  <SwiperSlide key={category_p.categories}>
+                    <motion.div
+                      className="amazon-card"
+                      initial={{ opacity: 0, x: 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.5,
+                        delay: index * 0.1,
+                        ease: "easeOut",
+                      }}
+                      onClick={() => handleNavigation2(category_p.categories)}
+                    >
+                      <img
+                        src={category_p.image}
+                        alt={category_p.categories}
+                        className="img-fluid rounded-2"
+                      />
+
+                      {/* <small className="text-primary mt-2 d-block voir text-center">
+                        Voir plus
+                      </small> */}
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+
           </section>
 
 
           {/* --- Catégories Mobile --- */}
-          <section className="d-lg-none">
+          {/* <section className="d-lg-none">
             <h5 className="fw-bold mb-2 petit_titre">Catégories de produits</h5>
 
             <div className="categories-scroll-mobile">
@@ -335,7 +443,7 @@ const Header = () => {
                 </div>
               ))}
             </div>
-          </section>
+          </section> */}
         </div>
       </div>
     </header>

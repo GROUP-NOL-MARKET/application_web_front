@@ -119,7 +119,7 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="container-fluid">
+        <div className="">
             <Entete title={isEditing ? "Modifier un produit" : "Ajouter un produit"} />
 
             <div

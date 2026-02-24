@@ -49,7 +49,7 @@ const Avis = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* En-tête */}
       <Entete title="Avis" />
 

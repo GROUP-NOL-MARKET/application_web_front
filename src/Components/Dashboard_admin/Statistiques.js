@@ -9,7 +9,7 @@ const Statistiques = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* En-tête  */}
 
       <Entete title="Statistiques" />

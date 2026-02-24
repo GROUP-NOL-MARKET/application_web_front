@@ -10,8 +10,8 @@ body {
 }
 @media (max-width: 768px) {
   .container-fluid {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 }
 

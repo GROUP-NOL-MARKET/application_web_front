@@ -272,14 +272,14 @@ const Settings = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* En-tête  */}
 
       <Entete title="Paramètres" />
 
       {/* Premier content  */}
 
-      <div className="container-fluid">
+      <div className="">
         <div className="row mt-4">
           {/* Première colonne  */}
 
@@ -443,7 +443,7 @@ const Settings = () => {
                     value={form.city}
                     onChange={handleChange}
                   >
-                     <option value="">--Choisir--</option>
+                    <option value="">--Choisir--</option>
                     <option value="Cotonou">Cotonou</option>
                     <option value="Ouidah">Ouidah</option>
                   </FormSelect>

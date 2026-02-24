@@ -21,9 +21,9 @@
   width: 100%;
 }
 .category-menu {
-  height: 70vh; /* ou calc(100vh - 64px) si tu as un header fixe de 64px */
-  overflow: hidden; /* évite les doubles scrollbars */
-  min-height: 0; /* IMPORTANT en flex column */
+  height: 66.2vh;
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* La zone intérieure qui scrolle */

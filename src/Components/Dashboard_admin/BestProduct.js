@@ -32,7 +32,7 @@ const BestProduct = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
+    <div className="">
       {/* En-tête */}
       <Entete title="Meilleurs produits" />
 
@@ -73,7 +73,7 @@ const BestProduct = () => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <div className="container-fluid mt-4">
+        <div className=" mt-4">
           {Object.entries(bestProducts).map(([category, products]) => (
             <div className="row mb-4" key={category}>
               <h4 className="taux_moyen mb-3">{category}</h4>

@@ -3,7 +3,7 @@ import img_entreprise from "../../assets/Images/Logo_entreprise-removebg-preview
 
 const FooterDashboard = () => {
   return (
-    <div className="container-fluid">
+    <div className="">
       <hr />
       <div className="row mt-0">
         <p className="col-10" style={{ fontSize: "10px" }}>
