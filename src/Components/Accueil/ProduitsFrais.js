@@ -7,24 +7,28 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
-import produits_frais from "../assets/Images/produits_frais.avif";
-import fromage from "../assets/Images/fromages.avif";
+// import produits_frais from "../assets/Images/produits_frais.avif";
+import fromage from "../assets/Images/charcuterie.png";
 import yaourt from "../assets/Images/yaourt.avif";
-import surgeles from "../assets/Images/surgeles.avif";
-import glaces from "../assets/Images/glaces.avif";
-import charcuterie from "../assets/Images/charcuterie.avif";
+import surgeles from "../assets/Images/congeles.jpg";
+import glaces from "../assets/Images/glaces.png";
+import fruit from "../assets/Images/fruit.png";
+import frites from "../assets/Images/frites.png";
+import divers from "../assets/Images/divers_frais.png";
 import "../../Styles/Header.css";
 // import { useInView } from "./UseInView";
 import { motion } from "framer-motion";
 
 const ProduitsFrais = () => {
   const sousCategories = [
-    { id: 1, name: "Fromages - fruits frais - légumes", img: fromage },
-    { id: 2, name: "yaourt", img: yaourt },
-    { id: 3, name: "Surgeles  crèmerie fraîche", img: surgeles },
-    { id: 4, name: "Glaces et crèmes glacées", img: glaces },
-    { id: 5, name: "Charcuterie volaille poisson", img: charcuterie },
-    { id: 6, name: "Produits Locaux Frais", img: produits_frais },
+    { id: 1, name: "Fromages-Charcuterie-Beurre", img: fromage },
+    { id: 2, name: "Yaourt et Crème fraîche", img: yaourt },
+    { id: 3, name: "Viandes-Poissons-Crustassés-Oeufs", img: surgeles },
+    { id: 4, name: "Glaces et glacons", img: glaces },
+    { id: 5, name: "Divers", img: divers },
+    { id: 6, name: "Frites et Pizzas", img: frites },
+    { id: 7, name: "Fruits secs et frais", img: fruit },
+
   ];
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
@@ -71,7 +75,7 @@ const ProduitsFrais = () => {
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-lg-block"
-        style={{ backgroundColor: "#F2F2F2" }}
+      // style={{ backgroundColor: "#F2F2F2" }}
       >
         {sousCategories.map((sub) => (
           <SwiperSlide

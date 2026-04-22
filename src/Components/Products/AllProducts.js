@@ -10,6 +10,7 @@ import { PanierContext } from "../../Store/Panier_context";
 import { sous_category_product } from "../Product_Data";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const AllProducts = () => {
   const location = useLocation();
@@ -151,12 +152,14 @@ const AllProducts = () => {
                 className="col-md-3 col-sm-4 col-lg-2 mb-4 col-6"
               >
                 <div className="d-flex flex-column border-md-only p-2">
-                  <img
-                    src={product.image}
-                    className="img_product"
-                    alt={product.name}
-                    onClick={() => openPopUp(product)}
-                  />
+                  <div>
+                    <img
+                      src={getProductImage(product.image)}
+                      className="img_product"
+                      alt={product.name}
+                      onClick={() => openPopUp(product)}
+                    />
+                  </div>
 
                   <div className="card-body pt-2">
                     <h5

@@ -23,17 +23,14 @@ import miel from "../assets/Images/miel.avif";
 
 const ProduitsLocaux = () => {
   const sousCategories = [
-    { id: 1, name: "Épices", img: epice },
-    { id: 2, name: "Thés & Infusions", img: the },
-    { id: 3, name: "Miel & Divers", img: miel },
-    { id: 4, name: "Amuses bouches", img: amuse },
-    { id: 5, name: "Farines", img: farine },
-    { id: 6, name: "Jus", img: jus },
-    { id: 7, name: "Vins", img: vins },
-    { id: 8, name: "Sodabi", img: sodabi },
-    { id: 9, name: "Riz, haricots...", img: riz },
-    { id: 10, name: "Cosmétique", img: cosmetique },
-    { id: 11, name: "Eau", img: eau },
+    { id: 1, name: "Épices - Huile locale", img: epice },
+    { id: 2, name: "Thés - Café - Miel - Confiture", img: the },
+    { id: 3, name: "Divers", img: miel },
+    { id: 4, name: "Amuse gueule - Chips - Biscuits", img: amuse },
+    { id: 5, name: "Poudre - Farine - Bouillie", img: farine },
+    { id: 6, name: "Boissons locales", img: jus },
+    { id: 7, name: "Prduits vivriers", img: riz },
+    { id: 8, name: "Produits cosmétiques", img: cosmetique },
   ];
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
@@ -91,7 +88,7 @@ const ProduitsLocaux = () => {
         slidesPerView={6}
         spaceBetween={15}
         className="Liste_produits d-none d-lg-block"
-        style={{ backgroundColor: "#F2F2F2" }}
+      // style={{ backgroundColor: "#F2F2F2" }}
       >
         {sousCategories.map((sub) => (
           <SwiperSlide

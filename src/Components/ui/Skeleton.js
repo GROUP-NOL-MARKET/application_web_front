@@ -15,7 +15,7 @@ const Skeleton = ({ height = 300, radius = 12 }) => {
                 backgroundPosition: ["100% 0%", "-100% 0%"],
             }}
             transition={{
-                duration: 1.4,
+                duration: 1.1,
                 repeat: Infinity,
                 ease: "linear",
             }}

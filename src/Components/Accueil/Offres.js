@@ -111,7 +111,7 @@ const Offres = () => {
             ].map((item, index) => (
               <div key={index} className="col-6">
                 <div
-                  className="border rounded-4 shadow-sm d-flex flex-column justify-content-center h-100 p-3"
+                  className="border rounded-4 shadow-md d-flex flex-column justify-content-center h-100 p-3"
                   style={{
                     minHeight: "110px",
                     backgroundColor: "#FEFEFE",

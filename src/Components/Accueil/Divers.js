@@ -15,10 +15,11 @@ import ampoule from "../assets/Images/ampoule.avif";
 
 const Divers = () => {
   const sousCategories = [
-    { id: 1, name: "Chewing Gum", img: chewing },
-    { id: 2, name: "Piles - rasoirs", img: piles },
-    { id: 3, name: "papeterie", img: papeterie },
-    { id: 4, name: "Ampoule", img: ampoule },
+    { id: 1, name: "Chewing gum et Bonbons", img: chewing },
+    { id: 2, name: "Rasoirs et Tondeuses", img: piles },
+    { id: 3, name: "Fournitures de bureau", img: papeterie },
+    { id: 4, name: "Accessoires électriques", img: ampoule },
+    { id: 5, name: "Divers", img: piles },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });

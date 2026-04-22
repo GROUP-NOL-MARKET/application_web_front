@@ -81,7 +81,7 @@ const About = () => {
                     <span style={{ color: "#0066BD" }}>MES NOUS?</span>
                   </h1>
                   <p className="text_a_propos">
-                    Nous sommes une Société Anonyme d'un capital de 5 millions,
+                    Nous sommes une Société Anonyme,
                     créée depuis quelques années et spécialisée dans la
                     distribution des produits de grande consommation en général
                     (produits alimentaires, divers et électroménager) avec comme

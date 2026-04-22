@@ -26,6 +26,7 @@ import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
 import VusProduct from "../Products/VusProduct";
 import API from "../Authentification/api";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const CATEGORY = "Électroménager";
 const CACHE_KEY = "electromenager_products_v1";
@@ -49,17 +50,17 @@ const Electromenager = () => {
     const { items, status } = useSelector((state) => state.products);
     const productsFromRedux = items[CATEGORY] || [];
 
-    const getImageUrl = (image) => {
-        if (!image) return "/placeholder.png";
+    // const getImageUrl = (image) => {
+    //     if (!image) return "/placeholder.png";
 
-        // si backend renvoie déjà une URL complète
-        if (image.startsWith("http")) {
-            return encodeURI(image);
-        }
+    //     // si backend renvoie déjà une URL complète
+    //     if (image.startsWith("http")) {
+    //         return encodeURI(image);
+    //     }
 
-        // si backend renvoie juste "products/xxx.avif"
-        return encodeURI(`${API.defaults.baseURL}/storage/${image}`);
-    };
+    //     // si backend renvoie juste "products/xxx.avif"
+    //     return encodeURI(`${API.defaults.baseURL}/storage/${image}`);
+    // };
 
     useEffect(() => {
         try {
@@ -219,7 +220,7 @@ const Electromenager = () => {
                                     <div className="product-img-wrapper">
                                         <img
                                             loading="lazy"
-                                            src={getImageUrl(product.image)}
+                                            src={getProductImage(product.image)}
                                             alt={product.name}
                                             onClick={() => openPopUp(product)}
                                         />
@@ -287,7 +288,7 @@ const Electromenager = () => {
                                     <div className="product-img-wrapper">
                                         <img
                                             loading="lazy"
-                                            src={getImageUrl(product.image)}
+                                            src={getProductImage(product.image)}
                                             alt={product.name}
                                             onClick={() => openPopUp(product)}
                                         />

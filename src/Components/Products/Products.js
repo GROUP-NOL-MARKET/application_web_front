@@ -14,6 +14,7 @@ import { AuthContext } from "../AuthContext";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
 import { Button } from "react-bootstrap";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const Products = () => {
   const location = useLocation();
@@ -186,10 +187,11 @@ const Products = () => {
               >
                 <div className="d-flex flex-column p-2 border-md-only">
                   <img
-                    src={product.image}
+                    src={getProductImage(product.image)}
                     className=" img_product"
                     alt={product.name}
                     onClick={() => openPopUp(product)}
+                    loading="lazy"
                   />
                   <div className="card-body">
                     <h5 className="text-truncate petit_titre" style={{ textTransform: "none" }} title={product.name}>
@@ -205,7 +207,7 @@ const Products = () => {
                           className="border-0"
                           onClick={() => addProductToCart(product)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                        >Ajouter au panier </Button>
                       </div>
                     ) : (
                       <div className="d-flex flex-row justify-content-center gap-3 my-2">
@@ -213,7 +215,7 @@ const Products = () => {
                           className="border-0"
                           onClick={() => addProductToCart(product)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                        >Ajouter au panier </Button>
                         <FontAwesomeIcon
                           icon={faHeart}
                           onClick={() => toggleFavorite(product)}

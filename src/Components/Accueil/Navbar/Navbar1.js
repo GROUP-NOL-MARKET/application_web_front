@@ -324,10 +324,7 @@ const Navbar1 = () => {
               as={Link}
               to="/all_products"
               type="button"
-              style={{
-                fontFamily: "Roboto, sans-serif",
-                backgroundColor: "#0066BD",
-              }}
+              className="rounded-5 border-0 premium-btn"
             >
               Acheter maintenant
             </Button>

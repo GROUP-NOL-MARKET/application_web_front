@@ -213,7 +213,7 @@ const Login = () => {
                     <div className="row">
                       <div
                         className="col-4 col-sm-3 col-md-4 col-lg-2 me-1"
-                        style={{ pointerEvents: "none" }}
+                        style={{ pointerEvents: "none", height: "100%" }}
                       >
                         <ReactCountryDropdown defaultCountry="BJ" />
 

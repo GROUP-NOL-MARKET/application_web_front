@@ -14,9 +14,13 @@ import promo from "../assets/Images/promotions.avif";
 import boisson from "../assets/Images/boisson.avif";
 import { AnimatePresence } from "framer-motion";
 import Skeleton from "../ui/Skeleton";
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+
+
 
 import "swiper/css";
 import "swiper/css/navigation";
+import { useImageCache } from "../../Store/ImageCacheContext";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -24,9 +28,20 @@ const Header = () => {
   const [isBannerLoading, setIsBannerLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  const {
+    carouselImages,
+    setCarouselImages,
+    imagesLoaded,
+    setImagesLoaded
+  } = useImageCache();
+
 
   // Images dynamiques du carousel
-  const [carouselImages, setCarouselImages] = useState([]);
+
+
+
+
+  // const [carouselImages, setCarouselImages] = useState([]);
 
   // Bannières dynamiques
   const [banners, setBanners] = useState([]);
@@ -100,45 +115,53 @@ const Header = () => {
    *  CHARGEMENT DES IMAGES COVER
    *  ================================ */
   useEffect(() => {
+    if (carouselImages.length > 0) return;
+
     const fetchImages = async () => {
       setIsCarouselLoading(true);
-      setImageLoaded(false);
 
       try {
         const res = await API.get("/cover-images");
-        const freshData = res.data.data;
-
-        setCarouselImages(freshData);
-
+        setCarouselImages(res.data.data);
       } catch (err) {
-        console.error("Erreur fetch cover images", err);
-        setIsCarouselLoading(false);
+        console.error(err);
       }
     };
 
     fetchImages();
-
-    const handler = () => fetchImages();
-    window.addEventListener("coverImagesUpdated", handler);
-
-    return () => window.removeEventListener("coverImagesUpdated", handler);
-  }, []);
+  }, [carouselImages]);
 
 
   useEffect(() => {
-    if (!carouselImages.length) return;
+    if (carouselImages.length === 0) return;
 
-    const img = new Image();
-    img.src = carouselImages[0].url;
+    let isMounted = true;
 
-    img.onload = () => {
-      setImageLoaded(true);
-      setIsCarouselLoading(false);
+    const preloadImages = async () => {
+      setIsCarouselLoading(true);
+
+      await Promise.all(
+        carouselImages.map((img) => {
+          return new Promise((resolve) => {
+            const image = new Image();
+            image.src = img.url;
+
+            image.onload = resolve;
+            image.onerror = resolve;
+          });
+        })
+      );
+
+      if (isMounted) {
+        setImagesLoaded(true);
+        setIsCarouselLoading(false);
+      }
     };
 
-    img.onerror = () => {
-      // fallback sécurité
-      setIsCarouselLoading(false);
+    preloadImages();
+
+    return () => {
+      isMounted = false;
     };
   }, [carouselImages]);
 
@@ -364,7 +387,7 @@ const Header = () => {
                       />
 
                       <small className="text-primary mt-2 d-block voir">
-                        Voir plus
+                        Voir plus <ArrowRightAltIcon />
                       </small>
                     </div>
                   </div>

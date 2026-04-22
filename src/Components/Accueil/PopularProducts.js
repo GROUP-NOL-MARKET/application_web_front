@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLimitedProducts } from "../../Store/ProductsSlice";
 import { useNavigate } from "react-router-dom";
 import Preloader from "../Preloader";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -113,7 +114,7 @@ const PopularProducts = () => {
                             <SwiperSlide key={product.id}>
                                 <div className="card h-100 border-0 shadow-sm">
                                     <img
-                                        src={product.image}
+                                        src={getProductImage(product.image)}
                                         className="card-img-top"
                                         alt={product.name}
                                         style={{ height: "200px", objectFit: "cover" }}

@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../Components/Dashboard_admin/Sidebar";
 import Topbar from "../Components/Dashboard_admin/Topbar";
-import ThemeProvider, {
-    ThemeContext,
-} from "../Components/Dashboard_admin/ThemeContext";
+import ThemeProvider from "../Components/Dashboard_admin/ThemeContext";
 import "../Styles/AdminDashbord/appDashboard.css";
+
 import AnalyseVente from "../Components/Dashboard_admin/AnalyseVente";
 import ProfilSeller from "../Components/Dashboard_admin/ProfilSeller";
 import Revenue from "../Components/Dashboard_admin/Revenue";
@@ -19,16 +18,18 @@ import Avis from "../Components/Dashboard_admin/Avis";
 import Clients from "../Components/Dashboard_admin/Clients";
 import Transactions from "../Components/Dashboard_admin/Transactions";
 import Settings from "../Components/Dashboard_admin/Settings";
+import DashboardLayoutProvider from "./DashboardLayoutContext";
+
 
 const AdminDashboard = () => {
-    const theme = useContext(ThemeContext);
     return (
         <ThemeProvider>
-            <div className="d-flex">
+            <DashboardLayoutProvider>
                 <Sidebar />
-                <div className="flex-grow-1">
+                <div className="dashboard-content">
                     <Topbar />
-                    <main className={`p-4 mt-5 ${theme}`} style={{ minHeight: "100vh" }}>
+
+                    <main className="dashboard-main">
                         <Routes>
                             <Route path="paramètres" element={<Settings />} />
                             <Route path="dashboard" element={<AnalyseVente />} />
@@ -47,7 +48,8 @@ const AdminDashboard = () => {
                         </Routes>
                     </main>
                 </div>
-            </div>
+            </DashboardLayoutProvider>
+
         </ThemeProvider>
     );
 };

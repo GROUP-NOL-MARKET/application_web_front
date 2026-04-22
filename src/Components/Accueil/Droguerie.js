@@ -21,12 +21,13 @@ const Droguerie = () => {
   const sousCategories = [
     { id: 1, name: "Monde de Bébé", img: monde },
     { id: 2, name: "Hygiène dentaire", img: hygiene },
-    { id: 3, name: "Rasage", img: rasage },
-    { id: 4, name: "Produits ménager", img: produits },
-    { id: 5, name: "Soins de beauté", img: soins },
-    { id: 6, name: "Hygiène féminine", img: feminine },
-    { id: 7, name: "Désodorisants - insecticides", img: desodorisant },
-    { id: 8, name: "Mouchoir - papier toilette", img: mouchoir },
+    { id: 3, name: "Couvert-Ustensiles-Accessoires de cuisine", img: rasage },
+    { id: 4, name: "Produits ménagers et accessoires", img: produits },
+    { id: 5, name: "Hygiène corporelle", img: soins },
+    { id: 6, name: "Hygiène féminine-Maybellines", img: feminine },
+    { id: 7, name: "Désodorisants-Insecticides", img: desodorisant },
+    { id: 8, name: "Mouchoirs-Papier hygiénique-Coton", img: mouchoir },
+    { id: 9, name: "Parfums-Déodorants-Eau de toilette", img: desodorisant },
   ];
 
   const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });

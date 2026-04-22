@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const SearchProduct = () => {
   const [products, setProducts] = useState([]);
@@ -128,7 +129,7 @@ const SearchProduct = () => {
               >
                 <div className="d-flex flex-column p-2">
                   <img
-                    src={prod.image}
+                    src={getProductImage(prod.image)}
                     className="card-img-top img_product"
                     alt={prod.name}
                     onClick={() => openPopUp(prod)}

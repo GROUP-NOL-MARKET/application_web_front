@@ -12,6 +12,7 @@ import { FavoriteContext } from "../../Store/Favoris_context";
 import { AuthContext } from "../AuthContext";
 import VusProduct from "./VusProduct";
 import API from "../Authentification/api";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const Promotion = () => {
   const location = useLocation();
@@ -42,11 +43,11 @@ const Promotion = () => {
     setShowPopUp(true);
   };
 
-  const getImageUrl = (image) => {
-    if (!image) return "/placeholder.png";
-    if (image.startsWith("http")) return image;
-    return `${API.defaults.baseURL}/storage/${image}`;
-  };
+  // const getImageUrl = (image) => {
+  //   if (!image) return "/placeholder.png";
+  //   if (image.startsWith("http")) return image;
+  //   return `${API.defaults.baseURL}/storage/${image}`;
+  // };
 
   const formatPrice = (price) => {
     const numericValue = typeof price === 'string' ? parseFloat(price) : price;
@@ -138,7 +139,7 @@ const Promotion = () => {
                 style={{ cursor: "pointer" }}
               >
                 <img
-                  src={product.image}
+                  src={getProductImage(product.image)}
                   alt={product.name}
                   className="img_product w-100 border rounded"
                   onClick={() => openPopUp(product)}

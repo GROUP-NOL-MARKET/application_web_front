@@ -15,11 +15,12 @@ import {
 import {
     faFacebook,
     faGoogle,
-    faInstagram,
+    faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp";
 import ReactCountryDropdown from "react-country-dropdown";
+import { useSocialAuth } from "../../Hooks/UseSocialAuth";
 
 const Register = () => {
     const [isLoading, setLoading] = useState(false);
@@ -47,9 +48,7 @@ const Register = () => {
         setShowPassword2(!showPassword2);
     };
 
-    const handleSocialLogin = (provider) => {
-        window.location.href = `https://auth/${provider}/redirect`;
-    };
+    const { handleSocialLogin } = useSocialAuth();
 
     const toggleMode = () => {
         setModeEmail(!modeEmail);
@@ -369,9 +368,9 @@ const Register = () => {
                                 </div>
                                 <div className="social m-2">
                                     <FontAwesomeIcon
-                                        icon={faInstagram}
+                                        icon={faGithub}
                                         className=""
-                                        onClick={() => handleSocialLogin("instagram")}
+                                        onClick={() => handleSocialLogin("github")}
                                     />
                                 </div>
                             </div>

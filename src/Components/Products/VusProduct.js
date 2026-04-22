@@ -6,6 +6,7 @@ import { PanierContext } from "../../Store/Panier_context";
 import { Button, Spinner } from "react-bootstrap";
 import { AuthContext } from "../AuthContext";
 import API from "../Authentification/api";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const VusProduct = ({ closePopUp, product }) => {
   const { addFavorite, favorites, removeFavorite } = useContext(FavoriteContext);
@@ -69,7 +70,7 @@ const VusProduct = ({ closePopUp, product }) => {
         <div className="row">
           <div className="col-lg-6 col-12 me-2">
             <img
-              src={product.image}
+              src={getProductImage(product.image)}
               alt={product.name}
               style={{ width: "300px", height: "auto" }}
             />

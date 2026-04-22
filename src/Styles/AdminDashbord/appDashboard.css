@@ -79,3 +79,23 @@ main.dark {
     transition: transform 0.3s ease;
   }
 }
+
+/* CONTENU PRINCIPAL */
+.dashboard-content {
+  margin-left: 275px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* MAIN */
+.dashboard-main {
+  padding: 1.5rem;
+  margin-top: 60px; /* hauteur topbar */
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+  .dashboard-content {
+    margin-left: 0;
+  }
+}

@@ -47,38 +47,32 @@
   color: #fa7f1b;
   font-weight: bold;
 }
-@media (max-width: 575.98px) {
+@media (max-width: 991.98px) {
   .img_product {
     width: 100%;
-    height: 130px; /* Taille fixe pour uniformité */
-    object-fit: cover; /* Coupe proprement si image trop grande */
+    height: 130px;
+    object-fit: contain; /* image entière, rien ne se coupe */
     border-radius: 8px;
     transition: transform 0.3s ease;
+    background-color: #fff; /* évite le fond transparent/gris selon l'image */
   }
 }
-@media (min-width: 576px) {
+
+@media (min-width: 992px) {
   .img_product {
     width: 100%;
-    height: 130px; /* Taille fixe pour uniformité */
-    object-fit: cover; /* Coupe proprement si image trop grande */
+    height: 190px;
+    object-fit: contain;
     border-radius: 8px;
     transition: transform 0.3s ease;
-  }
-}
-@media (min-width: 768px) {
-  .img_product {
-    width: 100%;
-    height: 130px; /* Taille fixe pour uniformité */
-    object-fit: cover; /* Coupe proprement si image trop grande */
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    background-color: #fff;
   }
 }
 @media (min-width: 992px) {
   .img_product {
     width: 100%;
     height: 190px; /* Taille fixe pour uniformité */
-    object-fit: cover; /* Coupe proprement si image trop grande */
+    object-fit: contain; /* Coupe proprement si image trop grande */
     border-radius: 8px;
     transition: transform 0.3s ease;
   }

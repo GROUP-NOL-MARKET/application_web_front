@@ -11,24 +11,25 @@ import { PanierContextProvider } from "./Store/Panier_context";
 import { FavoriteContextProvider } from "./Store/Favoris_context";
 import { Provider } from "react-redux";
 import { store } from "./Store/Store";
+import { ImageCacheProvider } from "./Store/ImageCacheContext";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-
-    <Router>
-      <AuthProvider>
-        <PanierContextProvider>
-          <Provider store={store}>
-            <FavoriteContextProvider>
-              <App />
-            </FavoriteContextProvider>
-          </Provider>
-        </PanierContextProvider>
-      </AuthProvider>
-    </Router>
-
+    <ImageCacheProvider>
+      <Router>
+        <AuthProvider>
+          <PanierContextProvider>
+            <Provider store={store}>
+              <FavoriteContextProvider>
+                <App />
+              </FavoriteContextProvider>
+            </Provider>
+          </PanierContextProvider>
+        </AuthProvider>
+      </Router>
+    </ImageCacheProvider>
   </React.StrictMode>
 );
 

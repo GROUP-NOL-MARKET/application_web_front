@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import PageAccueil from "./Routes/PageAccueil";
 import Register from "./Components/Authentification/Register";
+import AuthCallback from "./Components/Authentification/AuthCallback";
 import Login from "./Components/Authentification/Login";
 import Navbar1 from "./Components/Accueil/Navbar/Navbar1";
 import Navbar2 from "./Components/Accueil/Navbar/Navbar2";
@@ -39,7 +40,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    },4000); // durée initiale du splash loader
+    }, 4000); // durée initiale du splash loader
     return () => clearTimeout(timer);
   }, []);
 
@@ -50,6 +51,8 @@ function App() {
     location.pathname === "/register" ||
     location.pathname === "/recup_product" ||
     location.pathname === "/reset-password";
+
+  // console.log("Toutes les vars ENV :", process.env);
 
   return (
     <div className="layout d-flex flex-column min-vh-100">
@@ -68,17 +71,18 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<Connexion />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/About" element={<About />} />
-          <Route path="/payment-result" element={<PaymentResult/>}/>
+          <Route path="/payment-result" element={<PaymentResult />} />
           <Route path="/Cart" element={<Cart />} />
           <Route path="/Paiement" element={<Paiement />} />
           <Route path="/aide&Faq" element={<Faq />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/conditionUtilisation" element={<ConditionUtilisation/>}/>
-          <Route path="/politique-livraison"  element={<PolitiqueLivraison/>}/>
-          <Route path="/mentions-legales" element={<MentionsLegales/>}/>
-          <Route path="/confidentialite" element={<Confidentialité/>}/>
+          <Route path="/conditionUtilisation" element={<ConditionUtilisation />} />
+          <Route path="/politique-livraison" element={<PolitiqueLivraison />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/confidentialite" element={<Confidentialité />} />
           <Route path="/all_products" element={<AllProducts />} />
           <Route path="/Promotion" element={<Promotion />} />
           <Route path="/searchProduct" element={<SearchProduct />} />

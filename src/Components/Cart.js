@@ -48,8 +48,8 @@ const Cart = () => {
 
   return (
     <div className="cart">
-      <div className="container">
-        <div className="container">
+      <div className="container-fluid">
+        <div className="container-fluid">
           <div className="row">
 
             {/* Desktop  */}
@@ -165,24 +165,26 @@ const Cart = () => {
                       </div>
                     </div>
                   ))}
+                  <button
+                    className="border-0 rounded-4 p-1 my-2 price"
+                    onClick={() => products.length > 0 && openPopUp()}
+                    style={{ color: 'white', backgroundColor: "red" }}
+
+                  >
+                    Vider le panier
+                    <DeleteIcon
+                      style={{
+                        width: 20,
+                        cursor: products.length > 0 ? "pointer" : "not-allowed",
+                        opacity: products.length > 0 ? 1 : 0.5,
+
+                      }}
+                    />
+                  </button>
                 </div>
               )}
 
-              <button
-                className="border-0 rounded-4 p-1 my-2 price"
-                onClick={() => products.length > 0 && openPopUp()}
-                style={{ color: 'white', backgroundColor: "red" }}
-              >
-                Vider le panier
-                <DeleteIcon
-                  style={{
-                    width: 20,
-                    cursor: products.length > 0 ? "pointer" : "not-allowed",
-                    opacity: products.length > 0 ? 1 : 0.5,
-                  }}
 
-                />
-              </button>
             </div>
 
 
@@ -385,7 +387,7 @@ const Cart = () => {
             </div>
           </div>
         </div>
-        <div className="pb-5 container-fluid">
+        <div className="pb-5">
           <Offres />
         </div>
 

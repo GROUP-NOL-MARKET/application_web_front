@@ -7,3 +7,60 @@
 .topbar-dark {
   color: #fff;
 }
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 275px;
+  right: 0;
+  height: 60px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1020;
+  transition: left 0.3s ease;
+}
+
+/* THEMES */
+.topbar-light {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.topbar-dark {
+  background: #1e1e1e;
+  color: #fff;
+  border-bottom: 1px solid #333;
+}
+
+/* LEFT */
+.topbar-left .search-box {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.topbar-dark .search-box {
+  border-color: #444;
+}
+
+/* RIGHT */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+  .topbar {
+    left: 0;
+  }
+
+  .topbar-left {
+    display: none;
+  }
+}

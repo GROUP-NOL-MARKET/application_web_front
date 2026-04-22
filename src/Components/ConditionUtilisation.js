@@ -1,4 +1,7 @@
 import React from "react";
+import CheckIcon from '@mui/icons-material/Check';
+import WarningIcon from '@mui/icons-material/Warning';
+import GppGoodIcon from '@mui/icons-material/GppGood';
 
 const ConditionUtilisation = () => {
   return (
@@ -18,16 +21,16 @@ const ConditionUtilisation = () => {
         Le site est accessible gratuitement à tout utilisateur disposant d'un
         accès internet. Cependant, les frais liés à l'accès (connexion, matériel
         informatique…) restent à la charge de l'utilisateur. Nous pouvons
-        interrompre l'accès au Site pour : maintenance mise à jour raison
-        technique Sans obligation de préavis.
+        interrompre l'accès au Site pour : maintenance, mise à jour, raison
+        technique sans obligation de préavis.
       </p>
       <h2 className="taux_moyen">Création de Compte</h2>
       <p className="texte_brut">
         Certaines fonctionnalités nécessitent la création d’un compte client.
-        Vous vous engagez à fournir des informations :<ul><li>✔ Exactes</li>
-          <li>✔
+        Vous vous engagez à fournir des informations :<ul><li><CheckIcon /> Exactes</li>
+          <li><CheckIcon />
             Complètes</li>
-          <li>✔ Mise à jour régulièrement</li></ul>
+          <li><CheckIcon /> Mise à jour régulièrement</li></ul>
         Vous êtes responsable : de la
         confidentialité de vos identifiants de toutes les activités réalisées
         via votre compte. Tout usage frauduleux doit être signalé immédiatement à :groupnolmarket@gmail.com
@@ -37,11 +40,11 @@ const ConditionUtilisation = () => {
         Vous vous engagez à utiliser le Site uniquement dans un cadre légal,
         notamment à ne pas :
         <ul className="list-unstyled">
-          <li>🚫 Porter atteinte à l'ordre public</li>
-          <li>🚫 Détourner le Site de son usage commercial normal</li>
-          <li>🚫 Distribuer des virus ou scripts
+          <li><WarningIcon /> Porter atteinte à l'ordre public</li>
+          <li> Détourner le Site de son usage commercial normal</li>
+          <li><WarningIcon /> Distribuer des virus ou scripts
             malveillants</li>
-          <li>🚫 Extraire, copier ou revendre le contenu du Site sans
+          <li><WarningIcon /> Extraire, copier ou revendre le contenu du Site sans
             autorisation</li>
         </ul>
         Nous nous réservons le droit de suspendre ou résilier un
@@ -58,7 +61,7 @@ const ConditionUtilisation = () => {
       <p className="texte_brut">
         Tous les contenus disponibles sur le Site (textes, images, logos,
         graphismes, base de données, etc.) sont protégés par le droit de la
-        propriété intellectuelle. 🔒 Toute reproduction ou exploitation sans
+        propriété intellectuelle. <GppGoodIcon /> Toute reproduction ou exploitation sans
         autorisation écrite est interdite.
       </p>
       <h2 className="taux_moyen">Protection des Données Personnelles</h2>{" "}
@@ -70,8 +73,8 @@ const ConditionUtilisation = () => {
       <p className="texte_brut">
         {" "}
         Les utilisateurs peuvent publier des avis sur les produits. Vous vous
-        engagez à ne pas publier de contenus : 🚫 diffamatoires 🚫
-        discriminatoires 🚫 mensongers 🚫 portant atteinte à la vie privée ou
+        engagez à ne pas publier de contenus : <WarningIcon /> diffamatoires <WarningIcon />
+        discriminatoires <WarningIcon /> mensongers <WarningIcon /> portant atteinte à la vie privée ou
         aux droits de tiers. Nous pouvons supprimer tout contenu non conforme aux
         règles ci-dessus.
       </p>{" "}

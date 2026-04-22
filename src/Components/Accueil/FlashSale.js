@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import "../../Styles/FlashSale.css";
 import API from "../Authentification/api";
 import VusProduct from "../Products/VusProduct";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const FlashSale = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true });
@@ -178,7 +179,7 @@ const FlashSale = () => {
           {validPromos.map((product) => (
             <SwiperSlide key={product.id}>
               <img
-                src={product.img}
+                src={getProductImage(product.img)}
                 alt={product.name}
                 className="img_product shadow-sm"
                 onClick={() => openPopUp(product)}
@@ -216,7 +217,7 @@ const FlashSale = () => {
               className="mobile-product-card"
               onClick={() => openPopUp(product)}
             >
-              <img src={product.img} alt={product.name} />
+              <img src={getProductImage(product.img)} alt={product.name} />
               <div className="mobile-product-title text-truncate">{product.name}</div>
               <div className="mobile-product-price">
                 {product.new_price} FCFA
