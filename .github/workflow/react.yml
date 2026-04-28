@@ -1,24 +1,33 @@
-name: React CI
+name: CI React
 
 on:
   push:
-    branches: ['main']
+    branches: [main, develop]
   pull_request:
+    branches: [main, develop]
 
 jobs:
-  react-build:
+  react:
+    name: Build & Lint React
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 18
+          cache: 'npm'
 
-      - name: Install dependencies & build
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env
         run: |
-          cd frontend
-          npm install
-          npm run build
+          echo "REACT_APP_API_URL=http://localhost:8000/api" >> .env
+          echo "REACT_APP_CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
+
+      - name: Build
+        run: npm run build
