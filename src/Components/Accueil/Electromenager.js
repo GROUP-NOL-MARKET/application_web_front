@@ -16,7 +16,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import useEmblaCarousel from "embla-carousel-react";
+// import useEmblaCarousel from "embla-carousel-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLimitedProducts } from "../../Store/ProductsSlice";
@@ -25,14 +25,14 @@ import { AuthContext } from "../AuthContext";
 import { FavoriteContext } from "../../Store/Favoris_context";
 import { PanierContext } from "../../Store/Panier_context";
 import VusProduct from "../Products/VusProduct";
-import API from "../Authentification/api";
+// import API from "../Authentification/api";
 import { getProductImage } from "../../Utils/Cloudinary";
 
 const CATEGORY = "Électroménager";
 const CACHE_KEY = "electromenager_products_v1";
 
 const Electromenager = () => {
-    const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+    // const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
     const navigate = useNavigate();
     const dispatch = useDispatch();
 

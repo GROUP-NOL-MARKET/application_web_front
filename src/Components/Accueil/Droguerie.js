@@ -15,7 +15,7 @@ import soins from "../assets/Images/soins beauté.avif";
 import feminine from "../assets/Images/hygiene feminine.avif";
 import desodorisant from "../assets/Images/desodorifiant.avif";
 import mouchoir from "../assets/Images/mouchoir.avif";
-import useEmblaCarousel from "embla-carousel-react";
+// import useEmblaCarousel from "embla-carousel-react";
 
 const Droguerie = () => {
   const sousCategories = [
@@ -30,7 +30,7 @@ const Droguerie = () => {
     { id: 9, name: "Parfums-Déodorants-Eau de toilette", img: desodorisant },
   ];
 
-  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+  // const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate();
 
   const handleNavigation = (subcategory) => {

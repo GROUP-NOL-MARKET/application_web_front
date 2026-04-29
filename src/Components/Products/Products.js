@@ -5,7 +5,6 @@ import { sous_category_product } from "../Product_Data";
 import {
   faArrowAltCircleRight,
   faHeart,
-  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import Preloader from "../Preloader";
 import { PanierContext } from "../../Store/Panier_context";

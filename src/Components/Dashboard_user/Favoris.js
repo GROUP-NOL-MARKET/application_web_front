@@ -100,7 +100,7 @@ const Favoris = () => {
                 ))}
             </div>
         );
-    }, [favorites, loading, addProductToCart]);
+    }, [favorites, loading, addProductToCart, dispatch]);
 
     return (
         <div className="shadow-sm border border-1 p-2">

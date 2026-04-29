@@ -1,10 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import mtn from "./assets/Images/momo_img.png";
 import { Button, Form, FormControl, FormLabel, Spinner } from "react-bootstrap";
 import ReactCountryDropdown from "react-country-dropdown";
 import { toast } from "react-toastify";
-import { PanierContext } from "../Store/Panier_context";
+// import { PanierContext } from "../Store/Panier_context";
 import API from "./Authentification/api";
 
 const MomoPay = ({ closePopUp, product, amount }) => {
@@ -12,7 +12,7 @@ const MomoPay = ({ closePopUp, product, amount }) => {
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState({});
   const intervalRef = useRef(null);
-  const { clearCart } = useContext(PanierContext);
+  // const { clearCart } = useContext(PanierContext);
 
   const navigate = useNavigate();
 

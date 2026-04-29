@@ -20,13 +20,13 @@ const ChangeNumero = ({ closePopUp2 }) => {
 
         let userPhone = response.data.phone || "";
 
-        // 1️⃣ Retirer +229 ou 229 au début
+        // Retirer +229 ou 229 au début
         userPhone = userPhone.replace(/^(\+?229)/, "");
 
-        // 2️⃣ Retirer tous les espaces restants
+        // Retirer tous les espaces restants
         userPhone = userPhone.replace(/\s+/g, "");
 
-        // 3️⃣ Reformater le numéro en XX XX XX XX XX
+        // Reformater le numéro en XX XX XX XX XX
         const formattedPhone = userPhone.replace(/(\d{2})(?=\d)/g, "$1 ");
 
         setPhone(formattedPhone.trim());

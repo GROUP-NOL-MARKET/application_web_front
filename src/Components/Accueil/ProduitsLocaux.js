@@ -7,17 +7,17 @@ import { motion } from "framer-motion";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
-import useEmblaCarousel from "embla-carousel-react";
+// import useEmblaCarousel from "embla-carousel-react";
 import "../../Styles/Content.css";
 import epice from "../assets/Images/epices.avif";
 import the from "../assets/Images/the.avif";
 import farine from "../assets/Images/farines.avif";
 import jus from "../assets/Images/jus.avif";
-import vins from "../assets/Images/vins.avif";
-import sodabi from "../assets/Images/sodabi.avif";
+// import vins from "../assets/Images/vins.avif";
+// import sodabi from "../assets/Images/sodabi.avif";
 import riz from "../assets/Images/riz.avif";
 import cosmetique from "../assets/Images/cosmetique.avif";
-import eau from "../assets/Images/eau.avif";
+// import eau from "../assets/Images/eau.avif";
 import amuse from "../assets/Images/amuse.avif";
 import miel from "../assets/Images/miel.avif";
 
@@ -32,7 +32,7 @@ const ProduitsLocaux = () => {
     { id: 7, name: "Prduits vivriers", img: riz },
     { id: 8, name: "Produits cosmétiques", img: cosmetique },
   ];
-  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+  // const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
 
   const handleNavigation = (subcategory) => {

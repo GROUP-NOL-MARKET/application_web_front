@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
-import useEmblaCarousel from "embla-carousel-react";
+// import useEmblaCarousel from "embla-carousel-react";
 // import produits_frais from "../assets/Images/produits_frais.avif";
 import fromage from "../assets/Images/charcuterie.png";
 import yaourt from "../assets/Images/yaourt.avif";
@@ -30,7 +30,7 @@ const ProduitsFrais = () => {
     { id: 7, name: "Fruits secs et frais", img: fruit },
 
   ];
-  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+  // const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
 
   const handleNavigation = (subcategory) => {

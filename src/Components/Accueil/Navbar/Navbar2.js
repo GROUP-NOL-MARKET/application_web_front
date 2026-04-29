@@ -15,8 +15,6 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-
-
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
 import utilisateur from "../../assets/Images/icone/utilisateur.png";
 import question from "../../assets/Images/icone/question.png";

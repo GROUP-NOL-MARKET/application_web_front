@@ -26,12 +26,11 @@ const Header = () => {
   const navigate = useNavigate();
   const [isCarouselLoading, setIsCarouselLoading] = useState(true);
   const [isBannerLoading, setIsBannerLoading] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  // const [imageLoaded, setImageLoaded] = useState(false);
 
   const {
     carouselImages,
     setCarouselImages,
-    imagesLoaded,
     setImagesLoaded
   } = useImageCache();
 

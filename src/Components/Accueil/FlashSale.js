@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import useEmblaCarousel from "embla-carousel-react";
+// import useEmblaCarousel from "embla-carousel-react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { motion } from "framer-motion";
@@ -14,7 +14,7 @@ import VusProduct from "../Products/VusProduct";
 import { getProductImage } from "../../Utils/Cloudinary";
 
 const FlashSale = () => {
-  const [emblaRef] = useEmblaCarousel({ loop: true });
+  // const [emblaRef] = useEmblaCarousel({ loop: true });
   const navigate = useNavigate();
 
   const [promotions, setPromotions] = useState([]);

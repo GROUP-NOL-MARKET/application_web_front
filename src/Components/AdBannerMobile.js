@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../Styles/AdBannerMobile.css";
-import telephone from "./assets/Images/icone/telephone.png";
+// import telephone from "./assets/Images/icone/telephone.png";
 import promo from "./assets/Images/promo.webp";
 import promo_video from "./assets/Images/promo_video.mp4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -175,7 +175,7 @@ const AdBannerMobile = React.memo(
                   zIndex: 3,
                 }}
               >
-                <h6 className="offset-1" style={{fontSize: "10px"}}>
+                <h6 className="offset-1" style={{ fontSize: "10px" }}>
                   <FontAwesomeIcon icon={faPhone} className="me-2" />
                   Commandez au {pub_num}
                 </h6>

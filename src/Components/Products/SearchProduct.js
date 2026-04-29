@@ -154,7 +154,7 @@ const SearchProduct = () => {
                           onClick={() => addProductToCart(prod)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
                         >
-                          🛒 <span className="d-none d-sm-inline">Panier</span>
+                          <span className="d-none d-sm-inline">Panier</span>
                           <FontAwesomeIcon className="d-sm-none" icon={faCartShopping} />
                         </Button>
                       </div>
@@ -165,7 +165,7 @@ const SearchProduct = () => {
                           onClick={() => addProductToCart(prod)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
                         >
-                          🛒 <span className="d-none d-sm-inline">Panier</span>
+                          <span className="d-none d-sm-inline">Panier</span>
                           <FontAwesomeIcon className="d-sm-none" icon={faCartShopping} />
                         </Button>
                         <FontAwesomeIcon
