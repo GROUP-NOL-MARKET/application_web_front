@@ -35,7 +35,7 @@ const PageAccueil = () => {
         <div className="page_accueil min-vh-100">
           <Header />
           <Offres />
-          {/* <PopularProducts/> */}
+          <PopularProducts />
           <FlashSale duration={2 * 24 * 60 * 60 * 1000} />
           <ProduitsLocaux />
           <Boissons />

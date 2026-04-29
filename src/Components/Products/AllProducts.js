@@ -149,40 +149,42 @@ const AllProducts = () => {
             return (
               <div
                 key={product.id}
-                className="col-md-3 col-sm-4 col-lg-2 mb-4 col-6"
+                className="col-md-3 col-sm-4 col-lg-2 mb-3 col-6"
               >
-                <div className="d-flex flex-column border-md-only p-2">
-                  <div>
-                    <img
-                      src={getProductImage(product.image)}
-                      className="img_product"
-                      alt={product.name}
-                      onClick={() => openPopUp(product)}
-                    />
-                  </div>
-
-                  <div className="card-body pt-2">
+                <div className="d-flex flex-column border-md-only p-1 p-md-2 h-100 mt-2">
+                  <img
+                    src={getProductImage(product.image)}
+                    className="img_product"
+                    alt={product.name}
+                    onClick={() => openPopUp(product)}
+                    loading="lazy"
+                  />
+                  <div className="card-body px-0 pb-0 pt-1">
                     <h5
-                      className="text-truncate petit_titre" style={{ textTransform: "none" }}
+                      className="text-truncate petit_titre mb-1"
+                      style={{ textTransform: "none" }}
                       title={product.name}
                     >
                       {product.name}
                     </h5>
-                    <p className="card-text petit_titre fw-bold">
+                    <p className="card-text petit_titre fw-bold mb-1">
                       {formatPrice(product.price)} FCFA
                     </p>
-                    <h5 className="card-text petit_titre text-truncate" title={product.sous_category}>
+                    <h5
+                      className="card-text petit_titre text-truncate mb-1"
+                      title={product.sous_category}
+                    >
                       {product.sous_category}
                     </h5>
 
-                    <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                    <div className="d-flex flex-row justify-content-between align-items-center my-1">
                       <Button
-                        className="border-0"
+                        className="border-0 btn-panier"
                         onClick={() => addProductToCart(product)}
                         style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
                       >
-                        Ajouter au panier{" "}
-                        <FontAwesomeIcon icon={faCartShopping} />
+                        <span className="d-inline">Panier</span>
+                        <FontAwesomeIcon className="d-sm-none" icon={faCartShopping} />
                       </Button>
 
                       {isLoggedIn && (
@@ -193,6 +195,7 @@ const AllProducts = () => {
                             cursor: "pointer",
                             color: isFavorite ? "red" : "#FA7F1B",
                             transition: "0.2s",
+                            fontSize: "14px"
                           }}
                         />
                       )}

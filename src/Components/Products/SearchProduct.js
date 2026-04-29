@@ -125,35 +125,49 @@ const SearchProduct = () => {
             return (
               <div
                 key={prod.id}
-                className="col-md-3 col-sm-4 col-lg-2 col-6 mb-4"
+                className="col-md-3 col-sm-4 col-lg-2 col-6 mb-3"
               >
-                <div className="d-flex flex-column p-2">
+                <div className="d-flex flex-column p-1 p-md-2 h-100">
                   <img
-                    src={getProductImage(prod.image)}
+                    src={getProductImage(prod.image, { width: 300, height: 300 })}
                     className="card-img-top img_product"
                     alt={prod.name}
                     onClick={() => openPopUp(prod)}
+                    loading="lazy"
                   />
-                  <div className="card-body">
-                    <h5 className="card-truncate petit_titre" style={{ textTransform: "none" }} title={prod.name}>{prod.name}</h5>
-                    <p className="card-text petit_titre fw-bold">
+                  <div className="card-body px-0 pb-0 pt-1">
+                    <h5
+                      className="text-truncate petit_titre mb-1"
+                      style={{ textTransform: "none" }}
+                      title={prod.name}
+                    >
+                      {prod.name}
+                    </h5>
+                    <p className="card-text petit_titre fw-bold mb-1">
                       {formatPrice(prod.price.toLocaleString())} FCFA
                     </p>
+
                     {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-left gap-3 mt-2">
+                      <div className="my-1">
                         <Button
-                          className="border-0"
+                          className="border-0 w-100 btn-panier"
                           onClick={() => addProductToCart(prod)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                        >
+                          🛒 <span className="d-none d-sm-inline">Panier</span>
+                          <FontAwesomeIcon className="d-sm-none" icon={faCartShopping} />
+                        </Button>
                       </div>
                     ) : (
-                      <div className="d-flex flex-row justify-content-center gap-3 mt-2">
+                      <div className="d-flex flex-row justify-content-between align-items-center my-1">
                         <Button
-                          className="border-0"
+                          className="border-0 btn-panier"
                           onClick={() => addProductToCart(prod)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier <FontAwesomeIcon icon={faCartShopping} /></Button>
+                        >
+                          🛒 <span className="d-none d-sm-inline">Panier</span>
+                          <FontAwesomeIcon className="d-sm-none" icon={faCartShopping} />
+                        </Button>
                         <FontAwesomeIcon
                           icon={faHeart}
                           onClick={() => toggleFavorite(prod)}
@@ -161,6 +175,7 @@ const SearchProduct = () => {
                             cursor: "pointer",
                             color: isFavorite ? "red" : "#FA7F1B",
                             transition: "0.2s",
+                            fontSize: "14px"
                           }}
                         />
                       </div>

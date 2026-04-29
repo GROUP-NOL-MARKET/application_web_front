@@ -19,7 +19,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp";
-import ReactCountryDropdown from "react-country-dropdown";
+// import ReactCountryDropdown from "react-country-dropdown";
 import { useSocialAuth } from "../../Hooks/UseSocialAuth";
 
 const Register = () => {
@@ -71,6 +71,15 @@ const Register = () => {
     const PasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const cleanPhone = phone.replace(/\s/g, "");
 
+    const PREFIXES_BENIN = [
+        // MTN
+        "61", "62", "66", "67", "69", "90", "91", "96", "97",
+        // Moov Africa
+        "60", "63", "64", "65", "68", "93", "94", "95",
+        // Lignes fixes
+        "21", "22", "23"
+    ];
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -95,24 +104,22 @@ const Register = () => {
         } else {
             if (!cleanPhone.trim()) {
                 newErrors.phone = "Veuillez entrer un numéro de téléphone";
+
             } else if (!/^01\d{8}$/.test(cleanPhone)) {
-                newErrors.phone = "Le numéro doit commencer par 01 et contenir 10 chiffres.";
+                newErrors.phone = "Le numéro doit commencer par 01 et contenir 10 chiffres";
+
             } else {
-                const secondPair = parseInt(cleanPhone.substring(2, 4), 10);
-                if (secondPair < 50 || secondPair > 99) {
-                    newErrors.phone =
-                        "Les deux chiffres après '01' doivent être compris entre 50 et 99.";
+                const prefix = cleanPhone.substring(2, 4);
+
+                if (!PREFIXES_BENIN.includes(prefix)) {
+                    newErrors.phone = `Numéro invalide`;
                 }
             }
-            // 96, 97, 66, 67, 61, 62, 69, 90, 91, 51, 52, 53
         }
-        if (!PasswordRegex.test(password)) {
-            newErrors.password =
-                "Le mot de passe doit contenir au moins 8 caractères, 1 lettre, un chiffre et un caractère spécial";
-        } else if (!password) {
+        if (!password) {
             newErrors.password = "Veuillez remplir ce champ";
-        } else {
-            delete newErrors.setPassword;
+        } else if (!PasswordRegex.test(password)) {
+            newErrors.password = "Le mot de passe doit contenir au moins 8 caractères, 1 lettre, un chiffre et un caractère spécial";
         }
 
         if (!isChecked) {
@@ -143,7 +150,7 @@ const Register = () => {
         } catch (err) {
             if (err.response) {
                 setErrors(err.response.data.message);
-                toast.error(errors);
+                toast.error(err.response?.data?.message || "Une erreur est survenue");
             } else {
                 setSuccess("Erreur serveur");
             }
@@ -196,13 +203,16 @@ const Register = () => {
                                                 className="input_register"
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 disabled={!modeEmail}
-                                                isInvalid={errors?.email ? true : false}
+                                                isInvalid={!!errors?.email}
                                             />
-                                            <Button onClick={toggleMode}>
+                                            <Button
+                                                variant="outline-secondary"
+                                                onClick={toggleMode}
+                                                title="Utiliser un numéro de téléphone"
+                                            >
                                                 <FontAwesomeIcon icon={faMobile} />
                                             </Button>
                                         </InputGroup>
-
                                         <Form.Control.Feedback type="invalid">
                                             {errors?.email}
                                         </Form.Control.Feedback>
@@ -212,25 +222,41 @@ const Register = () => {
                                         <Form.Label className="label_register">
                                             Numéro de téléphone
                                         </Form.Label>
-                                        <div className="row">
-                                            <div className="col-4 col-sm-3 col-md-4 col-lg-2 me-1" style={{ pointerEvents: "none" }}>
-                                                <ReactCountryDropdown defaultCountry="BJ" />
-                                            </div>
-                                            <InputGroup className="col">
-                                                <Form.Control
-                                                    type="tel"
-                                                    placeholder="01 XX XX XX XX"
-                                                    className="input_register"
-                                                    value={phone}
-                                                    onChange={handleChange}
-                                                    disabled={modeEmail}
-                                                    isInvalid={errors?.phone ? true : false}
-                                                />
-                                                <Button onClick={toggleMode}>
-                                                    <FontAwesomeIcon icon={faEnvelope} />
-                                                </Button>
-                                            </InputGroup>
-                                        </div>
+                                        <InputGroup>
+                                            {/* Indicatif Bénin fixe propre et aligné */}
+                                            <InputGroup.Text
+                                                style={{
+                                                    backgroundColor: "#f8f9fa",
+                                                    border: "1px solid #ced4da",
+                                                    borderRight: "none",
+                                                    fontSize: "13px",
+                                                    whiteSpace: "nowrap",
+                                                    padding: "0 10px",
+                                                }}
+                                            >
+                                                🇧🇯 +229
+                                            </InputGroup.Text>
+
+                                            {/*  Champ téléphone */}
+                                            <Form.Control
+                                                type="tel"
+                                                placeholder="01 XX XX XX XX"
+                                                className="input_register"
+                                                value={phone}
+                                                onChange={handleChange}
+                                                isInvalid={!!errors?.phone}
+                                                style={{ borderLeft: "none" }}
+                                            />
+
+                                            {/*  Bouton toggle vers email */}
+                                            <Button
+                                                variant="outline-secondary"
+                                                onClick={toggleMode}
+                                                title="Utiliser un email"
+                                            >
+                                                <FontAwesomeIcon icon={faEnvelope} />
+                                            </Button>
+                                        </InputGroup>
 
                                         <Form.Control.Feedback type="invalid">
                                             {errors?.phone}

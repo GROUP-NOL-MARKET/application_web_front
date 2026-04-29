@@ -131,33 +131,33 @@ const Promotion = () => {
           return (
             <div
               key={product.id}
-              className="col-lg-2 col-md-3 col-6 mb-4 d-flex"
-              style={{ minHeight: "320px" }}
+              className="col-lg-2 col-md-3 col-6 mb-3 d-flex"
             >
               <div
-                className="border-md-only p-2 rounded-3 w-100"
+                className="border-md-only p-1 p-md-2 rounded-3 w-100 position-relative"
                 style={{ cursor: "pointer" }}
               >
                 <img
-                  src={getProductImage(product.image)}
+                  src={getProductImage(product.image, { width: 300, height: 300 })}
                   alt={product.name}
                   className="img_product w-100 border rounded"
                   onClick={() => openPopUp(product)}
+                  loading="lazy"
                 />
 
-                {/* Badge Promotion si dispo */}
+                {/* Badge Promotion */}
                 {product.pourcentage_vendu && (
                   <div
-                    className="discount_badge"
                     style={{
                       position: "absolute",
                       background: "#FA7F1B",
                       color: "white",
-                      padding: "2px 8px",
+                      padding: "2px 6px",
                       borderRadius: "8px",
                       fontWeight: "bold",
-                      top: "10px",
-                      right: "10px",
+                      top: "8px",
+                      right: "8px",
+                      fontSize: "10px",
                     }}
                   >
                     -{product.pourcentage_vendu}%
@@ -166,7 +166,8 @@ const Promotion = () => {
 
                 {/* Nom */}
                 <div
-                  className="petit_titre text-center mt-2" title={product.name}
+                  className="petit_titre text-truncate text-center mt-1"
+                  title={product.name}
                   style={{ fontWeight: "600", textTransform: "none" }}
                 >
                   {product.name}
@@ -174,30 +175,31 @@ const Promotion = () => {
 
                 {/* Prix */}
                 <div className="text-center">
-                  <span className="new_price fw-bold">
+                  <span className="new_price fw-bold" style={{ fontSize: "11px" }}>
                     {formatPrice(product.price)} FCFA
                   </span>
-
                   {hasPromo && (
-                    <span className="initial_price text-muted ms-2">
+                    <span
+                      className="text-muted ms-1"
+                      style={{ fontSize: "10px" }}
+                    >
                       <s>{product.initial_price} FCFA</s>
                     </span>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div className="d-flex justify-content-center gap-3 mt-2">
+                <div className="d-flex justify-content-center gap-3 mt-1">
                   <FontAwesomeIcon
                     icon={faCartShopping}
                     onClick={() => addProductToCart(product)}
-                    style={{ cursor: "pointer", color: "#0066BD" }}
+                    style={{ cursor: "pointer", color: "#0066BD", fontSize: "14px" }}
                   />
-
                   {isLoggedIn && (
                     <FontAwesomeIcon
                       icon={faHeart}
                       onClick={() => addFavorite(product.id)}
-                      style={{ cursor: "pointer", color: "#FA7F1B" }}
+                      style={{ cursor: "pointer", color: "#FA7F1B", fontSize: "14px" }}
                     />
                   )}
                 </div>

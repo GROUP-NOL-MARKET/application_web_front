@@ -183,39 +183,47 @@ const Products = () => {
             return (
               <div
                 key={product.id}
-                className="col-md-3 col-sm-4 col-6 col-lg-2 mb-4 "
+                className="col-md-3 col-sm-4 col-6 col-lg-2 mb-3"
               >
-                <div className="d-flex flex-column p-2 border-md-only">
+                <div className="d-flex flex-column p-1 p-md-2 border-md-only h-100">
                   <img
                     src={getProductImage(product.image)}
-                    className=" img_product"
+                    className="img_product"
                     alt={product.name}
                     onClick={() => openPopUp(product)}
                     loading="lazy"
                   />
-                  <div className="card-body">
-                    <h5 className="text-truncate petit_titre" style={{ textTransform: "none" }} title={product.name}>
+                  <div className="card-body px-0 pb-0 pt-1">
+                    <h5
+                      className="text-truncate petit_titre mb-1"
+                      style={{ textTransform: "none" }}
+                      title={product.name}
+                    >
                       {product.name}
                     </h5>
-                    {/* PRIX FORMATÉ ICI */}
-                    <p className="card-text petit_titre fw-bold">
+                    <p className="card-text petit_titre fw-bold mb-1">
                       {formatPrice(product.price)} FCFA
                     </p>
+
                     {!isLoggedIn ? (
-                      <div className="d-flex flex-row justify-content-left gap-3 my-2">
+                      <div className="my-1">
                         <Button
-                          className="border-0"
+                          className="border-0 w-100 btn-panier"
                           onClick={() => addProductToCart(product)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier </Button>
+                        >
+                          Panier
+                        </Button>
                       </div>
                     ) : (
-                      <div className="d-flex flex-row justify-content-center gap-3 my-2">
+                      <div className="d-flex flex-row justify-content-between align-items-center my-1">
                         <Button
-                          className="border-0"
+                          className="border-0 btn-panier"
                           onClick={() => addProductToCart(product)}
                           style={{ fontSize: "10px", backgroundColor: "#0066BD" }}
-                        >Ajouter au panier </Button>
+                        >
+                          Panier
+                        </Button>
                         <FontAwesomeIcon
                           icon={faHeart}
                           onClick={() => toggleFavorite(product)}
@@ -223,6 +231,7 @@ const Products = () => {
                             cursor: "pointer",
                             color: isFavorite ? "red" : "#FA7F1B",
                             transition: "0.2s",
+                            fontSize: "14px"
                           }}
                         />
                       </div>

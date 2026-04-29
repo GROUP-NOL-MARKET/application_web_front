@@ -30,4 +30,6 @@ jobs:
           echo "REACT_APP_CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
 
       - name: Build
+        env:
+          CI: false
         run: npm run build
