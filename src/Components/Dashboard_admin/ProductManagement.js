@@ -10,6 +10,7 @@ import { Button, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import API from "../Authentification/apiAdmin";
 import * as XLSX from "xlsx";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -202,7 +203,7 @@ const ProductManagement = () => {
                 products.map((p) => (
                   <tr key={p.id} className="row">
                     <td className="col-1">
-                      <img src={p.image} alt={p.name} width="50" />
+                      <img src={getProductImage(p.image)} alt={p.name} width="50" />
                     </td>
                     <td className="texte_brut col-1">{p.reference}</td>
                     <td className="texte_brut col-2">{p.name}</td>

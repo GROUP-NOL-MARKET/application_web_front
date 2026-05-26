@@ -69,7 +69,7 @@ function App() {
         <Routes>
           <Route path="/" element={<PageAccueil />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<Connexion />} />
+          <Route path="/admin/login" element={<Connexion />} />
           <Route path="/login" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/Contact" element={<Contact />} />

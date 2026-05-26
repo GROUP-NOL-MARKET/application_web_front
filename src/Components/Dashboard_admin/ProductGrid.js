@@ -11,6 +11,7 @@ import img_electromenager_dashboard from "../assets/Images/img_electromenager_da
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const ProductGrid = () => {
   const navigate = useNavigate();
@@ -244,7 +245,7 @@ const ProductGrid = () => {
                 <div className="row">
                   <div className="col-10">
                     <img
-                      src={product.image}
+                      src={getProductImage(product.image)}
                       alt={product.name}
                       className="img_product"
                     />

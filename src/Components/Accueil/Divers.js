@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import useEmblaCarousel from "embla-carousel-react";
-import chewing from "../assets/Images/chewing gum.avif";
+import chewing from "../assets/Images/chewing.avif";
 import piles from "../assets/Images/piles rasoirs.avif";
 import papeterie from "../assets/Images/papeterie.avif";
 import ampoule from "../assets/Images/ampoule.avif";

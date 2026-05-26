@@ -8,6 +8,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import Rating from "@mui/material/Rating";
 import API from "../Authentification/apiAdmin";
 import { CircularProgress } from "@mui/material";
+import { getProductImage } from "../../Utils/Cloudinary";
 
 const BestProduct = () => {
   const { theme } = useContext(ThemeContext);
@@ -90,7 +91,7 @@ const BestProduct = () => {
                   >
                     <div className="row">
                       <img
-                        src={product.image}
+                        src={getProductImage(product.image)}
                         alt={product.name}
                         className="img-fluid col ms-2 mt-2 bg-light"
                         style={{ height: "100px", objectFit: "contain" }}

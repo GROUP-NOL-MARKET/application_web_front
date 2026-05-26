@@ -28,6 +28,7 @@ const AdminLogin = () => {
 
             localStorage.setItem("adminToken", response.data.token);
             window.location.href = "/admin/dashboard"; // Redirige vers le dashboard
+
         } catch (err) {
             setError(err);
             console.log(error);

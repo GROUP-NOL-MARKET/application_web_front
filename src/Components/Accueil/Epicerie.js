@@ -8,16 +8,13 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
-import epicerie from "../assets/Images/epicerie.avif";
 import petit_dejeun from "../assets/Images/petit dejeuner.png";
-import cereales from "../assets/Images/cereales corn flakes.avif";
-import biscuits from "../assets/Images/biscuits gateaux.avif";
+import biscuits from "../assets/Images/biscuits.avif";
 import amuse from "../assets/Images/amuse gueule.avif";
 // import pains from "../assets/Images/pains et viennesoireries.avif";
 import bonbon from "../assets/Images/confiseries.png";
 import conserves from "../assets/Images/conserves.png";
 import pates from "../assets/Images/pates alimentaires riz.avif";
-import assaisonnement from "../assets/Images/condiments.avif";
 import huile from "../assets/Images/huile vinaigre.avif";
 import sardine from "../assets/Images/sardine.avif";
 

@@ -151,15 +151,15 @@ const AllProducts = () => {
                 key={product.id}
                 className="col-md-3 col-sm-4 col-lg-2 mb-3 col-6"
               >
-                <div className="d-flex flex-column border-md-only p-1 p-md-2 h-100 mt-2">
+                <div className="d-flex flex-column border-md-only p-1 p-md-2 h-100 mt-2 ">
                   <img
                     src={getProductImage(product.image)}
-                    className="img_product"
+                    className="img_product "
                     alt={product.name}
                     onClick={() => openPopUp(product)}
                     loading="lazy"
                   />
-                  <div className="card-body px-0 pb-0 pt-1">
+                  <div className="card-body  px-0 pb-0 pt-1">
                     <h5
                       className="text-truncate petit_titre mb-1"
                       style={{ textTransform: "none" }}

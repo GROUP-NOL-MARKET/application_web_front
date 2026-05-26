@@ -363,14 +363,7 @@ const Navbar2 = React.memo(() => {
                       </Link>
                     </li>
 
-                    <li><hr className="dropdown-divider" /></li>
 
-                    <li>
-                      <Link className="dropdown-item d-flex align-items-center gap-2 text-warning" to="/admin">
-                        <i className="fa-solid fa-lock"></i>
-                        Mode admin
-                      </Link>
-                    </li>
                   </>
                 ) : (
                   <>

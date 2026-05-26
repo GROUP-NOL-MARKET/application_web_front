@@ -6,12 +6,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
-import monde from "../assets/Images/monde bb.avif";
-import hygiene from "../assets/Images/hygiene dent.avif";
-import rasage from "../assets/Images/rasage.avif";
+import monde from "../assets/Images/bebe.avif";
+import hygiene from "../assets/Images/dentaire.avif";
+import couvert from "../assets/Images/couvert.avif";
 import { motion } from "framer-motion";
 import produits from "../assets/Images/produits menagers.avif";
-import soins from "../assets/Images/soins beauté.avif";
+import soins from "../assets/Images/corporelle.avif";
 import feminine from "../assets/Images/hygiene feminine.avif";
 import desodorisant from "../assets/Images/desodorifiant.avif";
 import mouchoir from "../assets/Images/mouchoir.avif";
@@ -21,7 +21,7 @@ const Droguerie = () => {
   const sousCategories = [
     { id: 1, name: "Monde de Bébé", img: monde },
     { id: 2, name: "Hygiène dentaire", img: hygiene },
-    { id: 3, name: "Couvert-Ustensiles-Accessoires de cuisine", img: rasage },
+    { id: 3, name: "Couvert-Ustensiles-Accessoires de cuisine", img: couvert },
     { id: 4, name: "Produits ménagers et accessoires", img: produits },
     { id: 5, name: "Hygiène corporelle", img: soins },
     { id: 6, name: "Hygiène féminine-Maybellines", img: feminine },
