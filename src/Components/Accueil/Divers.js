@@ -22,7 +22,7 @@ const Divers = () => {
     { id: 5, name: "Divers", img: piles },
   ];
 
-  const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
+  // const [emblaRef] = useEmblaCarousel({ loop: true, slidesToScroll: 1 });
   const navigate = useNavigate({});
 
   const handleNavigation = (subcategory) => {

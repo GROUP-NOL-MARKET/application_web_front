@@ -21,7 +21,7 @@ import question from "../../assets/Images/icone/question.png";
 import { AuthContext } from "../../AuthContext";
 import { PanierContext } from "../../../Store/Panier_context";
 import API from "../../Authentification/api";
-import "../../../Styles/Navbar.css";
+import "../../../Styles/Styles.css";
 import { Form } from "react-bootstrap";
 import { FavoriteContext } from "../../../Store/Favoris_context";
 

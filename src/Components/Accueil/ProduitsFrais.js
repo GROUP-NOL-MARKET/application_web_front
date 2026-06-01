@@ -15,7 +15,7 @@ import glaces from "../assets/Images/glaces.png";
 import fruit from "../assets/Images/fruit.png";
 import frites from "../assets/Images/frites.png";
 import divers from "../assets/Images/divers_frais.png";
-import "../../Styles/Header.css";
+import "../../Styles/Styles.css";
 // import { useInView } from "./UseInView";
 import { motion } from "framer-motion";
 

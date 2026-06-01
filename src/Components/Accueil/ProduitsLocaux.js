@@ -8,7 +8,7 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 // import useEmblaCarousel from "embla-carousel-react";
-import "../../Styles/Content.css";
+import "../../Styles/Styles.css";
 import epice from "../assets/Images/epices.avif";
 import the from "../assets/Images/the.avif";
 import farine from "../assets/Images/farines.avif";

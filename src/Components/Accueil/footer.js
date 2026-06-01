@@ -1,5 +1,5 @@
 import React from "react";
-import "../../Styles/footer.css";
+import "../../Styles/Styles.css";
 import { Form, Button } from "react-bootstrap";
 import img_entreprise from "../assets/Images/Logo_entreprise-removebg-preview.webp"
 

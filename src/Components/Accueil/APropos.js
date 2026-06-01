@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import { Button } from "react-bootstrap";
 import img_entreprise from "../assets/Images/img_entreprise.avif";
-import "../../Styles/APropos.css";
+import "../../Styles/Styles.css";
 
 const APropos = () => {
   return (

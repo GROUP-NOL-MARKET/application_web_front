@@ -1,17 +1,10 @@
 import axios from "axios";
 
-// ================================
-//  Configuration de base
-// ================================
-const API_URL = "http://localhost:8000/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const APIAdmin = axios.create({
     baseURL: API_URL,
 });
-
-// ================================
-//  Intercepteurs Axios
-// ================================
 
 APIAdmin.interceptors.request.use((config) => {
     const token = localStorage.getItem("adminToken");
@@ -21,24 +14,22 @@ APIAdmin.interceptors.request.use((config) => {
     return config;
 });
 
-let isLoggingOut = false; // évite de déclencher plusieurs fois la déconnexion
-
 APIAdmin.interceptors.response.use(
     (response) => response,
     (error) => {
+        const status = error.response?.status;
         const message = error.response?.data?.message;
 
-        if (
-            message === "Token expiré" ||
-            message === "Token invalide" ||
-            error.response?.status === 401
-        ) {
-            if (!isLoggingOut) {
-                isLoggingOut = true;
-                window.dispatchEvent(new Event("tokenExpired"));
-                // on peut aussi vider localStorage immédiatement pour éviter d’autres appels
-                localStorage.removeItem("adminToken");
-            }
+        const isAuthError =
+            status === 401 &&
+            (message === "Token expired" || message === "Token invalid" || message === "Authentification requise" || message === "User not found");
+
+        const isLoginRoute = error.config?.url?.includes("/admin/login");
+
+        if (isAuthError && !isLoginRoute) {
+            localStorage.removeItem("adminToken");
+            // Réinitialise avant de rediriger
+            window.location.href = "/admin/login";
         }
 
         return Promise.reject(error);

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../../../Styles/Navbar.css";
+import "../../../Styles/Styles.css";
 import { sous_category_product } from "../../Product_Data";
 
 const Navbar3 = () => {

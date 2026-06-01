@@ -6,7 +6,7 @@ import {
   faHeadphones,
   faUmbrella,
 } from "@fortawesome/free-solid-svg-icons";
-import "../../Styles/Offres.css";
+import "../../Styles/Styles.css";
 
 const Offres = () => {
   return (

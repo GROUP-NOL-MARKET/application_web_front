@@ -8,7 +8,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { motion } from "framer-motion";
-import "../../Styles/FlashSale.css";
+import "../../Styles/Styles.css";
 import API from "../Authentification/api";
 import VusProduct from "../Products/VusProduct";
 import { getProductImage } from "../../Utils/Cloudinary";

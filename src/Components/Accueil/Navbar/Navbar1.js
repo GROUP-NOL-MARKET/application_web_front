@@ -5,7 +5,7 @@ import { AuthContext } from "../../AuthContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import API from "../../Authentification/api";
 import Button from "react-bootstrap/Button";
-import "../../../Styles/Navbar.css";
+import "../../../Styles/Styles.css";
 import telephone from "../../assets/Images/icone/appel-telephonique.png";
 import Logo from "../../assets/Images/Logo_entreprise-removebg-preview.webp";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';

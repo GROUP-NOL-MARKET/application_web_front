@@ -1,6 +1,6 @@
 import Header from "../Components/Accueil/Header";
 import { AuthProvider } from "../Components/AuthContext";
-import "../Styles/PageAccueil.css";
+import "../Styles/Styles.css";
 import Offres from "../Components/Accueil/Offres";
 import FlashSale from "../Components/Accueil/FlashSale";
 // import Page from "../Components/Accueil/Page";

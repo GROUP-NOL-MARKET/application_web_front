@@ -14,6 +14,15 @@ const VusProduct = ({ closePopUp, product }) => {
   const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
 
+  // Bloque le scroll en arrière-plan à l'ouverture
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    // Débloque quand le popup se ferme
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
   // Vérifie si le produit est dans les favoris
   const isFavorite = favorites?.some((fav) => fav.product_id === product.id);
 
@@ -72,7 +81,7 @@ const VusProduct = ({ closePopUp, product }) => {
             <img
               src={getProductImage(product.image)}
               alt={product.name}
-              style={{ width: "300px", height: "auto" }}
+              className="image_vus_product"
             />
           </div>
 

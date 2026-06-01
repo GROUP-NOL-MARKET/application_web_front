@@ -6,7 +6,7 @@ import "swiper/css";
 import { motion } from "framer-motion";
 import AdBanner from "./../AdBanner";
 import Navbar3 from "./Navbar/Navbar3";
-import "../../Styles/Header.css";
+import "../../Styles/Styles.css";
 import API from "../Authentification/api";
 import epicerie from "../assets/Images/epicerie.avif";
 import droguerie from "../assets/Images/droguerie.avif";
